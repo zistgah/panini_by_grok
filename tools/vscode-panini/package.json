@@ -1,0 +1,22 @@
+{
+  "name": "panini",
+  "displayName": "PANINI",
+  "description": "PANINI language support (highlighting + diagnostics task)",
+  "version": "0.2.0",
+  "publisher": "panini",
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["Programming Languages"],
+  "contributes": {
+    "languages": [{
+      "id": "panini",
+      "aliases": ["PANINI", "panini"],
+      "extensions": [".pni", ".panini"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "panini",
+      "scopeName": "source.panini",
+      "path": "./syntaxes/panini.tmLanguage.json"
+    }]
+  }
+}

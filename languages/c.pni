@@ -1,0 +1,6 @@
+@imperative @mem(manual_raw) @exec(stack) @type(static_nominal) @state(mutable)
+MODULE CCharacter
+    FUNCTION main()
+        RETURN 0
+    END
+END

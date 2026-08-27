@@ -1,0 +1,7 @@
+@imperative @eval(operational) @state(mutable)
+MODULE BasicCharacter
+    FUNCTION main()
+        PRINT "HELLO"
+        RETURN 0
+    END
+END

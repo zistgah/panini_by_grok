@@ -1,0 +1,6 @@
+@imperative
+MODULE CobolCharacter
+    FUNCTION main()
+        RETURN 0
+    END
+END

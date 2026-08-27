@@ -1,0 +1,53 @@
+{
+  "version": "3.0.0",
+  "status": "PROVEN",
+  "epistemic_status": "VERIFIED",
+  "note": "Workbench subset. OTS calendar submit remains external. Language museum is axis-character, not source-compatible compilers. L0–L26 RETRIEVED.",
+  "clauses": [
+    {
+      "name": "W1 static workbench files",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "W1 vscode+lsp",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "W2 beginner PRINT",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "W2 shaili source present",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "W3 museum catalog",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "sanskrit math seed",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "provenance stamp",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "v3 spec present",
+      "ok": true,
+      "status": "VERIFIED"
+    },
+    {
+      "name": "pages has no backend assumption",
+      "ok": true,
+      "status": "VERIFIED"
+    }
+  ]
+}

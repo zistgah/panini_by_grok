@@ -1,0 +1,9 @@
+@functional @eval(reduction) @state(immutable) @type(static_nominal)
+MODULE HaskellCharacter
+    FUNCTION id(x)
+        RETURN x
+    END
+    FUNCTION main()
+        RETURN id(42)
+    END
+END

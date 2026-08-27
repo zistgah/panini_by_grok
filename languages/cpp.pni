@@ -1,0 +1,6 @@
+@imperative
+MODULE CppCharacter
+    FUNCTION main()
+        RETURN 0
+    END
+END
