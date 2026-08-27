@@ -1,10 +1,11 @@
 TIME=$(date +%s.%N)
-mv ~/Downloads/panini.zip ../panini_by_grok_v${1}.zip &&\
+VER=$(expr $(ls ../*.zip | tr "_." "\n" | grep v | tr -d "v" | sort -u | tail -1) \+ 1)
+mv ~/Downloads/panini.zip ../panini_by_grok_v${VER}.zip &&\
 cd .. &&\
-unzip panini_by_grok_v${1}.zip &&\
+unzip panini_by_grok_v${VER}.zip &&\
 cd panini_by_grok &&\
 git checkout main &&\
-cp -r ../panini_by_grok_v${1}/panini/* ./ &&\
+cp -r ../panini_by_grok_v${VER}/panini/* ./ &&\
 node tests/run.mjs &&\
 node scripts/selfhost.mjs &&\
 node scripts/prove_theorem.mjs &&\
@@ -18,8 +19,8 @@ misty ots stamp MANIFEST.sha256 &&\
 git add MANIFEST.* &&\
 git commit -m "misty ots stamp @ ${TIME}" &&\
 git push &&\
-git checkout -b stage6_beta_v${1} &&\
-git push --set-upstream origin stage6_beta_v${1} &&\
+git checkout -b stage6_beta_v${VER} &&\
+git push --set-upstream origin stage6_beta_v${VER} &&\
 git checkout main &&\
 echo "Done :)" || echo "Failed. Sorry :("
 
