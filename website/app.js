@@ -245,6 +245,10 @@ document.querySelectorAll("nav button").forEach((b) => {
     else if (v === "beginner") inspect.textContent = "Level 0: PRINT / FORWARD\nLevel 1: FUNCTION\nLevel 2: @functional\nAxes stay hidden until asked for.";
     else if (v === "status") inspect.textContent = STATUS;
     else if (v === "vscode") inspect.textContent = "VS Code: File → Open Folder on this repo.\nLaunch: .vscode/launch.json\nExtension: tools/vscode-panini (F5 Extension Development Host)\nDebug: node tools/panini-debug/adapter.mjs file.pni panini\nFrontends: python|c|rust|typescript|go|zig";
+    else if (v === "vt100") {
+      inspect.textContent = "VT100: CSI A/B/C/D H J K m, CR LF BS TAB\nDOS font: fonts/dos-8x16.f16\nTTF: VT_LOAD_FONT name path.ttf (cmap 4 + simple glyf)";
+      if (typeof drawTerminal === "function") drawTerminal(document.getElementById("vt"), "VT100\nDOS 8x16\nABC 0123");
+    }
     else inspect.textContent = "Engineer view: same artifact, more inspector detail.";
   };
 });

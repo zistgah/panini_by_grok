@@ -7,6 +7,9 @@ import { which, runPython, runC } from "./toolchain.js";
 import { axpy, scal, nrm2, gemv, gemm, autotuneGemm } from "./blas.js";
 import { tensor, matmul, tadd, relu } from "./tensor.js";
 import { createVfs } from "./vfs.js";
+import { createVt100, vtWrite, vtPlain, vtSnapshot } from "./vt100.js";
+import { defaultDosFont, loadFontFile, getFont, listFonts } from "./fonts.js";
+import { renderTextBitmap } from "./dosfont.js";
 
 export function installBuiltins(env, runtime) {
   const def = (name, fn, arity) => {
@@ -134,6 +137,28 @@ export function installBuiltins(env, runtime) {
   def("VFS_RM", (p) => wrap(vfs.rm(toStr(p))), 1);
   def("VFS_EXISTS", (p) => vBool(vfs.exists(toStr(p))), 1);
   def("VFS_TREE", () => vStr(vfs.tree()));
+
+  if (!runtime.vt) runtime.vt = createVt100();
+  defaultDosFont();
+  def("ESC", () => vStr("\x1b"));
+  def("VT_RESET", () => { runtime.vt = createVt100(); return vStr("ok"); });
+  def("VT_WRITE", (s) => { vtWrite(runtime.vt, toStr(s)); return vStr(vtPlain(runtime.vt)); }, 1);
+  def("VT_DUMP", () => vStr(vtPlain(runtime.vt)));
+  def("VT_SNAPSHOT", () => wrap(vtSnapshot(runtime.vt)));
+  def("VT_FONT", (name) => {
+    runtime.vt.fontName = toStr(name);
+    return vStr(runtime.vt.fontName);
+  }, 1);
+  def("VT_LOAD_FONT", (name, path) => {
+    const font = loadFontFile(toStr(name), toStr(path));
+    runtime.vt.fontName = font.name;
+    return vStr(font.kind + ":" + font.name);
+  }, 2);
+  def("VT_FONTS", () => wrap(listFonts()));
+  def("VT_RENDER", (text) => {
+    const bmp = renderTextBitmap(getFont(runtime.vt.fontName), text == null ? vtPlain(runtime.vt) : toStr(text));
+    return wrap({ width: bmp.width, height: bmp.height, rows: bmp.height });
+  });
 
   def("WHICH", (name) => {
     const found = which(toStr(name));

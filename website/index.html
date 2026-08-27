@@ -22,6 +22,7 @@
       <button data-view="gfx">Graphics / WebGPU</button>
       <button data-view="status">Status</button>
       <button data-view="vscode">VS Code / Debug</button>
+      <button data-view="vt100">VT100 / Fonts</button>
     </nav>
   </header>
   <main>
@@ -63,9 +64,11 @@ PRINT double(21)</textarea>
     <aside>
       <h2 id="aside-title">Inspector</h2>
       <canvas id="turtle" width="280" height="220"></canvas>
+      <canvas id="vt" width="320" height="192"></canvas>
       <pre id="inspect"></pre>
     </aside>
   </main>
+  <script src="vt100.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
