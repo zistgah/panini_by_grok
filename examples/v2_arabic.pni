@@ -1,0 +1,9 @@
+@ilm(arabic_ar)
+@functional
+دالة double(x)
+    أرجع x * 2
+نهاية
+
+دالة main()
+    أرجع double(21)
+نهاية

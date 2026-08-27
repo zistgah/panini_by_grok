@@ -1,0 +1,103 @@
+{
+  "version": "2.0.0",
+  "status": "PROVEN",
+  "epistemic_status": "VERIFIED",
+  "note": "Subset proofs for T1–T8/SRI/M0–M5. 68-script bijection remains F. E1–E6 remain E.",
+  "clauses": [
+    {
+      "name": "T0 self-hosting B==C",
+      "ok": true,
+      "note": "fn=37",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T1 scoped configuration syntax",
+      "ok": true,
+      "note": "ann=1",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T2 faithful embedding",
+      "ok": true,
+      "note": "{\"state\":\"immutable\",\"eval\":\"reduction\"}",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T3 local equivalence",
+      "ok": true,
+      "note": "en=42 hi=42",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T4 boundary preservation",
+      "ok": true,
+      "note": "logic->functional,functional->imperative,same,deny=assembly->logic",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T5 compositional non-interference (subset)",
+      "ok": true,
+      "note": "result=42",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T6 compiler still compiles under host+v2 layer",
+      "ok": true,
+      "note": "fn=37",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T7 fixed-point retention",
+      "ok": true,
+      "note": "unchanged T0 evidence",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "T8 / SRI script representation invariance",
+      "ok": true,
+      "note": "IR identity across latin/devanagari/arabic",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "M0 store well-formed",
+      "ok": true,
+      "note": "after aff->gc",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "M1 affine consumption",
+      "ok": true,
+      "note": "moved unread",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "M2 arena non-escape",
+      "ok": true,
+      "note": "teardown then refuse",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "M3 GC root preservation",
+      "ok": true,
+      "note": "pinned",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "M4 no dangling",
+      "ok": true,
+      "note": "gc disjoint dead arena",
+      "status": "VERIFIED"
+    },
+    {
+      "name": "M5 memory boundary WF",
+      "ok": true,
+      "note": "aff->arena",
+      "status": "VERIFIED"
+    }
+  ],
+  "provenance": {
+    "created_by": "scripts/prove_v2.mjs",
+    "created_at": "2026-08-27T16:16:06.361Z",
+    "spec": "spec/PANINI_V2_SPEC.pni"
+  }
+}

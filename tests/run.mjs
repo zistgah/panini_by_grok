@@ -191,6 +191,13 @@ await test("theorem_modules_run", async () => {
   }
 });
 
+await test("v2_ilm_sri", async () => {
+  const { compileV2, irIdentity } = await import("../compiler/v2compile.js");
+  const en = compileV2(fs.readFileSync(path.join(root, "examples/v2_functional.pni"), "utf8"));
+  const hi = compileV2(fs.readFileSync(path.join(root, "examples/v2_devanagari.pni"), "utf8"));
+  assert.equal(irIdentity(en.ir), irIdentity(hi.ir));
+});
+
 await test("codegen_js_target", () => {
   const r = compile("FUNCTION add(x,y) RETURN x + y END", { filename: "add.pni", target: "js" });
   assert.ok(r.binary.toString("utf8").includes("function add"));

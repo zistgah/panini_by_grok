@@ -12,7 +12,8 @@
     "bootstrap": "node scripts/bootstrap.mjs",
     "selfhost": "node scripts/selfhost.mjs",
     "prove": "node scripts/prove_theorem.mjs",
-    "realize": "node scripts/realize_spec.mjs"
+    "realize": "node scripts/realize_spec.mjs",
+    "prove:v2": "node scripts/prove_v2.mjs"
   },
   "engines": {
     "node": ">=18"

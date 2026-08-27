@@ -12,7 +12,7 @@ export const TokenKind = {
 };
 
 export const KEYWORDS = new Set([
-  "MODULE", "END", "CONSTITUTION", "NAME", "KIND", "SELF_HOSTING",
+  "MODULE", "SCOPE", "END", "CONSTITUTION", "NAME", "KIND", "SELF_HOSTING",
   "PURPOSE", "PRINCIPLES",
   "TYPE", "TRAIT", "INTERFACE", "CLASS", "FIELD", "METHOD",
   "FUNCTION", "RETURN", "LAMBDA",

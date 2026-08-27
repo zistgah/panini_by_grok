@@ -14,7 +14,7 @@ export class ParseError extends Error {
 }
 
 const BLOCK_STARTERS = new Set([
-  "MODULE", "CONSTITUTION", "FUNCTION", "CLASS", "TRAIT", "INTERFACE",
+  "MODULE", "SCOPE", "CONSTITUTION", "FUNCTION", "CLASS", "TRAIT", "INTERFACE",
   "IF", "ELSE", "FOR", "FOREACH", "WHILE", "UNTIL", "REPEAT",
   "TRY", "CATCH", "FINALLY", "MATCH", "CASE",
   "FILE", "CONTENT", "ARTIFACT", "DELIVERABLE", "ARTIFACT_REVISION",
@@ -93,7 +93,7 @@ export class Parser {
   }
 
   parseTop() {
-    if (this.at("MODULE")) return this.parseModule();
+    if (this.at("MODULE") || this.at("SCOPE")) return this.parseModule();
     if (this.at("CONSTITUTION")) return this.parseNamedBlock("CONSTITUTION", "Constitution");
     if (this.at("FUNCTION")) return this.parseFunction();
     if (this.at("CLASS")) return this.parseClass();
@@ -144,7 +144,8 @@ export class Parser {
   }
 
   parseModule() {
-    this.expect("MODULE");
+    if (this.at("SCOPE")) this.eat();
+    else this.expect("MODULE");
     const name = this.parseNameish();
     const body = [];
     while (!this.at(TokenKind.EOF) && !this.at("END")) {

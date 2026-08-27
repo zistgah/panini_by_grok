@@ -120,11 +120,11 @@ export class Lexer {
     const start = { line: this.line, column: this.column, index: this.i };
     let raw = "";
     const first = this.peek();
-    if (!/[A-Za-z_@]/.test(first)) {
+    if (!/[A-Za-z_@\u0080-\uFFFF]/.test(first)) {
       throw new LexError(`Unexpected character ${JSON.stringify(first)}`, this.line, this.column);
     }
     raw += this.advance();
-    while (/[A-Za-z0-9_$]/.test(this.peek())) {
+    while (/[A-Za-z0-9_$\u0080-\uFFFF]/.test(this.peek())) {
       raw += this.advance();
     }
     if (raw === "IS" && this.peek() === "_" ) {
@@ -179,7 +179,7 @@ export class Lexer {
         return this.token(TokenKind.OP, ch, start);
       }
 
-      if (/[A-Za-z_]/.test(ch)) {
+      if (/[A-Za-z_\u0080-\uFFFF]/.test(ch)) {
         // special-case IS_NOT as two-part keyword written with underscore already in KEYWORDS
         return this.readIdent();
       }

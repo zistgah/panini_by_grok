@@ -1,0 +1,9 @@
+@functional
+@state(immutable)
+FUNCTION double(x)
+    RETURN x * 2
+END
+
+FUNCTION main()
+    RETURN double(21)
+END
