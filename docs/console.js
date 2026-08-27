@@ -1,3 +1,4 @@
+/* tree-rev: 2026.08.28 */
 /* Copyright (C) 1993-2026 Abhishek Choudhary
  * SPDX-License-Identifier: GPL-3.0-or-later
  * In-browser VFS + bash + COMMAND.COM — this is the site console, not a stub.
@@ -56,7 +57,15 @@
     if (c === "ls") return ls(p[1] || ".").join("\n");
     if (c === "cd") { const n = walk(p[1] || "/home", false); if (n && n.t === "d") st.cwd = abs(p[1]); return st.cwd; }
     if (c === "cat" || c === "type") { const n = walk(p[1], false); return n && n.t === "f" ? n.x : "not found"; }
-    if (c === "echo") return p.slice(1).join(" ");
+    if (c === "echo") {
+      const j = p.indexOf(">");
+      if (j > 0 && p[j + 1]) {
+        const { dir, name } = parent(p[j + 1]);
+        if (dir) dir.c[name] = { t: "f", x: p.slice(1, j).join(" ") + "\n" };
+        return "";
+      }
+      return p.slice(1).join(" ");
+    }
     if (c === "mkdir" || c === "md") { walk(p[1], true); return ""; }
     if (c === "touch") { const { dir, name } = parent(p[1]); dir.c[name] = { t: "f", x: "" }; return ""; }
     if (c === "rm" || c === "del") { const { dir, name } = parent(p[1]); delete dir.c[name]; return ""; }

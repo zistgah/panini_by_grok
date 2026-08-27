@@ -141,5 +141,6 @@
   ],
   "epistemic_status": "VERIFIED",
   "theorem": "PANINI_CAN_EXPRESS_THE_LANGUAGE_REQUIRED_TO_BUILD_PANINI",
-  "spec_modified": false
+  "spec_modified": false,
+  "_tree_rev": "2026.08.28"
 }

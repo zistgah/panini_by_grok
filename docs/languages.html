@@ -1,0 +1,41 @@
+<!-- tree-rev: 2026.08.28 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — Languages and subsets</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body class="site">
+<header class="site-head"><strong>PANINI</strong>
+  <nav><a href="index.html">Overview</a><a href="standards.html">Standards</a><a href="workbench.html">Workbench</a></nav>
+</header>
+<main class="site-main">
+  <h1>Languages, classifications, subsets</h1>
+  <h2>Host language</h2>
+  <p>PANINI (.pni) — self-host subset verified A=B=C on the compiler core.</p>
+  <h2>Frontends written in PANINI (subsets)</h2>
+  <ul>
+    <li>Python — print, def, return, lists, tensor/matmul</li>
+    <li>C — functions, return, printf, arithmetic</li>
+    <li>C++ — cout rewritten onto the C frontend</li>
+    <li>Fortran — PROGRAM / PRINT</li>
+    <li>Rust — fn, let, println</li>
+    <li>TypeScript — function, console.log</li>
+    <li>Go — func, fmt.Println</li>
+    <li>Zig — pub fn, debug.print</li>
+  </ul>
+  <h2>Not present</h2>
+  <p>Julia frontend is listed on the standards map and is not implemented.</p>
+  <h2>Classifications</h2>
+  <ul>
+    <li>VERIFIED — PANINI self-host subset</li>
+    <li>VERIFIED_SUBSET — foreign frontend tests in tests/lang_cases</li>
+    <li>PARTIAL — PyTorch-shaped ops, WebGPU, LSP, debugger</li>
+    <li>NOT_RUN — official upstream suites</li>
+  </ul>
+  <p>Complex cases: <code>tests/lang_cases/</code> · PANINI suite: <code>tests/panini/</code></p>
+</main>
+</body>
+</html>

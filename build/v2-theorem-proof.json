@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "status": "PROVEN",
   "epistemic_status": "VERIFIED",
-  "note": "Subset proofs for T1–T8/SRI/M0–M5. 68-script bijection remains F. E1–E6 remain E.",
+  "note": "Subset proofs for T1\u2013T8/SRI/M0\u2013M5. 68-script bijection remains F. E1\u2013E6 remain E.",
   "clauses": [
     {
       "name": "T0 self-hosting B==C",
@@ -99,5 +99,6 @@
     "created_by": "scripts/prove_v2.mjs",
     "created_at": "2026-08-27T16:16:06.361Z",
     "spec": "spec/PANINI_V2_SPEC.pni"
-  }
+  },
+  "_tree_rev": "2026.08.28"
 }

@@ -12,3 +12,5 @@ COPY spec ./spec
 COPY docs ./docs
 ENTRYPOINT ["node", "src/cli.js"]
 CMD ["run", "examples/hello.pni"]
+
+# tree-rev: 2026.08.28

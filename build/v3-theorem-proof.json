@@ -2,7 +2,7 @@
   "version": "3.0.0",
   "status": "PROVEN",
   "epistemic_status": "VERIFIED",
-  "note": "Workbench subset. OTS calendar submit remains external. Language museum is axis-character, not source-compatible compilers. L0–L26 RETRIEVED.",
+  "note": "Workbench subset. OTS calendar submit remains external. Language museum is axis-character, not source-compatible compilers. L0\u2013L26 RETRIEVED.",
   "clauses": [
     {
       "name": "W1 static workbench files",
@@ -49,5 +49,6 @@
       "ok": true,
       "status": "VERIFIED"
     }
-  ]
+  ],
+  "_tree_rev": "2026.08.28"
 }
