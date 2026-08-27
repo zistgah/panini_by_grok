@@ -16,13 +16,17 @@ function normalizeCpp(source) {
 }
 
 export async function runFrontend(lang, source) {
-  const kind = lang === "python" || lang === "py" ? "python" : lang === "cpp" || lang === "cxx" || lang === "c++" ? "cpp" : "c";
+  const kind = lang === "python" || lang === "py" ? "python"
+    : lang === "fortran" || lang === "f90" || lang === "f" ? "fortran"
+    : lang === "cpp" || lang === "cxx" || lang === "c++" ? "cpp" : "c";
   const file = kind === "python"
     ? path.join(root, "src/panini/frontends/python.pni")
+    : kind === "fortran"
+    ? path.join(root, "src/panini/frontends/fortran.pni")
     : path.join(root, "src/panini/frontends/c.pni");
   const src = kind === "cpp" ? normalizeCpp(source) : source;
   const { interpreter } = await runSource(fs.readFileSync(file, "utf8"), file, { runMain: false });
-  const name = kind === "python" ? "run_python" : "run_c";
+  const name = kind === "python" ? "run_python" : kind === "fortran" ? "run_fortran" : "run_c";
   const fn = interpreter.runtime.functions.get(name);
   if (!fn) return { ok: false, error: name + " missing" };
   const result = unwrap(await interpreter.callValue(fn, [wrap(src)], interpreter.global));

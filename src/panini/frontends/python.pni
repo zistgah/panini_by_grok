@@ -125,6 +125,9 @@ FUNCTION pyParseAtom(st)
         END
         RETURN {op: "load", name: name}
     END
+    IF t.value == "["
+        RETURN pyParseList(st)
+    END
     IF t.value == "("
         pyEat(st)
         e = pyParseExpr(st)
@@ -135,6 +138,21 @@ FUNCTION pyParseAtom(st)
     END
     pyEat(st)
     RETURN {op: "const", value: 0}
+END
+
+FUNCTION pyParseList(st)
+    pyEat(st)
+    els = []
+    WHILE pyPeek(st).value != "]" AND pyPeek(st).kind != "EOF"
+        APPEND(els, pyParseExpr(st))
+        IF pyPeek(st).value == ","
+            pyEat(st)
+        END
+    END
+    IF pyPeek(st).value == "]"
+        pyEat(st)
+    END
+    RETURN {op: "list", elements: els}
 END
 
 FUNCTION pyParseMul(st)
@@ -230,7 +248,22 @@ FUNCTION pyEvalExpr(e, env)
         END
         RETURN l / r
     END
+    IF e.op == "list"
+        out = []
+        li = 0
+        WHILE li < LEN(e.elements)
+            APPEND(out, pyEvalExpr(e.elements[li], env))
+            li = li + 1
+        END
+        RETURN out
+    END
     IF e.op == "call"
+        IF e.name == "tensor"
+            RETURN TENSOR(pyEvalExpr(e.args[0], env))
+        END
+        IF e.name == "matmul"
+            RETURN MATMUL(pyEvalExpr(e.args[0], env), pyEvalExpr(e.args[1], env))
+        END
         IF e.name == "print"
             v = 0
             IF LEN(e.args) > 0

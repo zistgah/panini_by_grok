@@ -203,6 +203,28 @@ await test("codegen_js_target", () => {
   assert.ok(r.binary.toString("utf8").includes("function add"));
 });
 
+await test("emit_python_c_fortran", () => {
+  const src = "FUNCTION add(x,y) RETURN x + y END";
+  assert.ok(compile(src, { target: "python" }).binary.toString().includes("def add"));
+  assert.ok(compile(src, { target: "c" }).binary.toString().includes("int add"));
+  assert.ok(compile(src, { target: "fortran" }).binary.toString().includes("FUNCTION add") || compile(src, { target: "fortran" }).binary.toString().includes("add"));
+  assert.ok(compile(src, { target: "torch" }).binary.toString().includes("import torch"));
+});
+
+await test("blas_gemm_autotune", async () => {
+  const { gemm, autotuneGemm } = await import("../runtime/blas.js");
+  assert.deepEqual(gemm(2, 2, 2, [1, 0, 0, 1], [2, 3, 4, 5]), [2, 3, 4, 5]);
+  const t = autotuneGemm(16, 16, 16, Array(256).fill(1), Array(256).fill(1), [8, 16]);
+  assert.ok(t.best.block);
+});
+
+await test("blocks_roundtrip", async () => {
+  const { blocksToPanini, paniniToBlocks } = await import("../tools/blocks.js");
+  const p = blocksToPanini({ blocks: [{ type: "print", text: "HELLO" }] });
+  assert.ok(p.includes("PRINT"));
+  assert.equal(paniniToBlocks(p).blocks[0].type, "print");
+});
+
 await test("foreign_python_cc", async () => {
   const { runPython, runC, which } = await import("../runtime/toolchain.js");
   assert.ok(which("python"));

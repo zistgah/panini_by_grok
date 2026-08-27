@@ -1,4 +1,5 @@
 /** Lower PANINI AST to a small executable IR. */
+import { emitPython, emitC, emitFortran, emitWgslCompute } from "./emit_backends.js";
 
 export function lower(ast) {
   const functions = [];
@@ -156,6 +157,21 @@ export function codegen(ir, target = "json") {
   }
   if (target === "js" || target === "NATIVE") {
     return Buffer.from(emitJs(ir), "utf8");
+  }
+  if (target === "python" || target === "py") {
+    return Buffer.from(emitPython(ir), "utf8");
+  }
+  if (target === "torch" || target === "pytorch") {
+    return Buffer.from(emitPython(ir, { torch: true }), "utf8");
+  }
+  if (target === "c") {
+    return Buffer.from(emitC(ir), "utf8");
+  }
+  if (target === "fortran" || target === "f90") {
+    return Buffer.from(emitFortran(ir), "utf8");
+  }
+  if (target === "wgsl") {
+    return Buffer.from(emitWgslCompute(), "utf8");
   }
   if (target === "wasm" || target === "WASM") {
     return Buffer.from(JSON.stringify({ note: "WASM backend is a Stage-4 target", ir }, null, 2), "utf8");

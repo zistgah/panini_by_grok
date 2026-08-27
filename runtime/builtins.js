@@ -4,6 +4,8 @@ import {
 } from "./values.js";
 import { stamp, canonicalizeClaim, EpistemicStatus } from "./provenance.js";
 import { which, runPython, runC } from "./toolchain.js";
+import { axpy, scal, nrm2, gemv, gemm, autotuneGemm } from "./blas.js";
+import { tensor, matmul, tadd, relu } from "./tensor.js";
 
 export function installBuiltins(env, runtime) {
   const def = (name, fn, arity) => {
@@ -105,6 +107,21 @@ export function installBuiltins(env, runtime) {
     if (m?.tag === Tag.Map) return vBool(m.value.has(toStr(k)));
     return vBool(false);
   }, 2);
+  def("AXPY", (n, a, x, y) => wrap(axpy(toNumber(n), toNumber(a), unwrap(x), unwrap(y))), 4);
+  def("SCAL", (n, a, x) => wrap(scal(toNumber(n), toNumber(a), unwrap(x))), 3);
+  def("NRM2", (n, x) => wrap(nrm2(toNumber(n), unwrap(x))), 2);
+  def("GEMV", (m, n, a, x) => wrap(gemv(toNumber(m), toNumber(n), unwrap(a), unwrap(x))), 4);
+  def("GEMM", (m, n, k, a, b) => wrap(gemm(toNumber(m), toNumber(n), toNumber(k), unwrap(a), unwrap(b))), 5);
+  def("GEMM_TUNE", (m, n, k, a, b) => wrap(autotuneGemm(toNumber(m), toNumber(n), toNumber(k), unwrap(a), unwrap(b))), 5);
+  def("TENSOR", (data) => wrap(tensor(unwrap(data))), 1);
+  def("MATMUL", (a, b) => wrap(matmul(unwrap(a), unwrap(b))), 2);
+  def("TADD", (a, b) => wrap(tadd(unwrap(a), unwrap(b))), 2);
+  def("RELU", (a) => wrap(relu(unwrap(a))), 1);
+  def("GFX_CLEAR", () => { runtime.gfx = []; return vStr("ok"); });
+  def("GFX_RECT", (x, y, w, h) => { (runtime.gfx ||= []).push({op:"rect",x:toNumber(x),y:toNumber(y),w:toNumber(w),h:toNumber(h)}); return vUnit(); }, 4);
+  def("GFX_LINE", (x1,y1,x2,y2) => { (runtime.gfx ||= []).push({op:"line",x1:toNumber(x1),y1:toNumber(y1),x2:toNumber(x2),y2:toNumber(y2)}); return vUnit(); }, 4);
+  def("GFX_CIRCLE", (x,y,r) => { (runtime.gfx ||= []).push({op:"circle",x:toNumber(x),y:toNumber(y),r:toNumber(r)}); return vUnit(); }, 3);
+
   def("WHICH", (name) => {
     const found = which(toStr(name));
     return found ? vStr(found) : vStr("");
