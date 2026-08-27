@@ -83,32 +83,29 @@ async function main() {
       await repl();
       return;
     case "python":
-    case "py": {
-      const { runPython } = await import("../runtime/toolchain.js");
-      const src = readInput(args[1]);
-      const r = runPython(src);
-      process.stdout.write(r.stdout || "");
-      if (r.stderr) process.stderr.write(r.stderr);
-      process.exitCode = r.ok ? 0 : 1;
-      return;
-    }
+    case "py":
     case "cc":
-    case "c": {
-      const { runC } = await import("../runtime/toolchain.js");
-      const r = runC(readInput(args[1]), { cxx: false });
-      process.stdout.write(r.stdout || "");
-      if (r.stderr) process.stderr.write(r.stderr);
-      process.exitCode = r.ok ? 0 : 1;
-      return;
-    }
+    case "c":
     case "c++":
     case "cpp":
     case "cxx": {
-      const { runC } = await import("../runtime/toolchain.js");
-      const r = runC(readInput(args[1]), { cxx: true });
-      process.stdout.write(r.stdout || "");
-      if (r.stderr) process.stderr.write(r.stderr);
-      process.exitCode = r.ok ? 0 : 1;
+      const src = readInput(args[1]);
+      if (args.includes("--host")) {
+        const { runPython, runC } = await import("../runtime/toolchain.js");
+        const r = cmd === "python" || cmd === "py"
+          ? runPython(src)
+          : runC(src, { cxx: cmd === "cpp" || cmd === "c++" || cmd === "cxx" });
+        process.stdout.write(r.stdout || "");
+        if (r.stderr) process.stderr.write(r.stderr);
+        process.exitCode = r.ok ? 0 : 1;
+        return;
+      }
+      const { runFrontend } = await import("../runtime/foreign_front.js");
+      const lang = cmd === "python" || cmd === "py" ? "python" : cmd === "cc" || cmd === "c" ? "c" : "cpp";
+      const r = await runFrontend(lang, src);
+      if (r && r.ok !== false && r.value !== undefined) console.log(r.value);
+      else if (r && r.stdout) process.stdout.write(String(r.stdout));
+      process.exitCode = r && r.ok !== false ? 0 : 1;
       return;
     }
     case "selfhost":

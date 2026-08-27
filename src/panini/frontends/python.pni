@@ -1,22 +1,292 @@
 MODULE PANINI.Frontend.Python
 
-FUNCTION python_available()
-    RETURN WHICH("python")
+FUNCTION pyIsDigit(ch)
+    RETURN ch >= "0" AND ch <= "9"
+END
+
+FUNCTION pyIsAlpha(ch)
+    RETURN (ch >= "A" AND ch <= "Z") OR (ch >= "a" AND ch <= "z") OR ch == "_"
+END
+
+FUNCTION pyTok(kind, value)
+    RETURN {kind: kind, value: value}
+END
+
+FUNCTION pyLex(source)
+    tokens = []
+    i = 0
+    n = LEN(source)
+    WHILE i < n
+        ch = source[i]
+        IF ch == " " OR ch == TAB() OR ch == NEWLINE() OR ch == CR()
+            i = i + 1
+        ELSE
+            IF ch == "#"
+                WHILE i < n AND source[i] != NEWLINE()
+                    i = i + 1
+                END
+            ELSE
+                IF ch == QUOTE() OR ch == "'"
+                    q = ch
+                    i = i + 1
+                    raw = ""
+                    WHILE i < n AND source[i] != q
+                        raw = raw + source[i]
+                        i = i + 1
+                    END
+                    IF i < n
+                        i = i + 1
+                    END
+                    APPEND(tokens, pyTok("STR", raw))
+                ELSE
+                    IF pyIsDigit(ch)
+                        raw = ""
+                        WHILE i < n AND pyIsDigit(source[i])
+                            raw = raw + source[i]
+                            i = i + 1
+                        END
+                        APPEND(tokens, pyTok("NUM", raw))
+                    ELSE
+                        IF pyIsAlpha(ch)
+                            raw = ""
+                            WHILE i < n AND (pyIsAlpha(source[i]) OR pyIsDigit(source[i]))
+                                raw = raw + source[i]
+                                i = i + 1
+                            END
+                            kind = "IDENT"
+                            IF raw == "def" OR raw == "return" OR raw == "print" OR raw == "if" OR raw == "else" OR raw == "True" OR raw == "False"
+                                kind = "KW"
+                            END
+                            APPEND(tokens, pyTok(kind, raw))
+                        ELSE
+                            APPEND(tokens, pyTok("OP", ch))
+                            i = i + 1
+                        END
+                    END
+                END
+            END
+        END
+    END
+    APPEND(tokens, pyTok("EOF", ""))
+    RETURN tokens
+END
+
+FUNCTION pyNew(tokens)
+    RETURN {tokens: tokens, i: 0}
+END
+
+FUNCTION pyPeek(st)
+    IF st.i >= LEN(st.tokens)
+        RETURN pyTok("EOF", "")
+    END
+    RETURN st.tokens[st.i]
+END
+
+FUNCTION pyEat(st)
+    t = pyPeek(st)
+    st.i = st.i + 1
+    RETURN t
+END
+
+FUNCTION pyParseAtom(st)
+    t = pyPeek(st)
+    IF t.kind == "NUM"
+        pyEat(st)
+        RETURN {op: "const", value: INT(t.value)}
+    END
+    IF t.kind == "STR"
+        pyEat(st)
+        RETURN {op: "const", value: t.value}
+    END
+    IF t.kind == "KW" AND t.value == "True"
+        pyEat(st)
+        RETURN {op: "const", value: TRUE}
+    END
+    IF t.kind == "KW" AND t.value == "False"
+        pyEat(st)
+        RETURN {op: "const", value: FALSE}
+    END
+    IF t.kind == "IDENT" OR (t.kind == "KW" AND t.value == "print")
+        pyEat(st)
+        name = t.value
+        IF pyPeek(st).value == "("
+            pyEat(st)
+            args = []
+            WHILE pyPeek(st).value != ")" AND pyPeek(st).kind != "EOF"
+                APPEND(args, pyParseExpr(st))
+                IF pyPeek(st).value == ","
+                    pyEat(st)
+                END
+            END
+            IF pyPeek(st).value == ")"
+                pyEat(st)
+            END
+            RETURN {op: "call", name: name, args: args}
+        END
+        RETURN {op: "load", name: name}
+    END
+    IF t.value == "("
+        pyEat(st)
+        e = pyParseExpr(st)
+        IF pyPeek(st).value == ")"
+            pyEat(st)
+        END
+        RETURN e
+    END
+    pyEat(st)
+    RETURN {op: "const", value: 0}
+END
+
+FUNCTION pyParseMul(st)
+    left = pyParseAtom(st)
+    WHILE pyPeek(st).value == "*" OR pyPeek(st).value == "/"
+        op = pyEat(st).value
+        left = {op: "bin", operator: op, left: left, right: pyParseAtom(st)}
+    END
+    RETURN left
+END
+
+FUNCTION pyParseExpr(st)
+    left = pyParseMul(st)
+    WHILE pyPeek(st).value == "+" OR pyPeek(st).value == "-"
+        op = pyEat(st).value
+        left = {op: "bin", operator: op, left: left, right: pyParseMul(st)}
+    END
+    RETURN left
+END
+
+FUNCTION pyParseStmt(st)
+    t = pyPeek(st)
+    IF t.kind == "KW" AND t.value == "def"
+        pyEat(st)
+        name = pyEat(st).value
+        IF pyPeek(st).value == "("
+            pyEat(st)
+        END
+        params = []
+        WHILE pyPeek(st).value != ")" AND pyPeek(st).kind != "EOF"
+            IF pyPeek(st).kind == "IDENT"
+                APPEND(params, pyEat(st).value)
+            ELSE
+                pyEat(st)
+            END
+            IF pyPeek(st).value == ","
+                pyEat(st)
+            END
+        END
+        IF pyPeek(st).value == ")"
+            pyEat(st)
+        END
+        IF pyPeek(st).value == ":"
+            pyEat(st)
+        END
+        body = []
+        APPEND(body, pyParseStmt(st))
+        RETURN {op: "def", name: name, params: params, body: body}
+    END
+    IF t.kind == "KW" AND t.value == "return"
+        pyEat(st)
+        RETURN {op: "return", arg: pyParseExpr(st)}
+    END
+    IF t.kind == "IDENT"
+        nxti = st.i + 1
+        IF nxti < LEN(st.tokens) AND st.tokens[nxti].value == "="
+            name = pyEat(st).value
+            pyEat(st)
+            RETURN {op: "assign", name: name, value: pyParseExpr(st)}
+        END
+    END
+    RETURN {op: "expr", value: pyParseExpr(st)}
+END
+
+FUNCTION pyParse(source)
+    tokens = pyLex(source)
+    st = pyNew(tokens)
+    body = []
+    WHILE pyPeek(st).kind != "EOF"
+        APPEND(body, pyParseStmt(st))
+    END
+    RETURN {op: "program", body: body, token_count: LEN(tokens), frontend: "python"}
+END
+
+FUNCTION pyEvalExpr(e, env)
+    IF e.op == "const"
+        RETURN e.value
+    END
+    IF e.op == "load"
+        RETURN env[e.name]
+    END
+    IF e.op == "bin"
+        l = pyEvalExpr(e.left, env)
+        r = pyEvalExpr(e.right, env)
+        IF e.operator == "+"
+            RETURN l + r
+        END
+        IF e.operator == "-"
+            RETURN l - r
+        END
+        IF e.operator == "*"
+            RETURN l * r
+        END
+        RETURN l / r
+    END
+    IF e.op == "call"
+        IF e.name == "print"
+            v = 0
+            IF LEN(e.args) > 0
+                v = pyEvalExpr(e.args[0], env)
+            END
+            PRINT v
+            RETURN v
+        END
+        fn = env[e.name]
+        local = {}
+        j = 0
+        WHILE j < LEN(fn.params)
+            local[fn.params[j]] = pyEvalExpr(e.args[j], env)
+            j = j + 1
+        END
+        RETURN pyEvalBlock(fn.body, local)
+    END
+    RETURN 0
+END
+
+FUNCTION pyEvalBlock(stmts, env)
+    last = 0
+    k = 0
+    WHILE k < LEN(stmts)
+        s = stmts[k]
+        IF s.op == "def"
+            env[s.name] = s
+        ELSE
+            IF s.op == "assign"
+                env[s.name] = pyEvalExpr(s.value, env)
+            ELSE
+                IF s.op == "return"
+                    RETURN pyEvalExpr(s.arg, env)
+                ELSE
+                    IF s.op == "expr"
+                        last = pyEvalExpr(s.value, env)
+                    END
+                END
+            END
+        END
+        k = k + 1
+    END
+    RETURN last
 END
 
 FUNCTION run_python(source)
-    IF NOT python_available()
-        RETURN {ok: FALSE, missing: "python3"}
-    END
-    RETURN INVOKE("python", source)
+    ast = pyParse(source)
+    env = {}
+    value = pyEvalBlock(ast.body, env)
+    RETURN {ok: TRUE, ast: ast, value: value, frontend: "PANINI.Frontend.Python"}
 END
 
 FUNCTION main()
-    sample = "print(40+2)"
-    r = run_python(sample)
-    PRINT r.ok
-    PRINT r.stdout
-    RETURN r.ok
+    r = run_python("print(40+2)")
+    PRINT r.value
+    RETURN r.value
 END
 
 END

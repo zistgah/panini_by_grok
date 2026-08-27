@@ -1,22 +1,298 @@
 MODULE PANINI.Frontend.C
 
-FUNCTION cc_available()
-    RETURN WHICH("cc")
+FUNCTION cIsDigit(ch)
+    RETURN ch >= "0" AND ch <= "9"
+END
+
+FUNCTION cIsAlpha(ch)
+    RETURN (ch >= "A" AND ch <= "Z") OR (ch >= "a" AND ch <= "z") OR ch == "_"
+END
+
+FUNCTION cTok(kind, value)
+    RETURN {kind: kind, value: value}
+END
+
+FUNCTION cLex(source)
+    tokens = []
+    i = 0
+    n = LEN(source)
+    WHILE i < n
+        ch = source[i]
+        IF ch == " " OR ch == TAB() OR ch == NEWLINE() OR ch == CR()
+            i = i + 1
+        ELSE
+            IF ch == "#"
+                WHILE i < n AND source[i] != NEWLINE()
+                    i = i + 1
+                END
+            ELSE
+                IF ch == "/" AND i + 1 < n AND source[i + 1] == "/"
+                    WHILE i < n AND source[i] != NEWLINE()
+                        i = i + 1
+                    END
+                ELSE
+                    IF ch == QUOTE()
+                        i = i + 1
+                        raw = ""
+                        WHILE i < n AND source[i] != QUOTE()
+                            raw = raw + source[i]
+                            i = i + 1
+                        END
+                        IF i < n
+                            i = i + 1
+                        END
+                        APPEND(tokens, cTok("STR", raw))
+                    ELSE
+                        IF cIsDigit(ch)
+                            raw = ""
+                            WHILE i < n AND cIsDigit(source[i])
+                                raw = raw + source[i]
+                                i = i + 1
+                            END
+                            APPEND(tokens, cTok("NUM", raw))
+                        ELSE
+                            IF cIsAlpha(ch)
+                                raw = ""
+                                WHILE i < n AND (cIsAlpha(source[i]) OR cIsDigit(source[i]))
+                                    raw = raw + source[i]
+                                    i = i + 1
+                                END
+                                kind = "IDENT"
+                                IF raw == "int" OR raw == "return" OR raw == "void" OR raw == "printf"
+                                    kind = "KW"
+                                END
+                                APPEND(tokens, cTok(kind, raw))
+                            ELSE
+                                APPEND(tokens, cTok("OP", ch))
+                                i = i + 1
+                            END
+                        END
+                    END
+                END
+            END
+        END
+    END
+    APPEND(tokens, cTok("EOF", ""))
+    RETURN tokens
+END
+
+FUNCTION cNew(tokens)
+    RETURN {tokens: tokens, i: 0}
+END
+
+FUNCTION cPeek(st)
+    IF st.i >= LEN(st.tokens)
+        RETURN cTok("EOF", "")
+    END
+    RETURN st.tokens[st.i]
+END
+
+FUNCTION cEat(st)
+    t = cPeek(st)
+    st.i = st.i + 1
+    RETURN t
+END
+
+FUNCTION cParseAtom(st)
+    t = cPeek(st)
+    IF t.kind == "NUM"
+        cEat(st)
+        RETURN {op: "const", value: INT(t.value)}
+    END
+    IF t.kind == "STR"
+        cEat(st)
+        RETURN {op: "const", value: t.value}
+    END
+    IF t.kind == "IDENT" OR t.kind == "KW"
+        cEat(st)
+        name = t.value
+        IF cPeek(st).value == "("
+            cEat(st)
+            args = []
+            WHILE cPeek(st).value != ")" AND cPeek(st).kind != "EOF"
+                APPEND(args, cParseExpr(st))
+                IF cPeek(st).value == ","
+                    cEat(st)
+                END
+            END
+            IF cPeek(st).value == ")"
+                cEat(st)
+            END
+            RETURN {op: "call", name: name, args: args}
+        END
+        RETURN {op: "load", name: name}
+    END
+    IF t.value == "("
+        cEat(st)
+        e = cParseExpr(st)
+        IF cPeek(st).value == ")"
+            cEat(st)
+        END
+        RETURN e
+    END
+    cEat(st)
+    RETURN {op: "const", value: 0}
+END
+
+FUNCTION cParseMul(st)
+    left = cParseAtom(st)
+    WHILE cPeek(st).value == "*" OR cPeek(st).value == "/"
+        op = cEat(st).value
+        left = {op: "bin", operator: op, left: left, right: cParseAtom(st)}
+    END
+    RETURN left
+END
+
+FUNCTION cParseExpr(st)
+    left = cParseMul(st)
+    WHILE cPeek(st).value == "+" OR cPeek(st).value == "-"
+        op = cEat(st).value
+        left = {op: "bin", operator: op, left: left, right: cParseMul(st)}
+    END
+    RETURN left
+END
+
+FUNCTION cParseStmt(st)
+    t = cPeek(st)
+    IF t.kind == "KW" AND t.value == "return"
+        cEat(st)
+        e = cParseExpr(st)
+        IF cPeek(st).value == ";"
+            cEat(st)
+        END
+        RETURN {op: "return", arg: e}
+    END
+    IF t.kind == "KW" AND t.value == "int"
+        cEat(st)
+        name = cEat(st).value
+        IF cPeek(st).value == "("
+            cEat(st)
+            WHILE cPeek(st).value != ")" AND cPeek(st).kind != "EOF"
+                cEat(st)
+            END
+            IF cPeek(st).value == ")"
+                cEat(st)
+            END
+            IF cPeek(st).value == "{"
+                cEat(st)
+            END
+            body = []
+            WHILE cPeek(st).value != "}" AND cPeek(st).kind != "EOF"
+                APPEND(body, cParseStmt(st))
+            END
+            IF cPeek(st).value == "}"
+                cEat(st)
+            END
+            RETURN {op: "def", name: name, params: [], body: body}
+        END
+        IF cPeek(st).value == "="
+            cEat(st)
+            v = cParseExpr(st)
+            IF cPeek(st).value == ";"
+                cEat(st)
+            END
+            RETURN {op: "assign", name: name, value: v}
+        END
+        IF cPeek(st).value == ";"
+            cEat(st)
+        END
+        RETURN {op: "assign", name: name, value: {op: "const", value: 0}}
+    END
+    e = cParseExpr(st)
+    IF cPeek(st).value == ";"
+        cEat(st)
+    END
+    RETURN {op: "expr", value: e}
+END
+
+FUNCTION cParse(source)
+    tokens = cLex(source)
+    st = cNew(tokens)
+    body = []
+    WHILE cPeek(st).kind != "EOF"
+        APPEND(body, cParseStmt(st))
+    END
+    RETURN {op: "program", body: body, token_count: LEN(tokens), frontend: "c"}
+END
+
+FUNCTION cEvalExpr(e, env)
+    IF e.op == "const"
+        RETURN e.value
+    END
+    IF e.op == "load"
+        RETURN env[e.name]
+    END
+    IF e.op == "bin"
+        l = cEvalExpr(e.left, env)
+        r = cEvalExpr(e.right, env)
+        IF e.operator == "+"
+            RETURN l + r
+        END
+        IF e.operator == "-"
+            RETURN l - r
+        END
+        IF e.operator == "*"
+            RETURN l * r
+        END
+        RETURN l / r
+    END
+    IF e.op == "call"
+        IF e.name == "printf"
+            v = 0
+            IF LEN(e.args) > 1
+                v = cEvalExpr(e.args[1], env)
+            ELSE
+                IF LEN(e.args) > 0
+                    v = cEvalExpr(e.args[0], env)
+                END
+            END
+            PRINT v
+            RETURN v
+        END
+        fn = env[e.name]
+        RETURN cEvalBlock(fn.body, env)
+    END
+    RETURN 0
+END
+
+FUNCTION cEvalBlock(stmts, env)
+    last = 0
+    k = 0
+    WHILE k < LEN(stmts)
+        s = stmts[k]
+        IF s.op == "def"
+            env[s.name] = s
+        ELSE
+            IF s.op == "assign"
+                env[s.name] = cEvalExpr(s.value, env)
+            ELSE
+                IF s.op == "return"
+                    RETURN cEvalExpr(s.arg, env)
+                ELSE
+                    IF s.op == "expr"
+                        last = cEvalExpr(s.value, env)
+                    END
+                END
+            END
+        END
+        k = k + 1
+    END
+    RETURN last
 END
 
 FUNCTION run_c(source)
-    IF NOT cc_available()
-        RETURN {ok: FALSE, missing: "cc"}
-    END
-    RETURN INVOKE("cc", source)
+    ast = cParse(source)
+    env = {}
+    cEvalBlock(ast.body, env)
+    value = cEvalExpr({op: "call", name: "main", args: []}, env)
+    RETURN {ok: TRUE, ast: ast, value: value, frontend: "PANINI.Frontend.C"}
 END
 
 FUNCTION main()
-    sample = "int main(){printf(\"%d\\n\",42);return 0;}"
-    r = run_c(sample)
-    PRINT r.ok
-    PRINT r.stdout
-    RETURN r.ok
+    r = run_c("int main(){return 40+2;}")
+    PRINT r.value
+    RETURN r.value
 END
 
 END
+
