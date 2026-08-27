@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /** Lightweight semantic / type pass for PANINI bootstrap. */
 
 export class TypeError2 extends Error {

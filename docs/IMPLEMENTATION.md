@@ -1,3 +1,5 @@
+# Copyright (C) 1993-2026 Abhishek Choudhary
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Implementation notes — JS Stage-0
 
 ## What is implemented

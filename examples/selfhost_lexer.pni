@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /*
   A PANINI implementation of a minimal lexer.
   This is Stage-1 evidence: PANINI source that tokenizes PANINI-like text

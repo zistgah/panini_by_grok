@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /** Emit PANINI IR as Python / C / Fortran / WGSL-shaped text. Subset, not full ABI. */
 
 function ident(name) {

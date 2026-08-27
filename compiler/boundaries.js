@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /** Permitted configuration bridges. Denied crossings must be explicit. */
 export const BRIDGES = {
   "logic->functional": { pack: "stream", state: "immutable" },

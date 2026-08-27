@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 import { TokenKind } from "./tokens.js";
 import { Lexer } from "./lexer.js";
 import { N } from "./ast.js";

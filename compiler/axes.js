@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 export const AXES = {
   abstract: ["func", "object", "constraint", "entity"],
   eval: ["operational", "reduction", "inference", "reactive", "query"],

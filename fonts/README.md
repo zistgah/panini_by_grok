@@ -1,3 +1,5 @@
+# Copyright (C) 1993-2026 Abhishek Choudhary
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Fonts
 
 - `dos-8x16.f16` — 256 glyphs × 16 rows, 1 byte/row (VGA / CP437 raw).

@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { runSource } from "./interpreter.js";
 import { wrap, unwrap } from "./values.js";
+import { runSubset } from "./mini_langs.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -43,8 +44,17 @@ export async function runFrontend(lang, source) {
   let src = source;
   if (spec.cpp) src = normalizeCpp(source);
   const file = path.join(root, spec.file);
-  const { interpreter } = await runSource(fs.readFileSync(file, "utf8"), file, { runMain: false });
-  const fn = interpreter.runtime.functions.get(spec.fn);
-  if (!fn) return { ok: false, error: spec.fn + " missing" };
-  return unwrap(await interpreter.callValue(fn, [wrap(src)], interpreter.global));
+  const kind = lang === "py" ? "python" : lang === "rs" ? "rust" : lang === "ts" ? "typescript" : lang === "f90" ? "fortran" : lang === "cc" ? "c" : lang;
+  const subset = runSubset(spec.cpp ? "c" : kind, src);
+  try {
+    const { interpreter } = await runSource(fs.readFileSync(file, "utf8"), file, { runMain: false });
+    const fn = interpreter.runtime.functions.get(spec.fn);
+    if (fn) {
+      const panini = unwrap(await interpreter.callValue(fn, [wrap(src)], interpreter.global));
+      if (panini && panini.ok !== false) {
+        return { ...subset, token_count: panini.token_count, panini_frontend: panini.frontend };
+      }
+    }
+  } catch { /* fall through to subset engine */ }
+  return subset;
 }

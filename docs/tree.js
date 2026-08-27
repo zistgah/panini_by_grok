@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 window.PANINI_TREE = [
   "spec/PANINI_SELF_HOSTING_SPEC.pni",
   "spec/PANINI.std.pni",

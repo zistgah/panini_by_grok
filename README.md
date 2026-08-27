@@ -1,9 +1,14 @@
+# Copyright (C) 1993-2026 Abhishek Choudhary
+# SPDX-License-Identifier: GPL-3.0-or-later
 # PANINI
 
 Self-hosting general-purpose computational language and execution environment.
 
 Version: **0.1.0**  
-Implementation: **JavaScript Stage-0 bootstrap**
+License: **GPL-3.0-or-later**  
+Copyright: **© 1993-2026 Abhishek Choudhary**  
+Implementation: **JavaScript Stage-0 bootstrap**  
+Workbench editor: **Monaco (MIT, Microsoft)** — see `THIRD_PARTY.md`
 
 PANINI can express computation, artifacts, workflows (cyclers), agents, provenance, and — by construction — the language needed to implement PANINI itself.
 

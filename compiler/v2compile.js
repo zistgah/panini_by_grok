@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 import { lex } from "./lexer.js";
 import { parse } from "./parser.js";
 import { compile } from "./compile.js";

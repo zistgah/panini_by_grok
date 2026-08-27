@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /** ILM projection: human representation → canonical English keywords.
  *  Architectural scope claim of 68 systems is NOT proven here.
  *  Covered projections: latin_en, devanagari_hi, arabic_ar (keyword subset).

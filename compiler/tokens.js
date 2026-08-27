@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /** Token kinds and reserved words for PANINI 0.1.0 */
 
 export const TokenKind = {

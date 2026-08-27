@@ -1,6 +1,9 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /* PANINI in-browser VS Code workbench (Monaco). Full compiler remains Node CLI. */
-const FILES = { ...window.PANINI_CATALOG.samples };
-let editor, current = "double.pni";
+const FILES = { ...(window.PANINI_FILES || {}), ...(window.PANINI_CATALOG.samples || {}) };
+let editor, current = "examples/hello.pni";
 
 function setSide(mode) {
   document.querySelectorAll("#activity .act").forEach((b) => b.classList.toggle("active", b.dataset.side === mode));
@@ -38,7 +41,8 @@ function langOf(name) {
 
 function openFile(name) {
   if (!FILES[name]) {
-    FILES[name] = `// ${name}\n// Opened from the static tree. Content lives in the repo; this tab is a placeholder.\n`;
+    document.getElementById("panel-body").textContent = name + " is in the repository. Open it locally; Pages only ships selected sources.";
+    return;
   }
   current = name;
   renderTabs();
@@ -132,7 +136,11 @@ function setPanel(name) {
   } else {
     canvas.hidden = true; pre.hidden = false;
     if (name === "problems") pre.textContent = "No problems in browser subset.";
-    if (name === "terminal") pre.textContent = "panini>  (static Pages — use node src/cli.js bash for VFS shell)";
+    if (name === "terminal") {
+      document.getElementById("panel").classList.add("term-on");
+      pre.textContent = pre.textContent && !pre.textContent.includes("static Pages") ? pre.textContent : "PANINI console. Shell: bash or COMMAND.COM\n";
+    } else document.getElementById("panel").classList.remove("term-on");
+    if (name === "std") pre.textContent = window.PANINI_FILES?.["spec/PANINI.std.pni"] || window.PANINI_FILES?.["spec/PANINI_STANDARD.md"] || "PANINI.STD.2026.08 — see spec/PANINI.std.pni and spec/PANINI_STANDARD.md";
   }
 }
 
@@ -142,9 +150,17 @@ document.querySelectorAll("[data-cmd]").forEach((b) => {
     if (b.dataset.cmd === "docs") { setSide("arch"); setPanel("output"); document.getElementById("panel-body").textContent = window.PANINI_CATALOG.architecture; }
     if (b.dataset.cmd === "status") { setSide("search"); }
     if (b.dataset.cmd === "term") setPanel("terminal");
+    if (b.dataset.cmd === "std") setPanel("std");
+    if (b.dataset.cmd === "prompts") {
+      setPanel("output");
+      document.getElementById("panel-body").textContent = window.PANINI_FILES?.["docs/ARCHITECT_PROMPTS.md"] || "Architect prompts: docs/ARCHITECT_PROMPTS.md";
+    }
   };
 });
-document.querySelectorAll("#activity .act").forEach((b) => b.onclick = () => setSide(b.dataset.side));
+document.querySelectorAll("#activity .act").forEach((b) => b.onclick = () => {
+  setSide(b.dataset.side);
+  document.getElementById("workbench").classList.toggle("side-open");
+});
 document.querySelectorAll(".ptab").forEach((b) => b.onclick = () => setPanel(b.dataset.panel));
 
 require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
@@ -174,5 +190,28 @@ require(["vs/editor/editor.main"], () => {
   });
   renderTabs();
   setSide("explorer");
-  document.getElementById("panel-body").textContent = "Monaco workbench ready. Run the current file in-browser, or use the Node CLI for full frontends.";
+  document.getElementById("panel-body").textContent = "Workbench ready. Terminal is live (bash / COMMAND.COM).";
+});
+
+const termIn = document.getElementById("term-in");
+if (termIn) {
+  termIn.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const line = termIn.value;
+    termIn.value = "";
+    const sh = document.getElementById("shell").value;
+    const out = sh === "command" ? window.PANINI_CONSOLE.commandCom(line) : window.PANINI_CONSOLE.bash(line);
+    const pre = document.getElementById("panel-body");
+    const prompt = sh === "command" ? "C:\\>" : "$";
+    pre.textContent += prompt + " " + line + "\n" + (out || "") + "\n";
+    pre.scrollTop = pre.scrollHeight;
+    setPanel("terminal");
+  });
+}
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+let deferred;
+window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferred = e; });
+document.getElementById("install")?.addEventListener("click", async () => {
+  if (deferred) { deferred.prompt(); deferred = null; }
+  else alert("Use the browser Install App / Add to Home Screen control.");
 });

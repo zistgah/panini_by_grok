@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 import { TokenKind, KEYWORDS, MULTI_OPS, SINGLE_OPS } from "./tokens.js";
 
 export class LexError extends Error {

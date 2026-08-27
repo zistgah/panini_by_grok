@@ -1,3 +1,6 @@
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 /** Lower PANINI AST to a small executable IR. */
 import { emitPython, emitC, emitFortran, emitWgslCompute } from "./emit_backends.js";
 

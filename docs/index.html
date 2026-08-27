@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#007acc" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <title>PANINI — Workbench</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" />
   <link rel="stylesheet" href="workbench.css" />
 </head>
 <body>
+<!-- Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later -->
   <div id="titlebar">
     <span class="brand">PANINI</span>
     <nav class="menubar">
@@ -14,6 +19,9 @@
       <button data-cmd="docs">Architecture</button>
       <button data-cmd="status">Status</button>
       <button data-cmd="term">Terminal</button>
+      <button data-cmd="std">Standard</button>
+      <button data-cmd="prompts">Architect</button>
+      <button id="install">Install app</button>
     </nav>
     <span class="muted" id="hosthint">GitHub Pages · /docs · Monaco workbench</span>
   </div>
@@ -41,6 +49,17 @@
           <button class="ptab" data-panel="output">OUTPUT</button>
           <button class="ptab" data-panel="terminal">TERMINAL</button>
           <button class="ptab" data-panel="vt">VT100</button>
+          <button class="ptab" data-panel="std">STANDARD</button>
+        </div>
+        <div id="term-bar">
+          <label>Shell
+            <select id="shell">
+              <option value="bash">bash</option>
+              <option value="command">COMMAND.COM</option>
+            </select>
+          </label>
+          <span id="prompt">$</span>
+          <input id="term-in" type="text" autocomplete="off" spellcheck="false" placeholder="ls /home/panini" />
         </div>
         <pre id="panel-body"></pre>
         <canvas id="vt-canvas" width="640" height="192" hidden></canvas>
@@ -53,11 +72,14 @@
     <span id="sb-pos">Ln 1, Col 1</span>
     <span>UTF-8</span>
     <span>L15 workbench</span>
+    <span>© 1993-2026 Abhishek Choudhary · GPL-3.0-or-later · Monaco MIT © Microsoft</span>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
   <script src="tree.js"></script>
   <script src="catalog.js"></script>
+  <script src="files.js"></script>
+  <script src="console.js"></script>
   <script src="workbench.js"></script>
 </body>
 </html>
