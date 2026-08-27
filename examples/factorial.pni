@@ -1,0 +1,15 @@
+MODULE Factorial
+    FUNCTION factorial(n:Int) -> Int
+        IF n <= 1
+            RETURN 1
+        ELSE
+            RETURN n * factorial(n - 1)
+        END
+    END
+
+    FUNCTION main() -> Int
+        result = factorial(6)
+        PRINT result
+        RETURN result
+    END
+END

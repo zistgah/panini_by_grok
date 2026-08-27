@@ -1,0 +1,19 @@
+{
+  "name": "panini",
+  "version": "0.1.0",
+  "description": "PANINI self-hosting language + execution environment (JS bootstrap)",
+  "type": "module",
+  "bin": {
+    "panini": "./src/cli.js"
+  },
+  "scripts": {
+    "panini": "node src/cli.js",
+    "test": "node tests/run.mjs",
+    "bootstrap": "node scripts/bootstrap.mjs",
+    "selfhost": "node scripts/selfhost.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

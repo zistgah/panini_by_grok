@@ -1,0 +1,13 @@
+MODULE CyclerDemo
+    CYCLER SoftwareDevelopment
+        PURPOSE "Take incomplete intent through verified deliverables."
+        STAGE INTENT
+        STAGE REQUIREMENTS
+        STAGE ARCHITECTURE
+    END
+
+    FUNCTION main() -> Int
+        PRINT "cycler registered"
+        RETURN 0
+    END
+END

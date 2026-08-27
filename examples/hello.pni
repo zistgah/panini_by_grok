@@ -1,0 +1,6 @@
+MODULE Hello
+    FUNCTION main() -> Int
+        PRINT "Hello, PANINI"
+        RETURN 0
+    END
+END

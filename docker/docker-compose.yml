@@ -1,0 +1,6 @@
+services:
+  panini:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ["run", "examples/hello.pni"]
