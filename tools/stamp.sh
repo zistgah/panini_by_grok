@@ -12,7 +12,7 @@ node scripts/prove_theorem.mjs &&\
 mkdir -p attest/${TIME} &&\
 mv MANIFEST.* attest/${TIME} &&\
 find . -type f | grep -v ".git/" | xargs git add -f &&\
-git commit -m "Updated stage 6 beta - v${1}" &&\
+git commit -m "Updated stage 6 beta - v${VER}" &&\
 git push &&\
 find . -type f | grep -v ".git/" | xargs sha256sum > MANIFEST.sha256 &&\
 misty ots stamp MANIFEST.sha256 &&\
