@@ -1,6 +1,13 @@
 TIME=$(date +%s.%N)
+mv ~/Downloads/panini.zip ../panini_by_grok_v${1}.zip &&\
+cd .. &&\
+unzip panini_by_grok_v${1}.zip &&\
+cd panini_by_grok &&\
 git checkout main &&\
 cp -r ../panini_by_grok_v${1}/panini/* ./ &&\
+node tests/run.mjs &&\
+node scripts/selfhost.mjs &&\
+node scripts/prove_theorem.mjs &&\
 mkdir -p attest/${TIME} &&\
 mv MANIFEST.* attest/${TIME} &&\
 find . -type f | grep -v ".git/" | xargs git add -f &&\
