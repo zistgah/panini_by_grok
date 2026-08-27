@@ -28,8 +28,10 @@ Stage 6 is a **fixed point on the compiler subset**: 36 functions, IR generation
 
 ## Quick start
 
-Workbench (GitHub Pages): **`docs/`** — in-browser VS Code (Monaco).  
-Pages workflow publishes `docs/`, not `website/`.
+Standing requirements: **`REQUIREMENTS.md`**.  
+License: **GPL-3.0-or-later** (not MIT).  
+Workbench: **`docs/`** — Monaco (MIT) + Blockly (Apache-2.0). Terminal is VT100.  
+Pages publishes `docs/`.
 
 Requires Node.js 18+.
 

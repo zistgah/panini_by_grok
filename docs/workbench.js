@@ -126,22 +126,27 @@ function setPanel(name) {
   document.querySelectorAll(".ptab").forEach((b) => b.classList.toggle("active", b.dataset.panel === name));
   const canvas = document.getElementById("vt-canvas");
   const pre = document.getElementById("panel-body");
-  if (name === "vt") {
+  const blocks = document.getElementById("blockly");
+  document.getElementById("panel").classList.toggle("term-on", name === "terminal");
+  if (blocks) blocks.hidden = name !== "blocks";
+  if (name === "terminal") {
     pre.hidden = true; canvas.hidden = false;
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#001400"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#00ff66"; ctx.font = "14px monospace";
-    ctx.fillText("VT100  DOS 8x16", 8, 24);
-    ctx.fillText("ABCXYZ 0123456789", 8, 48);
-  } else {
-    canvas.hidden = true; pre.hidden = false;
-    if (name === "problems") pre.textContent = "No problems in browser subset.";
-    if (name === "terminal") {
-      document.getElementById("panel").classList.add("term-on");
-      pre.textContent = pre.textContent && !pre.textContent.includes("static Pages") ? pre.textContent : "PANINI console. Shell: bash or COMMAND.COM\n";
-    } else document.getElementById("panel").classList.remove("term-on");
-    if (name === "std") pre.textContent = window.PANINI_FILES?.["spec/PANINI.std.pni"] || window.PANINI_FILES?.["spec/PANINI_STANDARD.md"] || "PANINI.STD.2026.08 — see spec/PANINI.std.pni and spec/PANINI_STANDARD.md";
+    window.PANINI_VT?.paint(canvas);
+    return;
   }
+  if (name === "blocks") {
+    pre.hidden = true; canvas.hidden = true;
+    if (window.Blockly && blocks && !blocks._ws) {
+      blocks.style.height = "170px";
+      blocks._ws = Blockly.inject(blocks, {
+        toolbox: "<xml><block type=\"text_print\"></block><block type=\"math_number\"><field name=\"NUM\">42</field></block></xml>",
+      });
+    }
+    return;
+  }
+  canvas.hidden = true; pre.hidden = false;
+  if (name === "problems") pre.textContent = "No problems in browser subset.";
+  if (name === "std") pre.textContent = window.PANINI_FILES?.["tests/standards/README.md"] || window.PANINI_FILES?.["spec/PANINI.std.pni"] || "PANINI.STD.2026.08";
 }
 
 document.querySelectorAll("[data-cmd]").forEach((b) => {
@@ -154,6 +159,34 @@ document.querySelectorAll("[data-cmd]").forEach((b) => {
     if (b.dataset.cmd === "prompts") {
       setPanel("output");
       document.getElementById("panel-body").textContent = window.PANINI_FILES?.["docs/ARCHITECT_PROMPTS.md"] || "Architect prompts: docs/ARCHITECT_PROMPTS.md";
+    }
+    if (b.dataset.cmd === "engineer") {
+      const src = editor ? editor.getValue() : "";
+      document.getElementById("panel-body").textContent =
+        "ENGINEER\naxes: " + window.PANINI_TOOLS.axes.join(", ") +
+        "\nlines: " + src.split("\n").length +
+        "\nfunctions: " + (src.match(/FUNCTION/g) || []).length +
+        "\nprints: " + (src.match(/PRINT/g) || []).length +
+        "\nCLI: node src/cli.js parse FILE\nPANINI suite: node tests/panini/run.mjs\nStandards harness: node tests/standards/harness.mjs";
+      setPanel("output");
+    }
+    if (b.dataset.cmd === "linguist") {
+      const src = editor ? editor.getValue() : "";
+      const hi = window.PANINI_TOOLS.project(src, window.PANINI_TOOLS.HI);
+      const ar = window.PANINI_TOOLS.project(src, window.PANINI_TOOLS.AR);
+      document.getElementById("panel-body").textContent =
+        "LINGUIST  ILM projection (same program)\n--- Devanagari ---\n" + hi +
+        "\n--- Arabic ---\n" + ar;
+      setPanel("output");
+    }
+    if (b.dataset.cmd === "math") {
+      const src = editor ? editor.getValue() : "एक योग द्वि";
+      const lines = src.split("\n").filter(Boolean).slice(0, 12);
+      const out = lines.map((l) => l + "  =>  " + window.PANINI_TOOLS.sanskritEval(l));
+      document.getElementById("panel-body").textContent =
+        "MATHEMATICIAN\nSanskrit seed + arithmetic\n" + out.join("\n") +
+        "\nLexicon:\n" + JSON.stringify(window.PANINI_TOOLS.SA, null, 2);
+      setPanel("output");
     }
   };
 });
@@ -190,7 +223,13 @@ require(["vs/editor/editor.main"], () => {
   });
   renderTabs();
   setSide("explorer");
-  document.getElementById("panel-body").textContent = "Workbench ready. Terminal is live (bash / COMMAND.COM).";
+  document.getElementById("panel-body").textContent = "Workbench ready. VT100 is the terminal. Blockly is the blocks panel.";
+  document.getElementById("ilm")?.addEventListener("change", (e) => {
+    const key = e.target.value.toUpperCase();
+    const table = window.PANINI_TOOLS[key];
+    const canonical = window.PANINI_TOOLS.deproject(editor.getValue());
+    editor.setValue(table ? window.PANINI_TOOLS.project(canonical, table) : canonical);
+  });
 });
 
 const termIn = document.getElementById("term-in");
@@ -200,11 +239,7 @@ if (termIn) {
     const line = termIn.value;
     termIn.value = "";
     const sh = document.getElementById("shell").value;
-    const out = sh === "command" ? window.PANINI_CONSOLE.commandCom(line) : window.PANINI_CONSOLE.bash(line);
-    const pre = document.getElementById("panel-body");
-    const prompt = sh === "command" ? "C:\\>" : "$";
-    pre.textContent += prompt + " " + line + "\n" + (out || "") + "\n";
-    pre.scrollTop = pre.scrollHeight;
+    window.PANINI_VT.exec(line, sh);
     setPanel("terminal");
   });
 }

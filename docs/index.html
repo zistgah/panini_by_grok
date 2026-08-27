@@ -21,9 +21,22 @@
       <button data-cmd="term">Terminal</button>
       <button data-cmd="std">Standard</button>
       <button data-cmd="prompts">Architect</button>
+      <button data-cmd="engineer">Engineer</button>
+      <button data-cmd="linguist">Linguist</button>
+      <button data-cmd="math">Mathematician</button>
       <button id="install">Install app</button>
     </nav>
-    <span class="muted" id="hosthint">GitHub Pages · /docs · Monaco workbench</span>
+    <label class="muted">ILM
+      <select id="ilm">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ar">العربية</option>
+        <option value="bn">বাংলা</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+      </select>
+    </label>
+    <span class="muted" id="hosthint">Pages · /docs · Monaco + Blockly</span>
   </div>
 
   <div id="workbench">
@@ -47,8 +60,8 @@
         <div class="panel-tabs">
           <button class="ptab active" data-panel="problems">PROBLEMS</button>
           <button class="ptab" data-panel="output">OUTPUT</button>
-          <button class="ptab" data-panel="terminal">TERMINAL</button>
-          <button class="ptab" data-panel="vt">VT100</button>
+          <button class="ptab" data-panel="terminal">VT100</button>
+          <button class="ptab" data-panel="blocks">BLOCKS</button>
           <button class="ptab" data-panel="std">STANDARD</button>
         </div>
         <div id="term-bar">
@@ -62,7 +75,8 @@
           <input id="term-in" type="text" autocomplete="off" spellcheck="false" placeholder="ls /home/panini" />
         </div>
         <pre id="panel-body"></pre>
-        <canvas id="vt-canvas" width="640" height="192" hidden></canvas>
+        <canvas id="vt-canvas" width="640" height="384" hidden></canvas>
+        <div id="blockly" hidden></div>
       </div>
     </section>
   </div>
@@ -79,7 +93,10 @@
   <script src="tree.js"></script>
   <script src="catalog.js"></script>
   <script src="files.js"></script>
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
   <script src="console.js"></script>
+  <script src="vtterm.js"></script>
+  <script src="tools.js"></script>
   <script src="workbench.js"></script>
 </body>
 </html>

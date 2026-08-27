@@ -4,6 +4,11 @@ PANINI itself is Copyright (C) 1993-2026 Abhishek Choudhary and licensed under
 GPL-3.0-or-later (see LICENSE). The following components are used as-is under
 their own licenses. They are not GPL-relicensed.
 
+## Blockly
+
+- https://github.com/google/blockly
+- License: Apache-2.0 (Google LLC)
+
 ## Monaco Editor (VS Code editor core)
 
 - Project: https://github.com/microsoft/monaco-editor
