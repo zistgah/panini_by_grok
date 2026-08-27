@@ -28,6 +28,7 @@ const BLOCK_STARTERS = new Set([
   "PROVENANCE", "OPERATIONS", "INVOCATION", "SOURCES",
   "DOMAIN_MODEL", "FORMATION", "POST_ABDICATION", "ROUTES",
   "RUNTIME", "PACKAGE", "TASK",
+  "PRINCIPLES", "GIVEN", "DEFINE", "REQUIRE", "CONCLUDE",
 ]);
 
 export class Parser {
@@ -384,7 +385,7 @@ export class Parser {
     while (!this.at(TokenKind.EOF)) {
       if (this.at("END")) {
         this.eat();
-        if (this.at("FILE")) this.eat();
+        if (this.at("FILE") && this.peek(1)?.kind !== TokenKind.STRING) this.eat();
         break;
       }
       if (this.at("MIME")) {
@@ -597,6 +598,10 @@ export class Parser {
   }
 
   parseStatement() {
+    if (this.at("FILE")) return this.parseFileBlock();
+    if (this.at("ARTIFACT") || this.at("DELIVERABLE") || this.at("CYCLER") || this.at("META_CYCLER") || this.at("PROGRAM") || this.at("TEST") || this.at("ENUM") || this.at("BOOTSTRAP") || this.at("DOCUMENT") || this.at("THEOREM") || this.at("INVARIANT")) {
+      return this.parseTop();
+    }
     if (this.at("FUNCTION")) return this.parseFunction();
     if (this.at("TYPE")) return this.parseTypeDecl();
     if (this.at("IF")) return this.parseIf();

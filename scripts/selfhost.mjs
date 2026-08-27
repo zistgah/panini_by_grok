@@ -88,6 +88,29 @@ try {
   record("stage-4 codegen run sample", false, e.message);
 }
 
+const specSrc = fs.readFileSync(path.join(root, "spec/PANINI_SELF_HOSTING_SPEC.pni"), "utf8");
+try {
+  const specAst = (await import("../compiler/parser.js")).parse(specSrc, "spec.pni");
+  const specRt = new Runtime({ maxSteps: 20_000_000 });
+  const specI = new Interpreter(specRt);
+  await specI.interpret(specAst, { specMode: true, runMain: false });
+  record("stage-6 spec-runnable", specRt.functions.size > 0,
+    `live_functions=${specRt.functions.size}`);
+} catch (e) {
+  record("stage-6 spec-runnable", false, e.message);
+}
+
+if (okA && compileFn) {
+  try {
+    const { wrap } = await import("../runtime/values.js");
+    const specComp = deepPlain(await interp.callValue(compileFn, [wrap(specSrc)], interp.global));
+    record("stage-6 spec-selfhost-compile", !!(specComp && specComp.success),
+      specComp ? `tokens=${specComp.token_count} functions=${specComp.function_count}` : "fail");
+  } catch (e) {
+    record("stage-6 spec-selfhost-compile", false, e.message);
+  }
+}
+
 const allOk = stages.filter((s) => s.stage.startsWith("stage-6") || s.stage.startsWith("stage-5 ir") || s.stage.startsWith("stage-1") || s.stage.startsWith("stage-4")).every((s) => s.ok)
   && sameBC;
 

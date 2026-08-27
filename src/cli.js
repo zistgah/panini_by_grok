@@ -62,10 +62,15 @@ async function main() {
       process.exitCode = result.success ? 0 : 1;
       return;
     }
+    case "run-spec": {
+      await import("../scripts/run_spec.mjs");
+      return;
+    }
     case "run": {
       const file = args[1];
       const src = readInput(file);
-      const { result, runtime } = await runSource(src, file || "<stdin>");
+      const specMode = /SPEC|\.pni$/i.test(file || "") && /CONSTITUTION|SELF_HOSTING/.test(src);
+      const { result, runtime } = await runSource(src, file || "<stdin>", { specMode });
       if (process.env.PANINI_SHOW_RESULT === "1") {
         console.log("=>", display(result));
       }

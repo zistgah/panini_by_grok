@@ -173,7 +173,14 @@ await test("spec_parses", () => {
   const src = fs.readFileSync(path.join(root, "spec/PANINI_SELF_HOSTING_SPEC.pni"), "utf8");
   const ast = parse(src, "spec.pni");
   assert.equal(ast.kind, "Program");
-  assert.ok(ast.body.length > 10);
+  const n = ast.body[0]?.kind === "Module" ? ast.body[0].body.length : ast.body.length;
+  assert.ok(n > 10);
+});
+
+await test("spec_runnable", async () => {
+  const src = fs.readFileSync(path.join(root, "spec/PANINI_SELF_HOSTING_SPEC.pni"), "utf8");
+  const { runtime } = await runSource(src, "spec.pni", { specMode: true, runMain: false });
+  assert.ok(runtime.functions.size > 0);
 });
 
 await test("stdlib_cyclers_genie_fakir_charbagh", async () => {

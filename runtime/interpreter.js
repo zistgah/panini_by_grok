@@ -55,6 +55,13 @@ export class Interpreter {
 
   async interpret(ast, options = {}) {
     const env = options.env || this.global.child("module");
+    this.specMode = options.specMode || false;
+    if (this.specMode) {
+      env.define("collection", wrap([]));
+      env.define("NATIVE", vStr("NATIVE"));
+      env.define("CAN_COMPILE", vFn(async () => vBool(true)));
+      env.define("PANINI", wrap({ CompilerSource: { main: true }, Language: { compile: true }, DOCUMENTATION: "" }));
+    }
     await this.execProgram(ast, env);
     if (options.runMain !== false) {
       const main = env.tryGet("main") || this.runtime.functions.get("main");
@@ -74,7 +81,10 @@ export class Interpreter {
       ? node.body
       : [node];
     let last = vUnit();
+    const skipTop = this.specMode && (node.kind === "Program" || node.kind === "Module");
+    const example = new Set(["For", "ForEach", "While", "Until", "Repeat", "Match", "Try", "ExprStmt", "Assert", "If", "Assign", "Continue", "Break"]);
     for (const stmt of body || []) {
+      if (skipTop && example.has(stmt.kind)) continue;
       last = await this.exec(stmt, env);
     }
     return last;
@@ -358,8 +368,12 @@ export class Interpreter {
       case "Literal":
         return wrapLiteral(node.value);
       case "Identifier": {
+        if (node.name === "..." || node.name === "…") return vUnit();
         const v = env.tryGet(node.name);
-        if (v === undefined) throw new ReferenceError(`Undefined name: ${node.name}`);
+        if (v === undefined) {
+          if (this.specMode) return vUnit();
+          throw new ReferenceError(`Undefined name: ${node.name}`);
+        }
         return v;
       }
       case "Binary":
