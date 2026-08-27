@@ -169,5 +169,21 @@ await test("compiler_idempotence_ir", () => {
   assert.equal(ja, jb);
 });
 
+await test("spec_parses", () => {
+  const src = fs.readFileSync(path.join(root, "spec/PANINI_SELF_HOSTING_SPEC.pni"), "utf8");
+  const ast = parse(src, "spec.pni");
+  assert.equal(ast.kind, "Program");
+  assert.ok(ast.body.length > 10);
+});
+
+await test("stdlib_cyclers_genie_fakir_charbagh", async () => {
+  const src = fs.readFileSync(path.join(root, "stdlib/cyclers.pni"), "utf8");
+  const { result, runtime } = await runSource(src, "cyclers.pni");
+  assert.equal(unwrap(result), 0);
+  assert.ok(runtime.prints.some((p) => String(p).includes("RETRIEVE")));
+  assert.ok(runtime.prints.includes("EXISTING_ESTATE"));
+  assert.ok(runtime.prints.includes("GENIE"));
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

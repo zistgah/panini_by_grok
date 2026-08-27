@@ -96,7 +96,12 @@ export class Parser {
     if (this.at("CONSTITUTION")) return this.parseNamedBlock("CONSTITUTION", "Constitution");
     if (this.at("FUNCTION")) return this.parseFunction();
     if (this.at("CLASS")) return this.parseClass();
-    if (this.at("TRAIT") || this.at("INTERFACE")) return this.parseNamedBlock(this.peek().value);
+    if (this.at("TRAIT") || this.at("INTERFACE") || this.at("SYNTAX") || this.at("RESOLUTION")) {
+      return this.parseNamedBlock(this.peek().value);
+    }
+    if (this.at("SIGNAL") || this.at("COMPONENT") || this.at("POLICY")) {
+      return this.parseNamedBlock(this.peek().value);
+    }
     if (this.at("TYPE")) return this.parseTypeDecl();
     if (this.at("IMPORT")) return this.parseImport();
     if (this.at("EXPORT")) return this.parseExport();
@@ -198,13 +203,15 @@ export class Parser {
         ret = this.parseTypeRef();
       }
       spec = { kind: "TypeFunction", params, returnType: ret };
-    } else if (!this.at("END") && !this.at(TokenKind.EOF) && this.at(TokenKind.IDENT)) {
-      // TYPE Result<T,E>   OK(...) ERR(...)  — variants until next top-level
+    } else if (!this.at("END") && !this.at(TokenKind.EOF) && (this.at(TokenKind.IDENT) || this.at(TokenKind.KEYWORD))) {
       const variants = [];
-      while (this.at(TokenKind.IDENT) && !this.looksLikeTop()) {
+      while ((this.at(TokenKind.IDENT) || this.at(TokenKind.KEYWORD)) && !this.looksLikeTop() && !this.at("END")) {
         const vname = this.eat().value;
         let args = [];
-        if (this.at("(")) args = this.parseArgList();
+        if (this.at("(")) {
+          this.skipParenList();
+          args = ["..."];
+        }
         variants.push({ name: vname, args });
       }
       if (this.at("END")) this.skipEndSuffix();
@@ -228,11 +235,19 @@ export class Parser {
   parseFunction() {
     this.expect("FUNCTION");
     const name = this.at(TokenKind.IDENT) || this.at(TokenKind.KEYWORD) ? this.eat().value : null;
+    
     const params = this.at("(") ? this.parseParamList() : [];
     let returnType = null;
     if (this.at("->")) {
       this.eat();
       returnType = this.parseTypeRef();
+    }
+    const headerOnly = this.at("FUNCTION") || this.at("CLASS") || this.at("TYPE") ||
+      this.at("MODULE") || this.at("TRAIT") || this.at("INTERFACE") ||
+      this.at("TEST") || this.at("CYCLER") || this.at("END") && false;
+    if (this.at("FUNCTION") || this.at("CLASS") || this.at("TYPE") || this.at("MODULE") ||
+        this.at("TRAIT") || this.at("INTERFACE") || this.at("TEST") || this.at("CYCLER")) {
+      return N.FunctionDecl(name, params, returnType, N.Block([]));
     }
     const body = this.parseBlockUntilEnd();
     return N.FunctionDecl(name, params, returnType, body);
@@ -264,11 +279,13 @@ export class Parser {
 
   parseTypeRef() {
     if (this.at(TokenKind.IDENT) || this.at(TokenKind.KEYWORD)) {
-      const name = this.eat().value;
-      const args = [];
-      if (this.at("<") || this.at("OP") && this.peek().value === "<") {
-        // we tokenize < as OP
+      let name = this.eat().value;
+      while (this.at(".")) {
+        this.eat();
+        if (this.at(TokenKind.IDENT) || this.at(TokenKind.KEYWORD)) name += "." + this.eat().value;
+        else break;
       }
+      const args = [];
       if (this.at("<")) {
         this.eat();
         while (!this.at(">") && !this.at(TokenKind.EOF)) {
@@ -287,6 +304,7 @@ export class Parser {
   parseClass() {
     this.expect("CLASS");
     const name = this.parseNameish();
+    this.skipTypeParams();
     const members = [];
     while (!this.at("END") && !this.at(TokenKind.EOF)) {
       if (this.at("FIELD")) {
@@ -450,10 +468,62 @@ export class Parser {
     return N.EnumDecl(name, variants);
   }
 
+  skipTypeParams() {
+    if (!this.at("<")) return;
+    this.eat();
+    let depth = 1;
+    while (!this.at(TokenKind.EOF) && depth > 0) {
+      if (this.at("<")) { this.eat(); depth += 1; }
+      else if (this.at(">")) { this.eat(); depth -= 1; }
+      else this.eat();
+    }
+  }
+
+  skipParenList() {
+    if (!this.at("(")) return;
+    this.eat();
+    let depth = 1;
+    while (!this.at(TokenKind.EOF) && depth > 0) {
+      if (this.at("(")) { this.eat(); depth += 1; }
+      else if (this.at(")")) { this.eat(); depth -= 1; }
+      else this.eat();
+    }
+  }
+
   parseNamedBlock(keyword, astKind = "Declarative") {
     this.expect(keyword);
-    const name = this.parseNameish();
+    if (keyword === "SYNTAX") {
+      const raw = [];
+      while (!this.at(TokenKind.EOF)) {
+        if (this.at("END")) {
+          const nxt = this.peek(1);
+          const closer = !nxt || nxt.kind === TokenKind.EOF ||
+            (nxt.kind === TokenKind.KEYWORD && ["FUNCTION", "FOR", "FOREACH", "WHILE", "TYPE", "MODULE", "CLASS", "TEST"].includes(nxt.value));
+          if (closer) {
+            this.eat();
+            break;
+          }
+        }
+        raw.push(this.eat().value);
+      }
+      return N.Declarative(keyword, raw, []);
+    }
+    let name = null;
+    if ((this.at(TokenKind.IDENT) || this.at(TokenKind.KEYWORD) || this.at(TokenKind.STRING)) && !this.at(":=", 1)) {
+      name = this.parseNameish();
+    }
+    this.skipTypeParams();
+    this.skipParenList();
     const fields = [];
+    const oneLiners = new Set([
+      "RESOLUTION", "SIGNAL", "EVENT", "PACKAGE", "IMPORT", "EXPORT",
+    ]);
+    if (oneLiners.has(keyword) && (this.at(TokenKind.KEYWORD) && BLOCK_STARTERS.has(this.peek().value) || this.at(TokenKind.EOF) || this.at("END") === false && this.looksLikeTop())) {
+      if (this.at("END")) this.skipEndSuffix();
+      if (astKind === "Cycler") return N.Cycler(name, fields);
+      if (astKind === "Artifact") return N.Artifact(name, fields);
+      return N.Declarative(keyword, name, fields);
+    }
     while (!this.at("END") && !this.at(TokenKind.EOF)) {
       // nested named blocks
       if (this.at(TokenKind.KEYWORD) && BLOCK_STARTERS.has(this.peek().value) && this.peek().value !== "END") {
@@ -495,11 +565,24 @@ export class Parser {
         !(this.at(TokenKind.KEYWORD) && this.at("=", 1))
       ) {
         if (this.at(TokenKind.KEYWORD) && ["FUNCTION", "CLASS", "TYPE", "MODULE"].includes(this.peek().value)) break;
+        if (this.at(TokenKind.OP) && !["[", "{", "(", "-", "!"].includes(this.peek().value)) {
+          values.push(this.eat().value);
+          continue;
+        }
         values.push(this.parseUnary());
         if (this.at(",")) this.eat();
         else break;
       }
       return N.Declarative(key, values.length === 1 ? values[0] : values, []);
+    }
+    if (this.at(TokenKind.OP)) {
+      const bits = [];
+      while (!this.at(TokenKind.EOF) && !this.at("END") &&
+             !(this.at(TokenKind.KEYWORD) && BLOCK_STARTERS.has(this.peek().value))) {
+        bits.push(this.eat().value);
+        if (bits.length > 80) break;
+      }
+      return N.Declarative("syntax", bits, []);
     }
     return this.parseStatement();
   }
@@ -514,6 +597,8 @@ export class Parser {
   }
 
   parseStatement() {
+    if (this.at("FUNCTION")) return this.parseFunction();
+    if (this.at("TYPE")) return this.parseTypeDecl();
     if (this.at("IF")) return this.parseIf();
     if (this.at("FOR")) return this.parseFor();
     if (this.at("FOREACH")) return this.parseForEach();
@@ -876,6 +961,10 @@ export class Parser {
     if (this.at(TokenKind.IDENT) || this.at(TokenKind.KEYWORD)) {
       const t = this.eat();
       return N.Identifier(t.value);
+    }
+    if (this.at("...") || this.peek()?.value === "...") {
+      this.eat();
+      return N.Identifier("...");
     }
     throw new ParseError(`Unexpected token ${this.describe(this.peek())}`, this.peek());
   }

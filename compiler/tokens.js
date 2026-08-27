@@ -58,6 +58,10 @@ export const KEYWORDS = new Set([
   "DIRECTORY", "INCLUDES", "ARTIFACTS", "TITLE", "GIVEN",
   "DEFINE", "CONCLUDE", "COMPARE",
   "COMPONENT", "RUNTIME", "MODES", "BACKEND",
+  "SYNTAX", "ESTATE", "SOVEREIGN", "VARZISH",
+  "CAN_COMPILE", "NATIVE", "GENERATE_FROM", "SELF_COMPILE",
+  "BUILD", "COMPILE", "COMPARE", "WITH", "VERIFY",
+  "INPUT", "OUTPUT",
   "EXPECT", "SUCCESS",
   "THIS", "NEW",
 ]);
@@ -65,6 +69,7 @@ export const KEYWORDS = new Set([
 export const MULTI_OPS = [
   "...",
   "..",
+  ":=",
   "->",
   "=>",
   "<=",

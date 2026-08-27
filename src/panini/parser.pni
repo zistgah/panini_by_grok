@@ -318,6 +318,25 @@ FUNCTION parseFunction(st)
     RETURN {name: name, params: params, body: body}
 END
 
+FUNCTION skipBlock(st)
+    stEat(st)
+    depth = 1
+    WHILE depth > 0 AND NOT stAt(st, "EOF", "")
+        t = stPeek(st)
+        IF t.value == "FUNCTION" OR t.value == "CLASS" OR t.value == "MODULE" OR t.value == "CYCLER" OR t.value == "IF" OR t.value == "WHILE" OR t.value == "FOR"
+            depth = depth + 1
+            stEat(st)
+        ELSE
+            IF t.value == "END"
+                depth = depth - 1
+                stEat(st)
+            ELSE
+                stEat(st)
+            END
+        END
+    END
+END
+
 FUNCTION parse(tokens)
     st = stNew(tokens)
     functions = []
@@ -326,17 +345,10 @@ FUNCTION parse(tokens)
         IF t.value == "FUNCTION"
             functions = APPEND(functions, parseFunction(st))
         ELSE
-            IF t.value == "MODULE" OR t.value == "IMPORT" OR t.value == "EXPORT" OR t.value == "TYPE"
-                stEat(st)
-                IF NOT stAt(st, "EOF", "") AND NOT stAtVal(st, "FUNCTION") AND NOT stAtVal(st, "END")
-                    stEat(st)
-                END
+            IF t.value == "CLASS" OR t.value == "CYCLER" OR t.value == "META_CYCLER" OR t.value == "CONSTITUTION" OR t.value == "ARTIFACT" OR t.value == "CONFIGURATION" OR t.value == "BOOTSTRAP" OR t.value == "ENUM" OR t.value == "SCHEMA" OR t.value == "TRAIT" OR t.value == "INTERFACE" OR t.value == "TEST" OR t.value == "PROGRAM" OR t.value == "RUNTIME" OR t.value == "ESTATE" OR t.value == "AGENT" OR t.value == "MODEL"
+                skipBlock(st)
             ELSE
-                IF t.value == "END"
-                    stEat(st)
-                ELSE
-                    stEat(st)
-                END
+                stEat(st)
             END
         END
     END
