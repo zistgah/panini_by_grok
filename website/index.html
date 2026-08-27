@@ -20,6 +20,8 @@
       <button data-view="ci">CI / Project</button>
       <button data-view="blocks">Blocks</button>
       <button data-view="gfx">Graphics / WebGPU</button>
+      <button data-view="status">Status</button>
+      <button data-view="vscode">VS Code / Debug</button>
     </nav>
   </header>
   <main>
@@ -32,6 +34,19 @@ END
 
 PRINT double(21)</textarea>
       <div class="row">
+        <label>Lang
+          <select id="lang">
+            <option value="panini">PANINI</option>
+            <option value="python">Python</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+            <option value="fortran">Fortran</option>
+            <option value="rust">Rust</option>
+            <option value="typescript">TypeScript</option>
+            <option value="go">Go</option>
+            <option value="zig">Zig</option>
+          </select>
+        </label>
         <button id="run">Run</button>
         <button id="prove">Hash / Provenance</button>
         <button id="download">Download .pni</button>

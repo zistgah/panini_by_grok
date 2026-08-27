@@ -91,7 +91,13 @@ async function main() {
     case "cxx":
     case "fortran":
     case "f90":
-    case "f": {
+    case "f":
+    case "rust":
+    case "rs":
+    case "typescript":
+    case "ts":
+    case "go":
+    case "zig": {
       const src = readInput(args[1]);
       if (args.includes("--host")) {
         const { runPython, runC } = await import("../runtime/toolchain.js");
@@ -104,9 +110,9 @@ async function main() {
         return;
       }
       const { runFrontend } = await import("../runtime/foreign_front.js");
-      const lang = cmd === "python" || cmd === "py" ? "python"
-        : cmd === "fortran" || cmd === "f90" || cmd === "f" ? "fortran"
-        : cmd === "cc" || cmd === "c" ? "c" : "cpp";
+      const lang = ({ python:"python", py:"python", fortran:"fortran", f90:"fortran", f:"fortran",
+        rust:"rust", rs:"rust", typescript:"typescript", ts:"typescript", go:"go", zig:"zig",
+        cc:"c", c:"c" }[cmd]) || "cpp";
       const r = await runFrontend(lang, src);
       if (r && r.ok !== false && r.value !== undefined) console.log(r.value);
       else if (r && r.stdout) process.stdout.write(String(r.stdout));

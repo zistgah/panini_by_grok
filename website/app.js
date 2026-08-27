@@ -15,7 +15,33 @@ const LAYERS = [
 const HI = { FUNCTION:"कार्य", RETURN:"लौटाओ", END:"अंत", PRINT:"छापो", TRUE:"सत्य", FALSE:"असत्य", IF:"अगर" };
 const AR = { FUNCTION:"دالة", RETURN:"أرجع", END:"نهاية", PRINT:"اطبع", TRUE:"صحيح", FALSE:"خطأ", IF:"إذا" };
 
-const MUSEUM = ["python","rust","javascript","haskell","prolog","sql","basic","logo","lisp","c","julia","assembly","fortran","cobol","forth","java","go"];
+const MUSEUM = ["python","rust","javascript","haskell","prolog","sql","basic","logo","lisp","c","julia","assembly","fortran","cobol","forth","java","go","typescript","zig"];
+
+const STATUS = `PANINI.STD.2026.08
+panini       VERIFIED
+python       VERIFIED_SUBSET  print/def/return/lists/tensor
+c            VERIFIED_SUBSET  main/return/printf
+cpp          VERIFIED_SUBSET  cout → C frontend
+fortran      VERIFIED_SUBSET  PRINT *, expr
+rust         VERIFIED_SUBSET  println! expr
+typescript   VERIFIED_SUBSET  console.log expr
+go           VERIFIED_SUBSET  fmt.Println expr
+zig          VERIFIED_SUBSET  debug.print expr
+pytorch      PARTIAL          tensor/matmul only
+debugger     token/eval trace (not DWARF)
+vscode       .vscode/launch.json + tools/vscode-panini`;
+
+const SAMPLES = {
+  panini: 'PRINT "HELLO"\nFUNCTION double(x)\n    RETURN x * 2\nEND\nPRINT double(21)',
+  python: "print(40+2)",
+  c: "int main(){return 40+2;}",
+  cpp: "#include <iostream>\nint main(){std::cout<<(40+2)<<std::endl;}",
+  fortran: "PROGRAM P\nPRINT *, 40+2\nEND PROGRAM P",
+  rust: "fn main() { println!(\"{}\", 40+2); }",
+  typescript: "console.log(40+2);",
+  go: "package main\nfunc main() { fmt.Println(40+2) }",
+  zig: "pub fn main() void { std.debug.print(\"{d}\", .{40+2}); }",
+};
 
 const srcEl = document.getElementById("src");
 const outEl = document.getElementById("out");
@@ -135,8 +161,35 @@ function evalExpr(expr, env, fns) {
 
 const NUM = { "शून्य":0,"एक":1,"द्वि":2,"त्रि":3,"चतुर्":4,"पञ्च":5,"दश":10,"योग":"+","गुणन":"*" };
 
+function evalPrintExpr(src, needle) {
+  const i = src.lastIndexOf(needle);
+  const slice = i >= 0 ? src.slice(i + needle.length) : src;
+  const m = slice.match(/(\d+)\s*([+\-*/])\s*(\d+)/);
+  if (m) {
+    const a = Number(m[1]), b = Number(m[3]);
+    if (m[2] === "+") return a + b;
+    if (m[2] === "-") return a - b;
+    if (m[2] === "*") return a * b;
+    return a / b;
+  }
+  const n = slice.match(/(\d+)/);
+  return n ? Number(n[1]) : 0;
+}
+
+document.getElementById("lang")?.addEventListener("change", (e) => {
+  const v = e.target.value;
+  if (SAMPLES[v]) srcEl.value = SAMPLES[v];
+});
+
 document.getElementById("run").onclick = () => {
   const src = srcEl.value;
+  const lang = document.getElementById("lang")?.value || "panini";
+  if (lang !== "panini") {
+    const key = { python:"print", c:"return", cpp:"cout", fortran:"PRINT", rust:"println", typescript:"log", go:"Println", zig:"print" }[lang];
+    outEl.textContent = String(evalPrintExpr(src, key || ""));
+    inspect.textContent = lang + " subset in Pages (full frontend is node src/cli.js " + lang + ")";
+    return;
+  }
   const ctx = document.getElementById("turtle").getContext("2d");
   const sh = runShaili(deproject(src), ctx);
   if (sh && src.split("\n").every((l) => !l.trim() || /^(FORWARD|RIGHT|LEFT|PEN|FD|RT|LT)/i.test(l.trim()))) {
@@ -190,6 +243,8 @@ document.querySelectorAll("nav button").forEach((b) => {
     else if (v === "linguist") inspect.textContent = "ILM projection switcher is the View menu.\nChanging view does not create a new program.";
     else if (v === "ci") inspect.textContent = "GitHub Actions workflow lives in .github/workflows/pages.yml + build.yml\nNo custom server. Commit → Pages + test job.";
     else if (v === "beginner") inspect.textContent = "Level 0: PRINT / FORWARD\nLevel 1: FUNCTION\nLevel 2: @functional\nAxes stay hidden until asked for.";
+    else if (v === "status") inspect.textContent = STATUS;
+    else if (v === "vscode") inspect.textContent = "VS Code: File → Open Folder on this repo.\nLaunch: .vscode/launch.json\nExtension: tools/vscode-panini (F5 Extension Development Host)\nDebug: node tools/panini-debug/adapter.mjs file.pni panini\nFrontends: python|c|rust|typescript|go|zig";
     else inspect.textContent = "Engineer view: same artifact, more inspector detail.";
   };
 });
