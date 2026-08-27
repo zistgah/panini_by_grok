@@ -1,0 +1,22 @@
+MODULE PANINI.Frontend.C
+
+FUNCTION cc_available()
+    RETURN WHICH("cc")
+END
+
+FUNCTION run_c(source)
+    IF NOT cc_available()
+        RETURN {ok: FALSE, missing: "cc"}
+    END
+    RETURN INVOKE("cc", source)
+END
+
+FUNCTION main()
+    sample = "int main(){printf(\"%d\\n\",42);return 0;}"
+    r = run_c(sample)
+    PRINT r.ok
+    PRINT r.stdout
+    RETURN r.ok
+END
+
+END

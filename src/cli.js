@@ -82,6 +82,35 @@ async function main() {
     case "repl":
       await repl();
       return;
+    case "python":
+    case "py": {
+      const { runPython } = await import("../runtime/toolchain.js");
+      const src = readInput(args[1]);
+      const r = runPython(src);
+      process.stdout.write(r.stdout || "");
+      if (r.stderr) process.stderr.write(r.stderr);
+      process.exitCode = r.ok ? 0 : 1;
+      return;
+    }
+    case "cc":
+    case "c": {
+      const { runC } = await import("../runtime/toolchain.js");
+      const r = runC(readInput(args[1]), { cxx: false });
+      process.stdout.write(r.stdout || "");
+      if (r.stderr) process.stderr.write(r.stderr);
+      process.exitCode = r.ok ? 0 : 1;
+      return;
+    }
+    case "c++":
+    case "cpp":
+    case "cxx": {
+      const { runC } = await import("../runtime/toolchain.js");
+      const r = runC(readInput(args[1]), { cxx: true });
+      process.stdout.write(r.stdout || "");
+      if (r.stderr) process.stderr.write(r.stderr);
+      process.exitCode = r.ok ? 0 : 1;
+      return;
+    }
     case "selfhost":
       await import("../scripts/selfhost.mjs");
       return;
@@ -120,6 +149,9 @@ Usage:
   panini parse <file.pni>
   panini typecheck <file.pni>
   panini compile <file.pni> [--target json|js] [--out file]
+  panini python <file.py>     # invoke host python3
+  panini cc <file.c>          # invoke host cc
+  panini cpp <file.cpp>       # invoke host c++
   panini repl
   panini version
 `);

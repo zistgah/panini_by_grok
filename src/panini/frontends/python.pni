@@ -1,0 +1,22 @@
+MODULE PANINI.Frontend.Python
+
+FUNCTION python_available()
+    RETURN WHICH("python")
+END
+
+FUNCTION run_python(source)
+    IF NOT python_available()
+        RETURN {ok: FALSE, missing: "python3"}
+    END
+    RETURN INVOKE("python", source)
+END
+
+FUNCTION main()
+    sample = "print(40+2)"
+    r = run_python(sample)
+    PRINT r.ok
+    PRINT r.stdout
+    RETURN r.ok
+END
+
+END

@@ -203,6 +203,19 @@ await test("codegen_js_target", () => {
   assert.ok(r.binary.toString("utf8").includes("function add"));
 });
 
+await test("foreign_python_cc", async () => {
+  const { runPython, runC, which } = await import("../runtime/toolchain.js");
+  assert.ok(which("python"));
+  const py = runPython("print(40+2)");
+  assert.ok(py.ok);
+  assert.equal(py.stdout.trim(), "42");
+  if (which("cc")) {
+    const c = runC('#include <stdio.h>\nint main(){printf("42\\n");return 0;}\n');
+    assert.ok(c.ok, c.stderr);
+    assert.equal(c.stdout.trim(), "42");
+  }
+});
+
 await test("stdlib_cyclers_genie_fakir_charbagh", async () => {
   const src = fs.readFileSync(path.join(root, "stdlib/cyclers.pni"), "utf8");
   const { result, runtime } = await runSource(src, "cyclers.pni");

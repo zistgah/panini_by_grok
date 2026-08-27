@@ -3,6 +3,7 @@ import {
   wrap, unwrap, display, typeName, equals, toNumber, toStr, iterate,
 } from "./values.js";
 import { stamp, canonicalizeClaim, EpistemicStatus } from "./provenance.js";
+import { which, runPython, runC } from "./toolchain.js";
 
 export function installBuiltins(env, runtime) {
   const def = (name, fn, arity) => {
@@ -104,6 +105,27 @@ export function installBuiltins(env, runtime) {
     if (m?.tag === Tag.Map) return vBool(m.value.has(toStr(k)));
     return vBool(false);
   }, 2);
+  def("WHICH", (name) => {
+    const found = which(toStr(name));
+    return found ? vStr(found) : vStr("");
+  }, 1);
+
+  def("INVOKE", (kind, source) => {
+    const k = toStr(kind);
+    const src = toStr(source);
+    let r;
+    if (k === "python" || k === "python3") r = runPython(src);
+    else if (k === "cc" || k === "c") r = runC(src, { cxx: false });
+    else if (k === "cxx" || k === "c++" || k === "cpp") r = runC(src, { cxx: true });
+    else r = { ok: false, stderr: "unknown toolchain " + k };
+    return wrap({
+      ok: !!r.ok,
+      stdout: String(r.stdout || "").trim(),
+      stderr: String(r.stderr || r.error || ""),
+      missing: r.missing || "",
+    });
+  }, 2);
+
   def("QUOTE", () => vStr('"'));
   def("NEWLINE", () => vStr("\n"));
   def("BACKSLASH", () => vStr("\\"));

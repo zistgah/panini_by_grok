@@ -1,0 +1,22 @@
+MODULE PANINI.Frontend.Cpp
+
+FUNCTION cxx_available()
+    RETURN WHICH("cxx")
+END
+
+FUNCTION run_cpp(source)
+    IF NOT cxx_available()
+        RETURN {ok: FALSE, missing: "c++"}
+    END
+    RETURN INVOKE("cxx", source)
+END
+
+FUNCTION main()
+    sample = "#include <iostream>\nint main(){std::cout<<42<<std::endl;return 0;}"
+    r = run_cpp(sample)
+    PRINT r.ok
+    PRINT r.stdout
+    RETURN r.ok
+END
+
+END
