@@ -183,6 +183,19 @@ await test("spec_runnable", async () => {
   assert.ok(runtime.functions.size > 0);
 });
 
+await test("theorem_modules_run", async () => {
+  for (const f of ["stdlib/runtime_interfaces.pni", "stdlib/tests.pni", "src/panini/build.pni", "src/panini/theorem.pni"]) {
+    const src = fs.readFileSync(path.join(root, f), "utf8");
+    const { runtime } = await runSource(src, f);
+    assert.ok(runtime.functions.size > 0);
+  }
+});
+
+await test("codegen_js_target", () => {
+  const r = compile("FUNCTION add(x,y) RETURN x + y END", { filename: "add.pni", target: "js" });
+  assert.ok(r.binary.toString("utf8").includes("function add"));
+});
+
 await test("stdlib_cyclers_genie_fakir_charbagh", async () => {
   const src = fs.readFileSync(path.join(root, "stdlib/cyclers.pni"), "utf8");
   const { result, runtime } = await runSource(src, "cyclers.pni");

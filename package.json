@@ -10,7 +10,9 @@
     "panini": "node src/cli.js",
     "test": "node tests/run.mjs",
     "bootstrap": "node scripts/bootstrap.mjs",
-    "selfhost": "node scripts/selfhost.mjs"
+    "selfhost": "node scripts/selfhost.mjs",
+    "prove": "node scripts/prove_theorem.mjs",
+    "realize": "node scripts/realize_spec.mjs"
   },
   "engines": {
     "node": ">=18"

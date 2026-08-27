@@ -1,0 +1,177 @@
+{
+  "theorem": "PANINI_SELF_HOSTING",
+  "conclusion": "PANINI_CAN_EXPRESS_THE_LANGUAGE_REQUIRED_TO_BUILD_PANINI",
+  "status": "PROVEN",
+  "epistemic_status": "VERIFIED",
+  "clauses": [
+    {
+      "section": "GIVEN",
+      "name": "PANINI_LANGUAGE_PRIMITIVES",
+      "ok": true,
+      "witness": "spec/PANINI_SELF_HOSTING_SPEC.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "GIVEN",
+      "name": "PANINI_COMPILER_MODEL",
+      "ok": true,
+      "witness": "src/panini/compiler.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "GIVEN",
+      "name": "PANINI_RUNTIME_MODEL",
+      "ok": true,
+      "witness": "stdlib/runtime_interfaces.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "GIVEN",
+      "name": "PANINI_ARTIFACT_MODEL",
+      "ok": true,
+      "witness": "runtime/artifacts.js",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "GIVEN",
+      "name": "PANINI_WORKFLOW_MODEL",
+      "ok": true,
+      "witness": "stdlib/cyclers.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "GIVEN",
+      "name": "PANINI_VERIFICATION_MODEL",
+      "ok": true,
+      "witness": "stdlib/tests.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "GIVEN",
+      "name": "PANINI_PROVENANCE_MODEL",
+      "ok": true,
+      "witness": "runtime/provenance.js",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "GIVEN",
+      "name": "PANINI_PACKAGE_MODEL",
+      "ok": true,
+      "witness": "spec packages",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "DEFINE",
+      "name": "PANINI_RUNTIME INTERFACES IN PANINI",
+      "ok": true,
+      "witness": "stdlib/runtime_interfaces.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "DEFINE",
+      "name": "PANINI_TESTS IN PANINI",
+      "ok": true,
+      "witness": "stdlib/tests.pni",
+      "note": "run_all_tests=5",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "DEFINE",
+      "name": "PANINI_BUILD IN PANINI",
+      "ok": true,
+      "witness": "src/panini/build.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "DEFINE",
+      "name": "PANINI_DISTRIBUTION IN PANINI",
+      "ok": true,
+      "witness": "stdlib/distribution.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "DEFINE",
+      "name": "PANINI_COMPILER IN PANINI",
+      "ok": true,
+      "witness": "src/panini/*.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "DEFINE",
+      "name": "PANINI_STDLIB IN PANINI",
+      "ok": true,
+      "witness": "stdlib/core.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "REQUIRE",
+      "name": "PANINI_COMPILER CAN_PARSE PANINI",
+      "ok": true,
+      "witness": "compiler/parser.js + spec",
+      "note": "top=1",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "REQUIRE",
+      "name": "PANINI_COMPILER CAN_TYPECHECK PANINI",
+      "ok": true,
+      "witness": "compiler/typechecker.js",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "REQUIRE",
+      "name": "PANINI_COMPILER CAN_LOWER PANINI",
+      "ok": true,
+      "witness": "compiler/ir.js",
+      "note": "fn=37",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "REQUIRE",
+      "name": "PANINI_COMPILER CAN_GENERATE_TARGETS",
+      "ok": true,
+      "witness": "build/add.generated.mjs",
+      "note": "js target add(2,40)=42",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "REQUIRE",
+      "name": "PANINI_RUNTIME CAN_EXECUTE PANINI",
+      "ok": true,
+      "witness": "examples/hello.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "REQUIRE",
+      "name": "PANINI_BUILD CAN_BUILD PANINI",
+      "ok": true,
+      "witness": "src/panini/build.pni",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "REQUIRE",
+      "name": "PANINI_TESTS CAN_VERIFY PANINI",
+      "ok": true,
+      "witness": "build/selfhost-evidence.json",
+      "note": "B==C true",
+      "status": "VERIFIED"
+    },
+    {
+      "section": "CONCLUDE",
+      "name": "PANINI_CAN_EXPRESS_THE_LANGUAGE_REQUIRED_TO_BUILD_PANINI",
+      "ok": true,
+      "witness": "src/panini/theorem.pni",
+      "status": "VERIFIED"
+    }
+  ],
+  "selfhost": {
+    "a_equals_b": true,
+    "b_equals_c": true,
+    "functions": 37
+  },
+  "provenance": {
+    "created_by": "scripts/prove_theorem.mjs",
+    "created_at": "2026-08-27T14:36:29.832Z",
+    "spec_modified": false
+  }
+}

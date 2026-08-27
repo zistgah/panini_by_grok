@@ -529,7 +529,7 @@ export class Parser {
       // nested named blocks
       if (this.at(TokenKind.KEYWORD) && BLOCK_STARTERS.has(this.peek().value) && this.peek().value !== "END") {
         const innerKw = this.peek().value;
-        if (["FUNCTION", "CLASS", "MODULE", "PROGRAM", "TEST"].includes(innerKw)) {
+        if (["FUNCTION", "CLASS", "MODULE", "PROGRAM", "TEST", "FILE"].includes(innerKw)) {
           fields.push(this.parseTop());
           continue;
         }
