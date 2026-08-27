@@ -1,0 +1,21 @@
+{
+  "name": "PANINI",
+  "version": "0.1.0",
+  "theorem": "PANINI_CAN_EXPRESS_THE_LANGUAGE_REQUIRED_TO_BUILD_PANINI",
+  "artifacts": [
+    "compiler.pni",
+    "ir.pni",
+    "lexer.pni",
+    "parser.pni",
+    "typechecker.pni"
+  ],
+  "backends": [
+    "interpreted",
+    "ir-json"
+  ],
+  "backends_unresolved": [
+    "native",
+    "wasm",
+    "container-runtime"
+  ]
+}

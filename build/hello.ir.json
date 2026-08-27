@@ -1,0 +1,40 @@
+{
+  "kind": "panini-ir",
+  "version": "0.1.0",
+  "target": "bytecode-vm",
+  "functions": [
+    {
+      "name": "main",
+      "params": [],
+      "returnType": "Int",
+      "body": [
+        {
+          "op": "expr",
+          "value": {
+            "op": "call",
+            "callee": {
+              "op": "load",
+              "name": "PRINT"
+            },
+            "args": [
+              {
+                "op": "const",
+                "value": "Hello, PANINI"
+              }
+            ]
+          }
+        },
+        {
+          "op": "return",
+          "arg": {
+            "op": "const",
+            "value": 0
+          }
+        }
+      ]
+    }
+  ],
+  "artifacts": [],
+  "files": [],
+  "declarations": []
+}

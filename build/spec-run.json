@@ -1,0 +1,16 @@
+{
+  "status": "RUNNABLE",
+  "file": "spec/PANINI_SELF_HOSTING_SPEC.pni",
+  "functions_declared": 7,
+  "functions_registered": 4,
+  "modules": [
+    "PANINI",
+    "Standard"
+  ],
+  "cyclers": [],
+  "tests": [],
+  "files": [],
+  "artifacts": [],
+  "result": "UNIT",
+  "theorem": "PANINI_CAN_EXPRESS_THE_LANGUAGE_REQUIRED_TO_BUILD_PANINI"
+}
