@@ -2,7 +2,7 @@ TIME=$(date +%s.%N)
 VER=$(expr $(ls ../*.zip | tr "_." "\n" | grep v | tr -d "v" | sort -u | tail -1) \+ 1)
 mv ~/Downloads/panini.zip ../panini_by_grok_v${VER}.zip &&\
 cd .. &&\
-unzip panini_by_grok_v${VER}.zip &&\
+unzip -d panini_by_grok_v${VER} panini_by_grok_v${VER}.zip &&\
 cd panini_by_grok &&\
 git checkout main &&\
 cp -r ../panini_by_grok_v${VER}/panini/* ./ &&\
