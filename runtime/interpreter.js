@@ -30,7 +30,7 @@ export class Runtime {
     this.capabilities = new Set(options.capabilities || [
       "filesystem.read", "filesystem.write", "artifact.publish",
     ]);
-    this.maxSteps = options.maxSteps || 1_000_000;
+    this.maxSteps = options.maxSteps || 20_000_000;
     this.steps = 0;
   }
 

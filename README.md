@@ -13,11 +13,13 @@ This repository is the Stage-0 external bootstrap required by the constitution:
 
 | Stage | What | Where |
 | --- | --- | --- |
-| 0 | JS lexer, parser, AST, typecheck, IR, interpreter | `compiler/`, `runtime/` |
-| 1 | Lexer / compiler driver written in PANINI | `compiler/lexer.pni`, `compiler/compiler.pni` |
-| 2–6 | Typechecker, IR, optimizer, self-compile | specified; not yet native |
+| 0 | JS host + IR VM | `compiler/`, `runtime/` |
+| 1 | Lexer, parser, AST in PANINI | `src/panini/lexer.pni`, `parser.pni` |
+| 2 | Typechecker in PANINI | `src/panini/typechecker.pni` |
+| 3–4 | IR, optimize, codegen in PANINI | `src/panini/ir.pni`, `compiler.pni` |
+| 5–6 | Self-compile; A = B = C | `node scripts/selfhost.mjs` |
 
-The Stage-0 runtime can already execute PANINI functions, control flow, data, file/artifact blocks, and the Stage-1 lexer expressed in PANINI.
+Stage 6 is a **fixed point on the compiler subset**: 36 functions, IR generations identical. The JS host still parses a larger grammar than the self-hosted parser.
 
 ## Quick start
 

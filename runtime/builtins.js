@@ -80,6 +80,36 @@ export function installBuiltins(env, runtime) {
     return vStr(path);
   });
 
+  def("SLICE", (s, a, b) => {
+    if (s?.tag === Tag.List) {
+      const start = toNumber(a);
+      const end = b == null || b.tag === Tag.Unit ? s.value.length : toNumber(b);
+      return vList(s.value.slice(start, end));
+    }
+    const str = toStr(s);
+    const start = toNumber(a);
+    const end = b == null || b.tag === Tag.Unit ? str.length : toNumber(b);
+    return vStr(str.slice(start, end));
+  }, 2);
+
+  def("APPEND", (list, item) => {
+    if (list?.tag === Tag.List) {
+      list.value.push(item);
+      return list;
+    }
+    return vList([item]);
+  }, 2);
+
+  def("HASKEY", (m, k) => {
+    if (m?.tag === Tag.Map) return vBool(m.value.has(toStr(k)));
+    return vBool(false);
+  }, 2);
+  def("QUOTE", () => vStr('"'));
+  def("NEWLINE", () => vStr("\n"));
+  def("BACKSLASH", () => vStr("\\"));
+  def("TAB", () => vStr("\t"));
+  def("CR", () => vStr("\r"));
+
   env.define("TRUE", vBool(true), { constant: true });
   env.define("FALSE", vBool(false), { constant: true });
   env.define("NULL", vUnit(), { constant: true });
