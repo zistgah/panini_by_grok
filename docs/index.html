@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — Workbench</title>
+  <link rel="stylesheet" href="workbench.css" />
+</head>
+<body>
+  <div id="titlebar">
+    <span class="brand">PANINI</span>
+    <nav class="menubar">
+      <button data-cmd="run">Run</button>
+      <button data-cmd="docs">Architecture</button>
+      <button data-cmd="status">Status</button>
+      <button data-cmd="term">Terminal</button>
+    </nav>
+    <span class="muted" id="hosthint">GitHub Pages · /docs · Monaco workbench</span>
+  </div>
+
+  <div id="workbench">
+    <aside id="activity">
+      <button class="act active" data-side="explorer" title="Explorer">📁</button>
+      <button class="act" data-side="search" title="Features">☰</button>
+      <button class="act" data-side="arch" title="Architecture">⬡</button>
+      <button class="act" data-side="debug" title="Run and debug">▷</button>
+      <button class="act" data-side="ext" title="Frontends">🧩</button>
+    </aside>
+
+    <aside id="sidebar">
+      <h2 id="side-title">EXPLORER</h2>
+      <div id="side-body"></div>
+    </aside>
+
+    <section id="center">
+      <div id="tabs"></div>
+      <div id="editor"></div>
+      <div id="panel">
+        <div class="panel-tabs">
+          <button class="ptab active" data-panel="problems">PROBLEMS</button>
+          <button class="ptab" data-panel="output">OUTPUT</button>
+          <button class="ptab" data-panel="terminal">TERMINAL</button>
+          <button class="ptab" data-panel="vt">VT100</button>
+        </div>
+        <pre id="panel-body"></pre>
+        <canvas id="vt-canvas" width="640" height="192" hidden></canvas>
+      </div>
+    </section>
+  </div>
+
+  <footer id="statusbar">
+    <span id="sb-mode">PANINI</span>
+    <span id="sb-pos">Ln 1, Col 1</span>
+    <span>UTF-8</span>
+    <span>L15 workbench</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+  <script src="tree.js"></script>
+  <script src="catalog.js"></script>
+  <script src="workbench.js"></script>
+</body>
+</html>

@@ -23,6 +23,9 @@ Stage 6 is a **fixed point on the compiler subset**: 36 functions, IR generation
 
 ## Quick start
 
+Workbench (GitHub Pages): **`docs/`** — in-browser VS Code (Monaco).  
+Pages workflow publishes `docs/`, not `website/`.
+
 Requires Node.js 18+.
 
 ```bash
