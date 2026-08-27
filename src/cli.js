@@ -119,6 +119,9 @@ async function main() {
       process.exitCode = r && r.ok !== false ? 0 : 1;
       return;
     }
+    case "bash":
+      await runSource(fs.readFileSync(new URL("../stdlib/bash.pni", import.meta.url), "utf8"), "bash.pni");
+      return;
     case "selfhost":
       await import("../scripts/selfhost.mjs");
       return;

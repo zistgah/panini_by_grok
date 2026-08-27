@@ -32,6 +32,7 @@ export class Runtime {
     ]);
     this.maxSteps = options.maxSteps || 20_000_000;
     this.steps = 0;
+    this.vfs = options.vfs || null;
   }
 
   log(...args) {

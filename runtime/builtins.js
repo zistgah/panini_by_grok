@@ -6,6 +6,7 @@ import { stamp, canonicalizeClaim, EpistemicStatus } from "./provenance.js";
 import { which, runPython, runC } from "./toolchain.js";
 import { axpy, scal, nrm2, gemv, gemm, autotuneGemm } from "./blas.js";
 import { tensor, matmul, tadd, relu } from "./tensor.js";
+import { createVfs } from "./vfs.js";
 
 export function installBuiltins(env, runtime) {
   const def = (name, fn, arity) => {
@@ -121,6 +122,18 @@ export function installBuiltins(env, runtime) {
   def("GFX_RECT", (x, y, w, h) => { (runtime.gfx ||= []).push({op:"rect",x:toNumber(x),y:toNumber(y),w:toNumber(w),h:toNumber(h)}); return vUnit(); }, 4);
   def("GFX_LINE", (x1,y1,x2,y2) => { (runtime.gfx ||= []).push({op:"line",x1:toNumber(x1),y1:toNumber(y1),x2:toNumber(x2),y2:toNumber(y2)}); return vUnit(); }, 4);
   def("GFX_CIRCLE", (x,y,r) => { (runtime.gfx ||= []).push({op:"circle",x:toNumber(x),y:toNumber(y),r:toNumber(r)}); return vUnit(); }, 3);
+
+  if (!runtime.vfs) runtime.vfs = createVfs();
+  const vfs = runtime.vfs;
+  def("VFS_PWD", () => vStr(vfs.pwd()));
+  def("VFS_CD", (p) => wrap(vfs.cd(toStr(p))), 1);
+  def("VFS_LS", (p) => wrap(vfs.ls(p == null ? "." : toStr(p)).names), 0);
+  def("VFS_READ", (p) => wrap(vfs.read(toStr(p)).content), 1);
+  def("VFS_WRITE", (p, c) => wrap(vfs.write(toStr(p), toStr(c))), 2);
+  def("VFS_MKDIR", (p) => wrap(vfs.mkdir(toStr(p))), 1);
+  def("VFS_RM", (p) => wrap(vfs.rm(toStr(p))), 1);
+  def("VFS_EXISTS", (p) => vBool(vfs.exists(toStr(p))), 1);
+  def("VFS_TREE", () => vStr(vfs.tree()));
 
   def("WHICH", (name) => {
     const found = which(toStr(name));
