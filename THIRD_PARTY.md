@@ -18,5 +18,9 @@
 
 ## Hindawi 2004 binaries (GPL)
 
-- `docs/emu/lekhakx.exe`, `CWSDPMI.EXE`, `CMD.COM` from hindawi3.zip (hindawiai/hindawi-legacy).
+## Visual Studio Code / Monaco Editor (Microsoft)
+
+- https://github.com/microsoft/vscode — MIT
+- https://github.com/microsoft/monaco-editor — MIT
+- `docs/workbench.html` opens vscode.dev / github.dev (official VS Code on the web). The local pane is Monaco, not a clone of the VS Code chrome. Desktop VS Code is not a GitHub Pages app.
 

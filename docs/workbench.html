@@ -2,104 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#007acc" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <title>PANINI — Workbench</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icon.svg" />
-  <link rel="stylesheet" href="workbench.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — Visual Studio Code</title>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="skins/jazz.css" />
+  <style>
+    html, body.wb { height: 100%; margin: 0; }
+    body.wb { display: flex; flex-direction: column; background: #1e1e1e; color: #d4d4d4; }
+    body.wb .site-head { flex: 0 0 auto; }
+    #vscode-bar {
+      display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+      padding: .5rem .8rem; background: #007acc; color: #fff;
+      font: 13px/1.3 ui-sans-serif, system-ui, sans-serif;
+    }
+    #vscode-bar a, #vscode-bar button {
+      background: #fff; color: #005a9e; border: 0; padding: .35rem .7rem;
+      text-decoration: none; font-weight: 600; cursor: pointer;
+    }
+    #vscode-bar .lic { margin-left: auto; font-size: 11px; opacity: .95; }
+    #editor { flex: 1; min-height: 70vh; }
+    #pick { background: #252526; color: #ccc; border: 1px solid #3c3c3c; padding: .3rem; }
+  </style>
 </head>
-<body>
+<body class="wb site">
 <!-- Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later -->
-  <div id="titlebar">
-    <span class="brand">PANINI</span>
-    <nav class="menubar">
-      <button data-cmd="run">Run</button>
-      <button data-cmd="prove">Prove</button>
-      <button data-cmd="docs">Architecture</button>
-      <button data-cmd="status">Status</button>
-      <button data-cmd="term">Terminal</button>
-      <button data-cmd="std">Standard</button>
-      <button data-cmd="prompts">Architect</button>
-      <button data-cmd="engineer">Engineer</button>
-      <button data-cmd="linguist">Linguist</button>
-      <button data-cmd="math">Mathematician</button>
-      <button data-cmd="agi">AGI</button>
-      <button data-cmd="prov">Provenance</button>
-      <button id="install">Install app</button>
-    </nav>
-    <label class="muted">ILM
-      <select id="ilm">
-        <option value="en">English</option>
-        <option value="hi">हिन्दी</option>
-        <option value="ar">العربية</option>
-        <option value="bn">বাংলা</option>
-        <option value="ta">தமிழ்</option>
-        <option value="te">తెలుగు</option>
-      </select>
-    </label>
-    <span class="muted" id="hosthint">Pages · /docs · Monaco + Blockly</span>
-  </div>
-
-  <div id="workbench">
-    <aside id="activity">
-      <button class="act active" data-side="explorer" title="Explorer">📁</button>
-      <button class="act" data-side="search" title="Features">☰</button>
-      <button class="act" data-side="arch" title="Architecture">⬡</button>
-      <button class="act" data-side="debug" title="Run and debug">▷</button>
-      <button class="act" data-side="ext" title="Frontends">🧩</button>
-    </aside>
-
-    <aside id="sidebar">
-      <h2 id="side-title">EXPLORER</h2>
-      <div id="side-body"></div>
-    </aside>
-
-    <section id="center">
-      <div id="tabs"></div>
-      <div id="editor"><textarea id="editor-fallback" spellcheck="false"></textarea></div>
-      <div id="panel">
-        <div class="panel-tabs">
-          <button class="ptab active" data-panel="problems">PROBLEMS</button>
-          <button class="ptab" data-panel="output">OUTPUT</button>
-          <button class="ptab" data-panel="terminal">VT100</button>
-          <button class="ptab" data-panel="blocks">BLOCKS</button>
-          <button class="ptab" data-panel="std">STANDARD</button>
-        </div>
-        <div id="term-bar">
-          <label>Shell
-            <select id="shell">
-              <option value="bash">bash</option>
-              <option value="command">COMMAND.COM</option>
-            </select>
-          </label>
-          <span id="prompt">$</span>
-          <input id="term-in" type="text" autocomplete="off" spellcheck="false" placeholder="ls /home/panini" />
-        </div>
-        <pre id="panel-body"></pre>
-        <canvas id="vt-canvas" width="640" height="384" hidden></canvas>
-        <div id="blockly" hidden></div>
-      </div>
-    </section>
-  </div>
-
-  <footer id="statusbar">
-    <span id="sb-mode">PANINI</span>
-    <span id="sb-pos">Ln 1, Col 1</span>
-    <span>UTF-8</span>
-    <span>L15 workbench</span>
-    <span>© 1993-2026 Abhishek Choudhary · GPL-3.0-or-later · Monaco MIT © Microsoft</span>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
-  <script src="tree.js"></script>
-  <script src="catalog.js"></script>
-  <script src="files.js"></script>
-  <script src="console.js"></script>
-  <script src="vtterm.js"></script>
-  <script src="tools.js"></script>
-  <script src="shaili.js"></script>
-  <script src="workbench.js"></script>
+<header class="site-head">
+  <a href="index.html"><strong>PANINI</strong></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="nb.html">Notebook</a>
+    <a href="console.html">Console</a>
+    <a href="apps.html">Apps</a>
+  </nav>
+</header>
+<div id="vscode-bar">
+  <strong>Visual Studio Code</strong>
+  <a href="https://vscode.dev/github/zistgah/panini_by_grok" rel="noopener">Open vscode.dev (original)</a>
+  <a href="https://github.dev/zistgah/panini_by_grok" rel="noopener">Open github.dev</a>
+  <label>Local Monaco file
+    <select id="pick"></select>
+  </label>
+  <span class="lic">VS Code and Monaco Editor © Microsoft, MIT. We do not ship a clone of the workbench chrome. Run is the notebook / console — not a third box here.</span>
+</div>
+<div id="editor" aria-label="Monaco editor"></div>
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+<script src="files.js"></script>
+<script>
+/* Pages cannot host the VS Code desktop binary. vscode.dev IS that product on the web.
+   Monaco is the editor engine extracted from VS Code (same MIT tree). */
+(function () {
+  var FILES = window.PANINI_FILES || {};
+  var names = Object.keys(FILES);
+  var pick = document.getElementById("pick");
+  names.forEach(function (n) {
+    var o = document.createElement("option");
+    o.value = n; o.textContent = n; pick.appendChild(o);
+  });
+  function langOf(n) {
+    if (/\.py$/.test(n)) return "python";
+    if (/\.(c|h|cpp)$/.test(n)) return "cpp";
+    if (/\.ts$/.test(n)) return "typescript";
+    if (/\.js$/.test(n)) return "javascript";
+    if (/\.rs$/.test(n)) return "rust";
+    if (/\.go$/.test(n)) return "go";
+    if (/\.md$/.test(n)) return "markdown";
+    return "plaintext";
+  }
+  require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
+  require(["vs/editor/editor.main"], function () {
+    var first = names[0] || "untitled.pni";
+    var ed = monaco.editor.create(document.getElementById("editor"), {
+      value: FILES[first] || "",
+      language: langOf(first),
+      theme: "vs-dark",
+      automaticLayout: true,
+      minimap: { enabled: true }
+    });
+    pick.value = first;
+    pick.onchange = function () {
+      var n = pick.value;
+      monaco.editor.setModelLanguage(ed.getModel(), langOf(n));
+      ed.setValue(FILES[n] || "");
+    };
+  });
+})();
+</script>
 </body>
 </html>
