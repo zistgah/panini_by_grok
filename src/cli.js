@@ -188,7 +188,12 @@ async function main() {
       console.log(JSON.stringify(hindawiGuru(src), null, 2));
       return;
     }
-    case "pa2c":
+    case "perso":
+    case "urdu":
+    case "arabic": {
+      await import("../scripts/explore_perso.mjs");
+      return;
+    }
     case "transducer":
     case "punjabi":
     case "gurmukhi": {
