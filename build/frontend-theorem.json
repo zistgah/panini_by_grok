@@ -1,0 +1,24 @@
+{
+  "theorem": "T_FRONTEND_PANINI",
+  "invariant": "every frontend is a PANINI module",
+  "independent_of": [
+    "POSIX",
+    "OCI",
+    "host gcc",
+    "CPython"
+  ],
+  "witnesses": [
+    "src/panini/frontends/c.pni",
+    "src/panini/frontends/common_eval.pni",
+    "src/panini/frontends/cpp.pni",
+    "src/panini/frontends/fortran.pni",
+    "src/panini/frontends/go.pni",
+    "src/panini/frontends/python.pni",
+    "src/panini/frontends/rust.pni",
+    "src/panini/frontends/typescript.pni",
+    "src/panini/frontends/zig.pni"
+  ],
+  "missing": [],
+  "ok": true,
+  "note": "Witness existence ≠ language-standard completeness."
+}

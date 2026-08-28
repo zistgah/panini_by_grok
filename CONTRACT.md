@@ -28,6 +28,17 @@ This is the working contract for changes to this tree.
 11. Terminal is VT100. bash and COMMAND.COM are applications on that terminal.
 12. Editor engine is Monaco. Blocks engine is Blockly.
 
+## Independent invariants
+
+16. Every language frontend is implemented in PANINI (`T_FRONTEND_PANINI`).
+    Host gcc/CPython/Docker do not replace that.
+17. POSIX personality and OCI standard environments are a separate conjunct.
+    Frontends-in-PANINI do not replace that.
+18. Cyclers are the Cognitive Workbench AI harness: simple presentation,
+    full-depth substrate. Details not supplied by the architect are not invented.
+19. Do not assume the meaning of a requirement. If two requirements are
+    stated, both stand.
+
 ## Delivery
 
 13. Changing the tree includes writing `artifacts/panini.zip`.
