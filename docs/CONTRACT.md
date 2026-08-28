@@ -56,7 +56,9 @@ This is the working contract for changes to this tree.
     names the fill method (Unicode name-projection). Gurmukhi retrieved rows
     are not overwritten. APCISR and Romenagri maps are retrieved.
     Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
-25. UI rungs (console, 2D, academic, jazz, dome) are projections. They do not fork the maps. Dome is retrieved zistgah/dome, not a reimplementation. Three.js r128 is named third-party.
+26. `docs/nb.frozen.html` is the approved 2022 notebook chrome. Do not restyle it. Additive boxes live on `docs/nb.html`.
+27. Collaborator work arrives in `deposits/inbox/`. Do not invent maps there. Process; do not bypass Unicode→ACII→Romenagri→lex.
+
 
 
 

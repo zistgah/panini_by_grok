@@ -65,6 +65,21 @@
     const rules = S.rules.slice().sort((a, b) => [...b.from].length - [...a.from].length);
     return applyPairs(src, rules, "from", "to");
   }
+  function lexRmn(id) {
+    const S = B.shailis[id] || {};
+    if (S.lex_rmn && S.lex_rmn.length) {
+      return S.lex_rmn.slice().sort((a, b) => [...b.from].length - [...a.from].length);
+    }
+    /* Synthesize Romenagri lex from Devanagari rules — still the 2004 path, not a Unicode bypass. */
+    const rules = (S.rules || []).filter((r) => r.from && r.to);
+    const out = [];
+    for (const r of rules) {
+      const f = devaToRmn(r.from);
+      if (f) out.push({ from: f, to: r.to });
+    }
+    out.sort((a, b) => [...b.from].length - [...a.from].length);
+    return out;
+  }
   function uni2acii(src) {
     const map = Object.create(null);
     for (const r of B.unicode_hin || []) map[r.unicode] = r.acii;
@@ -149,17 +164,26 @@
     if (lang && lang !== "hindi") stage = applyLang(stage, lang);
     const flat = flatten(stage);
     const romenagri = devaToRmn(flat);
-    const lex = ((B.shailis[shaili || "guru"] || {}).lex_rmn || []).slice()
-      .sort((a, b) => [...b.from].length - [...a.from].length);
+    const lex = lexRmn(shaili || "guru");
     const hostFromRmn = lex.length ? applyPairs(romenagri, lex, "from", "to") : "";
     const hostFromUhin = applyShaili(shaili || "guru", flat);
-    const host = ((shaili === "praatha" ? hostFromUhin : (hostFromRmn || hostFromUhin))).replace(/<[^>\n]+>/g, "");
+    /* Lowest layer is Romenagri lex. Unicode-on-JS shaili is fallback only, and is labelled. */
+    const usedRmn = !!(hostFromRmn && shaili !== "praatha");
+    const host = (usedRmn ? hostFromRmn : hostFromUhin).replace(/<[^>\n]+>/g, "");
     const back = rmnToDeva(romenagri);
     return {
       invented_maps: false, perso, notes, source: src, flattened: flat,
-      romenagri, host, hostFromUhin, shaili: shaili || "guru",
+      romenagri, host, hostFromUhin, usedRmn,
+      shaili: shaili || "guru",
       rule_count: lex.length || ((B.shailis[shaili || "guru"] || {}).rules || []).length,
-      reverse_deva: back
+      reverse_deva: back,
+      layers: [
+        { id: "source", title: "What you wrote", body: src },
+        { id: "script", title: "One script (Devanagari hub)", body: flat, why: "Brahmi letters meet in one place so the old tools can run." },
+        { id: "romenagri", title: "Romenagri (ASCII-7 kernel)", body: romenagri, why: "gdb, nm, gcc see only this. Not a bypass." },
+        { id: "host", title: "Host language (C / ASM / BASIC / Java)", body: host, why: "Shaili lex on Romenagri, same as 2004 h2c.lex." },
+        { id: "run", title: "Program output", body: "", why: "What the program prints when it runs." }
+      ]
     };
   }
 
@@ -283,21 +307,111 @@
     return chunks.join("");
   }
 
+  function runAsm(host) {
+    const text = indic(host);
+    const regs = { EAX: 0, EBX: 0, ECX: 0, EDX: 0, ESI: 0, EDI: 0, ESP: 0, EBP: 0 };
+    const mem = Object.create(null);
+    const labels = Object.create(null);
+    let out = "";
+    function val(tok) {
+      if (!tok) return 0;
+      tok = tok.replace(/,$/, "").trim();
+      if (tok in regs) return regs[tok];
+      if (tok in labels) return labels[tok];
+      if (tok in mem) return mem[tok];
+      if (/^0x[0-9a-fA-F]+$/.test(tok)) return parseInt(tok, 16);
+      if (/^-?\d+$/.test(tok)) return parseInt(tok, 10);
+      return tok;
+    }
+    const lines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    let i = 0;
+    while (i < lines.length) {
+      let L = lines[i];
+      const mLab = L.match(/^(\S+):\s*(.*)$/);
+      if (mLab) { labels[mLab[1]] = i; L = mLab[2] || ""; if (!L) { i++; continue; } }
+      const mDb = L.match(/^(\S+)\s+DB\s+(.*)$/i);
+      if (mDb) {
+        const parts = [];
+        const rest = mDb[2];
+        const qm = rest.match(/"([^"]*)"/);
+        if (qm) parts.push(qm[1]);
+        const hex = rest.match(/0x[0-9A-Fa-f]+/g) || [];
+        for (const h of hex) parts.push(String.fromCharCode(parseInt(h, 16)));
+        mem[mDb[1]] = parts.join("");
+        i++; continue;
+      }
+      const mSz = L.match(/^(\S+)\s*=\s*\$\s*-\s*(\S+)/);
+      if (mSz) {
+        mem[mSz[1]] = (mem[mSz[2]] || "").length;
+        i++; continue;
+      }
+      i++;
+    }
+    i = 0;
+    let guard = 0;
+    while (i < lines.length && guard++ < 10000) {
+      let L = lines[i];
+      if (/^(FORMAT|ENTRY|SEGMENT|SECTION|BITS)\b/i.test(L)) { i++; continue; }
+      const mLab = L.match(/^(\S+):\s*(.*)$/);
+      if (mLab) L = mLab[2] || "";
+      if (!L) { i++; continue; }
+      const mMov = L.match(/^MOV\s+(\S+)\s*,\s*(.+)$/i);
+      if (mMov) {
+        const d = mMov[1].replace(/,$/, "");
+        const v = val(mMov[2]);
+        if (d in regs) regs[d] = typeof v === "number" ? v : v;
+        i++; continue;
+      }
+      const mXor = L.match(/^XOR\s+(\S+)\s*,\s*(\S+)/i);
+      if (mXor) {
+        const a = mXor[1].replace(/,$/, "");
+        if (a in regs) regs[a] = (regs[a] || 0) ^ (val(mXor[2]) || 0);
+        i++; continue;
+      }
+      const mInt = L.match(/^INT\s+(\S+)/i);
+      if (mInt) {
+        const nr = val(mInt[1]);
+        if (nr === 0x80) {
+          const ax = typeof regs.EAX === "number" ? regs.EAX : parseInt(regs.EAX, 10) || 0;
+          if (ax === 4) {
+            const src = regs.ECX;
+            const n = typeof regs.EDX === "number" ? regs.EDX : (mem[regs.EDX] || 0);
+            const s = (typeof src === "string" && mem[src] !== undefined) ? mem[src] : (mem[src] || String(src));
+            out += String(s).slice(0, n || String(s).length);
+          }
+          if (ax === 1) break;
+        }
+        i++; continue;
+      }
+      i++;
+    }
+    return out;
+  }
+
+  function runJava(host) {
+    const m = String(host).match(/println\s*\(\s*"([^"]*)"/);
+    if (m) return m[1] + "\n";
+    const m2 = String(host).match(/System\.out\.print(?:ln)?\s*\(\s*"([^"]*)"/);
+    return m2 ? m2[1] + "\n" : host;
+  }
+
   function run(compiled, stdinText) {
     const stdin = String(stdinText || "").split(/\n/);
     const sh = compiled.shaili || "guru";
     try {
       if (sh === "praatha") return { ok: true, out: runBasic(compiled.host, stdin) };
       if (sh === "guru" || sh === "shraeni") return { ok: true, out: runC(compiled.host, stdin) };
-      return { ok: false, out: "No in-browser interpreter for shaili " + sh + ".\n--- host ---\n" + compiled.host };
+      if (sh === "yantra") return { ok: true, out: runAsm(compiled.host) };
+      if (sh === "kritrima") return { ok: true, out: runJava(compiled.host) };
+      return { ok: false, out: "No in-browser interpreter for shaili " + sh + ".\nSee deposits/TASKS.md.\n--- host ---\n" + compiled.host };
     } catch (e) {
       return { ok: false, out: "Run error: " + e.message + "\n--- host ---\n" + compiled.host };
     }
   }
 
   global.PANINI_NB = {
-    load, flatten, unflatten, persoToDeva, devaToPerso, compile, run, runC, runBasic,
-    devaToRmn, rmnToDeva,
+    load, flatten, unflatten, persoToDeva, devaToPerso, compile, run, runC, runBasic, runAsm, runJava,
+    devaToRmn, rmnToDeva, lexRmn,
     hin2std(src, lang, shaili) { return compile({ src, lang, shaili }).host; },
     std2hin(src, lang) {
       const L = B.langs[lang]; let out = src;
