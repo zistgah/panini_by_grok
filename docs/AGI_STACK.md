@@ -8,9 +8,7 @@ Two numberings stay uncollapsed:
 - **Workbench L0–L26** — interoperability taxonomy (this document).
 - **FAKIR L0–L9** — MRD lattice (ISIC × ISCO × ISCED). Retrieval, not this table.
 
-GitHub Pages **cannot** run Docker. Containers are the **lab images** for a machine
-that has a daemon. The web column is the virtual infrastructure that *does* run
-on Pages (zero-install).
+GitHub Pages is a static projection and does not start Docker. Lab images (`labs/compose.yaml`) are how an engineer, linguist, or mathematician obtains gcc, ICU, and the rest **on a machine**. Hindawi’s gurucc already ends in gcc; the lab is that toolchain, containerised.
 
 ## How a shaili is captured
 

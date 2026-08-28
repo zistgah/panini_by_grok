@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-57. Notebook was faking Run (canned demo, not compiling). Review; compile through retrieved lexers; run the HOST.
+58. Hindawi has emitted machine code via gcc since 2004 — never write that we cannot. Relook the site; unify theme; homepage by vocation (linguist, mathematician, sociologist, anthropologist, computer engineer). Curate the AGI stack. RP English. Fake wiring is forbidden.
+
 
 
 
