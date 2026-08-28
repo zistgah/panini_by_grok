@@ -22,6 +22,21 @@ export const SHAILIS = [
   { id: "yantra",   name: "यांत्रिक",  host: "asm",    filter: "yantra/h2y.uhin",  layer: "romenagri", cc: "fasm" },
 ];
 
+/** 2026 Hindawi-style names. Not 2004 lexers. See docs/SHAILIS.md */
+export const SHAILIS_2026 = [
+  { id: "jala", name: "जाल", host: "JavaScript", standard: "ECMA-262" },
+  { id: "rupa", name: "रूप", host: "TypeScript", standard: "Apache handbook" },
+  { id: "gamana", name: "गमन", host: "Go", standard: "Go spec" },
+  { id: "ayas", name: "अयस्", host: "Rust", standard: "Rust RFCs" },
+  { id: "svara", name: "स्वर", host: "C#", standard: "ECMA-334" },
+  { id: "chandra", name: "चन्द्र", host: "Lua", standard: "Lua MIT" },
+  { id: "manikya", name: "माणिक्य", host: "Ruby", standard: "ISO/IEC 30170" },
+  { id: "sutra", name: "सूत्र", host: "SQL", standard: "ISO/IEC 9075" },
+  { id: "vidhi", name: "विधि", host: "Fortran", standard: "ISO/IEC 1539" },
+  { id: "ganana", name: "गणना", host: "R", standard: "R Language Definition" },
+  { id: "rekha", name: "रेखा", host: "Logo", standard: "heritage pedagogy" },
+];
+
 /** Bhasha = vernacular on the same Devanagari script. Sanskrit = keyword TSV only. */
 export const BHASHAS = [
   { id: "hi", name: "Hindi",    tsv: "retrieved/romenagri/langs/hindi_c.tsv",    script: "Devanagari" },
