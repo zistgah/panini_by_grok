@@ -65,7 +65,8 @@ export class Interpreter {
     }
     await this.execProgram(ast, env);
     if (options.runMain !== false) {
-      const main = env.tryGet("main") || this.runtime.functions.get("main");
+      const main = env.tryGet("main") || env.tryGet("मुख्य") ||
+        this.runtime.functions.get("main") || this.runtime.functions.get("मुख्य");
       if (main && main.tag === Tag.Function) {
         return await this.callValue(main, [], env);
       }

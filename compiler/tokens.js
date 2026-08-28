@@ -20,7 +20,7 @@ export const KEYWORDS = new Set([
   "PURPOSE", "PRINCIPLES",
   "TYPE", "TRAIT", "INTERFACE", "CLASS", "FIELD", "METHOD",
   "FUNCTION", "RETURN", "LAMBDA",
-  "IF", "ELSE", "THEN",
+  "IF", "ELSE", "ELSEIF", "ELSIF", "THEN",
   "FOR", "FOREACH", "IN", "WHILE", "UNTIL", "REPEAT",
   "CONTINUE", "BREAK",
   "TRY", "CATCH", "FINALLY",

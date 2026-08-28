@@ -70,6 +70,7 @@ Each REQ has an ID. Implementation evidence lives in TRACEABILITY.md.
 | REQ-500 | Numbered requirements + traceability. | Architect 28 Aug |
 | REQ-510 | Architecture and design documents. | Architect 28 Aug |
 | REQ-520 | Press / Wikipedia / online references section. | Architect 28 Aug |
-| REQ-530 | Architect prompt log curated (affective escalation noted, no abusive language on the site). | Architect |
+| REQ-540 | Correlate estate repos to numbered REQs and trace each to a dated legacy root. CDAC/NRC-FOSS 2008 award is a retrieved mention. PAT.AL, PRATIK, VIDYA, HMSEI, Research Kundali stay uncollapsed. | Architect 28 Aug evening |
+
 
 See also: CONTRACT.md, CONTEXT.md, ARCHITECTURE.md, DESIGN.md, TRACEABILITY.md, REFERENCES.md.

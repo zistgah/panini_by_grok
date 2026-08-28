@@ -199,6 +199,18 @@ export function installBuiltins(env, runtime) {
     });
   }, 2);
 
+  def("CR", () => vStr("\r"));
+  def("CONTAINS", (xs, w) => {
+    const needle = unwrap(w);
+    if (xs?.tag === Tag.List) {
+      for (const it of xs.value) {
+        if (equals(it, w) || unwrap(it) === needle) return vBool(true);
+      }
+      return vBool(false);
+    }
+    if (xs?.tag === Tag.String) return vBool(xs.value.includes(toStr(w)));
+    return vBool(false);
+  }, 2);
   def("QUOTE", () => vStr('"'));
   def("NEWLINE", () => vStr("\n"));
   def("BACKSLASH", () => vStr("\\"));

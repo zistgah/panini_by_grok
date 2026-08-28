@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI console — 486 in the browser</title>
+  <title>PANINI console</title>
   <link rel="stylesheet" href="site.css" />
   <style>
-    #term { background:#000; color:#cde; font:15px/1.35 ui-monospace,monospace; padding:.7rem; min-height:22rem;
-            border:1px solid #c9a227; white-space:pre-wrap; overflow:auto; }
-    #term input { background:#000; color:#cde; border:0; font:inherit; width:70%; outline:none; }
+    #out { background:#000; color:#cde; font:14px/1.35 ui-monospace,monospace; padding:.7rem;
+           min-height:18rem; max-height:70vh; overflow:auto; border:1px solid #c9a227; white-space:pre-wrap; margin:0; }
+    #row { display:flex; background:#000; border:1px solid #c9a227; border-top:0; padding:.35rem .5rem; font:14px ui-monospace,monospace; color:#cde; }
+    #row input { flex:1; background:#000; color:#cde; border:0; font:inherit; outline:none; }
   </style>
 </head>
 <body class="site">
@@ -17,45 +18,56 @@
   <nav>
     <a href="index.html">Home</a>
     <a href="nb.html">Notebook</a>
+    <a href="ontology.html">Ontology</a>
     <a href="workbench.html">Workbench</a>
-    <a href="chakra/">Chakra</a>
   </nav>
 </header>
 <main class="site-main">
   <h1>Online console</h1>
-  <p>The architect started in the mid-1990s on a 486 with 4&nbsp;MB RAM and about 500&nbsp;MB of disk. That machine now fits in this tab. The terminal is VT100. The shells are applications on it.</p>
+  <p>VT100-class text. bash and COMMAND.COM are shells on an in-memory VFS. Not a Linux distro. Canonical implementation: <code>runtime/vfs.js</code> + <code>runtime/shell.js</code>. This page is the Pages adapter.</p>
   <p>
     Shell:
     <label><input type="radio" name="sh" value="bash" checked /> bash</label>
     <label><input type="radio" name="sh" value="command.com" /> COMMAND.COM</label>
   </p>
-  <div id="term"></div>
-  <p class="fine">VFS is in-memory. Not a Linux distro. POSIX/OCI remain later layers. Type <code>help</code>.</p>
+  <pre id="out"></pre>
+  <div id="row"><span id="ps1">panini$ </span><input id="cmd" autocomplete="off" autofocus /></div>
 </main>
 <script src="console.js"></script>
 <script>
 (function () {
-  const term = document.getElementById("term");
+  const out = document.getElementById("out");
+  const cmd = document.getElementById("cmd");
+  const ps1 = document.getElementById("ps1");
   const C = window.PANINI_CONSOLE;
   let sh = "bash";
-  let buf = "PANINI 486-class console. 4 MiB would have been luxury.\nType help.\n";
+  let hist = [], hi = 0;
   function prompt() { return sh === "bash" ? "panini$ " : "C:\\> "; }
-  function draw() {
-    term.innerHTML = buf.replace(/</g,"<") + "<span>" + prompt() + "</span><input id='cmd' autocomplete='off' />";
-    const inp = document.getElementById("cmd");
-    inp.focus();
-    inp.onkeydown = (e) => {
-      if (e.key !== "Enter") return;
-      const line = inp.value;
-      buf += prompt() + line + "\n";
-      buf += (C ? C.exec(sh, line) : line) + (line ? "\n" : "");
-      draw();
-    };
-  }
+  function append(t) { out.textContent += t; out.scrollTop = out.scrollHeight; }
+  append("PANINI 486-class console. Type help. Try: ls · cat readme.txt · echo नमस्ते > a.txt · cat a.txt\n");
   document.querySelectorAll("input[name=sh]").forEach((r) => {
-    r.onchange = () => { sh = r.value; buf += "[shell " + sh + "]\n"; draw(); };
+    r.onchange = () => { sh = r.value; ps1.textContent = prompt(); append("[shell " + sh + "]\n"); };
   });
-  draw();
+  cmd.onkeydown = (e) => {
+    if (e.key === "ArrowUp") {
+      if (hist.length) { hi = Math.max(0, hi - 1); cmd.value = hist[hi] || ""; }
+      e.preventDefault(); return;
+    }
+    if (e.key === "ArrowDown") {
+      hi = Math.min(hist.length, hi + 1); cmd.value = hist[hi] || "";
+      e.preventDefault(); return;
+    }
+    if (e.key !== "Enter") return;
+    const line = cmd.value;
+    hist.push(line); hi = hist.length;
+    append(prompt() + line + "\n");
+    cmd.value = "";
+    let res = "";
+    try { res = C ? C.exec(sh, line) : "console not loaded"; }
+    catch (err) { res = String(err); }
+    if (res === "\x1b[2J") out.textContent = "";
+    else if (res) append(res.endsWith("\n") ? res : res + "\n");
+  };
 })();
 </script>
 </body>

@@ -77,7 +77,9 @@ Script ≠ language ≠ shaili. Mixing them was the earlier defect.
 | यांत्रिक asm | yes | h2y.uhin | — | shaili rules | — | no |
 
 2026 shailis are **defined and described** (`SHAILIS.md`, `LANGUAGE_STANDARDS.md`).
-Transducers: PANINI frontends exist for Python, C, C++, Fortran, Rust, TS, Go, Zig, Lua.
+Transducers: PANINI frontends exist for Python, C, C++, Fortran, Rust, TS, Go, Zig, Lua,
+and the application-layer set (JavaScript, Java, SQL, PHP, Ruby, C#, R, Perl, BASIC, Logo)
+in `src/panini/frontends/application.pni` — executed by the PANINI interpreter, not mini_langs.js.
 They are **not** Hindawi-class bidirectional vernacular lexers yet.
 
 ## Virtual web infrastructure (Pages)

@@ -1,0 +1,18 @@
+{
+    "_type": "https://in-toto.io/Statement/v1",
+    "predicateType": "https://project-ilm.org/attestations/candor/v1",
+    "subject": [
+        {
+            "name": "project-ilm/research-kundali",
+            "digest": {
+                "gitCommit": "0a65a95ce9b9bc8e3225cac37cdc5ff9330f2b88"
+            }
+        }
+    ],
+    "predicate": {
+        "action": "PUSH",
+        "reason": "seed",
+        "utc": "20260726T224400Z",
+        "host": "ilm01-lin"
+    }
+}

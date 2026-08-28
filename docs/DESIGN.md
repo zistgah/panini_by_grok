@@ -32,6 +32,12 @@ Tests: `3+4*5=19`, `(1+2)*3=9`.
 
 At zip time, `tests/build_trivia.mjs` asks retrieved Chakra for the pañcāṅga of the build instant. Published under `docs/trivia/`. **Not a prediction.** Cultural / heritage computation. See the disclaimer on that page.
 
-## Zip automation (REQ-009, REQ-430)
+## Application-layer frontends (REQ-004)
+
+L8 JavaScript, L11 SQL, L16 BASIC/Logo, plus Java, PHP, Ruby, C#, R, Perl.
+Implementation is `src/panini/frontends/application.pni` (PANINI). Host loader
+`foreign_front.js` only calls `run_*`. PANINI gained `ELSEIF` / `ELSIF` and `CONTAINS`.
+Not ECMA/ISO-green.
+
 
 `SPINOFF.json` lists path → repo. Local automation unzips `panini/` and may copy `apps/*` to sibling checkouts. This tree does not push.

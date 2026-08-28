@@ -2,7 +2,8 @@
 
 Copyright (C) 1993-2026 Abhishek Choudhary  
 
-Primary project pages and third-party coverage. Wikipedia itself flags the HPS article as thin on independent sources — listed anyway because the architect asked for it.
+Site index (this tree): `docs/mentions.html`, `docs/legacy.html`, `docs/research.html`.
+
 
 ## Canonical
 

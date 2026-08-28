@@ -7,7 +7,7 @@ Copyright (C) 1993-2026 Abhishek Choudhary
 | REQ-000 | spec file untouched | kept |
 | REQ-001 | headers / COPYING | kept |
 | REQ-002 | docs/ + PWA | kept |
-| REQ-004 | src/panini/frontends/*.pni | partial (subsets) |
+| REQ-004 | src/panini/frontends/application.pni + python.pni; tests/app_frontends.mjs 11/11 | application layer in PANINI |
 | REQ-005 | retrieved/, apps/project-ilm/chakra | kept |
 | REQ-006 | WHY_DEFINE_IS_NOT_LOCALIZATION.md | kept |
 | REQ-007 | explorer.html triad LIVE | kept |

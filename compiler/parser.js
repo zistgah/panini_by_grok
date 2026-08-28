@@ -19,7 +19,7 @@ export class ParseError extends Error {
 
 const BLOCK_STARTERS = new Set([
   "MODULE", "SCOPE", "CONSTITUTION", "FUNCTION", "CLASS", "TRAIT", "INTERFACE",
-  "IF", "ELSE", "FOR", "FOREACH", "WHILE", "UNTIL", "REPEAT",
+  "IF", "ELSE", "ELSEIF", "ELSIF", "FOR", "FOREACH", "WHILE", "UNTIL", "REPEAT",
   "TRY", "CATCH", "FINALLY", "MATCH", "CASE",
   "FILE", "CONTENT", "ARTIFACT", "DELIVERABLE", "ARTIFACT_REVISION",
   "CONFIGURATION", "PROGRAM", "TEST", "PROPERTY",
@@ -679,13 +679,20 @@ export class Parser {
 
   parseIf() {
     this.expect("IF");
+    return this.parseIfTail();
+  }
+
+  parseIfTail() {
     const test = this.parseExpression();
-    const consequent = this.parseBlockKeepEnd(["ELSE", "END"]);
+    const consequent = this.parseBlockKeepEnd(["ELSE", "ELSEIF", "ELSIF", "END"]);
     let alternate = null;
-    if (this.at("ELSE")) {
+    if (this.at("ELSEIF") || this.at("ELSIF")) {
       this.eat();
-      // Newline-insensitive lexer: "ELSE\\n IF" cannot be distinguished
-      // from "ELSE IF". Always parse a block so nested IFs keep their own END.
+      alternate = this.parseIfTail();
+    } else if (this.at("ELSE")) {
+      this.eat();
+      // Newline-insensitive lexer: ELSE then IF is a nested IF, not ELSEIF.
+      // Flat chains must use the ELSEIF / ELSIF keyword.
       alternate = this.parseBlockUntilEnd();
     } else if (this.at("END")) {
       this.skipEndSuffix();

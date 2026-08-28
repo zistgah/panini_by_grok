@@ -1,118 +1,160 @@
-/* tree-rev: 2026.08.28 */
 /* Copyright (C) 1993-2026 Abhishek Choudhary
  * SPDX-License-Identifier: GPL-3.0-or-later
- * In-browser VFS + bash + COMMAND.COM — this is the site console, not a stub.
+ * Pages adapter of runtime/vfs.js + runtime/shell.js. Do not invent a third VFS.
  */
 (function (g) {
-  function node(dir) { return dir ? { t: "d", c: Object.create(null) } : { t: "f", x: "" }; }
-  function create() {
-    const root = node(true);
-    root.c.home = node(true);
-    root.c.home.c.panini = node(true);
-    root.c.home.c.panini.c["readme.txt"] = { t: "f", x: "PANINI VFS\nCopyright (C) 1993-2026 Abhishek Choudhary\n" };
-    root.c.tmp = node(true);
-    root.c.bin = node(true);
-    root.c.DOS = node(true);
-    root.c.DOS.c["AUTOEXEC.BAT"] = { t: "f", x: "@ECHO OFF\n" };
-    return { root, cwd: "/home/panini", drive: "C:" };
-  }
-  const st = create();
-  function split(p) { return String(p).replace(/\\/g, "/").split("/").filter(Boolean); }
-  function abs(p) {
-    if (!p || p === ".") return st.cwd;
-    if (p === "..") { const a = split(st.cwd); a.pop(); return "/" + a.join("/"); }
-    if (p[0] === "/" || /^[A-Za-z]:/.test(p)) {
-      p = p.replace(/^[A-Za-z]:/, "");
-      return p.startsWith("/") ? p : "/" + p;
+  function dir() { return { type: "dir", children: Object.create(null) }; }
+  function file(x) { return { type: "file", content: String(x || "") }; }
+  function createVfs() {
+    const root = dir();
+    root.children.home = dir();
+    root.children.home.children.panini = dir();
+    root.children.home.children.panini.children["readme.txt"] = file("PANINI VFS\nCopyright (C) 1993-2026 Abhishek Choudhary\nType help.\n");
+    root.children.home.children.panini.children["क्रमगुण.pni"] = file("MODULE क्रमगुण\nFUNCTION क्रमगुण(न)\n    IF न <= 1\n        RETURN 1\n    ELSE\n        RETURN न * क्रमगुण(न - 1)\n    END\nEND\n");
+    root.children.tmp = dir();
+    root.children.bin = dir();
+    root.children.etc = dir();
+    const state = { cwd: "/home/panini", root };
+    function split(p) { return String(p).split("/").filter(Boolean); }
+    function abs(path) {
+      if (!path || path === ".") return state.cwd;
+      if (path === "..") { const a = split(state.cwd); a.pop(); return "/" + a.join("/"); }
+      if (path[0] === "/" || /^[A-Za-z]:/.test(path)) return "/" + split(path.replace(/^[A-Za-z]:/, "")).join("/");
+      return (state.cwd.replace(/\/$/, "") + "/" + path).replace(/\/+/g, "/");
     }
-    return (st.cwd.replace(/\/$/, "") + "/" + p).replace(/\/+/g, "/");
-  }
-  function walk(path, mk) {
-    const parts = split(abs(path));
-    let n = st.root;
-    for (const p of parts) {
-      if (!n.c[p]) {
-        if (!mk) return null;
-        n.c[p] = node(true);
+    function walk(parts, create) {
+      let cur = root;
+      for (const p of parts) {
+        if (!cur.children[p]) {
+          if (!create) return null;
+          cur.children[p] = dir();
+        }
+        cur = cur.children[p];
+        if (cur.type !== "dir") return null;
       }
-      n = n.c[p];
+      return cur;
     }
-    return n;
+    function resolve(path) {
+      const full = abs(path);
+      if (full === "/" || full === "") return { path: "/", node: root };
+      const parts = split(full);
+      const name = parts.pop();
+      const d = walk(parts, false);
+      if (!d || !d.children[name]) return null;
+      return { path: "/" + [...parts, name].join("/"), node: d.children[name] };
+    }
+    return {
+      pwd() { return state.cwd; },
+      cd(path) {
+        const n = resolve(path || "/home/panini");
+        if (!n || n.node.type !== "dir") return { ok: false };
+        state.cwd = n.path;
+        return { ok: true };
+      },
+      ls(path) {
+        const n = resolve(path || ".");
+        if (!n || n.node.type !== "dir") return { ok: false, names: [] };
+        return { ok: true, names: Object.keys(n.node.children).sort() };
+      },
+      read(path) {
+        const n = resolve(path);
+        if (!n || n.node.type !== "file") return { ok: false, content: "" };
+        return { ok: true, content: n.node.content };
+      },
+      write(path, content) {
+        const parts = split(abs(path));
+        const name = parts.pop();
+        const d = walk(parts, true);
+        if (!d) return { ok: false };
+        d.children[name] = file(content);
+        return { ok: true };
+      },
+      mkdir(path) { walk(split(abs(path)), true); return { ok: true }; },
+      rm(path) {
+        const parts = split(abs(path));
+        const name = parts.pop();
+        const d = walk(parts, false);
+        if (!d || !d.children[name]) return { ok: false };
+        delete d.children[name];
+        return { ok: true };
+      },
+      tree() { return JSON.stringify(Object.keys(root.children)); },
+    };
   }
-  function parent(path) {
-    const parts = split(abs(path));
-    const name = parts.pop();
-    return { dir: walk("/" + parts.join("/"), true), name };
+  function tokenize(line) {
+    const out = []; let cur = "", q = null;
+    for (const ch of String(line)) {
+      if (q) { if (ch === q) q = null; else cur += ch; }
+      else if (ch === '"' || ch === "'") q = ch;
+      else if (/\s/.test(ch)) { if (cur) { out.push(cur); cur = ""; } }
+      else cur += ch;
+    }
+    if (cur) out.push(cur);
+    return out;
   }
-  function ls(path) {
-    const n = walk(path || st.cwd, false);
-    if (!n || n.t !== "d") return [];
-    return Object.keys(n.c).sort();
-  }
+  const fs = createVfs();
+  const hist = [];
   function bash(line) {
-    const p = line.trim().split(/\s+/);
-    const c = (p[0] || "").toLowerCase();
-    if (!c) return "";
-    if (c === "pwd") return st.cwd;
-    if (c === "ls") return ls(p[1] || ".").join("\n");
-    if (c === "cd") { const n = walk(p[1] || "/home", false); if (n && n.t === "d") st.cwd = abs(p[1]); return st.cwd; }
-    if (c === "cat" || c === "type") { const n = walk(p[1], false); return n && n.t === "f" ? n.x : "not found"; }
-    if (c === "echo") {
-      const j = p.indexOf(">");
-      if (j > 0 && p[j + 1]) {
-        const { dir, name } = parent(p[j + 1]);
-        if (dir) dir.c[name] = { t: "f", x: p.slice(1, j).join(" ") + "\n" };
-        return "";
-      }
-      return p.slice(1).join(" ");
+    const raw = String(line || "").trim();
+    if (!raw) return "";
+    hist.push(raw);
+    const toks = tokenize(raw);
+    let mode = null, target = null, cut = toks.length;
+    for (let i = 0; i < toks.length; i++) {
+      if (toks[i] === ">" || toks[i] === ">>") { mode = toks[i]; target = toks[i + 1]; cut = i; break; }
     }
-    if (c === "mkdir" || c === "md") { walk(p[1], true); return ""; }
-    if (c === "touch") { const { dir, name } = parent(p[1]); dir.c[name] = { t: "f", x: "" }; return ""; }
-    if (c === "rm" || c === "del") { const { dir, name } = parent(p[1]); delete dir.c[name]; return ""; }
-    if (c === "tree") return JSON.stringify(st.root, null, 2);
-    if (c === "help") return "pwd ls cd cat echo mkdir touch rm tree help";
-    return c + ": command not found";
+    const args = toks.slice(0, cut);
+    const c = (args[0] || "").toLowerCase();
+    const a = args.slice(1);
+    let out = "";
+    if (c === "pwd") out = fs.pwd();
+    else if (c === "ls") {
+      const r = fs.ls(a.filter((x) => x[0] !== "-")[0] || ".");
+      out = r.ok ? r.names.join("\n") : "ls: cannot access: No such file or directory";
+    } else if (c === "cd") {
+      const r = fs.cd(a[0] || "/home/panini");
+      out = r.ok ? "" : "bash: cd: " + a[0] + ": No such file or directory";
+    } else if (c === "cat") {
+      out = a.map((p) => { const r = fs.read(p); return r.ok ? r.content : "cat: " + p + ": No such file"; }).join("");
+    } else if (c === "echo") out = a.join(" ");
+    else if (c === "mkdir") fs.mkdir(a[0] || "");
+    else if (c === "touch") { const prev = fs.read(a[0] || "a"); fs.write(a[0] || "a", prev.content || ""); }
+    else if (c === "rm") { const r = fs.rm(a[0]); out = r.ok ? "" : "rm: cannot remove"; }
+    else if (c === "cp") { const s = fs.read(a[0]); if (s.ok) fs.write(a[1], s.content); else out = "cp: No such file"; }
+    else if (c === "mv") { const s = fs.read(a[0]); if (s.ok) { fs.write(a[1], s.content); fs.rm(a[0]); } else out = "mv: No such file"; }
+    else if (c === "tree") out = fs.tree();
+    else if (c === "whoami") out = "panini";
+    else if (c === "uname") out = "PANINI-486";
+    else if (c === "date") out = new Date().toISOString();
+    else if (c === "clear" || c === "cls") out = "\x1b[2J";
+    else if (c === "history") out = hist.map((h, i) => " " + (i + 1) + "  " + h).join("\n");
+    else if (c === "help") out = "pwd ls cd cat echo mkdir touch rm cp mv tree whoami uname date history help";
+    else out = c + ": command not found";
+    if (target) {
+      const prev = mode === ">>" ? (fs.read(target).content || "") : "";
+      fs.write(target, prev + out + (out.endsWith("\n") ? "" : "\n"));
+      return "";
+    }
+    return out;
   }
   function commandCom(line) {
-    const raw = line.trim();
-    if (!raw) return "";
-    const p = raw.split(/\s+/);
-    const c = p[0].toUpperCase();
-    if (c === "DIR") {
-      const names = ls(p[1] || ".");
-      return " Volume in drive C is PANINI\n Directory of " + st.cwd.replace(/\//g, "\\") + "\n\n" +
-        names.map((n) => "  " + n).join("\n") + "\n\t" + names.length + " file(s)";
-    }
-    if (c === "CD" || c === "CHDIR") return bash("cd " + (p[1] || ""));
-    if (c === "TYPE") return bash("cat " + (p[1] || ""));
-    if (c === "ECHO") {
-      if (p[1] === "OFF") return "";
-      return p.slice(1).join(" ");
-    }
+    const t = tokenize(line);
+    const c = (t[0] || "").toUpperCase();
+    if (!c) return "";
+    if (c === "DIR") return bash("ls " + (t[1] || ""));
+    if (c === "CD") return bash("cd " + (t[1] || ""));
+    if (c === "TYPE") return bash("cat " + (t[1] || ""));
+    if (c === "ECHO") return bash("echo " + t.slice(1).join(" "));
     if (c === "CLS") return "\x1b[2J";
-    if (c === "MD" || c === "MKDIR") return bash("mkdir " + p[1]);
-    if (c === "DEL" || c === "ERASE") return bash("rm " + p[1]);
-    if (c === "COPY") {
-      const a = walk(p[1], false);
-      if (!a || a.t !== "f") return "File not found";
-      const { dir, name } = parent(p[2] || p[1] + ".BAK");
-      dir.c[name] = { t: "f", x: a.x };
-      return "        1 file(s) copied";
-    }
-    if (c === "VER") return "PANINI COMMAND.COM\nCopyright (C) 1993-2026 Abhishek Choudhary";
+    if (c === "MD") return bash("mkdir " + t[1]);
+    if (c === "DEL") return bash("rm " + t[1]);
+    if (c === "COPY") return bash("cp " + t[1] + " " + t[2]);
+    if (c === "VER") return "PANINI COMMAND.COM";
     if (c === "HELP") return "DIR CD TYPE ECHO CLS MD DEL COPY VER HELP";
     return "Bad command or file name";
   }
   g.PANINI_CONSOLE = {
-    bash, commandCom, state: st, ls,
-    exec(sh, line) {
-      const L = String(line || "").trim();
-      if (L === "help" || L === "HELP") {
-        return sh === "bash"
-          ? "pwd ls cat echo mkdir cd rm help"
-          : "DIR CD TYPE ECHO CLS MD DEL COPY VER HELP";
-      }
-      return sh === "bash" ? bash(L) : commandCom(L);
-    }
+    bash, commandCom,
+    exec(sh, line) { return sh === "command.com" ? commandCom(line) : bash(line); },
   };
-})(window);
+})(typeof window !== "undefined" ? window : globalThis);
