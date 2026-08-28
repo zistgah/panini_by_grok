@@ -37,6 +37,18 @@ their own licenses. They are not GPL-relicensed.
 - Used as the first executable corpus for ISO_GREEN(C)
 - License: see tarball LICENSE (not relicensed)
 
+## project-ilm/legacy APCISR and Romenagri (retrieved, read-only)
+
+- https://github.com/project-ilm/legacy
+- Vendored at `retrieved/legacy/APCISR` and `retrieved/legacy/Romenagri`
+- GPL (see those trees’ `copying` / `LICENSE`). Not rewritten.
+
+## project-ilm/romenagri library (retrieved, read-only)
+
+- https://github.com/project-ilm/romenagri
+- Vendored at `retrieved/romenagri` (`src/`, `tables/`, `bindings/js/`)
+- Maps are the retrieved tables. This tree does not invent maps.
+
 ## Node.js
 
 - Runtime for the CLI. License: MIT (Node.js project).

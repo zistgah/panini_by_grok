@@ -159,6 +159,21 @@ async function main() {
       await import("../scripts/cycler_torture.mjs");
       return;
     }
+    case "romenagri":
+    case "apcisr": {
+      const { inventory, toRomenagri, toIscii } = await import("../runtime/romenagri.js");
+      const inv = inventory();
+      const sample = args[1] || "";
+      const out = { ...inv, apcisr_read_only: true };
+      if (sample) {
+        const rmn = toRomenagri(sample);
+        out.sample = sample;
+        out.toRomenagri = rmn;
+        out.toIscii = toIscii(rmn);
+      }
+      console.log(JSON.stringify(out, null, 2));
+      return;
+    }
     case "iso-c":
     case "iso": {
       await import("../scripts/iso_c_harness.mjs");

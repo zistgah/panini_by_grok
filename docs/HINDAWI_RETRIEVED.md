@@ -56,8 +56,10 @@ The console is the **text-mode surface** on which vernacular source, assembler
 listings, and debug output must remain the same byte-level objects.
 
 `runtime/vt100.js` + `dosfont.js` in this tree are **not** APCISR.
-APCISR lives in `project-ilm/legacy/APCISR`. Retrieve it. Do not redraw it
-as a CSS terminal.
+APCISR is now in `retrieved/legacy/APCISR` (read-only).
+Romenagri core library is `retrieved/romenagri` plus `retrieved/legacy/Romenagri`.
+Maps: `retrieved/romenagri/tables/` and the lex sources. Do not invent maps.
+
 
 ## Do not put in this note
 
