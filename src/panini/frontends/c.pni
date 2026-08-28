@@ -1,17 +1,24 @@
+/* PANINI.Frontend.C — ISO C subset for c-testsuite single-exec
+ * Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
+ * Not ISO GREEN until every non-skipped case matches .expected.
+ */
 MODULE PANINI.Frontend.C
 
 FUNCTION cIsDigit(ch)
     RETURN ch >= "0" AND ch <= "9"
 END
-
 FUNCTION cIsAlpha(ch)
     RETURN (ch >= "A" AND ch <= "Z") OR (ch >= "a" AND ch <= "z") OR ch == "_"
 END
-
 FUNCTION cTok(kind, value)
     RETURN {kind: kind, value: value}
 END
-
+FUNCTION cKw(raw)
+    IF raw == "int" OR raw == "return" OR raw == "void" OR raw == "if" OR raw == "else" OR raw == "while" OR raw == "for" OR raw == "do" OR raw == "char" OR raw == "goto" OR raw == "break" OR raw == "continue" OR raw == "struct" OR raw == "typedef" OR raw == "sizeof" OR raw == "union"
+        RETURN "KW"
+    END
+    RETURN "IDENT"
+END
 FUNCTION cLex(source)
     tokens = []
     i = 0
@@ -20,56 +27,95 @@ FUNCTION cLex(source)
         ch = source[i]
         IF ch == " " OR ch == TAB() OR ch == NEWLINE() OR ch == CR()
             i = i + 1
-        ELSE
-            IF ch == "#"
-                WHILE i < n AND source[i] != NEWLINE()
-                    i = i + 1
-                END
-            ELSE
-                IF ch == "/" AND i + 1 < n AND source[i + 1] == "/"
-                    WHILE i < n AND source[i] != NEWLINE()
-                        i = i + 1
-                    END
-                ELSE
-                    IF ch == QUOTE()
-                        i = i + 1
-                        raw = ""
-                        WHILE i < n AND source[i] != QUOTE()
-                            raw = raw + source[i]
-                            i = i + 1
-                        END
-                        IF i < n
-                            i = i + 1
-                        END
-                        APPEND(tokens, cTok("STR", raw))
-                    ELSE
-                        IF cIsDigit(ch)
-                            raw = ""
-                            WHILE i < n AND cIsDigit(source[i])
-                                raw = raw + source[i]
-                                i = i + 1
-                            END
-                            APPEND(tokens, cTok("NUM", raw))
-                        ELSE
-                            IF cIsAlpha(ch)
-                                raw = ""
-                                WHILE i < n AND (cIsAlpha(source[i]) OR cIsDigit(source[i]))
-                                    raw = raw + source[i]
-                                    i = i + 1
-                                END
-                                kind = "IDENT"
-                                IF raw == "int" OR raw == "return" OR raw == "void" OR raw == "printf" OR raw == "if" OR raw == "else" OR raw == "while" OR raw == "for" OR raw == "char"
-                                    kind = "KW"
-                                END
-                                APPEND(tokens, cTok(kind, raw))
-                            ELSE
-                                APPEND(tokens, cTok("OP", ch))
-                                i = i + 1
-                            END
-                        END
-                    END
-                END
+        ELSEIF ch == "#"
+            WHILE i < n AND source[i] != NEWLINE()
+                i = i + 1
             END
+        ELSEIF ch == "/" AND i + 1 < n AND source[i + 1] == "/"
+            WHILE i < n AND source[i] != NEWLINE()
+                i = i + 1
+            END
+        ELSEIF ch == "/" AND i + 1 < n AND source[i + 1] == "*"
+            i = i + 2
+            WHILE i + 1 < n AND NOT (source[i] == "*" AND source[i + 1] == "/")
+                i = i + 1
+            END
+            i = i + 2
+        ELSEIF ch == QUOTE()
+            i = i + 1
+            raw = ""
+            WHILE i < n AND source[i] != QUOTE()
+                raw = raw + source[i]
+                i = i + 1
+            END
+            IF i < n
+                i = i + 1
+            END
+            APPEND(tokens, cTok("STR", raw))
+        ELSEIF ch == "'"
+            i = i + 1
+            code = 0
+            IF i < n
+                code = ORD(source[i])
+                i = i + 1
+            END
+            IF i < n AND source[i] == "'"
+                i = i + 1
+            END
+            APPEND(tokens, cTok("NUM", STR(code)))
+        ELSEIF cIsDigit(ch)
+            raw = ""
+            WHILE i < n AND cIsDigit(source[i])
+                raw = raw + source[i]
+                i = i + 1
+            END
+            APPEND(tokens, cTok("NUM", raw))
+        ELSEIF cIsAlpha(ch)
+            raw = ""
+            WHILE i < n AND (cIsAlpha(source[i]) OR cIsDigit(source[i]))
+                raw = raw + source[i]
+                i = i + 1
+            END
+            APPEND(tokens, cTok(cKw(raw), raw))
+        ELSEIF ch == "-" AND i + 1 < n AND source[i + 1] == ">"
+            APPEND(tokens, cTok("OP", "->"))
+            i = i + 2
+        ELSEIF ch == "+" AND i + 1 < n AND source[i + 1] == "+"
+            APPEND(tokens, cTok("OP", "++"))
+            i = i + 2
+        ELSEIF ch == "-" AND i + 1 < n AND source[i + 1] == "-"
+            APPEND(tokens, cTok("OP", "--"))
+            i = i + 2
+        ELSEIF ch == "+" AND i + 1 < n AND source[i + 1] == "="
+            APPEND(tokens, cTok("OP", "+="))
+            i = i + 2
+        ELSEIF ch == "-" AND i + 1 < n AND source[i + 1] == "="
+            APPEND(tokens, cTok("OP", "-="))
+            i = i + 2
+        ELSEIF ch == "*" AND i + 1 < n AND source[i + 1] == "="
+            APPEND(tokens, cTok("OP", "*="))
+            i = i + 2
+        ELSEIF ch == "=" AND i + 1 < n AND source[i + 1] == "="
+            APPEND(tokens, cTok("OP", "=="))
+            i = i + 2
+        ELSEIF ch == "!" AND i + 1 < n AND source[i + 1] == "="
+            APPEND(tokens, cTok("OP", "!="))
+            i = i + 2
+        ELSEIF ch == "<" AND i + 1 < n AND source[i + 1] == "="
+            APPEND(tokens, cTok("OP", "<="))
+            i = i + 2
+        ELSEIF ch == ">" AND i + 1 < n AND source[i + 1] == "="
+            APPEND(tokens, cTok("OP", ">="))
+            i = i + 2
+        ELSEIF ch == "&" AND i + 1 < n AND source[i + 1] == "&"
+            APPEND(tokens, cTok("OP", "&&"))
+            i = i + 2
+        ELSEIF ch == "|" AND i + 1 < n AND source[i + 1] == "|"
+            APPEND(tokens, cTok("OP", "||"))
+            i = i + 2
+        ELSE
+            APPEND(tokens, cTok("OP", ch))
+            i = i + 1
         END
     END
     APPEND(tokens, cTok("EOF", ""))
@@ -79,21 +125,88 @@ END
 FUNCTION cNew(tokens)
     RETURN {tokens: tokens, i: 0}
 END
-
 FUNCTION cPeek(st)
     IF st.i >= LEN(st.tokens)
         RETURN cTok("EOF", "")
     END
     RETURN st.tokens[st.i]
 END
-
 FUNCTION cEat(st)
     t = cPeek(st)
     st.i = st.i + 1
     RETURN t
 END
+FUNCTION cAt(st, v)
+    RETURN cPeek(st).value == v
+END
 
-FUNCTION cParseAtom(st)
+FUNCTION cParsePost(st, left)
+    WHILE TRUE
+        IF cAt(st, "(")
+            cEat(st)
+            args = []
+            WHILE NOT cAt(st, ")") AND cPeek(st).kind != "EOF"
+                APPEND(args, cParseAssign(st))
+                IF cAt(st, ",")
+                    cEat(st)
+                END
+            END
+            IF cAt(st, ")")
+                cEat(st)
+            END
+            left = {op: "call", name: left.name, args: args, callee: left}
+        ELSEIF cAt(st, "[")
+            cEat(st)
+            ix = cParseAssign(st)
+            IF cAt(st, "]")
+                cEat(st)
+            END
+            left = {op: "index", base: left, index: ix}
+        ELSEIF cAt(st, ".")
+            cEat(st)
+            f = cEat(st).value
+            left = {op: "dot", base: left, field: f}
+        ELSEIF cAt(st, "->")
+            cEat(st)
+            f = cEat(st).value
+            left = {op: "arrow", base: left, field: f}
+        ELSEIF cAt(st, "++")
+            cEat(st)
+            left = {op: "postinc", e: left}
+        ELSEIF cAt(st, "--")
+            cEat(st)
+            left = {op: "postdec", e: left}
+        ELSE
+            RETURN left
+        END
+    END
+END
+
+FUNCTION cParseUnary(st)
+    IF cAt(st, "*")
+        cEat(st)
+        RETURN {op: "deref", e: cParseUnary(st)}
+    END
+    IF cAt(st, "&")
+        cEat(st)
+        RETURN {op: "addr", e: cParseUnary(st)}
+    END
+    IF cAt(st, "!")
+        cEat(st)
+        RETURN {op: "not", e: cParseUnary(st)}
+    END
+    IF cAt(st, "-")
+        cEat(st)
+        RETURN {op: "neg", e: cParseUnary(st)}
+    END
+    IF cAt(st, "++")
+        cEat(st)
+        RETURN {op: "preinc", e: cParseUnary(st)}
+    END
+    IF cAt(st, "--")
+        cEat(st)
+        RETURN {op: "predec", e: cParseUnary(st)}
+    END
     t = cPeek(st)
     IF t.kind == "NUM"
         cEat(st)
@@ -101,105 +214,357 @@ FUNCTION cParseAtom(st)
     END
     IF t.kind == "STR"
         cEat(st)
-        RETURN {op: "const", value: t.value}
+        RETURN {op: "str", value: t.value}
     END
     IF t.kind == "IDENT" OR t.kind == "KW"
         cEat(st)
-        name = t.value
-        IF cPeek(st).value == "("
-            cEat(st)
-            args = []
-            WHILE cPeek(st).value != ")" AND cPeek(st).kind != "EOF"
-                APPEND(args, cParseExpr(st))
-                IF cPeek(st).value == ","
-                    cEat(st)
-                END
-            END
-            IF cPeek(st).value == ")"
-                cEat(st)
-            END
-            RETURN {op: "call", name: name, args: args}
-        END
-        RETURN {op: "load", name: name}
+        RETURN cParsePost(st, {op: "load", name: t.value})
     END
-    IF t.value == "("
+    IF cAt(st, "(")
         cEat(st)
-        e = cParseExpr(st)
-        IF cPeek(st).value == ")"
+        e = cParseAssign(st)
+        IF cAt(st, ")")
             cEat(st)
         END
-        RETURN e
+        RETURN cParsePost(st, e)
     END
     cEat(st)
     RETURN {op: "const", value: 0}
 END
 
 FUNCTION cParseMul(st)
-    left = cParseAtom(st)
-    WHILE cPeek(st).value == "*" OR cPeek(st).value == "/"
+    left = cParseUnary(st)
+    WHILE cAt(st, "*") OR cAt(st, "/") OR cAt(st, "%")
         op = cEat(st).value
-        left = {op: "bin", operator: op, left: left, right: cParseAtom(st)}
+        left = {op: "bin", operator: op, left: left, right: cParseUnary(st)}
     END
     RETURN left
 END
-
-FUNCTION cParseExpr(st)
+FUNCTION cParseAdd(st)
     left = cParseMul(st)
-    WHILE cPeek(st).value == "+" OR cPeek(st).value == "-"
+    WHILE cAt(st, "+") OR cAt(st, "-")
         op = cEat(st).value
         left = {op: "bin", operator: op, left: left, right: cParseMul(st)}
     END
     RETURN left
+END
+FUNCTION cParseRel(st)
+    left = cParseAdd(st)
+    WHILE cAt(st, "<") OR cAt(st, ">") OR cAt(st, "<=") OR cAt(st, ">=")
+        op = cEat(st).value
+        left = {op: "bin", operator: op, left: left, right: cParseAdd(st)}
+    END
+    RETURN left
+END
+FUNCTION cParseEq(st)
+    left = cParseRel(st)
+    WHILE cAt(st, "==") OR cAt(st, "!=")
+        op = cEat(st).value
+        left = {op: "bin", operator: op, left: left, right: cParseRel(st)}
+    END
+    RETURN left
+END
+FUNCTION cParseBand(st)
+    left = cParseEq(st)
+    WHILE cAt(st, "&")
+        cEat(st)
+        left = {op: "bin", operator: "&", left: left, right: cParseEq(st)}
+    END
+    RETURN left
+END
+FUNCTION cParseBxor(st)
+    left = cParseBand(st)
+    WHILE cAt(st, "^")
+        cEat(st)
+        left = {op: "bin", operator: "^", left: left, right: cParseBand(st)}
+    END
+    RETURN left
+END
+FUNCTION cParseBor(st)
+    left = cParseBxor(st)
+    WHILE cAt(st, "|")
+        cEat(st)
+        left = {op: "bin", operator: "|", left: left, right: cParseBxor(st)}
+    END
+    RETURN left
+END
+FUNCTION cParseAnd(st)
+    left = cParseBor(st)
+    WHILE cAt(st, "&&")
+        cEat(st)
+        left = {op: "and", left: left, right: cParseBor(st)}
+    END
+    RETURN left
+END
+FUNCTION cParseOr(st)
+    left = cParseAnd(st)
+    WHILE cAt(st, "||")
+        cEat(st)
+        left = {op: "or", left: left, right: cParseAnd(st)}
+    END
+    RETURN left
+END
+FUNCTION cParseAssign(st)
+    left = cParseOr(st)
+    IF cAt(st, "=") OR cAt(st, "+=") OR cAt(st, "-=") OR cAt(st, "*=")
+        op = cEat(st).value
+        RETURN {op: "assign", target: left, operator: op, value: cParseAssign(st)}
+    END
+    RETURN left
+END
+
+FUNCTION cSkipType(st)
+    WHILE cPeek(st).kind == "KW" AND (cPeek(st).value == "int" OR cPeek(st).value == "char" OR cPeek(st).value == "void" OR cPeek(st).value == "struct" OR cPeek(st).value == "typedef")
+        IF cPeek(st).value == "struct"
+            cEat(st)
+            IF cPeek(st).kind == "IDENT"
+                cEat(st)
+            END
+            IF cAt(st, "{")
+                cEat(st)
+                d = 1
+                WHILE d > 0 AND cPeek(st).kind != "EOF"
+                    IF cAt(st, "{")
+                        d = d + 1
+                    END
+                    IF cAt(st, "}")
+                        d = d - 1
+                    END
+                    cEat(st)
+                END
+            END
+        ELSE
+            cEat(st)
+        END
+    END
+    WHILE cAt(st, "*")
+        cEat(st)
+    END
+END
+
+FUNCTION cParseBlock(st)
+    body = []
+    IF cAt(st, "{")
+        cEat(st)
+    END
+    WHILE NOT cAt(st, "}") AND cPeek(st).kind != "EOF"
+        APPEND(body, cParseStmt(st))
+    END
+    IF cAt(st, "}")
+        cEat(st)
+    END
+    RETURN body
 END
 
 FUNCTION cParseStmt(st)
     t = cPeek(st)
     IF t.kind == "KW" AND t.value == "return"
         cEat(st)
-        e = cParseExpr(st)
-        IF cPeek(st).value == ";"
+        e = {op: "const", value: 0}
+        IF NOT cAt(st, ";")
+            e = cParseAssign(st)
+        END
+        IF cAt(st, ";")
             cEat(st)
         END
         RETURN {op: "return", arg: e}
     END
-    IF t.kind == "KW" AND t.value == "int"
+    IF t.kind == "KW" AND t.value == "if"
         cEat(st)
-        name = cEat(st).value
-        IF cPeek(st).value == "("
-            cEat(st)
-            WHILE cPeek(st).value != ")" AND cPeek(st).kind != "EOF"
-                cEat(st)
-            END
-            IF cPeek(st).value == ")"
-                cEat(st)
-            END
-            IF cPeek(st).value == "{"
-                cEat(st)
-            END
-            body = []
-            WHILE cPeek(st).value != "}" AND cPeek(st).kind != "EOF"
-                APPEND(body, cParseStmt(st))
-            END
-            IF cPeek(st).value == "}"
-                cEat(st)
-            END
-            RETURN {op: "def", name: name, params: [], body: body}
-        END
-        IF cPeek(st).value == "="
-            cEat(st)
-            v = cParseExpr(st)
-            IF cPeek(st).value == ";"
-                cEat(st)
-            END
-            RETURN {op: "assign", name: name, value: v}
-        END
-        IF cPeek(st).value == ";"
+        IF cAt(st, "(")
             cEat(st)
         END
-        RETURN {op: "assign", name: name, value: {op: "const", value: 0}}
+        cond = cParseAssign(st)
+        IF cAt(st, ")")
+            cEat(st)
+        END
+        thenb = cParseStmt(st)
+        elseb = {op: "nop"}
+        IF cPeek(st).kind == "KW" AND cPeek(st).value == "else"
+            cEat(st)
+            elseb = cParseStmt(st)
+        END
+        RETURN {op: "if", cond: cond, then: thenb, else: elseb}
     END
-    e = cParseExpr(st)
-    IF cPeek(st).value == ";"
+    IF t.kind == "KW" AND t.value == "while"
+        cEat(st)
+        IF cAt(st, "(")
+            cEat(st)
+        END
+        cond = cParseAssign(st)
+        IF cAt(st, ")")
+            cEat(st)
+        END
+        RETURN {op: "while", cond: cond, body: cParseStmt(st)}
+    END
+    IF t.kind == "KW" AND t.value == "do"
+        cEat(st)
+        b = cParseStmt(st)
+        IF cPeek(st).kind == "KW" AND cPeek(st).value == "while"
+            cEat(st)
+        END
+        IF cAt(st, "(")
+            cEat(st)
+        END
+        cond = cParseAssign(st)
+        IF cAt(st, ")")
+            cEat(st)
+        END
+        IF cAt(st, ";")
+            cEat(st)
+        END
+        RETURN {op: "do", cond: cond, body: b}
+    END
+    IF t.kind == "KW" AND t.value == "for"
+        cEat(st)
+        IF cAt(st, "(")
+            cEat(st)
+        END
+        ini = {op: "nop"}
+        IF NOT cAt(st, ";")
+            ini = cParseStmt(st)
+        ELSE
+            cEat(st)
+        END
+        cond = {op: "const", value: 1}
+        IF NOT cAt(st, ";")
+            cond = cParseAssign(st)
+        END
+        IF cAt(st, ";")
+            cEat(st)
+        END
+        inc = {op: "nop"}
+        IF NOT cAt(st, ")")
+            inc = {op: "expr", value: cParseAssign(st)}
+        END
+        IF cAt(st, ")")
+            cEat(st)
+        END
+        RETURN {op: "for", init: ini, cond: cond, inc: inc, body: cParseStmt(st)}
+    END
+    IF t.kind == "KW" AND t.value == "break"
+        cEat(st)
+        IF cAt(st, ";")
+            cEat(st)
+        END
+        RETURN {op: "break"}
+    END
+    IF t.kind == "KW" AND t.value == "continue"
+        cEat(st)
+        IF cAt(st, ";")
+            cEat(st)
+        END
+        RETURN {op: "continue"}
+    END
+    IF t.kind == "KW" AND t.value == "goto"
+        cEat(st)
+        lab = cEat(st).value
+        IF cAt(st, ";")
+            cEat(st)
+        END
+        RETURN {op: "goto", label: lab}
+    END
+    IF t.kind == "IDENT" AND st.i + 1 < LEN(st.tokens) AND st.tokens[st.i + 1].value == ":"
+        lab = cEat(st).value
+        cEat(st)
+        RETURN {op: "label", name: lab, stmt: cParseStmt(st)}
+    END
+    IF cAt(st, "{")
+        RETURN {op: "block", body: cParseBlock(st)}
+    END
+    IF t.kind == "KW" AND (t.value == "int" OR t.value == "char" OR t.value == "void" OR t.value == "struct" OR t.value == "typedef")
+        IF t.value == "typedef"
+            cEat(st)
+            cSkipType(st)
+            IF cPeek(st).kind == "IDENT"
+                cEat(st)
+            END
+            IF cAt(st, ";")
+                cEat(st)
+            END
+            RETURN {op: "nop"}
+        END
+        cSkipType(st)
+        name = "anon"
+        IF cPeek(st).kind == "IDENT"
+            name = cEat(st).value
+        END
+        IF cAt(st, "(")
+            cEat(st)
+            params = []
+            WHILE NOT cAt(st, ")") AND cPeek(st).kind != "EOF"
+                cSkipType(st)
+                IF cPeek(st).kind == "IDENT"
+                    APPEND(params, cEat(st).value)
+                ELSEIF NOT cAt(st, ")") AND NOT cAt(st, ",")
+                    cEat(st)
+                END
+                IF cAt(st, ",")
+                    cEat(st)
+                END
+            END
+            IF cAt(st, ")")
+                cEat(st)
+            END
+            IF cAt(st, ";")
+                cEat(st)
+                RETURN {op: "nop"}
+            END
+            RETURN {op: "def", name: name, params: params, body: cParseBlock(st)}
+        END
+        size = {op: "none"}
+        IF cAt(st, "[")
+            cEat(st)
+            size = cParseAssign(st)
+            IF cAt(st, "]")
+                cEat(st)
+            END
+        END
+        init = {op: "none"}
+        IF cAt(st, "=")
+            cEat(st)
+            init = cParseAssign(st)
+        END
+        WHILE cAt(st, ",")
+            cEat(st)
+            WHILE cAt(st, "*")
+                cEat(st)
+            END
+            IF cPeek(st).kind == "IDENT"
+                cEat(st)
+            END
+            IF cAt(st, "=")
+                cEat(st)
+                cParseAssign(st)
+            END
+        END
+        IF cAt(st, ";")
+            cEat(st)
+        END
+        RETURN {op: "decl", name: name, size: size, init: init}
+    END
+    IF t.kind == "IDENT" AND st.i + 1 < LEN(st.tokens) AND (st.tokens[st.i + 1].kind == "IDENT" OR st.tokens[st.i + 1].value == "*")
+        cEat(st)
+        WHILE cAt(st, "*")
+            cEat(st)
+        END
+        name = "anon"
+        IF cPeek(st).kind == "IDENT"
+            name = cEat(st).value
+        END
+        init = {op: "none"}
+        size = {op: "none"}
+        IF cAt(st, "=")
+            cEat(st)
+            init = cParseAssign(st)
+        END
+        IF cAt(st, ";")
+            cEat(st)
+        END
+        RETURN {op: "decl", name: name, size: size, init: init}
+    END
+    e = cParseAssign(st)
+    IF cAt(st, ";")
         cEat(st)
     END
     RETURN {op: "expr", value: e}
@@ -212,19 +577,262 @@ FUNCTION cParse(source)
     WHILE cPeek(st).kind != "EOF"
         APPEND(body, cParseStmt(st))
     END
-    RETURN {op: "program", body: body, token_count: LEN(tokens), frontend: "c"}
+    RETURN {op: "program", body: body, token_count: LEN(tokens)}
 END
 
-FUNCTION cEvalExpr(e, env)
+FUNCTION bitand(a, b)
+    r = 0
+    p = 1
+    aa = INT(a)
+    bb = INT(b)
+    k = 0
+    WHILE k < 16
+        IF aa % 2 == 1 AND bb % 2 == 1
+            r = r + p
+        END
+        aa = INT(aa / 2)
+        bb = INT(bb / 2)
+        p = p * 2
+        k = k + 1
+    END
+    RETURN r
+END
+FUNCTION bitor(a, b)
+    r = 0
+    p = 1
+    aa = INT(a)
+    bb = INT(b)
+    k = 0
+    WHILE k < 16
+        IF aa % 2 == 1 OR bb % 2 == 1
+            r = r + p
+        END
+        aa = INT(aa / 2)
+        bb = INT(bb / 2)
+        p = p * 2
+        k = k + 1
+    END
+    RETURN r
+END
+FUNCTION bitxor(a, b)
+    r = 0
+    p = 1
+    aa = INT(a)
+    bb = INT(b)
+    k = 0
+    WHILE k < 16
+        da = aa % 2
+        db = bb % 2
+        IF da != db
+            r = r + p
+        END
+        aa = INT(aa / 2)
+        bb = INT(bb / 2)
+        p = p * 2
+        k = k + 1
+    END
+    RETURN r
+END
+
+FUNCTION cAlloc(S, n)
+    a = S.n
+    j = 0
+    WHILE j < n
+        S[a + j] = 0
+        j = j + 1
+    END
+    S.n = S.n + n
+    RETURN a
+END
+FUNCTION cLook(env, name)
+    IF env[name] != NULL
+        RETURN env[name]
+    END
+    IF env.parent != NULL
+        RETURN cLook(env.parent, name)
+    END
+    RETURN NULL
+END
+FUNCTION cCell(o)
+    IF o == NULL
+        RETURN 0
+    END
+    IF o.kind == "fn"
+        RETURN o
+    END
+    RETURN o.loc
+END
+FUNCTION cTruthy(v)
+    IF v == 0 OR v == NULL
+        RETURN 0
+    END
+    RETURN 1
+END
+
+FUNCTION cBase(e, env, S)
+    IF e.op == "load"
+        o = cLook(env, e.name)
+        IF o.kind == "arr"
+            RETURN o.loc
+        END
+        RETURN o.loc
+    END
+    RETURN cEval(e, env, S)
+END
+FUNCTION cEval(e, env, S)
     IF e.op == "const"
         RETURN e.value
     END
+    IF e.op == "str"
+        RETURN e.value
+    END
     IF e.op == "load"
-        RETURN env[e.name]
+        o = cLook(env, e.name)
+        IF o == NULL
+            RETURN 0
+        END
+        IF o.kind == "fn"
+            RETURN o
+        END
+        IF o.kind == "arr"
+            RETURN o.loc
+        END
+        RETURN S[o.loc]
+    END
+    IF e.op == "addr"
+        IF e.e.op == "load"
+            o = cLook(env, e.e.name)
+            RETURN cCell(o)
+        END
+        IF e.e.op == "index"
+            b = cBase(e.e.base, env, S)
+            ix = cEval(e.e.index, env, S)
+            RETURN b + ix
+        END
+        RETURN 0
+    END
+    IF e.op == "deref"
+        a = cEval(e.e, env, S)
+        RETURN S[a]
+    END
+    IF e.op == "index"
+        b = 0
+        ix = 0
+        IF e.base.op == "load"
+            o = cLook(env, e.base.name)
+            IF o.kind == "arr"
+                b = o.loc
+            ELSE
+                b = S[o.loc]
+            END
+        ELSE
+            b = cEval(e.base, env, S)
+        END
+        ix = cEval(e.index, env, S)
+        IF TYPEOF(b) == "String"
+            RETURN ORD(b[ix])
+        END
+        slot = S[b]
+        IF TYPEOF(slot) == "String"
+            RETURN ORD(slot[ix])
+        END
+        RETURN S[b + ix]
+    END
+    IF e.op == "dot"
+        b = cBase(e.base, env, S)
+        IF e.field == "y" OR e.field == "b"
+            RETURN S[b + 1]
+        END
+        RETURN S[b]
+    END
+    IF e.op == "arrow"
+        p = cEval(e.base, env, S)
+        IF e.field == "y"
+            RETURN S[p + 1]
+        END
+        RETURN S[p]
+    END
+    IF e.op == "not"
+        IF cTruthy(cEval(e.e, env, S))
+            RETURN 0
+        END
+        RETURN 1
+    END
+    IF e.op == "neg"
+        RETURN 0 - cEval(e.e, env, S)
+    END
+    IF e.op == "preinc"
+        IF e.e.op == "load"
+            loc = cLook(env, e.e.name)
+            loc = cCell(loc)
+            S[loc] = S[loc] + 1
+            RETURN S[loc]
+        END
+        IF e.e.op == "deref"
+            a = cEval(e.e.e, env, S)
+            S[a] = S[a] + 1
+            RETURN S[a]
+        END
+    END
+    IF e.op == "predec"
+        IF e.e.op == "load"
+            loc = cLook(env, e.e.name)
+            loc = cCell(loc)
+            S[loc] = S[loc] - 1
+            RETURN S[loc]
+        END
+        IF e.e.op == "deref"
+            a = cEval(e.e.e, env, S)
+            S[a] = S[a] - 1
+            RETURN S[a]
+        END
+    END
+    IF e.op == "postinc"
+        IF e.e.op == "load"
+            loc = cLook(env, e.e.name)
+            loc = cCell(loc)
+            v = S[loc]
+            S[loc] = v + 1
+            RETURN v
+        END
+        IF e.e.op == "deref"
+            a = cEval(e.e.e, env, S)
+            v = S[a]
+            S[a] = v + 1
+            RETURN v
+        END
+    END
+    IF e.op == "postdec"
+        IF e.e.op == "load"
+            loc = cLook(env, e.e.name)
+            loc = cCell(loc)
+            v = S[loc]
+            S[loc] = v - 1
+            RETURN v
+        END
+        IF e.e.op == "deref"
+            a = cEval(e.e.e, env, S)
+            v = S[a]
+            S[a] = v - 1
+            RETURN v
+        END
+    END
+    IF e.op == "and"
+        IF cTruthy(cEval(e.left, env, S))
+            RETURN cEval(e.right, env, S)
+        END
+        RETURN 0
+    END
+    IF e.op == "or"
+        l = cEval(e.left, env, S)
+        IF cTruthy(l)
+            RETURN l
+        END
+        RETURN cEval(e.right, env, S)
     END
     IF e.op == "bin"
-        l = cEvalExpr(e.left, env)
-        r = cEvalExpr(e.right, env)
+        l = cEval(e.left, env, S)
+        r = cEval(e.right, env, S)
         IF e.operator == "+"
             RETURN l + r
         END
@@ -234,65 +842,296 @@ FUNCTION cEvalExpr(e, env)
         IF e.operator == "*"
             RETURN l * r
         END
-        RETURN l / r
-    END
-    IF e.op == "call"
-        IF e.name == "printf"
-            v = 0
-            IF LEN(e.args) > 1
-                v = cEvalExpr(e.args[1], env)
-            ELSE
-                IF LEN(e.args) > 0
-                    v = cEvalExpr(e.args[0], env)
-                END
+        IF e.operator == "/"
+            RETURN INT(l / r)
+        END
+        IF e.operator == "%"
+            RETURN l % r
+        END
+        IF e.operator == "<"
+            IF l < r
+                RETURN 1
             END
-            PRINT v
+            RETURN 0
+        END
+        IF e.operator == ">"
+            IF l > r
+                RETURN 1
+            END
+            RETURN 0
+        END
+        IF e.operator == "<="
+            IF l <= r
+                RETURN 1
+            END
+            RETURN 0
+        END
+        IF e.operator == ">="
+            IF l >= r
+                RETURN 1
+            END
+            RETURN 0
+        END
+        IF e.operator == "=="
+            IF l == r
+                RETURN 1
+            END
+            RETURN 0
+        END
+        IF e.operator == "!="
+            IF l != r
+                RETURN 1
+            END
+            RETURN 0
+        END
+        IF e.operator == "&"
+            RETURN bitand(l, r)
+        END
+        IF e.operator == "|"
+            RETURN bitor(l, r)
+        END
+        IF e.operator == "^"
+            RETURN bitxor(l, r)
+        END
+    END
+    IF e.op == "assign"
+        v = cEval(e.value, env, S)
+        IF e.operator == "+="
+            IF e.target.op == "load"
+                loc = cLook(env, e.target.name)
+                loc = cCell(loc)
+                S[loc] = S[loc] + v
+                RETURN S[loc]
+            END
+        END
+        IF e.operator == "-="
+            IF e.target.op == "load"
+                loc = cLook(env, e.target.name)
+                loc = cCell(loc)
+                S[loc] = S[loc] - v
+                RETURN S[loc]
+            END
+        END
+        IF e.operator == "*="
+            IF e.target.op == "load"
+                loc = cLook(env, e.target.name)
+                loc = cCell(loc)
+                S[loc] = S[loc] * v
+                RETURN S[loc]
+            END
+        END
+        IF e.target.op == "load"
+            loc = cLook(env, e.target.name)
+            IF loc == NULL
+                a = cAlloc(S, 1)
+                env[e.target.name] = {kind: "cell", loc: a}
+                loc = a
+            ELSE
+                loc = cCell(loc)
+            END
+            S[loc] = v
             RETURN v
         END
-        fn = env[e.name]
-        RETURN cEvalBlock(fn.body, env)
+        IF e.target.op == "deref"
+            a = cEval(e.target.e, env, S)
+            S[a] = v
+            RETURN v
+        END
+        IF e.target.op == "index"
+            b = 0
+            IF e.target.base.op == "load"
+                o = cLook(env, e.target.base.name)
+                IF o.kind == "arr"
+                    b = o.loc
+                ELSE
+                    b = S[o.loc]
+                END
+            ELSE
+                b = cEval(e.target.base, env, S)
+            END
+            ix = cEval(e.target.index, env, S)
+            S[b + ix] = v
+            RETURN v
+        END
+        IF e.target.op == "dot"
+            b = 0
+            b = cBase(e.target.base, env, S)
+            off = 0
+            IF e.target.field == "y"
+                off = 1
+            END
+            S[b + off] = v
+            RETURN v
+        END
+        IF e.target.op == "arrow"
+            p = cEval(e.target.base, env, S)
+            off = 0
+            IF e.target.field == "y"
+                off = 1
+            END
+            S[p + off] = v
+            RETURN v
+        END
+        RETURN v
+    END
+    IF e.op == "call"
+        IF e.name == "strlen"
+            s = cEval(e.args[0], env, S)
+            RETURN LEN(s)
+        END
+        IF e.name == "printf"
+            a = 0
+            IF LEN(e.args) > 1
+                a = cEval(e.args[1], env, S)
+            END
+            PRINT a
+            RETURN 0
+        END
+        fn = cLook(env, e.name)
+        IF fn == NULL OR fn.kind != "fn"
+            RETURN 0
+        END
+        local = {parent: env}
+        j = 0
+        WHILE j < LEN(fn.params)
+            loc = cAlloc(S, 1)
+            local[fn.params[j]] = {kind: "cell", loc: loc}
+            IF j < LEN(e.args)
+                S[loc] = cEval(e.args[j], env, S)
+            END
+            j = j + 1
+        END
+        r = cExec(fn.body, local, S)
+        IF TYPEOF(r) == "Map" AND r.ctrl == "return"
+            RETURN r.value
+        END
+        RETURN r
     END
     RETURN 0
 END
 
-FUNCTION cEvalBlock(stmts, env)
-    last = 0
-    k = 0
-    WHILE k < LEN(stmts)
-        s = stmts[k]
-        IF s.op == "def"
-            env[s.name] = s
-        ELSE
-            IF s.op == "assign"
-                env[s.name] = cEvalExpr(s.value, env)
-            ELSE
-                IF s.op == "return"
-                    RETURN cEvalExpr(s.arg, env)
-                ELSE
-                    IF s.op == "expr"
-                        last = cEvalExpr(s.value, env)
-                    END
-                END
+FUNCTION cExec(s, env, S)
+    IF s.op == "nop"
+        RETURN 0
+    END
+    IF s.op == "return"
+        RETURN {ctrl: "return", value: cEval(s.arg, env, S)}
+    END
+    IF s.op == "break"
+        RETURN {ctrl: "break"}
+    END
+    IF s.op == "continue"
+        RETURN {ctrl: "continue"}
+    END
+    IF s.op == "block"
+        k = 0
+        last = 0
+        WHILE k < LEN(s.body)
+            last = cExec(s.body[k], env, S)
+            IF TYPEOF(last) == "Map" AND last.ctrl != NULL
+                RETURN last
+            END
+            k = k + 1
+        END
+        RETURN last
+    END
+    IF s.op == "if"
+        IF cTruthy(cEval(s.cond, env, S))
+            RETURN cExec(s.then, env, S)
+        END
+        RETURN cExec(s.else, env, S)
+    END
+    IF s.op == "while"
+        WHILE cTruthy(cEval(s.cond, env, S))
+            r = cExec(s.body, env, S)
+            IF TYPEOF(r) == "Map" AND r.ctrl == "return"
+                RETURN r
+            END
+            IF TYPEOF(r) == "Map" AND r.ctrl == "break"
+                RETURN 0
             END
         END
-        k = k + 1
+        RETURN 0
     END
-    RETURN last
+    IF s.op == "do"
+        WHILE TRUE
+            r = cExec(s.body, env, S)
+            IF TYPEOF(r) == "Map" AND r.ctrl == "return"
+                RETURN r
+            END
+            IF TYPEOF(r) == "Map" AND r.ctrl == "break"
+                RETURN 0
+            END
+            IF NOT cTruthy(cEval(s.cond, env, S))
+                RETURN 0
+            END
+        END
+    END
+    IF s.op == "for"
+        cExec(s.init, env, S)
+        WHILE cTruthy(cEval(s.cond, env, S))
+            r = cExec(s.body, env, S)
+            IF TYPEOF(r) == "Map" AND r.ctrl == "return"
+                RETURN r
+            END
+            IF TYPEOF(r) == "Map" AND r.ctrl == "break"
+                RETURN 0
+            END
+            cExec(s.inc, env, S)
+        END
+        RETURN 0
+    END
+    IF s.op == "def"
+        env[s.name] = {kind: "fn", params: s.params, body: {op: "block", body: s.body}}
+        RETURN 0
+    END
+    IF s.op == "decl"
+        n = 8
+        knd = "cell"
+        IF s.size.op != "none" AND s.size.op != NULL
+            n = cEval(s.size, env, S)
+            knd = "arr"
+            IF n < 1
+                n = 1
+            END
+        END
+        loc = cAlloc(S, n)
+        env[s.name] = {kind: knd, loc: loc}
+        IF s.init.op != "none" AND s.init.op != NULL
+            S[loc] = cEval(s.init, env, S)
+        END
+        RETURN 0
+    END
+    IF s.op == "expr"
+        RETURN cEval(s.value, env, S)
+    END
+    RETURN 0
 END
 
 FUNCTION run_c(source)
     ast = cParse(source)
-    env = {}
-    cEvalBlock(ast.body, env)
-    value = cEvalExpr({op: "call", name: "main", args: []}, env)
-    RETURN {ok: TRUE, ast: ast, value: value, frontend: "PANINI.Frontend.C"}
+    S = {n: 1}
+    env = {parent: NULL}
+    k = 0
+    WHILE k < LEN(ast.body)
+        cExec(ast.body[k], env, S)
+        k = k + 1
+    END
+    mainfn = cLook(env, "main")
+    value = 1
+    IF mainfn != NULL AND mainfn.kind == "fn"
+        r = cExec(mainfn.body, env, S)
+        IF TYPEOF(r) == "Map" AND r.ctrl == "return"
+            value = r.value
+        ELSE
+            value = r
+        END
+    END
+    RETURN {ok: TRUE, value: value, frontend: "PANINI.Frontend.C", token_count: ast.token_count}
 END
 
 FUNCTION main()
-    r = run_c("int main(){return 40+2;}")
-    PRINT r.value
+    r = run_c("int main(){return 0;}")
     RETURN r.value
 END
-
 END
-

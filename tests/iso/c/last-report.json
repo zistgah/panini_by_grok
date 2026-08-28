@@ -1,68 +1,116 @@
 {
   "theorem": "ISO_GREEN(C)",
-  "standard": "ISO/IEC 9899:2018 (C17)",
-  "corpus": "c-testsuite tests/single-exec",
-  "oracle": "gcc -std=c17",
+  "standard": "ISO/IEC 9899:2018 (C17) — corpus c-testsuite single-exec",
   "subject": "PANINI.Frontend.C",
   "green": false,
-  "cases": 220,
-  "gcc": {
-    "pass": 220,
-    "fail": 0
-  },
+  "cases": 104,
   "panini": {
-    "pass": 0,
-    "fail": 220
+    "pass": 71,
+    "fail": 28,
+    "skip": 5
   },
-  "sample_fail": [
+  "fails": [
     {
-      "case": "00001.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00038.c",
+      "value": 1,
+      "out": ""
     },
     {
-      "case": "00002.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00039.c",
+      "value": 1,
+      "out": ""
     },
     {
-      "case": "00003.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00041.c",
+      "crash": "PANINI step limit exceeded (possible infinite loop)",
+      "out": ""
     },
     {
-      "case": "00004.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00042.c",
+      "crash": "Undefined name: b",
+      "out": ""
     },
     {
-      "case": "00005.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00046.c",
+      "value": 1,
+      "out": ""
     },
     {
-      "case": "00006.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00047.c",
+      "value": 1,
+      "out": ""
     },
     {
-      "case": "00007.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00048.c",
+      "value": 1,
+      "out": ""
     },
     {
-      "case": "00008.c",
-      "engine": "panini",
-      "stage": "frontend",
-      "frontend": "PANINI.subset.c"
+      "case": "00049.c",
+      "value": 1,
+      "out": ""
+    },
+    {
+      "case": "00050.c",
+      "value": 1,
+      "out": ""
+    },
+    {
+      "case": "00054.c",
+      "value": 2,
+      "out": ""
+    },
+    {
+      "case": "00055.c",
+      "value": 3,
+      "out": ""
+    },
+    {
+      "case": "00056.c",
+      "value": 0,
+      "out": "42\n64\n12\n"
+    },
+    {
+      "case": "00058.c",
+      "value": 4,
+      "out": ""
+    },
+    {
+      "case": "00064.c",
+      "value": -3,
+      "out": ""
+    },
+    {
+      "case": "00065.c",
+      "value": -3,
+      "out": ""
+    },
+    {
+      "case": "00066.c",
+      "value": 1,
+      "out": ""
+    },
+    {
+      "case": "00067.c",
+      "value": 1,
+      "out": ""
+    },
+    {
+      "case": "00076.c",
+      "value": 1,
+      "out": ""
+    },
+    {
+      "case": "00077.c",
+      "value": 5,
+      "out": ""
+    },
+    {
+      "case": "00079.c",
+      "value": 1,
+      "out": ""
     }
   ],
-  "status": "NOT GREEN"
+  "attempted": 99,
+  "status": "NOT GREEN (progress: 71 pass / 28 fail / 5 skip of 104)"
 }

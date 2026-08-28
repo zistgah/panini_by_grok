@@ -3,9 +3,18 @@
 Copyright (C) 1993-2026 Abhishek Choudhary  
 SPDX-License-Identifier: GPL-3.0-or-later
 
-**ISO green means the official-suite harness is green.**  
-A subset lexer that prints 42 does not discharge this.  
-This will take multiple cycles. The requirement is not reduced.
+# ISO GREEN — unflattened acceptance
+
+**ISO green means the official-suite harness is green.** A subset that prints 42 does not discharge this.
+
+C corpus: [c-testsuite](https://github.com/c-testsuite/c-testsuite) `tests/single-exec` (104 cases). Subject: `PANINI.Frontend.C` (written in PANINI).
+
+Rule: `ISO_GREEN(C) ⇔ every non-skipped single-exec case: main returns 0 and stdout matches .expected`.
+
+Until that holds, status is **NOT GREEN**. Partial counts are progress, not done.
+
+Harness: `node src/cli.js iso-c` or `ISO_C_LIMIT=36 node scripts/iso_c_harness.mjs`.
+
 
 ## Named editions (this cycle)
 

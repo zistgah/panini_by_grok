@@ -34,6 +34,10 @@ export function installBuiltins(env, runtime) {
   def("NOW", () => vStr(new Date().toISOString()));
   def("STR", (x) => vStr(toStr(x)), 1);
   def("INT", (x) => vInt(toNumber(x)), 1);
+  def("ORD", (x) => {
+    const s = toStr(x);
+    return vInt(s.length ? s.charCodeAt(0) : 0);
+  }, 1);
   def("FLOAT", (x) => ({ tag: Tag.Float, value: toNumber(x) }), 1);
   def("LEN", (x) => {
     if (!x) return vInt(0);
