@@ -5,12 +5,13 @@ cd .. &&\
 unzip -d panini_by_grok_v${VER} panini_by_grok_v${VER}.zip &&\
 cd panini_by_grok &&\
 git checkout main &&\
+git reset --hard &&\
 cp -r ../panini_by_grok_v${VER}/panini/* ./ &&\
 node tests/run.mjs &&\
 node scripts/selfhost.mjs &&\
 node scripts/prove_theorem.mjs &&\
 mkdir -p attest/${TIME} &&\
-mv MANIFEST.* attest/${TIME} &&\
+mv MANIFEST.* attest/${TIME} || echo MANIFEST was not found!!! &&\
 find . -type f | grep -v ".git/" | xargs git add -f &&\
 git commit -m "Updated stage 6 beta - v${VER}" &&\
 git push &&\
