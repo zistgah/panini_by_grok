@@ -1,93 +1,68 @@
-<!-- tree-rev: 2026.08.28 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1c2c" />
-  <title>PANINI — Linguistic equity in computation</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI explorer</title>
   <link rel="stylesheet" href="site.css" />
+  <style>
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(16rem,1fr)); gap:.6rem; }
+    .card { border:1px solid #345; padding:.6rem .7rem; background:#0e1a28; }
+    .card h3 { margin:.1rem 0; font-size:.95rem; }
+    .card p { margin:.2rem 0 0; font-size:.8rem; opacity:.85; }
+    .org { margin:1.2rem 0 .4rem; }
+    input#q { width:100%; max-width:28rem; padding:.4rem; }
+  </style>
 </head>
 <body class="site">
-<!-- Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later | tree-rev 2026.08.28 -->
 <header class="site-head">
-  <strong>PANINI</strong>
+  <strong>PANINI explorer</strong>
   <nav>
-    <a href="index.html">Overview</a>
-    <a href="standards.html">Standards</a>
-    <a href="languages.html">Languages</a>
-    <a href="view.html?src=ARCHITECTURE.md">Architecture</a>
-    <a href="view.html?src=ARCHITECT_PROMPTS.md">Architect log</a>
-    <a href="hindawi.html">Hindawi</a>
-    <a href="cyclers.html">Cyclers</a>
-    <a href="mez/">mez</a>
-    <a href="fakir/">FAKIR</a>
-    <a href="ilm/">ILM</a>
+    <a href="mez/">mez desk</a>
+    <a href="nb.html">notebook</a>
+    <a href="cyclers.html">cyclers</a>
+    <a href="workbench.html">workbench</a>
   </nav>
 </header>
 <main class="site-main">
-  <h1>Computation without a privileged language</h1>
-  <p class="lead">
-    Representational equity is ILM. Computational equity is PANINI.
-    Linguistic equity is both. This page is the map. The IDE is a separate tool.
-  </p>
-  <p class="cta">
-    <a class="btn" href="workbench.html">Open the workbench</a>
-    <a class="btn ghost" href="view.html?src=CONTEXT.md">Context</a>
-    <a class="btn ghost" href="view.html?src=CONTRACT.md">Contract</a>
-  </p>
-  <section>
-    <h2>Concept</h2>
-    <ul>
-      <li><a href="view.html?src=ARCHITECTURE.md">Architecture</a></li>
-      <li><a href="view.html?src=CONTEXT.md">CONTEXT.md</a></li>
-      <li><a href="view.html?src=CONTRACT.md">CONTRACT.md</a></li>
-      <li><a href="view.html?src=REQUIREMENTS.md">REQUIREMENTS.md</a></li>
-      <li><a href="view.html?src=ARCHITECT_PROMPTS.md">Architect prompts</a> (curated)</li>
-      <li><a href="hindawi.html">Hindawi localization</a> (retrieved, not keyword maps)</li>
-      <li><a href="nb.html">हिंदवी अभ्यास अनुभाग</a> (notebook UI, browser-native)</li>
-      <li><a href="view.html?src=LINGUISTIC_EQUITY.md">Linguistic equity (architecture)</a></li>
-      <li><a href="view.html?src=ESTATE.md">Estate inventory</a> (retrieved, not a live walk)</li>
-      <li><a href="view.html?src=CAN_COMPILE.md">CAN_COMPILE</a></li>
-      <li><a href="view.html?src=CONFORMANCE.md">Conformance harness</a></li>
-      <li><a href="view.html?src=DOCUMENTATION.md">Documentation index</a> (Hindawi’s historic gap)</li>
-      <li><a href="mez/">mez — Cognitive Workbench</a></li>
-      <li><a href="fakir/">FAKIR — ISIC · ISCO · ISCED</a></li>
-      <li><a href="ilm/">ilm.codes migration</a></li>
-      <li><a href="view.html?src=SPINOFF.md">Spin-off map</a></li>
-    </ul>
-  </section>
-  <section>
-    <h2>Standards</h2>
-    <p><a href="standards.html">Official language standards catalog</a> ·
-       <a href="view.html?src=PANINI_STANDARD.md">PANINI.STD.2026.08</a></p>
-  </section>
-  <section>
-    <h2>Languages and subsets</h2>
-    <p><a href="languages.html">Supported languages, classifications, subsets</a></p>
-  </section>
-  <section>
-    <h2>Road to standard languages</h2>
-    <p>Not bigger parsers. POSIX → OCI → gcc/CPython official suites. <a href="view.html?src=ARCHITECTURE.md">Architecture</a>.</p>
-  </section>
-  <section>
-    <h2>Owned tools</h2>
-    <ul>
-      <li>C frontend — src/panini/frontends/c.pni</li>
-      <li>lex — src/panini/lex.pni</li>
-      <li>yacc — src/panini/yacc.pni</li>
-      <li>bash — stdlib/bash.pni on VT100</li>
-    </ul>
-  </section>
-  <p class="fine">Copyright (C) 1993-2026 Abhishek Choudhary · GPL-3.0-or-later</p>
-  <section>
-    <h2>Invariant</h2>
-    <p><a href="view.html?src=PANINI_STANDARD.md">T_FRONTEND_PANINI / standard</a>:
-    every frontend is written in PANINI. POSIX/OCI are a separate conjunct.
-    <a href="view.html?src=CYCLERS.md">Cyclers / Cognitive Workbench</a>.</p>
-  </section>
+  <h1>Estate explorer</h1>
+  <p class="lead">Landing is the map for now. Each inlined repo has <code>apps/<org>/<repo>/</code> so it can spin off. mez is the desk; cyclers are the work you run there, written in PANINI.</p>
+  <p><input id="q" placeholder="filter repos…" /></p>
+  <p id="note"></p>
+  <div id="root"></div>
 </main>
+<script>
+fetch("explorer/repos.json").then(r=>r.json()).then(cat=>{
+  document.getElementById("note").textContent = cat.note +
+    "  zistgah "+cat.orgs.zistgah.length+
+    " · project-ilm "+cat.orgs["project-ilm"].length+
+    " · hindawiai "+cat.orgs.hindawiai.length+
+    " · AyeAI "+cat.orgs.AyeAI.length+" (forks recorded, not this estate’s product)";
+  const root=document.getElementById("root");
+  const inlined={
+    "zistgah/mez":"mez/","zistgah/fakir":"fakir/","zistgah/cycles":"cyclers.html",
+    "project-ilm/ilm.codes":"ilm/","hindawiai/hindawi-legacy":"hindawi.html"
+  };
+  function draw(filter){
+    root.innerHTML="";
+    for (const [org, repos] of Object.entries(cat.orgs)){
+      const h=document.createElement("h2"); h.className="org"; h.textContent=org;
+      root.appendChild(h);
+      const g=document.createElement("div"); g.className="grid";
+      repos.filter(x=>!filter || (x.name+" "+x.description).toLowerCase().includes(filter)).forEach(x=>{
+        const k=org+"/"+x.name;
+        const a=document.createElement("a");
+        a.className="card";
+        a.href = inlined[k] || x.html_url;
+        a.innerHTML="<h3>"+x.name+(x.fork?" (fork)":"")+"</h3><p>"+(x.description||"—")+"</p>";
+        g.appendChild(a);
+      });
+      root.appendChild(g);
+    }
+  }
+  draw("");
+  document.getElementById("q").oninput=e=>draw(e.target.value.trim().toLowerCase());
+});
+</script>
 </body>
 </html>
