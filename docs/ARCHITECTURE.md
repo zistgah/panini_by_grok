@@ -4,6 +4,13 @@ Copyright (C) 1993-2026 Abhishek Choudhary
 GPL-3.0-or-later  
 tree-rev: 2026.08.28
 
+## Two independent invariants
+
+1. T_FRONTEND_PANINI — every language frontend is a PANINI module (GCC/LLVM shape).
+2. T_POSIX_OCI_ENVIRONMENTS — official compilers live in POSIX/OCI environments.
+
+Neither conjunct implies the other.
+
 ## The mistake to stop making
 
 Re-implementing C, Python, Fortran, Julia *as parsers inside PANINI*

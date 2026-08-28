@@ -119,6 +119,20 @@ async function main() {
       process.exitCode = r && r.ok !== false ? 0 : 1;
       return;
     }
+    case "cycler":
+    case "cyclers": {
+      const { loadAll, loadCycler } = await import("../runtime/cycler_load.js");
+      const dir = path.join(path.dirname(new URL(import.meta.url).pathname), "../cyclers/upstream");
+      const name = args[1];
+      if (!name || name === "list") {
+        const all = loadAll(dir);
+        console.log(JSON.stringify({ source: "https://github.com/zistgah/cycles/tree/main/cyclers", count: all.length, cyclers: all }, null, 2));
+        return;
+      }
+      const file = path.join(dir, name.endsWith(".pni") ? name : name + ".pni");
+      console.log(JSON.stringify(loadCycler(file), null, 2));
+      return;
+    }
     case "bash":
       await runSource(fs.readFileSync(new URL("../stdlib/bash.pni", import.meta.url), "utf8"), "bash.pni");
       return;
