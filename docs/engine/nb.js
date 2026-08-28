@@ -64,6 +64,79 @@
     const rules = S.rules.slice().sort((a, b) => [...b.from].length - [...a.from].length);
     return applyPairs(src, rules, "from", "to");
   }
+  function uni2acii(src) {
+    const map = Object.create(null);
+    for (const r of B.unicode_hin || []) map[r.unicode] = r.acii;
+    const bytes = [];
+    for (const ch of String(src)) {
+      const cp = ch.codePointAt(0);
+      if (map[cp] != null) bytes.push(map[cp]);
+      else bytes.push(cp < 128 ? cp : null, ch);
+    }
+    return bytes;
+  }
+  function acii2rmnBytes(bytes) {
+    const rows = B.acii_chrt || [];
+    const by = Object.create(null);
+    for (const r of rows) {
+      if (r.acii_bytes && r.acii_bytes.length === 1) by[r.acii_bytes[0]] = r.romenagri;
+    }
+    let stack = "";
+    for (const b of bytes) {
+      if (typeof b === "string") { stack += b; continue; }
+      if (b == null) continue;
+      const rmn = by[b];
+      if (rmn == null) { stack += (b >= 32 && b < 127) ? String.fromCharCode(b) : ""; continue; }
+      if (rmn.charAt(0) === "^" && stack.length) {
+        stack = stack.slice(0, -1) + rmn.slice(1);
+      } else stack += rmn;
+    }
+    return stack;
+  }
+  function devaToRmn(src) {
+    let out = "", buf = "", i = 0, s = String(src);
+    function flush() {
+      if (!buf) return;
+      out += acii2rmnBytes(uni2acii(buf));
+      buf = "";
+    }
+    while (i < s.length) {
+      if (s[i] === '"') {
+        flush();
+        let j = i + 1;
+        while (j < s.length && s[j] !== '"') { if (s[j] === "\\") j += 2; else j++; }
+        out += s.slice(i, j + 1);
+        i = j + 1;
+        continue;
+      }
+      const cp = s.codePointAt(i);
+      const ch = String.fromCodePoint(cp);
+      if ((cp >= 0x0900 && cp <= 0x097F) || (cp >= 0xA8E0 && cp <= 0xA8FF)) buf += ch;
+      else { flush(); out += ch; }
+      i += ch.length;
+    }
+    flush();
+    return out;
+  }
+  function rmnToDeva(rmn) {
+    const rows = (B.acii_chrt || []).filter((r) => r.romenagri && r.acii_bytes && r.acii_bytes.length);
+    rows.sort((a, b) => b.romenagri.length - a.romenagri.length);
+    const acii2u = Object.create(null);
+    for (const r of B.unicode_hin || []) acii2u[r.acii] = r.unicode;
+    let i = 0, out = "";
+    const s = String(rmn);
+    while (i < s.length) {
+      let hit = null;
+      for (const r of rows) if (s.startsWith(r.romenagri, i)) { hit = r; break; }
+      if (!hit) { out += s[i++]; continue; }
+      for (const b of hit.acii_bytes) {
+        if (acii2u[b]) out += String.fromCharCode(acii2u[b]);
+        else if (b >= 32 && b < 127) out += String.fromCharCode(b);
+      }
+      i += hit.romenagri.length;
+    }
+    return out;
+  }
   function compile({ src, lang, shaili }) {
     const perso = (B.perso_family || []).includes(lang);
     const notes = [];
@@ -74,11 +147,18 @@
     }
     if (lang && lang !== "hindi") stage = applyLang(stage, lang);
     const flat = flatten(stage);
-    const host = applyShaili(shaili || "guru", flat).replace(/<[^>\n]+>/g, "");
+    const romenagri = devaToRmn(flat);
+    const lex = ((B.shailis[shaili || "guru"] || {}).lex_rmn || []).slice()
+      .sort((a, b) => [...b.from].length - [...a.from].length);
+    const hostFromRmn = lex.length ? applyPairs(romenagri, lex, "from", "to") : "";
+    const hostFromUhin = applyShaili(shaili || "guru", flat);
+    const host = ((shaili === "praatha" ? hostFromUhin : (hostFromRmn || hostFromUhin))).replace(/<[^>\n]+>/g, "");
+    const back = rmnToDeva(romenagri);
     return {
-      invented_maps: false, perso, notes, source: src, flattened: flat, host,
-      shaili: shaili || "guru",
-      rule_count: (B.shailis[shaili || "guru"] || {}).rules?.length || 0
+      invented_maps: false, perso, notes, source: src, flattened: flat,
+      romenagri, host, hostFromUhin, shaili: shaili || "guru",
+      rule_count: lex.length || ((B.shailis[shaili || "guru"] || {}).rules || []).length,
+      reverse_deva: back
     };
   }
 
@@ -185,8 +265,7 @@
       return 1;
     };
     let js = indic(host);
-    js = js.replace(/#include[^\n]*/g, "");
-    js = js.replace(/#समावेश[^\n]*/g, "");
+    js = js.replace(/^#.*$/gm, "");
     js = js.replace(/\b(int|void)\s+main\s*\([^)]*\)/g, "function __main()");
     js = js.replace(/\bscanf\s*\(\s*("[^"]*")\s*,\s*([^;]+)\)/g, function (_, fmt, rest) {
       return rest.split(",").map(function (id) {
@@ -217,6 +296,7 @@
 
   global.PANINI_NB = {
     load, flatten, unflatten, persoToDeva, devaToPerso, compile, run, runC, runBasic,
+    devaToRmn, rmnToDeva,
     hin2std(src, lang, shaili) { return compile({ src, lang, shaili }).host; },
     std2hin(src, lang) {
       const L = B.langs[lang]; let out = src;

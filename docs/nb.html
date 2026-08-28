@@ -3,82 +3,43 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>हिंदवी अभ्यास अनुभाग — PANINI notebook</title>
-  <link rel="stylesheet" href="site.css" />
+  <title>हिंदवी अभ्यास अनुभाग</title>
   <style>
-    .nb { max-width: 1100px; margin: 0 auto; padding: 12px; }
-    .nb h1 { font-size: 1.25rem; }
-    .nb-toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
-    .nb-toolbar button { height: 30px; font-weight: 700; border: 0; padding: 0 10px; cursor: pointer; }
+    /* Chrome from हिंदवी_2022_8_स्मरण_पुस्तिका.ipynb — paper, not the estate navy. */
+    body { margin: 0; font: 15px/1.45 "Noto Sans Devanagari", Georgia, sans-serif; background: #f7f7f7; color: #111; }
+    header { background: #0b1c2c; color: #e8d9a8; padding: 8px 12px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    header a { color: #e8d9a8; }
+    .wrap { display: flex; gap: 8px; padding: 8px; max-width: 1200px; margin: 0 auto; }
+    .editors { flex: 3; min-width: 0; }
+    .actions { flex: 1; min-width: 11rem; }
+    label { font-weight: 700; display: block; margin-top: 6px; }
+    textarea { width: 100%; font-family: ui-monospace, monospace; font-size: 13px; }
+    #prog { height: 220px; }
+    #inp, #out { height: 160px; }
+    .io { display: flex; gap: 8px; }
+    .io > div { flex: 1; min-width: 0; }
+    button { height: 30px; font-weight: 700; border: 0; padding: 0 10px; cursor: pointer; width: 100%; margin: 3px 0; }
     .b-build { background: orange; }
     .b-run { background: #2e7d32; color: #fff; }
     .b-new { background: pink; }
     .b-io { background: cyan; }
     .b-x { background: lightgreen; }
-    .nb label { display: block; font-weight: 600; margin-top: 8px; }
-    .nb textarea { width: 98%; min-height: 160px; font-family: ui-monospace, monospace; font-size: 14px; }
-    .nb select { margin-right: 8px; }
-    .warn { background: #fff3cd; border: 1px solid #c9a227; padding: 8px; margin: 8px 0; }
-    @media (max-width: 640px) {
-      .nb textarea { min-height: 120px; }
-    }
+    .b-demo { background: lightblue; }
+    select { width: 100%; height: 25px; }
+    .fine { font-size: 12px; color: #444; padding: 0 12px 12px; }
+    @media (max-width: 720px) { .wrap, .io { flex-direction: column; } }
   </style>
 </head>
-<body class="site">
-<header class="site-head">
-  <strong>PANINI / हिंदवी</strong>
-  <nav>
-    <a href="index.html">Overview</a>
-    <a href="hindawi.html">Devanagari</a>
-    <a href="perso_arabic.html">Perso-Arabic</a>
-  </nav>
+<body>
+<header>
+  <strong>हिंदवी अभ्यास अनुभाग</strong>
+  <a href="index.html">PANINI</a>
+  <a href="hindawi.html">Devanagari flow</a>
 </header>
-<main class="nb">
-  <h1>हिंदवी अभ्यास अनुभाग (Hindawi Practice Area)</h1>
-  <p>Browser projection of Hindawi: compile with the retrieved lexers, then run the host here. On a machine with gcc, <code>gurucc</code> still emits <code>hin.exe</code> as it has since 2004. Perso-Arabic remains <strong>lossy</strong>.</p>
-  <p>
-    <label>भाषा language
-      <select id="lang"></select>
-    </label>
-    <label>शैली shaili
-      <select id="shaili">
-        <option value="guru">गुरु C</option>
-        <option value="praatha">प्राथमिक BASIC</option>
-        <option value="shraeni">श्रेणी C++</option>
-        <option value="kritrima">कृत्रिम Java</option>
-        <option value="soochee">सूची Python</option>
-        <option value="shabda">शब्द lex</option>
-        <option value="wyaaka">व्याकरण yacc</option>
-        <option value="yantra">यांत्रिक asm</option>
-      </select>
-    </label>
-    <label>Reverse script (Brahmi)
-      <select id="rev">
-        <option value="devanagari">Devanagari</option>
-        <option value="bengali">Bengali</option>
-        <option value="gurmukhi">Gurmukhi</option>
-        <option value="gujarati">Gujarati</option>
-        <option value="odia">Odia</option>
-        <option value="tamil">Tamil</option>
-        <option value="telugu">Telugu</option>
-        <option value="kannada">Kannada</option>
-        <option value="malayalam">Malayalam</option>
-      </select>
-    </label>
-  </p>
-  <div id="warn" class="warn" hidden>Perso-Arabic path: round-trip is not guaranteed. Residue is for the linguistics team (abjad, tashkil, presentation forms).</div>
-  <div class="nb-toolbar">
-    <button class="b-build" id="build">संकलन (Compile)</button>
-    <button class="b-run" id="run">प्रसार (Run)</button>
-    <button class="b-new" id="neu">नया (New)</button>
-    <button class="b-io" id="load-c">Load Hindi C</button>
-    <button class="b-io" id="load-b">Load Hindi BASIC</button>
-    <button class="b-io" id="load-t">Load Telugu C</button>
-    <button class="b-x" id="h2s">हिंदवी → Standard</button>
-    <button class="b-x" id="s2h">Standard → हिंदवी</button>
-  </div>
-  <label>परोग्राम (Code):</label>
-  <textarea id="prog"><शैली गुरु>
+<div class="wrap">
+  <div class="editors">
+    <label>परोग्राम (Code):</label>
+    <textarea id="prog"><शैली गुरु>
 #समावेश <मानकपन.स>
 पूर्णांक मुख्य()
 {
@@ -89,14 +50,52 @@
 	वापस 0;
 }
 </textarea>
-  <label>निविष्ट (Input):</label>
-  <textarea id="inp">50</textarea>
-  <label>उत्पादन (Output):</label>
-  <textarea id="out" readonly placeholder="उत्पादन यहां दिखाया जाएगा"></textarea>
-</main>
+    <div class="io">
+      <div>
+        <label>निविष्ट (Input):</label>
+        <textarea id="inp">राम</textarea>
+      </div>
+      <div>
+        <label>उत्पादन (Output):</label>
+        <textarea id="out" readonly placeholder="उत्पादन यहां दिखाया जाएगा"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div>क्रिया (Do):</div>
+    <button class="b-build" id="build">संकलन (Compile)</button>
+    <button class="b-run" id="run">प्रसार (Run)</button>
+    <button class="b-new" id="neu">नया (New)</button>
+    <button class="b-io" id="up">निवेश (Upload)</button>
+    <button class="b-io" id="down">संचय (Download)</button>
+    <button class="b-x" id="h2s">हिंदवी → Standard</button>
+    <button class="b-x" id="s2h">Standard → हिंदवी</button>
+    <div>उदाहरण (Demo):</div>
+    <select id="demo">
+      <option value="HindiBASIC.uhin">शैली प्राथमिक (Hindi Basic)</option>
+      <option value="HindiC.uhin" selected>शैली गुरु (Hindi C)</option>
+      <option value="HindiC++.uhin">शैली श्रेणी (Hindi C++)</option>
+      <option value="HindiLEX.uhin">शैली शब्द (Hindi Lex)</option>
+      <option value="HindiYACC.uhin">शैली व्याक (Hindi Yacc)</option>
+      <option value="HindiASM.uhin">शैली यांत्रिक (Hindi Asm)</option>
+    </select>
+    <button class="b-demo" id="load">डेमो खोलें (Load demo)</button>
+    <label>भाषा</label>
+    <select id="lang"></select>
+  </div>
+</div>
+<p class="fine">Compile is Unicode → ACII → <strong>Romenagri</strong> → h2c.lex (the 2004 path). Native <code>gurucc</code> then calls gcc. This page shows those stages so reversibility can be read. Original Colab: retrieved/legacy/Notebooks/हिंदवी_2022_8_स्मरण_पुस्तिका.ipynb</p>
+<input id="file" type="file" hidden />
 <script src="engine/nb.js"></script>
 <script>
-const DEMO = document.getElementById("prog").value;
+function shailiOf(src){
+  if (/प्राथमिक|praatha/.test(src)) return "praatha";
+  if (/श्रेणी/.test(src)) return "shraeni";
+  if (/शब्द/.test(src)) return "shabda";
+  if (/व्याकरण|व्याक/.test(src)) return "wyaaka";
+  if (/यांत्रिक/.test(src)) return "yantra";
+  return "guru";
+}
 PANINI_NB.load("engine/bundle.json").then((B) => {
   const lang = document.getElementById("lang");
   Object.keys(B.langs).sort().forEach((k) => {
@@ -105,23 +104,21 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
     if (k === "hindi") o.selected = true;
     lang.appendChild(o);
   });
-  function persoOn() {
-    const w = document.getElementById("warn");
-    w.hidden = !B.perso_family.includes(lang.value);
-  }
-  lang.addEventListener("change", persoOn);
   function compile() {
-    const r = PANINI_NB.compile({
-      src: document.getElementById("prog").value,
-      lang: lang.value,
-      shaili: document.getElementById("shaili").value,
-    });
+    const src = document.getElementById("prog").value;
+    const r = PANINI_NB.compile({ src, lang: lang.value, shaili: shailiOf(src) });
     document.getElementById("out").value =
-      (r.notes.length ? r.notes.join("\n") + "\n\n" : "") +
-      "--- flattened ---\n" + r.flattened + "\n--- host ---\n" + r.host;
+      "संकलन के परिणाम\n============\n" +
+      "--- Romenagri ---\n" + r.romenagri +
+      "\n--- host (h2c.lex on Romenagri / shaili on Devanagari) ---\n" + r.host;
     return r;
   }
   document.getElementById("build").onclick = compile;
+  document.getElementById("run").onclick = () => {
+    const r = compile();
+    const exec = PANINI_NB.run(r, document.getElementById("inp").value);
+    document.getElementById("out").value += "\n--- प्रसार " + (exec.ok ? "ok" : "FAIL") + " ---\n" + exec.out;
+  };
   document.getElementById("h2s").onclick = () => {
     const r = compile();
     document.getElementById("prog").value = r.host;
@@ -130,27 +127,32 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
     document.getElementById("prog").value = PANINI_NB.std2hin(
       document.getElementById("prog").value, lang.value);
   };
-  document.getElementById("run").onclick = () => {
-    const r = compile();
-    const exec = PANINI_NB.run(r, document.getElementById("inp").value);
-    document.getElementById("out").value =
-      (r.notes.length ? r.notes.join("\n")+"\n" : "") +
-      "--- host (" + r.shaili + ", " + r.rule_count + " rules) ---\n" + r.host +
-      "\n--- run " + (exec.ok ? "ok" : "FAIL") + " ---\n" + exec.out;
-  };
   document.getElementById("neu").onclick = () => {
-    document.getElementById("prog").value = DEMO;
+    document.getElementById("prog").value = "";
+    document.getElementById("inp").value = "";
     document.getElementById("out").value = "";
   };
-  function loadDemo(name){
+  document.getElementById("load").onclick = () => {
+    const name = document.getElementById("demo").value;
     fetch("demos/"+name).then(r=>r.text()).then(t=>{
-      document.getElementById("prog").value=t;
-      document.getElementById("out").value="Loaded "+name;
-    });
-  }
-  document.getElementById("load-c").onclick=()=>{ document.getElementById("shaili").value="guru"; loadDemo("HindiC.uhin"); };
-  document.getElementById("load-b").onclick=()=>{ document.getElementById("shaili").value="praatha"; loadDemo("HindiBASIC.uhin"); };
-  document.getElementById("load-t").onclick=()=>{ document.getElementById("shaili").value="guru"; loadDemo("TeluguC.uhin"); };
+      document.getElementById("prog").value = t;
+      document.getElementById("out").value = "Loaded "+name;
+    }).catch(()=> fetch("../retrieved/legacy/Hindawi/samples/"+name).then(r=>r.text()).then(t=>{
+      document.getElementById("prog").value = t;
+    }));
+  };
+  document.getElementById("down").onclick = () => {
+    const blob = new Blob([document.getElementById("prog").value], {type:"text/plain"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "hindawi-code.uhin";
+    a.click();
+  };
+  document.getElementById("up").onclick = () => document.getElementById("file").click();
+  document.getElementById("file").onchange = (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    f.text().then(t => { document.getElementById("prog").value = t; });
+  };
 });
 </script>
 </body>

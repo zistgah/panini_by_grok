@@ -31,6 +31,8 @@ function check(name, cond, extra) {
 }
 
 const c = ctx.PANINI_NB.compile({ src: hindiC, lang: "hindi", shaili: "guru" });
+check("HindiC Romenagri has mukhya", /mukhya/.test(c.romenagri), c.romenagri.slice(0, 180));
+check("HindiC Romenagri has krama", /krama/.test(c.romenagri));
 check("HindiC host contains int main", /int\s+main/.test(c.host), c.host.slice(0, 220));
 check("HindiC host contains for", /\bfor\s*\(/.test(c.host), c.host.slice(0, 400));
 check("HindiC host contains printf", /printf/.test(c.host));
