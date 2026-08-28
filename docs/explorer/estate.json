@@ -1,6 +1,6 @@
 {
   "copyright": "Copyright (C) 1993-2026 Abhishek Choudhary",
-  "note": "Not a live walk. Architect recorded 105 orgs / 486 repos. This view is the public GitHub subset plus handed annotations from docs/ESTATE.md.",
+  "note": "Not a live walk of 105 orgs. AyeAI is LIVE (triad: AyeAI · AyeCNSe · AyeAM) — not historical. Public GitHub subset plus ESTATE.md annotations.",
   "recorded_scale": {
     "orgs": 105,
     "repos": 486
@@ -1836,7 +1836,7 @@
       "name": "ayeai.github.io",
       "description": "Aye AI ... the inclusive AI (www repo)",
       "what": "Aye AI ... the inclusive AI (www repo)",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/ayeai.github.io",
       "language": "HTML",
@@ -1846,7 +1846,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/ayeai.github.io",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/ayevdi",
@@ -1854,7 +1854,7 @@
       "name": "ayevdi",
       "description": "Virtual Deployment IaaS (tools) for Scientific & Cognitive Computing",
       "what": "Virtual Deployment IaaS (tools) for Scientific & Cognitive Computing",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/ayevdi",
       "language": "Awk",
@@ -1864,7 +1864,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/ayevdi",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/shellinabox",
@@ -1872,7 +1872,7 @@
       "name": "shellinabox",
       "description": "AyeVDI modifications. Original is available at",
       "what": "AyeVDI modifications. Original is available at",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/shellinabox",
       "language": "C",
@@ -1882,15 +1882,15 @@
       "inlined": false,
       "href": "https://github.com/ayeai/shellinabox",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/util-linux",
       "org": "AyeAI",
       "name": "util-linux",
       "description": "",
-      "what": "",
-      "family": "fork",
+      "what": "AyeAI public surface / triad-adjacent. LIVE architecture, not a historical footnote.",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/util-linux",
       "language": "",
@@ -1900,15 +1900,15 @@
       "inlined": false,
       "href": "https://github.com/ayeai/util-linux",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/shadow",
       "org": "AyeAI",
       "name": "shadow",
       "description": "",
-      "what": "",
-      "family": "other",
+      "what": "AyeAI public surface / triad-adjacent. LIVE architecture, not a historical footnote.",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/shadow",
       "language": "",
@@ -1918,7 +1918,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/shadow",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/KodExplorer",
@@ -1926,7 +1926,7 @@
       "name": "KodExplorer",
       "description": "A web based file manager,web IDE / browser based code editor",
       "what": "A web based file manager,web IDE / browser based code editor",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/KodExplorer",
       "language": "",
@@ -1936,7 +1936,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/KodExplorer",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/dockerfiles",
@@ -1944,7 +1944,7 @@
       "name": "dockerfiles",
       "description": "Various Dockerfiles I use on the desktop and on servers.",
       "what": "Various Dockerfiles I use on the desktop and on servers.",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/dockerfiles",
       "language": "",
@@ -1954,7 +1954,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/dockerfiles",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/x11docker",
@@ -1962,7 +1962,7 @@
       "name": "x11docker",
       "description": "Run GUI applications and desktops in docker. Focus on security.",
       "what": "Run GUI applications and desktops in docker. Focus on security.",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/x11docker",
       "language": "",
@@ -1972,7 +1972,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/x11docker",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/runc",
@@ -1980,7 +1980,7 @@
       "name": "runc",
       "description": "CLI tool for spawning and running containers according to the OCI specification",
       "what": "CLI tool for spawning and running containers according to the OCI specification",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/runc",
       "language": "",
@@ -1990,7 +1990,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/runc",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/go-digest",
@@ -1998,7 +1998,7 @@
       "name": "go-digest",
       "description": "Common digest package used across the container ecosystem",
       "what": "Common digest package used across the container ecosystem",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/go-digest",
       "language": "",
@@ -2008,7 +2008,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/go-digest",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/image-tools",
@@ -2016,7 +2016,7 @@
       "name": "image-tools",
       "description": "OCI Image Tooling",
       "what": "OCI Image Tooling",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/image-tools",
       "language": "",
@@ -2026,7 +2026,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/image-tools",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/runtime-tools",
@@ -2034,7 +2034,7 @@
       "name": "runtime-tools",
       "description": "OCI Runtime Tools",
       "what": "OCI Runtime Tools",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/runtime-tools",
       "language": "",
@@ -2044,7 +2044,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/runtime-tools",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/AIX360",
@@ -2052,7 +2052,7 @@
       "name": "AIX360",
       "description": "Interpretability and explainability of data and machine learning models",
       "what": "Interpretability and explainability of data and machine learning models",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/AIX360",
       "language": "",
@@ -2062,7 +2062,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/AIX360",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/adversarial-robustness-toolbox",
@@ -2070,7 +2070,7 @@
       "name": "adversarial-robustness-toolbox",
       "description": "Python library for adversarial machine learning, attacks and defences for neural networks, logistic regression, decision trees, SVM, gradient boosted trees, Gaussian processes and more with multiple framework support",
       "what": "Python library for adversarial machine learning, attacks and defences for neural networks, logistic regression, decision trees, SVM, gradient boosted trees, Gaussian processes and more with multiple framework support",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/adversarial-robustness-toolbox",
       "language": "",
@@ -2080,7 +2080,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/adversarial-robustness-toolbox",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/kui",
@@ -2088,7 +2088,7 @@
       "name": "kui",
       "description": "A hybrid command-line/UI development experience for cloud-native development",
       "what": "A hybrid command-line/UI development experience for cloud-native development",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/kui",
       "language": "",
@@ -2098,7 +2098,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/kui",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/FHIR",
@@ -2106,7 +2106,7 @@
       "name": "FHIR",
       "description": "The IBM FHIR® Server and related projects",
       "what": "The IBM FHIR® Server and related projects",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/FHIR",
       "language": "",
@@ -2116,7 +2116,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/FHIR",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/kubernetes-cobol",
@@ -2124,7 +2124,7 @@
       "name": "kubernetes-cobol",
       "description": "A Code Pattern to teach how to run a COBOL program on Kubernetes",
       "what": "A Code Pattern to teach how to run a COBOL program on Kubernetes",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/kubernetes-cobol",
       "language": "",
@@ -2134,7 +2134,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/kubernetes-cobol",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/insilico",
@@ -2142,7 +2142,7 @@
       "name": "insilico",
       "description": "Neuronal Network Simulation Library",
       "what": "Neuronal Network Simulation Library",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/insilico",
       "language": "",
@@ -2152,7 +2152,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/insilico",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/Virtual-Studio",
@@ -2160,7 +2160,7 @@
       "name": "Virtual-Studio",
       "description": "https://insilico.uk/virtual-studioindex",
       "what": "https://insilico.uk/virtual-studioindex",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/Virtual-Studio",
       "language": "",
@@ -2170,7 +2170,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/Virtual-Studio",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/sway",
@@ -2178,7 +2178,7 @@
       "name": "sway",
       "description": "i3-compatible Wayland compositor",
       "what": "i3-compatible Wayland compositor",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/sway",
       "language": "",
@@ -2188,7 +2188,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/sway",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/qiskit",
@@ -2196,7 +2196,7 @@
       "name": "qiskit",
       "description": "Qiskit is an open-source framework for working with noisy quantum computers at the level of pulses, circuits, and algorithms.",
       "what": "Qiskit is an open-source framework for working with noisy quantum computers at the level of pulses, circuits, and algorithms.",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/qiskit",
       "language": "",
@@ -2206,7 +2206,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/qiskit",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/qiskit-terra",
@@ -2214,7 +2214,7 @@
       "name": "qiskit-terra",
       "description": "Terra provides the foundations for Qiskit. It allows the user to write quantum circuits easily, and takes care of the constraints of real hardware.",
       "what": "Terra provides the foundations for Qiskit. It allows the user to write quantum circuits easily, and takes care of the constraints of real hardware.",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/qiskit-terra",
       "language": "",
@@ -2224,7 +2224,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/qiskit-terra",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/qiskit-aer",
@@ -2232,7 +2232,7 @@
       "name": "qiskit-aer",
       "description": "Aer is a high performance simulator for quantum circuits that includes noise models",
       "what": "Aer is a high performance simulator for quantum circuits that includes noise models",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/qiskit-aer",
       "language": "",
@@ -2242,15 +2242,15 @@
       "inlined": false,
       "href": "https://github.com/ayeai/qiskit-aer",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/ayeq",
       "org": "AyeAI",
       "name": "ayeq",
       "description": "",
-      "what": "",
-      "family": "other",
+      "what": "AyeAI public surface / triad-adjacent. LIVE architecture, not a historical footnote.",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/ayeq",
       "language": "",
@@ -2260,7 +2260,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/ayeq",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/SPL-ignore-and-delete",
@@ -2268,7 +2268,7 @@
       "name": "SPL-ignore-and-delete",
       "description": "Singularity Public License",
       "what": "Singularity Public License",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/SPL-ignore-and-delete",
       "language": "",
@@ -2278,7 +2278,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/SPL-ignore-and-delete",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/spl",
@@ -2286,7 +2286,7 @@
       "name": "spl",
       "description": "AyeAI Singularity Public License",
       "what": "AyeAI Singularity Public License",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/spl",
       "language": "",
@@ -2296,7 +2296,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/spl",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/dockersh",
@@ -2304,7 +2304,7 @@
       "name": "dockersh",
       "description": "A shell which places users into individual docker containers",
       "what": "A shell which places users into individual docker containers",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/dockersh",
       "language": "",
@@ -2314,7 +2314,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/dockersh",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/bash2python",
@@ -2322,7 +2322,7 @@
       "name": "bash2python",
       "description": "A tool that converts a bash script to python script",
       "what": "A tool that converts a bash script to python script",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/bash2python",
       "language": "",
@@ -2332,7 +2332,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/bash2python",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/anusaaraka",
@@ -2340,7 +2340,7 @@
       "name": "anusaaraka",
       "description": "Imported from https://web.archive.org/web/20200218013006/https://sourceforge.net/p/anusaaraka/git/ci/master/tree/",
       "what": "Imported from https://web.archive.org/web/20200218013006/https://sourceforge.net/p/anusaaraka/git/ci/master/tree/",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/anusaaraka",
       "language": "CLIPS",
@@ -2350,7 +2350,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/anusaaraka",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/xmp",
@@ -2358,7 +2358,7 @@
       "name": "xmp",
       "description": "CUDA accelerated(X) Multi-Precision library",
       "what": "CUDA accelerated(X) Multi-Precision library",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/xmp",
       "language": "",
@@ -2368,7 +2368,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/xmp",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/ayeam",
@@ -2376,7 +2376,7 @@
       "name": "ayeam",
       "description": "AyeAI's Autonomous Metaverse - A cyber-physical autnomous metaverse... A nervous system for the Singularity",
       "what": "AyeAI's Autonomous Metaverse - A cyber-physical autnomous metaverse... A nervous system for the Singularity",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/ayeam",
       "language": "",
@@ -2386,7 +2386,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/ayeam",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/upload",
@@ -2394,7 +2394,7 @@
       "name": "upload",
       "description": "Staggered Upload (TM)",
       "what": "Staggered Upload (TM)",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/upload",
       "language": "",
@@ -2404,7 +2404,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/upload",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/chuha",
@@ -2412,7 +2412,7 @@
       "name": "chuha",
       "description": "Chat Hosting Utility with Hypelink Automation",
       "what": "Chat Hosting Utility with Hypelink Automation",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/chuha",
       "language": "",
@@ -2422,15 +2422,15 @@
       "inlined": false,
       "href": "https://github.com/ayeai/chuha",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/ni2a2",
       "org": "AyeAI",
       "name": "ni2a2",
       "description": "",
-      "what": "",
-      "family": "other",
+      "what": "AyeAI public surface / triad-adjacent. LIVE architecture, not a historical footnote.",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/ni2a2",
       "language": "JavaScript",
@@ -2440,7 +2440,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/ni2a2",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/ChainOfSurvival.github.io",
@@ -2448,7 +2448,7 @@
       "name": "ChainOfSurvival.github.io",
       "description": "A public information repository on the Chain of Survival",
       "what": "A public information repository on the Chain of Survival",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/ChainOfSurvival.github.io",
       "language": "Ruby",
@@ -2458,7 +2458,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/ChainOfSurvival.github.io",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/opssi",
@@ -2466,7 +2466,7 @@
       "name": "opssi",
       "description": "open public stack for synthetic intelligence",
       "what": "open public stack for synthetic intelligence",
-      "family": "other",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/opssi",
       "language": "",
@@ -2476,7 +2476,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/opssi",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/athena",
@@ -2484,7 +2484,7 @@
       "name": "athena",
       "description": "GSF VIKRAM - An inclusive rural digitalization platform by GramSheel Foundation",
       "what": "GSF VIKRAM - An inclusive rural digitalization platform by GramSheel Foundation",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/athena",
       "language": "",
@@ -2494,15 +2494,15 @@
       "inlined": false,
       "href": "https://github.com/ayeai/athena",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/join",
       "org": "AyeAI",
       "name": "join",
       "description": "",
-      "what": "",
-      "family": "other",
+      "what": "AyeAI public surface / triad-adjacent. LIVE architecture, not a historical footnote.",
+      "family": "ayeai",
       "state": "public",
       "html_url": "https://github.com/ayeai/join",
       "language": "",
@@ -2512,7 +2512,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/join",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "AyeAI/ayeai.ayeam.com",
@@ -2520,7 +2520,7 @@
       "name": "ayeai.ayeam.com",
       "description": "AyeAI ∴ AyeAM",
       "what": "AyeAI ∴ AyeAM",
-      "family": "fork",
+      "family": "ayeai",
       "state": "fork",
       "html_url": "https://github.com/ayeai/ayeai.ayeam.com",
       "language": "Ruby",
@@ -2530,7 +2530,7 @@
       "inlined": false,
       "href": "https://github.com/ayeai/ayeai.ayeam.com",
       "spinoff": "",
-      "ayeai_note": true
+      "ayeai_note": false
     },
     {
       "key": "zistgah/amal",
