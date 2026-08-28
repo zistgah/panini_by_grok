@@ -154,9 +154,10 @@
     else if (c === "cat") { out = a.map(function (p) { var rr = fs.read(p); return rr.ok ? rr.content : "cat: " + p; }).join(""); }
     else if (c === "echo") out = a.join(" ");
     else if (c === "mkdir") fs.mkdir(a[0] || "");
-    else if (c === "help") out = "pwd ls cd cat echo mkdir help robot lekhak";
+    else if (c === "help") out = "pwd ls cd cat echo mkdir help robot lekhak emu";
+    else if (c === "emu" || c === "v86") out = "__EMU__";
     else if (c === "robot" || c === "रोबोट") out = "__ROBOT__";
-    else if (c === "lekhak" || c === "लेखक") out = "__LEKHAK__:" + (a[0] || "untitled.uhin");
+    else if (c === "lekhak" || c === "लेखक") out = "__LEKHAK__:" + (a[0] || "lekhak.uhin");
     else if (c === "clear" || c === "cls") out = "\x1b[2J";
     else out = c + ": command not found";
     if (target) { fs.write(target, out + "\n"); return ""; }
@@ -193,7 +194,135 @@
 
   /* Shaili Robot — retrieved ROBOT.C cardinal moves on this same glass. */
   var robot = { x: 320, y: 192, pen: 1, color: "#33ff66", heading: 0, gfx: false };
-  var lek = { on: false, lines: [""], row: 0, col: 0, path: "untitled.uhin" };
+  var lek = {
+    on: false, lines: [""], row: 0, col: 0, top: 0,
+    path: "untitled.uhin", insert: true, changed: false
+  };
+  var LMAX = 127, ROWS = 22;
+  function lekStatus() {
+    return (lek.changed ? "*" : " ") + lek.path + "  " + (lek.row + 1) + " of " + lek.lines.length +
+      "  col " + (lek.col + 1) + (lek.insert ? "  INS" : "  OVR");
+  }
+  function lekPaint() {
+    initVt();
+    vtWrite("Hindawi Programming System  Lekhak\n");
+    vtWrite(lekStatus() + "\n");
+    var i, vis, line, mark;
+    for (i = 0; i < ROWS; i++) {
+      vis = lek.top + i;
+      line = vis < lek.lines.length ? lek.lines[vis] : "";
+      mark = vis === lek.row ? (lek.insert ? "|" : "#") : " ";
+      if (vis === lek.row) {
+        line = line.slice(0, lek.col) + mark + line.slice(lek.col);
+      }
+      if (line.length > 78) line = line.slice(0, 78);
+      vtWrite((vis === lek.row ? ">" : " ") + line + "\n");
+    }
+    vtWrite("F1 help  F2 save  F3 open  Ctrl-Y cut-line  Alt-X exit\n");
+  }
+  function lekHelp() {
+    initVt();
+    vtWrite("LEKHAK  retrieved src/lekhak/LEKHAK.C (2004)\n");
+    vtWrite("F1 help-word   Alt-F1 help-hist\n");
+    vtWrite("F2 file_save   F3 file_list_box/open\n");
+    vtWrite("Ctrl-ins/del  Shift-ins/del  Ctrl-Y\n");
+    vtWrite("Ctrl-home/end  pgup/pgdn  home/end\n");
+    vtWrite("Ctrl-lf/rt  Alt-K Alt-C Alt-M  Alt-X file_exit\n");
+    vtWrite("ins tab  127-char lines (LMAX). Any key returns.\n");
+  }
+  function lekOpen(p) {
+    lek.path = p || lek.path;
+    var rf = fs.read(lek.path);
+    if (rf.ok) {
+      lek.lines = rf.content.split("\n");
+    } else {
+      lek.lines = ["<शैली गुरु>", "/* fetch demos/lekhak.uhin */", ""];
+      fetch("demos/lekhak.uhin").then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
+        if (!t) return;
+        fs.write("lekhak.uhin", t);
+        lek.lines = t.split("\n");
+        lekPaint();
+      }).catch(function () {});
+    }
+    if (!lek.lines.length) lek.lines = [""];
+    lek.row = 0; lek.col = 0; lek.top = 0; lek.changed = false;
+  }
+  function lekSave() {
+    fs.write(lek.path, lek.lines.join("\n"));
+    lek.changed = false;
+  }
+  function lekKey(e) {
+    var k = e.key, ctrl = e.ctrlKey, alt = e.altKey, sh = e.shiftKey;
+    e.preventDefault();
+    if (k === "F1") { lekHelp(); return; }
+    if (k === "F2") { lekSave(); lekPaint(); return; }
+    if (k === "F3") {
+      var p = window.prompt("open", lek.path);
+      if (p) lekOpen(p);
+      lekPaint(); return;
+    }
+    if (k === "F10") { lekPaint(); return; }
+    if ((alt && (k === "x" || k === "X")) || (k === "Escape" && sh)) {
+      if (lek.changed) lekSave();
+      lek.on = false; initVt(); paint(); vtWrite("lekhak file_exit\n");
+      ps1.textContent = prompt();
+      return;
+    }
+    if (k === "Escape") { lekPaint(); return; }
+    if (ctrl && (k === "y" || k === "Y")) {
+      lek.lines[lek.row] = "";
+      lek.col = 0; lek.changed = true; lekPaint(); return;
+    }
+    if (ctrl && k === "Home") { lek.row = 0; lek.col = 0; lek.top = 0; lekPaint(); return; }
+    if (ctrl && k === "End") { lek.row = lek.lines.length - 1; lek.col = 0; lekPaint(); return; }
+    if (k === "Home") { lek.col = 0; lekPaint(); return; }
+    if (k === "End") { lek.col = (lek.lines[lek.row] || "").length; lekPaint(); return; }
+    if (k === "PageDown") { lek.row = Math.min(lek.lines.length - 1, lek.row + ROWS); lekPaint(); return; }
+    if (k === "PageUp") { lek.row = Math.max(0, lek.row - ROWS); lekPaint(); return; }
+    if (k === "ArrowUp" || k === "up") { lek.row = Math.max(0, lek.row - 1); lekPaint(); return; }
+    if (k === "ArrowDown") { lek.row = Math.min(lek.lines.length - 1, lek.row + 1); lekPaint(); return; }
+    if (k === "ArrowLeft") { lek.col = Math.max(0, lek.col - 1); lekPaint(); return; }
+    if (k === "ArrowRight") { lek.col = Math.min((lek.lines[lek.row] || "").length, lek.col + 1); lekPaint(); return; }
+    if (k === "Insert") { lek.insert = !lek.insert; lekPaint(); return; }
+    if (k === "Enter") {
+      var L = lek.lines[lek.row] || "";
+      lek.lines.splice(lek.row + 1, 0, L.slice(lek.col));
+      lek.lines[lek.row] = L.slice(0, lek.col);
+      lek.row++; lek.col = 0; lek.changed = true; lekPaint(); return;
+    }
+    if (k === "Backspace") {
+      var L = lek.lines[lek.row] || "";
+      if (lek.col > 0) {
+        lek.lines[lek.row] = L.slice(0, lek.col - 1) + L.slice(lek.col);
+        lek.col--;
+      } else if (lek.row > 0) {
+        var prev = lek.lines[lek.row - 1];
+        lek.col = prev.length;
+        lek.lines[lek.row - 1] = prev + L;
+        lek.lines.splice(lek.row, 1);
+        lek.row--;
+      }
+      lek.changed = true; lekPaint(); return;
+    }
+    if (k === "Delete") {
+      var L = lek.lines[lek.row] || "";
+      lek.lines[lek.row] = L.slice(0, lek.col) + L.slice(lek.col + 1);
+      lek.changed = true; lekPaint(); return;
+    }
+    if (k === "Tab") {
+      var sp = "        ".slice(0, 8 - (lek.col % 8));
+      k = sp; /* fall through as insert */
+    }
+    if (k && k.length === 1 && !ctrl && !alt) {
+      var L = lek.lines[lek.row] || "";
+      if (L.length >= LMAX) return;
+      if (lek.insert) lek.lines[lek.row] = L.slice(0, lek.col) + k + L.slice(lek.col);
+      else lek.lines[lek.row] = L.slice(0, lek.col) + k + L.slice(lek.col + 1);
+      lek.col += k.length; lek.changed = true; lekPaint();
+    }
+    if (lek.row < lek.top) lek.top = lek.row;
+    if (lek.row >= lek.top + ROWS) lek.top = lek.row - ROWS + 1;
+  }
   function gfxClear() {
     var ctx = glass.getContext("2d");
     glass.width = 640; glass.height = 384;
@@ -372,15 +501,17 @@
       return;
     }
     if (String(res).indexOf("__LEKHAK__:") === 0) {
-      lek.path = String(res).slice(11);
-      var rf = fs.read(lek.path);
-      lek.lines = (rf.ok ? rf.content : "").split("\n");
-      if (!lek.lines.length) lek.lines = [""];
-      lek.row = 0; lek.on = true; lekPaint();
-      ps1.textContent = "lekhak> ";
+      lek.on = true;
+      lekOpen(String(res).slice(11));
+      lekPaint();
+      ps1.textContent = "";
       return;
     }
-    if (res === "\x1b[2J") { initVt(); paint(); }
+    if (res === "__EMU__") {
+      vtWrite("x86: opening emulator (v86 / FreeDOS)\n");
+      window.location.href = "emu.html";
+      return;
+    }
     else if (res) vtWrite(res.charAt(res.length - 1) === "\n" ? res : res + "\n");
   };
 })();

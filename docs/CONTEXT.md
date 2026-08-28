@@ -25,7 +25,8 @@ A Stage-0 bootstrap plus additive layers (v2/v3 workbench, frontends, VFS, VT100
 Self-host T0 (A=B=C) is verified on a **compiler subset**.  
 Foreign language frontends are **subsets**. Official language test suites are mapped, not passed.
 
-Lekhak is the 2004 DOS IDE (`lekhak.bat` → `lekhakx.exe` after `fullscr`).
+x86: catalogued as hindawiai/v86, js-dos, em-dosbox and not mounted. Now `docs/emu.html` (v86 FreeDOS). Original Lekhak is `src/lekhak/LEKHAK.C` → console `lekhak` (PANINI) and `docs/emu/lekhakx.exe` (DJGPP+UPX, needs DPMI).
+
 Shaili Robot is Indic LOGO (`ROBOT.C` in hindawi3.zip), named for FreeBot ANGEL.
 Both are on the console as modes of the **same glass**: Robot switches the CRT to a 640×384 floor; Lekhak is 80×24 text. Retrieved sources under `retrieved/legacy/Hindawi/{robot,lekhak}/`.
 

@@ -68,5 +68,13 @@ FUNCTION main()
     RETURN north(100, 10)
 END
 `, 90);
+await check("lekhak keys", `
+FUNCTION keys()
+    RETURN ["F1","F2","F3","Alt-X","Ctrl-Y"]
+END
+FUNCTION main()
+    RETURN LEN(keys())
+END
+`, 5);
 console.log(fail ? `FAILED ${fail}/${n}` : `PASSED ${n}/${n}`);
 process.exit(fail ? 1 : 0);

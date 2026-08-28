@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — x86 emulator</title>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="skins/jazz.css" />
+  <style>
+    .bezel { background:#222; padding:12px; border-radius:12px; }
+    iframe { width:100%; height:70vh; border:0; background:#000; }
+  </style>
+</head>
+<body class="site">
+<header class="site-head">
+  <a href="index.html"><strong>PANINI</strong></a>
+  <nav>
+    <a href="console.html">Console</a>
+    <a href="index.html">Home</a>
+  </nav>
+</header>
+<main class="site-main">
+  <h1>x86 emulator</h1>
+  <p>This was catalogued as <a href="https://github.com/hindawiai/v86">hindawiai/v86</a> (fork of copy/v86), plus js-dos and em-dosbox — and never mounted on the console. It is mounted here.</p>
+  <p>v86 is third-party (BSD). The guest is FreeDOS from copy.sh. Original Lekhak is DJGPP+UPX: you need DPMI. Binaries from hindawi3.zip:</p>
+  <p>
+    <a href="emu/lekhakx.exe">lekhakx.exe</a> ·
+    <a href="emu/CWSDPMI.EXE">CWSDPMI.EXE</a> ·
+    <a href="emu/CMD.COM">CMD.COM</a>
+  </p>
+  <p>PANINI Lekhak (LEKHAK.C port, not the EXE) is on the console: type <code>lekhak</code>. The EXE is the 2004 binary; the port is the source in this language.</p>
+  <section class="bezel" aria-label="v86 monitor">
+    <iframe title="v86 FreeDOS" src="https://copy.sh/v86/?profile=freedos" allow="cross-origin-isolated"></iframe>
+  </section>
+</main>
+<script src="skins/skins.js"></script>
+</body>
+</html>
