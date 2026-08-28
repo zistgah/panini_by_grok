@@ -235,6 +235,23 @@ async function main() {
       await import("../scripts/iso_c_harness.mjs");
       return;
     }
+    case "wasm": {
+      const { emitCWat, runCWasm } = await import("../runtime/wasm_front.js");
+      const src = readInput(args[1]);
+      const mode = flag("run") != null || args.includes("--run") ? "run" : "wat";
+      if (mode === "run") {
+        const name = flag("export") || "main";
+        const r = await runCWasm(src, name, []);
+        console.log(r.value);
+        if (args.includes("--wat")) process.stderr.write(r.wat);
+        return;
+      }
+      const wat = await emitCWat(src);
+      const out = flag("out");
+      if (out) fs.writeFileSync(out, wat);
+      else console.log(wat);
+      return;
+    }
     case "bash":
       await runSource(fs.readFileSync(new URL("../stdlib/bash.pni", import.meta.url), "utf8"), "bash.pni");
       return;
@@ -296,7 +313,9 @@ Usage:
   panini cc <file.c>          # invoke host cc
   panini cpp <file.cpp>       # invoke host c++
   panini repl
-  panini posix
+  panini wasm <file.c>          # C → WAT (PANINI backend)
+  panini wasm <file.c> --run    # C → WAT → WASM → execute main
+  panini iso-c                  # c-testsuite ISO GREEN harness
   panini env list
   panini env env-python
   panini version

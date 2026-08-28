@@ -1,0 +1,353 @@
+/* PANINI.Backend.Wasm — AST → WAT (stack machine, linear memory)
+ * Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
+ *
+ * C AST (from PANINI.Frontend.C) lowers to postfix i32 ops.
+ * Pointers are i32 offsets into exported linear memory.
+ * calloc is a bump of global $heap. Frames grow down from $sp.
+ */
+MODULE PANINI.Backend.Wasm
+
+FUNCTION watNL()
+    RETURN NEWLINE()
+END
+
+FUNCTION watOp(op)
+    IF op == "+" RETURN "i32.add"
+    END
+    IF op == "-" RETURN "i32.sub"
+    END
+    IF op == "*" RETURN "i32.mul"
+    END
+    IF op == "/" RETURN "i32.div_s"
+    END
+    IF op == "%" RETURN "i32.rem_s"
+    END
+    IF op == "==" RETURN "i32.eq"
+    END
+    IF op == "!=" RETURN "i32.ne"
+    END
+    IF op == "<" RETURN "i32.lt_s"
+    END
+    IF op == ">" RETURN "i32.gt_s"
+    END
+    IF op == "<=" RETURN "i32.le_s"
+    END
+    IF op == ">=" RETURN "i32.ge_s"
+    END
+    IF op == "&" RETURN "i32.and"
+    END
+    IF op == "|" RETURN "i32.or"
+    END
+    IF op == "^" RETURN "i32.xor"
+    END
+    IF op == "<<" RETURN "i32.shl"
+    END
+    IF op == ">>" RETURN "i32.shr_s"
+    END
+    RETURN "i32.add"
+END
+
+FUNCTION watPad()
+    RETURN "    "
+END
+
+FUNCTION watLine(s)
+    RETURN watPad() + s + watNL()
+END
+
+FUNCTION watOff(frame, name)
+    v = frame[name]
+    IF v == NULL
+        RETURN 0
+    END
+    RETURN v
+END
+
+FUNCTION watAddr(frame, name)
+    off = watOff(frame, name)
+    RETURN watLine("(global.get $sp)") + watLine("(i32.const " + STR(off) + ")") + watLine("(i32.add)")
+END
+
+FUNCTION watCollect(s, frame, n)
+    IF s == NULL
+        RETURN n
+    END
+    IF s.op == "decl"
+        IF frame[s.name] == NULL
+            frame[s.name] = n * 4
+            n = n + 1
+        END
+        RETURN n
+    END
+    IF s.op == "block"
+        k = 0
+        WHILE k < LEN(s.body)
+            n = watCollect(s.body[k], frame, n)
+            k = k + 1
+        END
+        RETURN n
+    END
+    IF s.op == "if"
+        n = watCollect(s.then, frame, n)
+        n = watCollect(s.else, frame, n)
+        RETURN n
+    END
+    IF s.op == "while" OR s.op == "do"
+        RETURN watCollect(s.body, frame, n)
+    END
+    IF s.op == "for"
+        n = watCollect(s.init, frame, n)
+        RETURN watCollect(s.body, frame, n)
+    END
+    IF s.op == "label" OR s.op == "case" OR s.op == "default"
+        RETURN watCollect(s.stmt, frame, n)
+    END
+    RETURN n
+END
+
+FUNCTION watEmitExpr(e, frame)
+    IF e == NULL
+        RETURN watLine("(i32.const 0)")
+    END
+    IF e.op == "const"
+        RETURN watLine("(i32.const " + STR(INT(e.value)) + ")")
+    END
+    IF e.op == "load"
+        RETURN watAddr(frame, e.name) + watLine("(i32.load)")
+    END
+    IF e.op == "addr"
+        IF e.e.op == "load"
+            RETURN watAddr(frame, e.e.name)
+        END
+        IF e.e.op == "index"
+            RETURN watEmitExpr(e.e.base, frame) + watEmitExpr(e.e.index, frame) + watLine("(i32.const 4)") + watLine("(i32.mul)") + watLine("(i32.add)")
+        END
+        RETURN watLine("(i32.const 0)")
+    END
+    IF e.op == "deref"
+        RETURN watEmitExpr(e.e, frame) + watLine("(i32.load)")
+    END
+    IF e.op == "index"
+        RETURN watEmitExpr(e.base, frame) + watEmitExpr(e.index, frame) + watLine("(i32.const 4)") + watLine("(i32.mul)") + watLine("(i32.add)") + watLine("(i32.load)")
+    END
+    IF e.op == "bin"
+        RETURN watEmitExpr(e.left, frame) + watEmitExpr(e.right, frame) + watLine("(" + watOp(e.operator) + ")")
+    END
+    IF e.op == "and"
+        RETURN watEmitExpr(e.left, frame) + watEmitExpr(e.right, frame) + watLine("(i32.and)")
+    END
+    IF e.op == "or"
+        RETURN watEmitExpr(e.left, frame) + watEmitExpr(e.right, frame) + watLine("(i32.or)")
+    END
+    IF e.op == "neg"
+        RETURN watLine("(i32.const 0)") + watEmitExpr(e.e, frame) + watLine("(i32.sub)")
+    END
+    IF e.op == "not"
+        RETURN watEmitExpr(e.e, frame) + watLine("(i32.eqz)")
+    END
+    IF e.op == "bnot"
+        RETURN watEmitExpr(e.e, frame) + watLine("(i32.const -1)") + watLine("(i32.xor)")
+    END
+    IF e.op == "cast" OR e.op == "sizeof"
+        IF e.op == "sizeof"
+            RETURN watLine("(i32.const 4)")
+        END
+        RETURN watEmitExpr(e.e, frame)
+    END
+    IF e.op == "tern"
+        RETURN watEmitExpr(e.c, frame) + watLine("(if (result i32)") + watLine("  (then") + watEmitExpr(e.t, frame) + watLine("  )") + watLine("  (else") + watEmitExpr(e.f, frame) + watLine("  )") + watLine(")")
+    END
+    IF e.op == "preinc" OR e.op == "postinc" OR e.op == "predec" OR e.op == "postdec"
+        d = 1
+        IF e.op == "predec" OR e.op == "postdec"
+            d = 0 - 1
+        END
+        a = ""
+        IF e.e.op == "load"
+            a = watAddr(frame, e.e.name)
+        ELSE
+            IF e.e.op == "deref"
+                a = watEmitExpr(e.e.e, frame)
+            ELSE
+                IF e.e.op == "index"
+                    a = watEmitExpr(e.e.base, frame) + watEmitExpr(e.e.index, frame) + watLine("(i32.const 4)") + watLine("(i32.mul)") + watLine("(i32.add)")
+                ELSE
+                    a = watLine("(i32.const 0)")
+                END
+            END
+        END
+        body = a + watLine("(i32.load)") + watLine("(local.set $t0)") + a + watLine("(local.get $t0)") + watLine("(i32.const " + STR(d) + ")") + watLine("(i32.add)") + watLine("(i32.store)")
+        IF e.op == "preinc" OR e.op == "predec"
+            RETURN body + a + watLine("(i32.load)")
+        END
+        RETURN body + watLine("(local.get $t0)")
+    END
+    IF e.op == "assign"
+        RETURN watEmitAssign(e, frame)
+    END
+    IF e.op == "call"
+        k = 0
+        args = ""
+        WHILE k < LEN(e.args)
+            args = args + watEmitExpr(e.args[k], frame)
+            k = k + 1
+        END
+        nm = e.name
+        IF nm == NULL
+            nm = "unknown"
+        END
+        RETURN args + watLine("(call $" + nm + ")")
+    END
+    RETURN watLine("(i32.const 0)")
+END
+
+FUNCTION watEmitAssign(e, frame)
+    v = watEmitExpr(e.value, frame)
+    t = e.target
+    IF t.op == "load"
+        RETURN watAddr(frame, t.name) + v + watLine("(i32.store)") + watAddr(frame, t.name) + watLine("(i32.load)")
+    END
+    IF t.op == "deref"
+        RETURN watEmitExpr(t.e, frame) + v + watLine("(i32.store)") + watEmitExpr(t.e, frame) + watLine("(i32.load)")
+    END
+    IF t.op == "index"
+        a = watEmitExpr(t.base, frame) + watEmitExpr(t.index, frame) + watLine("(i32.const 4)") + watLine("(i32.mul)") + watLine("(i32.add)")
+        RETURN a + v + watLine("(i32.store)") + watLine("(i32.const 0)")
+    END
+    RETURN v
+END
+
+FUNCTION watEpilogue(framesize)
+    RETURN watLine("(local.set $ret)") + watLine("(global.get $sp)") + watLine("(i32.const " + STR(framesize) + ")") + watLine("(i32.add)") + watLine("(global.set $sp)") + watLine("(local.get $ret)") + watLine("(return)")
+END
+
+FUNCTION watEmitStmt(s, frame, framesize)
+    IF s == NULL
+        RETURN ""
+    END
+    IF s.op == "nop"
+        RETURN watLine("(nop)")
+    END
+    IF s.op == "return"
+        RETURN watEmitExpr(s.arg, frame) + watEpilogue(framesize)
+    END
+    IF s.op == "block"
+        k = 0
+        o = ""
+        WHILE k < LEN(s.body)
+            o = o + watEmitStmt(s.body[k], frame, framesize)
+            k = k + 1
+        END
+        RETURN o
+    END
+    IF s.op == "decl"
+        IF s.init != NULL AND s.init.op != "none"
+            RETURN watAddr(frame, s.name) + watEmitExpr(s.init, frame) + watLine("(i32.store)")
+        END
+        RETURN ""
+    END
+    IF s.op == "expr"
+        IF s.value.op == "assign"
+            RETURN watEmitAssign(s.value, frame) + watLine("(drop)")
+        END
+        RETURN watEmitExpr(s.value, frame) + watLine("(drop)")
+    END
+    IF s.op == "if"
+        RETURN watEmitExpr(s.cond, frame) + watLine("(if") + watLine("  (then") + watEmitStmt(s.then, frame, framesize) + watLine("  )") + watLine("  (else") + watEmitStmt(s.else, frame, framesize) + watLine("  )") + watLine(")")
+    END
+    IF s.op == "while"
+        RETURN watLine("(block $brk") + watLine("  (loop $cnt") + watEmitExpr(s.cond, frame) + watLine("(i32.eqz)") + watLine("(br_if $brk)") + watEmitStmt(s.body, frame, framesize) + watLine("(br $cnt)") + watLine("  )") + watLine(")")
+    END
+    IF s.op == "do"
+        RETURN watLine("(block $brk") + watLine("  (loop $cnt") + watEmitStmt(s.body, frame, framesize) + watEmitExpr(s.cond, frame) + watLine("(i32.eqz)") + watLine("(br_if $brk)") + watLine("(br $cnt)") + watLine("  )") + watLine(")")
+    END
+    IF s.op == "for"
+        RETURN watEmitStmt(s.init, frame, framesize) + watLine("(block $brk") + watLine("  (loop $cnt") + watEmitExpr(s.cond, frame) + watLine("(i32.eqz)") + watLine("(br_if $brk)") + watEmitStmt(s.body, frame, framesize) + watEmitStmt(s.inc, frame, framesize) + watLine("(br $cnt)") + watLine("  )") + watLine(")")
+    END
+    IF s.op == "label" OR s.op == "case" OR s.op == "default"
+        RETURN watEmitStmt(s.stmt, frame, framesize)
+    END
+    IF s.op == "break"
+        RETURN watLine("(br $brk)")
+    END
+    IF s.op == "continue"
+        RETURN watLine("(br $cnt)")
+    END
+    RETURN ""
+END
+
+FUNCTION watEmitFunc(fn)
+    frame = {}
+    n = 0
+    k = 0
+    WHILE k < LEN(fn.params)
+        frame[fn.params[k]] = n * 4
+        n = n + 1
+        k = k + 1
+    END
+    n = watCollect({op: "block", body: fn.body}, frame, n)
+    IF n < 1
+        n = 1
+    END
+    framesize = n * 4
+    ps = ""
+    k = 0
+    WHILE k < LEN(fn.params)
+        ps = ps + " (param $" + fn.params[k] + " i32)"
+        k = k + 1
+    END
+    head = "  (func $" + fn.name + " (export " + QUOTE() + fn.name + QUOTE() + ")" + ps + " (result i32)" + watNL()
+    head = head + "    (local $t0 i32)" + watNL()
+    head = head + "    (local $ret i32)" + watNL()
+    pro = watLine("(global.get $sp)") + watLine("(i32.const " + STR(framesize) + ")") + watLine("(i32.sub)") + watLine("(global.set $sp)")
+    k = 0
+    WHILE k < LEN(fn.params)
+        pro = pro + watAddr(frame, fn.params[k]) + watLine("(local.get $" + fn.params[k] + ")") + watLine("(i32.store)")
+        k = k + 1
+    END
+    body = watEmitStmt({op: "block", body: fn.body}, frame, framesize)
+    tail = watLine("(i32.const 0)") + watEpilogue(framesize)
+    RETURN head + pro + body + tail + "  )" + watNL()
+END
+
+FUNCTION watCalloc()
+    o = "  (func $calloc (export " + QUOTE() + "calloc" + QUOTE() + ") (param $n i32) (param $sz i32) (result i32)" + watNL()
+    o = o + "    (local $p i32)" + watNL()
+    o = o + watLine("(global.get $heap)")
+    o = o + watLine("(local.set $p)")
+    o = o + watLine("(global.get $heap)")
+    o = o + watLine("(local.get $n)")
+    o = o + watLine("(local.get $sz)")
+    o = o + watLine("(i32.mul)")
+    o = o + watLine("(i32.add)")
+    o = o + watLine("(global.set $heap)")
+    o = o + watLine("(local.get $p)")
+    o = o + watLine("(return)")
+    o = o + "  )" + watNL()
+    RETURN o
+END
+
+FUNCTION watEmitModule(ast)
+    o = "(module" + watNL()
+    o = o + "  (memory (export \"memory\") 2)" + watNL()
+    o = o + "  (global $heap (mut i32) (i32.const 4096))" + watNL()
+    o = o + "  (global $sp (mut i32) (i32.const 131072))" + watNL()
+    o = o + watCalloc()
+    k = 0
+    WHILE k < LEN(ast.body)
+        s = ast.body[k]
+        IF s.op == "def"
+            o = o + watEmitFunc(s)
+        END
+        k = k + 1
+    END
+    o = o + ")" + watNL()
+    RETURN o
+END
+
+FUNCTION emit_c_wat(source)
+    ast = cParse(CPP(source))
+    RETURN watEmitModule(ast)
+END
+
+END
