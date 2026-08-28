@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-83. List every GATE CSE topic. Implement them in PANINI — data structures, algorithms, compiler design, and the rest. Do not report shallow coverage as done.
+84. Check GATE DS, ECE, Instrumentation syllabi. Implement PSpice in PANINI.
+
 
 
 
