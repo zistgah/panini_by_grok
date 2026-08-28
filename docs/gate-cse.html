@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI — GATE CSE examples</title>
+  <title>PANINI — GATE CS 2026 topics</title>
   <link rel="stylesheet" href="site.css" />
   <link rel="stylesheet" href="skins/jazz.css" />
 </head>
@@ -17,22 +17,23 @@
   </nav>
 </header>
 <main class="site-main">
-  <h1>GATE CSE syllabus examples</h1>
-  <p>Teaching programmes mapped to GATE Computer Science sections. Not official GATE papers (IISc/IIT).</p>
+  <p class="cite">Official list: <a href="https://gate2026.iitg.ac.in/doc/GATE2026_Syllabus/CS_2026_Syllabus.pdf">GATE 2026 CS syllabus (IIT Guwahati)</a>. Implementations: <code>src/panini/gate/</code>. Tests: 10/10 mains return 1.</p>
+  <h1>Every GATE CS section, in PANINI</h1>
   <table>
-    <thead><tr><th>File</th><th>Section</th><th>Result</th></tr></thead>
+    <thead><tr><th>§</th><th>Official bullets</th><th>File</th></tr></thead>
     <tbody>
-      <tr><td>01_gcd.pni</td><td>Programming / Discrete</td><td>gcd(48,18)=6</td></tr>
-      <tr><td>02_binsearch.pni</td><td>Algorithms</td><td>index of 7</td></tr>
-      <tr><td>03_stack.pni</td><td>Data Structures</td><td>30</td></tr>
-      <tr><td>04_bits.pni</td><td>Digital Logic</td><td>half-adder carry</td></tr>
-      <tr><td>05_fcfs.pni</td><td>Operating System</td><td>waiting sum 13</td></tr>
-      <tr><td>06_dfa.pni</td><td>Theory of Computation</td><td>even number of 1s</td></tr>
-      <tr><td>07_lex.pni</td><td>Compiler Design</td><td>3 tokens</td></tr>
-      <tr><td>08_checksum.pni</td><td>Computer Networks</td><td>wrap 64</td></tr>
+      <tr><td>1</td><td>Logic; sets/relations; groups; graphs; combinatorics; recurrences; matrices; eigenvalues; extrema; mean; Bayes</td><td>01_math.pni</td></tr>
+      <tr><td>2</td><td>Boolean; combinational; sequential; minimization; number / two’s-complement arithmetic</td><td>02_digital.pni</td></tr>
+      <tr><td>3</td><td>Addressing; ALU; pipeline + load-use stall; cache index/tag; DMA</td><td>03_coa.pni</td></tr>
+      <tr><td>4</td><td>Recursion; arrays; stack; queue; linked-list sum; BST search; heap parent; BFS</td><td>04_ds.pni</td></tr>
+      <tr><td>5</td><td>Linear/binary search; insertion sort; hashing; greedy coins; DP fib; merge; Dijkstra; Kruskal; knapsack value</td><td>05_algo.pni</td></tr>
+      <tr><td>6</td><td>DFA; RE a*b; PDA parentheses; TM increment; halting marked undecidable</td><td>06_toc.pni</td></tr>
+      <tr><td>7</td><td>Lex numbers; parse add; SDT; TAC count; const fold; liveness; CSE; 1+2*3</td><td>07_compiler.pni</td></tr>
+      <tr><td>8</td><td>FCFS; SJF; RR; banker; deadlock cycle; VM page; inode blocks</td><td>08_os.pni</td></tr>
+      <tr><td>9</td><td>Select; project; 3NF flag; B-tree min; lock grant</td><td>09_dbms.pni</td></tr>
+      <tr><td>10</td><td>OSI 7; TCP/IP 4; checksum; CIDR hosts; distance-vector; TCP ACK; NAT port</td><td>10_networks.pni</td></tr>
     </tbody>
   </table>
-  <p>Sources: <code>examples/gate_cse/</code> in the repository. Run with the PANINI interpreter.</p>
 </main>
 </body>
 </html>
