@@ -52,8 +52,12 @@ This is the working contract for changes to this tree.
     against the retrieved c-testsuite single-exec corpus, subject
     PANINI.Frontend.C. Subset demos do not discharge this. Status until
     the harness is all-pass: NOT GREEN. Zip every delivery turn.
-23. `retrieved/` is read-only vendor. APCISR and Romenagri maps are retrieved.
+23. `retrieved/` is read-only vendor except where a stub TSV header already
+    names the fill method (Unicode name-projection). Gurmukhi retrieved rows
+    are not overwritten. APCISR and Romenagri maps are retrieved.
     Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
+24. Linguistics: Brahmi scripts use Unicode name-projection onto Devanagari (Gurmukhi TSV header is the method). Semitic scripts are direct; they are not routed through Devanagari. Perso-Arabic *language* maps stay retrieved and lossy. Do not invent cuneiform or Egyptian **keywords**. Do not report 27 TSVs as 7000 languages. Round-trip is `node tests/roundtrip.mjs`. `retrieved/` maps are not replaced by `#define`.
+
 
 ## Delivery
 

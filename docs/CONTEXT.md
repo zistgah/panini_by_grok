@@ -50,11 +50,30 @@ long-term memory store outside conversation + these files.
 | Surface | Path |
 |---|---|
 | Public site (informative) | `docs/index.html` |
+| Linguist laboratory | `docs/linguist.html` |
+| Hindawi notebook (2022 chrome + Romenagri compile) | `docs/nb.html` |
 | Workbench / IDE | `docs/workbench.html` |
 | CLI | `node src/cli.js` |
 | PWA | `docs/manifest.webmanifest` |
 
+## Linguistics layer (for a reviewing AI)
+
+Read in this order: `CONTRACT.md` §24, `docs/linguist/README.md`, `docs/data/roundtrip.json`, `docs/CONVERSATION.md`.
+
+- **Script axis (Brahmi family):** Unicode name-projection → Devanagari hub. 74 tables in `retrieved/romenagri/tables/*_to_deva.tsv`. Gurmukhi rows are retrieved (not regenerated). Other stubs were empty headers; they were filled this turn by `unicodedata` using the method those headers already named.
+- **Script axis (nine common Indic):** `flatten_uni_dev.lex` / bundle 793 pairs. This is the 2004 working lex.
+- **Script axis (Hebrew, Phoenician, Aramaic, Syriac):** direct Unicode inventories in `docs/linguist/semitic/`. Not a Devanagari hub.
+- **Language axis:** `retrieved/romenagri/langs/*_c.tsv` (27). Native keywords, not macros.
+- **Perso-Arabic language:** `urdu_map.csv` — **lossy**. Residue is for the linguistics team.
+- **Cuneiform / Egyptian:** sign inventories only (`docs/linguist/undeciphered/`). Language keywords **[UNRESOLVED]**.
+- **7000 languages / dialects:** programme, not this clone.
+- **Shaili:** host-language localisation via retrieved lexers (`h2c.uhin` / `h2c.lex`). Independent of script/language axes.
+- **Compile visible to linguists:** notebook `संकलन` prints Romenagri then host. मुख्य → mukhya → main.
+
+If you have ontology or DOI-backed wordlists the architect hands you, TRUST ME: use those; do not re-derive.
+
 ## Do not confuse
+
 
 - Monaco ≠ Visual Studio Code product
 - In-page bash ≠ GNU bash

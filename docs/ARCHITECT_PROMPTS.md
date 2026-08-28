@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-60. Notebook must match 2022 स्मरण पुस्तिका. Compile must show Romenagri. Fetch GitHub each run and diff. Conversation narrative in the repo via zip. Do not push.
+61. Linguistics collaborators: original scripts, round-trip tests, extend families (Perso-Arabic, Brahmi, Hebrew direct, Aramaic, cuneiform, Egyptian as known). Underlying layer = keyword translation without fallback/#define. Update CONTEXT/CONTRACT for other AIs. Do not reinvent approved site chrome.
+
 
 
 
