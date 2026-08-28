@@ -46,11 +46,20 @@ Brahmi scripts share Devanagari as the flatten hub (`flatten_uni_dev.lex`)
 — round-trip **table-complete**. Perso-Arabic uses the manual `urdu_map` /
 `fltr_ur_hi` and is **lossy** (abjad residue is linguistics work).
 
-Romenagri is the ASCII-7 **channel**, not the authoring surface.
-Localization that dies at `gcc -E` is not localization.
+## Toward 100% (named, not claimed)
 
-## Done
+Counted in this tree. Not a live 7000-language walk.
 
-Compile with a deliberate error; read the diagnostic; step in a debugger;
-`nm` the object. If any of those answer only in English, it is not done.
-`HindiC.uhin` (15 Aug 2004, GPL) is the bar.
+| Layer | Have | Target | Gap |
+|---|---|---|---|
+| Brahmi name-projection tables | 57 nonempty / 74 | all named scripts | 17 empty (names do not parallel Devanagari) |
+| flatten_uni_dev (2004 lex) | 793 pairs, 9 scripts | those 9 | table-complete |
+| ISO 15919 hub | 11 columns, Aran↔Deva 55/59 | lossless Perso-Arabic | abjad residue |
+| Eighth Schedule keyword TSVs | 16 / 22 | 22 | Bodo, Dogri, Konkani, Maithili, Manipuri, Santali — not invented |
+| Language C standards published | 27 | every TSV × every shaili | BASIC/C++/Java/ASM standards open |
+| Identifier dictionary (view ≠ compile) | yes | glossary coverage | glossaries by deposit |
+| Time / calendars in operator language | CHAKRA retrieved × label view | ten traditions × retrieved langs | festival glossary partial |
+| Lowest-layer debug in operator language | Hindawi 2004 bar | all shailis | still the bar |
+
+**100% linguistic equity** means both pillars, on every axis, through gdb/`nm`. This tree is not there. Chakra today: the instant is computed; the *view* of Rakṣā Bandhana may be रक्षा बंधन; the ephemeris is not reconstructed.
+

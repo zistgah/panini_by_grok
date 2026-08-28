@@ -58,7 +58,8 @@ This is the working contract for changes to this tree.
     Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
 26. `docs/nb.frozen.html` is the approved 2022 notebook chrome. Do not restyle it. Additive boxes live on `docs/nb.html`.
 28. A language standard is the keyword table plus the ten clauses. It is not an English ISO text in another script. Identifier dictionaries are presentation. Compilation uses the original identifiers.
-30. AyeAI is live (AyeAI · AyeCNSe · AyeAM). Do not call it historical. The estate instrument is the Humanesque→AyeAI→Zistgah poster (Cycles :: Part 1, 10.5281/zenodo.22122422).
+31. CHAKRA is retrieved (`project-ilm/chakra`). Do not reconstruct the ephemeris. PANINI may VIEW names; computation identity stays the library. Rakṣā Bandhana is Śrāvaṇa pūrṇimā, computed.
+
 
 
 

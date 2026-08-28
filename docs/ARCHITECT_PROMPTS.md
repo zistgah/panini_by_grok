@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-66. AyeAI is not historical. Cycles :: Part 1 DOI 10.5281/zenodo.22122422. Style icansee.life. Instrument estate browser on the 31-panel poster; pull other posters from that DOI.
+67. Formalize toward 100% linguistic equity. Rakhi/Rakshabandhan today. Pull project-ilm/chakra; implement with PANINI.
+
 
 
 
