@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI explorer</title>
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(16rem,1fr)); gap:.6rem; }
+    .card { border:1px solid #345; padding:.6rem .7rem; background:#0e1a28; }
+    .card h3 { margin:.1rem 0; font-size:.95rem; }
+    .card p { margin:.2rem 0 0; font-size:.8rem; opacity:.85; }
+    .org { margin:1.2rem 0 .4rem; }
+    input#q { width:100%; max-width:28rem; padding:.4rem; }
+  </style>
+</head>
+<body class="site">
+<header class="site-head">
+  <strong>PANINI explorer</strong>
+  <nav>
+    <a href="mez/">mez desk</a>
+    <a href="nb.html">notebook</a>
+    <a href="cyclers.html">cyclers</a>
+    <a href="workbench.html">workbench</a>
+  </nav>
+</header>
+<main class="site-main">
+  <h1>Estate explorer</h1>
+  <p class="lead">Landing is the map for now. Each inlined repo has <code>apps/<org>/<repo>/</code> so it can spin off. mez is the desk; cyclers are the work you run there, written in PANINI.</p>
+  <p><input id="q" placeholder="filter repos…" /></p>
+  <p id="note"></p>
+  <div id="root"></div>
+</main>
+<script>
+fetch("explorer/repos.json").then(r=>r.json()).then(cat=>{
+  document.getElementById("note").textContent = cat.note +
+    "  zistgah "+cat.orgs.zistgah.length+
+    " · project-ilm "+cat.orgs["project-ilm"].length+
+    " · hindawiai "+cat.orgs.hindawiai.length+
+    " · AyeAI "+cat.orgs.AyeAI.length+" (forks recorded, not this estate’s product)";
+  const root=document.getElementById("root");
+  const inlined={
+    "zistgah/mez":"mez/","zistgah/fakir":"fakir/","zistgah/cycles":"cyclers.html",
+    "project-ilm/ilm.codes":"ilm/","hindawiai/hindawi-legacy":"hindawi.html"
+  };
+  function draw(filter){
+    root.innerHTML="";
+    for (const [org, repos] of Object.entries(cat.orgs)){
+      const h=document.createElement("h2"); h.className="org"; h.textContent=org;
+      root.appendChild(h);
+      const g=document.createElement("div"); g.className="grid";
+      repos.filter(x=>!filter || (x.name+" "+x.description).toLowerCase().includes(filter)).forEach(x=>{
+        const k=org+"/"+x.name;
+        const a=document.createElement("a");
+        a.className="card";
+        a.href = inlined[k] || x.html_url;
+        a.innerHTML="<h3>"+x.name+(x.fork?" (fork)":"")+"</h3><p>"+(x.description||"—")+"</p>";
+        g.appendChild(a);
+      });
+      root.appendChild(g);
+    }
+  }
+  draw("");
+  document.getElementById("q").oninput=e=>draw(e.target.value.trim().toLowerCase());
+});
+</script>
+</body>
+</html>

@@ -213,6 +213,15 @@ document.querySelectorAll("[data-cmd]").forEach((b) => {
         "\nLexicon:\n" + JSON.stringify(window.PANINI_TOOLS.SA, null, 2);
       setPanel("output");
     }
+    if (b.dataset.cmd === "prove") {
+      location.href = "view.html?src=PANINI.V2.WORKBENCH.md";
+    }
+    if (b.dataset.cmd === "agi") {
+      location.href = "fakir/";
+    }
+    if (b.dataset.cmd === "prov") {
+      location.href = "view.html?src=MRD.md";
+    }
   };
 });
 document.querySelectorAll("#activity .act").forEach((b) => b.onclick = () => {

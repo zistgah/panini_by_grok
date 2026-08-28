@@ -2,67 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI explorer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1c2c" />
+  <title>PANINI Workbench — L15</title>
+  <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="site.css" />
   <style>
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(16rem,1fr)); gap:.6rem; }
-    .card { border:1px solid #345; padding:.6rem .7rem; background:#0e1a28; }
-    .card h3 { margin:.1rem 0; font-size:.95rem; }
-    .card p { margin:.2rem 0 0; font-size:.8rem; opacity:.85; }
-    .org { margin:1.2rem 0 .4rem; }
-    input#q { width:100%; max-width:28rem; padding:.4rem; }
+    .layers { display:grid; grid-template-columns:repeat(auto-fill,minmax(11rem,1fr)); gap:.35rem; }
+    .layers a, .layers span { display:block; border:1px solid #345; padding:.4rem .5rem; font-size:.78rem; background:#0e1a28; color:inherit; text-decoration:none; }
+    .layers .here { border-color:#c9973f; }
+    .views { display:flex; flex-wrap:wrap; gap:.4rem; }
+    .views a { padding:.35rem .7rem; background:#1a3348; color:#e8f0f8; text-decoration:none; }
+    .begin { font-family:ui-monospace,monospace; background:#071018; color:#c6f6d5; padding:1rem; }
+    .row { display:flex; flex-wrap:wrap; gap:.5rem; margin:.6rem 0; }
+    .row a { padding:.4rem .8rem; background:#1a3348; color:#e8f0f8; text-decoration:none; }
   </style>
 </head>
 <body class="site">
 <header class="site-head">
-  <strong>PANINI explorer</strong>
+  <strong>PANINI L15</strong>
   <nav>
-    <a href="mez/">mez desk</a>
+    <a href="workbench.html">IDE</a>
+    <a href="mez/">mez cycler</a>
+    <a href="hindawi.html">Hindawi</a>
     <a href="nb.html">notebook</a>
-    <a href="cyclers.html">cyclers</a>
-    <a href="workbench.html">workbench</a>
+    <a href="fakir/">FAKIR</a>
+    <a href="explorer.html">estate</a>
   </nav>
 </header>
 <main class="site-main">
-  <h1>Estate explorer</h1>
-  <p class="lead">Landing is the map for now. Each inlined repo has <code>apps/<org>/<repo>/</code> so it can spin off. mez is the desk; cyclers are the work you run there, written in PANINI.</p>
-  <p><input id="q" placeholder="filter repos…" /></p>
-  <p id="note"></p>
-  <div id="root"></div>
+  <h1>PANINI Workbench</h1>
+  <p class="lead">L15 of the retrieved AGI stack — the operational interface to PANINI / ILM / AGI. Not a toy playground. One semantic artifact, many projections.</p>
+  <p class="row">
+    <a href="workbench.html">Project</a>
+    <a href="workbench.html">Run</a>
+    <a href="view.html?src=PANINI.V2.WORKBENCH.md">Prove</a>
+    <a href="mez/">Cycler</a>
+    <a href="view.html?src=CAN_COMPILE.md">Build status</a>
+    <a href="view.html?src=MRD.md">Provenance / MRD</a>
+  </p>
+
+  <h2>Views of one artifact</h2>
+  <p class="views">
+    <a href="nb.html">Beginner</a>
+    <a href="workbench.html">Engineer</a>
+    <a href="hindawi.html">Linguist</a>
+    <a href="view.html?src=PANINI.V2.WORKBENCH.md">Mathematician</a>
+    <a href="fakir/">AGI / FAKIR</a>
+    <a href="explorer.html">Enterprise / estate</a>
+  </p>
+
+  <h2>Beginner (level 0) — the rest of the architecture waits</h2>
+  <pre class="begin">PRINT "HELLO"
+ask name
+PRINT "Namaste " + name
+
+forward 100
+right 90
+forward 100</pre>
+  <p><a href="nb.html">Open the notebook and run Hindi BASIC / C / Telugu / Punjabi demos.</a></p>
+
+  <h2>Representation ⊥ computation</h2>
+  <p>ILM sits across the workbench. Changing script does not create another program.</p>
+  <p>
+    <a href="hindawi.html">हिन्दी / Shaili</a> ·
+    <a href="ilm/">ilm.codes migration</a> ·
+    <a href="view.html?src=LINGUISTIC_EQUITY.md">Linguistic equity</a>
+  </p>
+
+  <h2>L0–L26 (workbench taxonomy)</h2>
+  <p class="fine">Distinct from FAKIR’s AGI L0–L9 lattice in the MRD. This numbering is interoperability for the workbench.</p>
+  <div class="layers" id="layers"></div>
+
+  <h2>MRD estate (26 components)</h2>
+  <p>Retrieved from <code>zistgah/mrd</code>. PANINI occupies L13–L14; mez is the named L15 desk; cyclers are the URL-handoff harness.</p>
+  <div id="mrd" class="layers"></div>
+
+  <h2>Services</h2>
+  <ul>
+    <li><a href="mez/">mez / cycler</a> — assemble prompt, open ChatGPT/Claude/Gemini/Grok by URL, save the reply. No API key.</li>
+    <li><a href="fakir/">FAKIR</a> — ISIC · ISCO · ISCED retrieval lattice.</li>
+    <li><a href="view.html?src=CYCLERS.md">GENIE / cyclers</a> — meta-cycle and six outputs (matba, khwab, awaz, tilasm, pench, yadein).</li>
+    <li><a href="hindawi.html">Hindawi</a> — original pipeline, all shailis, Brahmi + Perso-Arabic (lossy).</li>
+    <li><a href="view.html?src=CAN_COMPILE.md">Provenance / honesty</a> — lowering compiler is no; interpreter subset is labeled.</li>
+  </ul>
+
+  <p class="fine">Spec: <a href="view.html?src=PANINI.V2.WORKBENCH.md">PANINI.V2.WORKBENCH</a> ·
+     Requirements: <a href="view.html?src=REQUIREMENTS.md">REQUIREMENTS.md</a> ·
+     MRD: <a href="view.html?src=MRD.md">MRD.md</a></p>
 </main>
 <script>
-fetch("explorer/repos.json").then(r=>r.json()).then(cat=>{
-  document.getElementById("note").textContent = cat.note +
-    "  zistgah "+cat.orgs.zistgah.length+
-    " · project-ilm "+cat.orgs["project-ilm"].length+
-    " · hindawiai "+cat.orgs.hindawiai.length+
-    " · AyeAI "+cat.orgs.AyeAI.length+" (forks recorded, not this estate’s product)";
-  const root=document.getElementById("root");
-  const inlined={
-    "zistgah/mez":"mez/","zistgah/fakir":"fakir/","zistgah/cycles":"cyclers.html",
-    "project-ilm/ilm.codes":"ilm/","hindawiai/hindawi-legacy":"hindawi.html"
-  };
-  function draw(filter){
-    root.innerHTML="";
-    for (const [org, repos] of Object.entries(cat.orgs)){
-      const h=document.createElement("h2"); h.className="org"; h.textContent=org;
-      root.appendChild(h);
-      const g=document.createElement("div"); g.className="grid";
-      repos.filter(x=>!filter || (x.name+" "+x.description).toLowerCase().includes(filter)).forEach(x=>{
-        const k=org+"/"+x.name;
-        const a=document.createElement("a");
-        a.className="card";
-        a.href = inlined[k] || x.html_url;
-        a.innerHTML="<h3>"+x.name+(x.fork?" (fork)":"")+"</h3><p>"+(x.description||"—")+"</p>";
-        g.appendChild(a);
-      });
-      root.appendChild(g);
-    }
-  }
-  draw("");
-  document.getElementById("q").oninput=e=>draw(e.target.value.trim().toLowerCase());
+fetch("layers.json").then(r=>r.json()).then(j=>{
+  document.getElementById("layers").innerHTML = j.layers.map(l =>
+    '<span class="'+(l.id==="L15"?"here":"")+'"><code>'+l.id+'</code> '+l.name+(l.mrd?" · "+l.mrd:"")+'</span>'
+  ).join("");
 });
+fetch("mrd-components.json").then(r=>r.json()).then(j=>{
+  document.getElementById("mrd").innerHTML = (j.components||[]).map(c =>
+    '<a href="https://github.com/'+c.repo+'"><strong>'+c.id+'</strong><br>'+(c.one_line||c.name||"")+'</a>'
+  ).join("");
+}).catch(()=>{});
 </script>
 </body>
 </html>
