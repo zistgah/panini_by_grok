@@ -188,12 +188,32 @@ async function main() {
       console.log(JSON.stringify(hindawiGuru(src), null, 2));
       return;
     }
+    case "nb":
+    case "flatten": {
+      const bundle = JSON.parse(fs.readFileSync(new URL("../docs/engine/bundle.json", import.meta.url), "utf8"));
+      const src = args[1] ? fs.readFileSync(args[1], "utf8") : fs.readFileSync(new URL("../retrieved/legacy/Hindawi/samples/TeluguC.uhin", import.meta.url), "utf8");
+      let i = 0, s = src, acc = "";
+      const pairs = bundle.flatten.pairs.slice().sort((a, b) => [...b.from].length - [...a.from].length);
+      while (i < s.length) {
+        let hit = null;
+        for (const p of pairs) { if (p.from && s.startsWith(p.from, i)) { hit = p; break; } }
+        if (hit) { acc += hit.to; i += hit.from.length; } else { acc += s[i]; i++; }
+      }
+      console.log(acc);
+      return;
+    }
     case "perso":
     case "urdu":
     case "arabic": {
       await import("../scripts/explore_perso.mjs");
       return;
     }
+    case "urdu":
+    case "arabic": {
+      await import("../scripts/explore_perso.mjs");
+      return;
+    }
+    case "pa2c":
     case "transducer":
     case "punjabi":
     case "gurmukhi": {

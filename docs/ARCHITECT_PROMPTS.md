@@ -46,7 +46,19 @@ Register note: later turns include **affective register escalation** (frustratio
 35. Use language standards for supported languages. Put the PANINI standard on the site. Parsers must be exercised with complex cases. Record every architect prompt for provenance. Implement lex and yacc in PANINI. Console must work; operator chooses bash or COMMAND.COM. One surface for a Linux distribution, the website, and a phone. Ship a PWA. Portrait phone keeps tabs; landscape desktop keeps the spread layout.
 36. Affective register escalation. Confirm whether surfaces are incomplete. Architect log must stay website-safe. Search Abhishek Choudhary + AyeAI + IBM + Hindawi. Standards means official language test suites (C, C++, Python, Fortran, Julia, and peers). Generate a PANINI test suite. Engineer, linguist, and mathematician views must be real tools, not empty labels.
 
-## Attribution (public sources)
+37. ISO green (unflattened). Zip every turn.
+38. Pick cyclers; treat markdown as literate programming; torture-test all cyclers; PANINI torture suite.
+39. Zip.
+40. Retrieve legacy/APCISR and Romenagri core as a library; do not invent maps.
+41. Claude knowledge transfer. Pull Hindawi localization (not keyword-for-keyword). Fix website markdown links and workbench.
+42. Zip. Port Hindawi to Punjabi in Gurmukhi; Gurmukhi→Devanagari via existing Romenagri; structure the repo.
+43. Zip.
+44. Surface panini.zip (preview was hiding it behind Play/Publish).
+45. HindiC.uhin is the bar, not gurmukhi_demo.c macros. Document Devanagari flow. All legacy shailis in Devanagari. Nepali, Marathi, Sanskrit (Sanskrit = keyword-by-keyword, not a Paninian parser).
+46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
+47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
+48. Devanagari round-trip completeness implies Brahmi-script round-trip. Localize all shailis to all Indic languages available. Notebook-class HTML, PANINI backend, browser-native. Urdu, Sindhi, Shahmukhi, Kashmiri, Farsi, Arabic, Dari, Pashto via ur_hi filter with documented round-trip limits. Update architect log. Refactor and reorganize the repo.
+
 
 - Project Hindawi — Programming in your Mother Tongue (https://hindawi.in/team/)
 - AyeAI; IBM Systems Development Lab (Power hypervisor I/O virtualization, PowerAI / WML Accelerator)

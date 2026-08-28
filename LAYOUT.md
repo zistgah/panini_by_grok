@@ -3,24 +3,26 @@
 Copyright (C) 1993-2026 Abhishek Choudhary  
 SPDX-License-Identifier: GPL-3.0-or-later
 
-GitHub Pages publishes **`docs/` only**. Do not put the site in `website/`.
+GitHub Pages publishes **`docs/` only**.
 
 ```
-spec/            constitution (do not rewrite PANINI_SELF_HOSTING_SPEC.pni)
-src/             CLI + PANINI-written sources (frontends in src/panini/)
-compiler/        Stage-0 JS lexer/parser/IR
-runtime/         interpreter, VFS, shaili.js, gurmukhi.js, romenagri.js
-stdlib/          .pni libraries
-retrieved/       READ-ONLY vendor: APCISR, Romenagri, Hindawi guru, Punjabi TSVs
-cyclers/         zistgah/cycles corpus (not rewritten)
-examples/        runnable samples including punjabi_hello.uhin
-tests/           panini torture, iso/c, …
-docs/            GitHub Pages site (index, view.html, hindawi, punjabi, workbench)
-scripts/         harnesses
-languages/       museum stubs (not ISO-green frontends)
-website/         obsolete; see docs/
+docs/                 Pages site
+  index.html          entry (not the workbench)
+  nb.html             Hindawi notebook UI (browser-native PANINI)
+  engine/             flatten + language bundle + nb.js
+  hindawi.html        Devanagari flow
+  punjabi.html        Gurmukhi lexer transducer
+  perso_arabic.html   manual urdu_map / fltr_ur_hi
+  workbench.html      Monaco IDE
+  ARCHITECT_PROMPTS.md
+retrieved/            READ-ONLY: APCISR, Romenagri, Hindawi shailis, notebooks pointer
+runtime/              Node: hindawi.js, shailis.js, transducer.js, perso_arabic.js, flatten via bundle
+src/                  CLI
+compiler/             Stage-0 JS
+spec/                 PANINI_SELF_HOSTING_SPEC.pni (do not rewrite)
+examples/             punjabi_c.uhin and peers
+tests/ scripts/ stdlib/ cyclers/
 ```
 
-Hindawi localization lives under `retrieved/` + `runtime/shaili.js` (Hindi/guru)
-and `runtime/gurmukhi.js` (Punjabi/Gurmukhi). Keyword tables in `docs/tools.js`
-are **not** Hindawi.
+Brahmi: `flatten_uni_dev.lex` → Devanagari hub, table-complete round-trip.
+Perso-Arabic: `urdu_map.csv` + `fltr_ur_hi`, lossy; linguistics residue.

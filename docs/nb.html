@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>हिंदवी अभ्यास अनुभाग — PANINI notebook</title>
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    .nb { max-width: 1100px; margin: 0 auto; padding: 12px; }
+    .nb h1 { font-size: 1.25rem; }
+    .nb-toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .nb-toolbar button { height: 30px; font-weight: 700; border: 0; padding: 0 10px; cursor: pointer; }
+    .b-build { background: orange; }
+    .b-run { background: #2e7d32; color: #fff; }
+    .b-new { background: pink; }
+    .b-io { background: cyan; }
+    .b-x { background: lightgreen; }
+    .nb label { display: block; font-weight: 600; margin-top: 8px; }
+    .nb textarea { width: 98%; min-height: 160px; font-family: ui-monospace, monospace; font-size: 14px; }
+    .nb select { margin-right: 8px; }
+    .warn { background: #fff3cd; border: 1px solid #c9a227; padding: 8px; margin: 8px 0; }
+    @media (max-width: 640px) {
+      .nb textarea { min-height: 120px; }
+    }
+  </style>
+</head>
+<body class="site">
+<header class="site-head">
+  <strong>PANINI / हिंदवी</strong>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="hindawi.html">Devanagari</a>
+    <a href="perso_arabic.html">Perso-Arabic</a>
+  </nav>
+</header>
+<main class="nb">
+  <h1>हिंदवी अभ्यास अनुभाग (Hindawi Practice Area)</h1>
+  <p>Browser-native. Same surface as the 2022 notebook — PANINI backend, no Colab, no gcc. Brahmi scripts flatten to Devanagari (table-complete round-trip). Perso-Arabic uses the manual <code>urdu_map</code> / <code>fltr_ur_hi</code> and is <strong>lossy</strong>.</p>
+  <p>
+    <label>भाषा language
+      <select id="lang"></select>
+    </label>
+    <label>शैली shaili
+      <select id="shaili">
+        <option value="guru">गुरु C</option>
+        <option value="praatha">प्राथमिक BASIC</option>
+        <option value="shraeni">श्रेणी C++</option>
+        <option value="kritrima">कृत्रिम Java</option>
+        <option value="soochee">सूची Python</option>
+        <option value="shabda">शब्द lex</option>
+        <option value="wyaaka">व्याकरण yacc</option>
+        <option value="yantra">यांत्रिक asm</option>
+      </select>
+    </label>
+    <label>Reverse script (Brahmi)
+      <select id="rev">
+        <option value="devanagari">Devanagari</option>
+        <option value="bengali">Bengali</option>
+        <option value="gurmukhi">Gurmukhi</option>
+        <option value="gujarati">Gujarati</option>
+        <option value="odia">Odia</option>
+        <option value="tamil">Tamil</option>
+        <option value="telugu">Telugu</option>
+        <option value="kannada">Kannada</option>
+        <option value="malayalam">Malayalam</option>
+      </select>
+    </label>
+  </p>
+  <div id="warn" class="warn" hidden>Perso-Arabic path: round-trip is not guaranteed. Residue is for the linguistics team (abjad, tashkil, presentation forms).</div>
+  <div class="nb-toolbar">
+    <button class="b-build" id="build">संकलन (Compile)</button>
+    <button class="b-run" id="run">प्रसार (Run)</button>
+    <button class="b-new" id="neu">नया (New)</button>
+    <button class="b-x" id="h2s">हिंदवी → Standard</button>
+    <button class="b-x" id="s2h">Standard → हिंदवी</button>
+  </div>
+  <label>परोग्राम (Code):</label>
+  <textarea id="prog"><शैली गुरु>
+#समावेश <मानकपन.स>
+पूर्णांक मुख्य()
+{
+	अक्षर अ[८०];
+	पूर्णांक क;
+	क्रम(क=1; क<=10; क++)
+		म_लिखो("%d\n",क);
+	वापस 0;
+}
+</textarea>
+  <label>निविष्ट (Input):</label>
+  <textarea id="inp">50</textarea>
+  <label>उत्पादन (Output):</label>
+  <textarea id="out" readonly placeholder="उत्पादन यहां दिखाया जाएगा"></textarea>
+</main>
+<script src="engine/nb.js"></script>
+<script>
+const DEMO = document.getElementById("prog").value;
+PANINI_NB.load("engine/bundle.json").then((B) => {
+  const lang = document.getElementById("lang");
+  Object.keys(B.langs).sort().forEach((k) => {
+    const o = document.createElement("option");
+    o.value = k; o.textContent = k + (B.perso_family.includes(k) ? " (lossy)" : "");
+    if (k === "hindi") o.selected = true;
+    lang.appendChild(o);
+  });
+  function persoOn() {
+    const w = document.getElementById("warn");
+    w.hidden = !B.perso_family.includes(lang.value);
+  }
+  lang.addEventListener("change", persoOn);
+  function compile() {
+    const r = PANINI_NB.compile({
+      src: document.getElementById("prog").value,
+      lang: lang.value,
+      shaili: document.getElementById("shaili").value,
+    });
+    document.getElementById("out").value =
+      (r.notes.length ? r.notes.join("\n") + "\n\n" : "") +
+      "--- flattened ---\n" + r.flattened + "\n--- host ---\n" + r.host;
+    return r;
+  }
+  document.getElementById("build").onclick = compile;
+  document.getElementById("h2s").onclick = () => {
+    const r = compile();
+    document.getElementById("prog").value = r.host;
+  };
+  document.getElementById("s2h").onclick = () => {
+    document.getElementById("prog").value = PANINI_NB.std2hin(
+      document.getElementById("prog").value, lang.value);
+  };
+  document.getElementById("run").onclick = () => {
+    const r = compile();
+    document.getElementById("out").value +=
+      "\n--- run (channel; no gcc in browser) ---\n" + r.host;
+  };
+  document.getElementById("neu").onclick = () => {
+    document.getElementById("prog").value = DEMO;
+    document.getElementById("out").value = "";
+  };
+});
+</script>
+</body>
+</html>
