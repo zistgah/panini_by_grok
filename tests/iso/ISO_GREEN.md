@@ -11,7 +11,18 @@ C corpus: [c-testsuite](https://github.com/c-testsuite/c-testsuite) `tests/singl
 
 Rule: `ISO_GREEN(C) ⇔ every non-skipped single-exec case: main returns 0 and stdout matches .expected`.
 
-Until that holds, status is **NOT GREEN**. Partial counts are progress, not done.
+# ISO GREEN — unflattened acceptance
+
+**ISO green means the official-suite harness is green with skip=0.** A subset that prints 42 does not discharge this.
+
+C corpus: [c-testsuite](https://github.com/c-testsuite/c-testsuite) `tests/single-exec` (104 cases). Subject: `PANINI.Frontend.C`.
+
+This cycle: **99 pass / 0 fail / 5 skip**. NOT GREEN (skips remain).
+
+Skipped (not in the interpreter yet): `00010.c` `goto`, `00018.c`/`00019.c` self-referential struct pointers, `00040.c` `calloc`, `00051.c` `goto`.
+
+Harness: `node src/cli.js iso-c`
+
 
 Harness: `node src/cli.js iso-c` or `ISO_C_LIMIT=36 node scripts/iso_c_harness.mjs`.
 

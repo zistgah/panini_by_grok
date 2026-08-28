@@ -11,6 +11,7 @@ import { createPosix, syscall } from "./posix.js";
 import { engine as ociEngine, ENVIRONMENTS, runEnv, ociConfig } from "./oci.js";
 import { createVt100, vtWrite, vtPlain, vtSnapshot } from "./vt100.js";
 import { defaultDosFont, loadFontFile, getFont, listFonts } from "./fonts.js";
+import { ccpp } from "./ccpp.js";
 import { renderTextBitmap } from "./dosfont.js";
 
 export function installBuiltins(env, runtime) {
@@ -30,10 +31,17 @@ export function installBuiltins(env, runtime) {
     runtime.prints.push(line);
     return vUnit();
   });
+  def("WRITE", (...args) => {
+    const line = args.map(display).join(" ");
+    runtime.stdout.write(line);
+    runtime.prints.push(line);
+    return vUnit();
+  });
   def("TYPEOF", (x) => vStr(typeName(x)), 1);
   def("NOW", () => vStr(new Date().toISOString()));
   def("STR", (x) => vStr(toStr(x)), 1);
   def("INT", (x) => vInt(toNumber(x)), 1);
+  def("CPP", (x) => vStr(ccpp(toStr(x))), 1);
   def("ORD", (x) => {
     const s = toStr(x);
     return vInt(s.length ? s.charCodeAt(0) : 0);

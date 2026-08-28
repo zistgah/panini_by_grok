@@ -28,7 +28,7 @@ async function paniniRun(src) {
   process.stdout.write = (c) => { printed += String(c); return true; };
   try {
     const r = await runFrontend("c", src);
-    return { value: r && r.value, out: printed, frontend: r && r.frontend, err: r && r.error };
+    return { value: r && r.value, out: printed || (r && r.out) || (r && r.prints ? r.prints.join("") : ""), frontend: r && r.frontend, err: r && r.error };
   } catch (e) {
     return { crash: String(e.message || e).slice(0, 180) };
   } finally {

@@ -11,7 +11,7 @@ const r = spawnSync(process.execPath, [path.join(root, "scripts/iso_c_harness.mj
 });
 const j = JSON.parse(r.stdout.slice(r.stdout.indexOf("{")));
 console.log(j.status);
-if (j.panini.pass < 32) {
+if (j.panini.fail !== 0 || j.panini.pass < 33) {
   console.log("FAIL iso-c progress", j);
   process.exit(1);
 }
