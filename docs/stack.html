@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — AGI stack × shaili × labs</title>
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    body.poster { background:#070d18; color:#e8d9a8; font-family: Georgia, serif; }
+    .hero { max-width: 70rem; margin:0 auto; padding:1.2rem; }
+    a { color:#c9a227; }
+    table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    th, td { border-bottom:1px solid rgba(201,162,39,.25); padding:.4rem; text-align:left; vertical-align:top; }
+    .labs { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:.6rem; }
+    .lab { border:1px solid rgba(201,162,39,.3); padding:.7rem; }
+    code { color:#f3e6b6; }
+  </style>
+</head>
+<body class="poster">
+<div class="hero">
+  <p><a href="index.html">← PANINI</a></p>
+  <h1>L0–L26 × shaili × lab × web × implementation</h1>
+  <p>A shaili is captured as ⟨name, host, axis region, transducer, standard, lab image⟩.
+     Script ≠ language ≠ shaili. Pages cannot run Docker; labs are opt-in images.</p>
+  <p><a href="view.html?src=AGI_STACK.md">Full map</a> ·
+     <a href="view.html?src=SHAILIS.md">Shailis</a> ·
+     <a href="https://github.com/zistgah/panini_by_grok/blob/main/labs/compose.yaml">labs/compose.yaml</a></p>
+
+  <h2>Role labs (containers)</h2>
+  <div class="labs" id="labs"></div>
+
+  <h2>Layers</h2>
+  <table>
+    <thead><tr><th>L</th><th>Domain</th><th>Shailis</th><th>Lab</th><th>Web</th><th>PANINI here</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+<script>
+const LAYERS = [
+  ["L0","Physical substrate","—","(PRATIK)","—","specified"],
+  ["L3","Hardware / asm","यांत्रिक","engineer","workbench","heritage h2y"],
+  ["L7","OS/runtime","गुरु POSIX path","engineer","—","posix.js subset"],
+  ["L8","Execution","सूची · जाल","engineer","workbench","interpreter"],
+  ["L9","Simulation","रेखा → sim","agi","—","specified"],
+  ["L12","ILM representation","(script/language, not shaili)","linguist","hindawi.html","flatten · Romenagri · TSV"],
+  ["L13","Programming language","all shailis","all","nb.html","grammar · cyclers"],
+  ["L14","Compiler","heritage 8 transducers","engineer","hindawi.html","hindawi_port.js · T0 subset"],
+  ["L15","Workbench","—","all","workbench.html · mez/","Monaco · cycler · PWA"],
+  ["L16","Interaction","प्राथमिक · रेखा","beginner","nb.html","demos run"],
+  ["L18","Cognition","—","agi","mez/","URL harness"],
+  ["L21","Agents","—","agi","mez/","cyclers .pni"],
+  ["L23","Verification","गणित · तर्क · गणना","math","prove","prove_v2 subset"],
+  ["L25","Sovereignty","—","enterprise","CONTRACT","GPL-3 · signoff"],
+  ["L26","Civilizational","—","agi","fakir/","domains retrieved"]
+];
+document.getElementById("rows").innerHTML = LAYERS.map(r =>
+  "<tr>"+r.map(c=>"<td>"+c+"</td>").join("")+"</tr>"
+).join("");
+fetch("stack.json").then(r=>r.json()).then(j=>{
+  document.getElementById("labs").innerHTML = j.labs.map(L =>
+    "<div class=lab><h3>"+L.id+"</h3><p>"+L.role+"</p><p><code>"+L.image+
+    "</code></p><p>layers "+L.layers.join(" · ")+"</p><p>shailis "+
+    (L.shailis.join(", ")||"—")+"</p><p><a href='"+L.web+"'>web</a></p></div>"
+  ).join("");
+});
+</script>
+</body>
+</html>

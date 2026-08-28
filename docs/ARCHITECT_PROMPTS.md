@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-55. Poster + DOI 10.5281/zenodo.22121524. Define remaining shailis as Hindawi did for the subset. Top languages and open standards we can implement without liability, plus further criteria. PANINI as a new paradigm. Futuristic rigorous landing. Evening release: identity-erasure problem and proposed solution.
+56. Entire AGI stack: how shailis are captured/defined/described; tooling as Docker labs for roles; PANINI implementation; virtual web infrastructure.
+
 
 
 
