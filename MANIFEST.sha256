@@ -389,6 +389,8 @@ ef80566b8c6644d5de31944b3d10e5992ab26b909d7f622d8c4ac7f90d494a1e  ./attest/17878
 7f1a044b9e1d7da7c1218f8143d5b4d2b5711753716804a91281058ae70e811d  ./attest/1787853145.340145771/MANIFEST.sha256
 7f84ba2ae02ef29a3e60dd59f648cd784c0b42b22173805386da7ffd0863b17c  ./attest/1787889368.202368181/MANIFEST.sha256.ots
 4a3b6c8e26841e7ca82bebe99ac3808b30716860aca0094b0425c80289fa0e4e  ./attest/1787889368.202368181/MANIFEST.sha256
+2d5d83cb2dc08b1ec4bf68f167d8d95ab88a76e6f87acbab83fb5f2b01c1f852  ./attest/1787922132.522230522/MANIFEST.sha256.ots
+b3aa3f3914d72b32f7eb9418ec6b576080914751e0b8cb0f51a6730d0ab93fe3  ./attest/1787922132.522230522/MANIFEST.sha256
 d83c243d1f2f46ca56e62595e2960594436b53984368f4a072f3c456edd1de2e  ./attest/1787885491.257701654/MANIFEST.sha256.ots
 5e970ab11274cc095da41e53bdef033cfd2daa3d67fa59ba63710ae95e1c8119  ./attest/1787885491.257701654/MANIFEST.sha256
 2a10a0bef2b8f07cc0a8427edad172cd325d207e7b3be4727d84c06227df0736  ./docs/PANINI_LITERATE.md
@@ -409,7 +411,7 @@ c01185c02778cebbe28514aeaee997b89646bc18e3e774bff79e93b05f17a92e  ./docs/retriev
 7aa5fd4410acc214f1af2be27688b6398c33a7be019e8e22fd3d730bf683fa9e  ./docs/stack.html
 25f7803c5fa441a8d85e534138ae3605d6f8cba3a2253a2b14ff811fd13e10ed  ./docs/DOCUMENTATION.md
 e51c3673404c49b307f404c7f3a68e1412b70813da20932592474b0103f0c531  ./docs/.nojekyll
-57b1a9a1096d02b6c9fbb030f93d99fab5b0ed9d5d5a01dbf8a53bf118d9f6e4  ./docs/nb.html
+414cc57629e47a92852a67f391d140f94d210f7af7ecdaed6e645ddf5526b3dd  ./docs/nb.html
 896d58ab88fdfca7376c6cd83d34efcd0c5ba329a92b357a54b9cd1612deb32e  ./docs/SHAILIS.md
 e8cb4c7ff4ca846a1015d5326da9cae071d1ad1537a31ed5728eac25730a560b  ./docs/skins/jazz.css
 373fd441b84e3cfb199fcd730b4b75461ed371ff6cd94ab75dc27d260f23212a  ./docs/skins/skins.js
@@ -422,7 +424,7 @@ f60513c6286d29e8fec57bc9b50ccbfbfcc30d229923142f3363b2d23998a91d  ./docs/CYCLERS
 441337cc678cd0f60b8ee6ea22de35a7c0a64dcce33a87adea09cdb4cba36d7f  ./docs/GITHUB_DIFF.md
 67cc03659ecb3ad87d147cc4edd8a4e02f39c7c50636fb3980ce5bcd2bb36097  ./docs/ARCHITECTURE.md
 acbf95792e3317e4fe77b3793c07efe64cbad4fc2aa29c1d4000241867a683a8  ./docs/AYESHA.md
-a517f9a4c64498b77fce5b1c25b149cb50aaac107e10d01ade595b53da2b0df9  ./docs/CONTRACT.md
+e4d2be414b9364a0c99e952cced32b84e5f0a9b7031d1623cbe387eafeb4e505  ./docs/CONTRACT.md
 3b58e8dc21f5b211bcd2552d4d437fa0a2040eaa62896ddeecb567afcbd6fe34  ./docs/fakir/index.html
 42724d624760aede10082a4db5319ffb12063d5bd7d6dfb45983282e3c056d88  ./docs/fakir/SOURCES.md
 293e5952d6b049db36530c77fb4a47647ed0974dedb63b8f6b01604bc1525153  ./docs/fakir/domains.json
@@ -447,9 +449,27 @@ e1c2e6dcb2f4b1903d5d2f4d08745ffda3e56d3208862bfba2dca80df7e47b38  ./docs/demos/H
 db7a85cbf6d3fb70818f37f4a90d17f9cf55b1f7dafba34f36cc01eb506c1367  ./docs/demos/HindiC.uhin
 984f65026bf129e61f4da026495982529d4ca78e9c2757e053b429b1bfeda9ed  ./docs/demos/TeluguBASIC.uhin
 db7a85cbf6d3fb70818f37f4a90d17f9cf55b1f7dafba34f36cc01eb506c1367  ./docs/demos/nepali_guru.uhin
+7597188c3a7e727ee846abad41e0021e61b5b98335e4a6d235166c6cc6364096  ./docs/demos/langs/urdu_guru.uhin
+02c6e1ccd4f93c596bc078f666de939e7ead774f681b12b73f16ad517beb75e7  ./docs/demos/langs/bengali_guru.uhin
+34006e463668402d2d9f5ea2c805a949c6e24f6934ded99367a67a17e3872154  ./docs/demos/langs/bodo_guru.uhin
+7a4775a7133197caad55718f19e078b84de4652d560e0428058742162a84d60e  ./docs/demos/langs/telugu_guru.uhin
+34006e463668402d2d9f5ea2c805a949c6e24f6934ded99367a67a17e3872154  ./docs/demos/langs/maithili_guru.uhin
+68169a1679e801fb618e5f46d1a72ec9292c5e859bff6f9e006f85daf462de76  ./docs/demos/langs/sanskrit_guru.uhin
+22eb1c846e7f6bb1f2e0a13f7251bef344a9f1d115759477eca557bda09d303a  ./docs/demos/langs/gujarati_guru.uhin
+e16bab373eb45a445613c121cf42094d4435a4040c71145a24828b5133e5a078  ./docs/demos/langs/punjabi_guru.uhin
+d8884dd0873bff1154bb89d1aabf4025d8d184ecf221caf78f5e60f2e7e31e33  ./docs/demos/langs/tamil_guru.uhin
+11da86df22c8f361bf97990c935367e37344f7876d9807713e83d94cc6ed8474  ./docs/demos/langs/kannada_guru.uhin
+db7a85cbf6d3fb70818f37f4a90d17f9cf55b1f7dafba34f36cc01eb506c1367  ./docs/demos/langs/marathi_guru.uhin
+3f07a7d1570fa43ae3eea5d877b66ed9c3744dc95cf208a7d999aa7210a8379c  ./docs/demos/langs/malayalam_guru.uhin
+db7a85cbf6d3fb70818f37f4a90d17f9cf55b1f7dafba34f36cc01eb506c1367  ./docs/demos/langs/nepali_guru.uhin
+865aae7399225e39f08d60c52be94a10052402257b82630c7f59d5acb5083ad8  ./docs/demos/langs/odia_guru.uhin
+34006e463668402d2d9f5ea2c805a949c6e24f6934ded99367a67a17e3872154  ./docs/demos/langs/dogri_guru.uhin
+34006e463668402d2d9f5ea2c805a949c6e24f6934ded99367a67a17e3872154  ./docs/demos/langs/konkani_guru.uhin
+a0f490e2bd18deaf7f74e095c1940175d5f42051adad4f6cc0e3f7d59cca749d  ./docs/demos/langs/assamese_guru.uhin
+db7a85cbf6d3fb70818f37f4a90d17f9cf55b1f7dafba34f36cc01eb506c1367  ./docs/demos/langs/hindi_guru.uhin
 67bdf14b5d0f151f7aac02720002b74e3d87680013468ea9c055f46a9ebd7413  ./docs/demos/HindiASM.uhin
 8f51e51f0893b1f795d01f15e0d7c4df5268446bcbb8418746e5d0413255b407  ./docs/demos/HindiJAVA.uhin
-0d95bd25173d76dd3b0f9314197a8a58d13d050274a3429071d03b14d002e41e  ./docs/ARCHITECT_PROMPTS.md
+d7d1067bafb8a277a0f7eed0da95bc8048957cbfaaa3ad044c9c0f5b03adac3c  ./docs/ARCHITECT_PROMPTS.md
 6c864ddff81217348e572a237e52b3c6923449aae0b58721b8aff96e12514367  ./docs/console.js
 41499fec2b3d0d33c88140f0043e6859c4b8df6f60e6eae511fe89d8c050f5c1  ./docs/CAN_COMPILE.md
 a384fc2b8485dae51b0e06064e08a643b051686855eb20947240c8993387150a  ./docs/REPO_INDEX.md
@@ -471,6 +491,7 @@ a99ddd4953a33620263cb729abb54ec54b3c84ebd8a549b7c2a27eee2e095bb1  ./docs/shaili.
 90476129dc6f4b055440bae0b7d82597d56e8ff1037515aa34b05526349942fd  ./docs/vtterm.js
 e94f977bef146d4beb7f64a512678725e2c7bae8438e3587f6451654e03388f9  ./docs/CONFORMANCE.md
 90beebd6113f67551d7d8a4b19cd88432d7a47f725f28453536b4b5d3f059d7a  ./docs/perso_arabic.html
+57b1a9a1096d02b6c9fbb030f93d99fab5b0ed9d5d5a01dbf8a53bf118d9f6e4  ./docs/nb.frozen.html
 ef765bc243a32702b82c00daab3741d5a7bdb27840f2c2a27c880186e8dd7213  ./docs/SUPPORTED_LANGUAGES.md
 30223630938bd1e8068ef37b653649bdbb58d244caaac8c2cb7e7009fab783c5  ./docs/DEFECTS.md
 4b45bcea6de4cfa534c5768fcb410d2324126d045152ee29cbcf5e0c741f6b9a  ./docs/data/iso15919.json
@@ -484,7 +505,7 @@ a5aec99f116a1e486e00b60c39915bea7f10d520e49b41d639423bb15bf9414b  ./docs/V2.md
 425ab6d676ce9a265c2e6ca7ac5d22bd9eb187c1df2a91ead85f0b9f970acc30  ./docs/workbench.html
 0f992bb171b9570d6695bff3a041b44484b6598f060a08218055bd47abc69219  ./docs/engine/iso15919.json
 1cddae075fdd621c7b5a626806d30b31f22fe189c54377688a25eaebeb5bda1f  ./docs/engine/bundle.json
-935fb272d5154f1b2b9d499674ea8c28b3672e013493ef3478f0fbae82dace06  ./docs/engine/nb.js
+b43e470b2a62487067416fe8c5aa36fdf9f8b00473367a7279b0217558f2fe88  ./docs/engine/nb.js
 94d9c00d38367240b56cddd45e9f92ed6a592b2aa1e9dcc222294c2c78945228  ./docs/LANGUAGE_STANDARDS.md
 09667716259b1de1be71e3348d57d6346fb8e71551f437391514c8d0457ec71b  ./docs/V3.md
 dfbff5be3c4a37ef87e52d43669732fcb15739e302f6104b5ee78ba15654d53e  ./docs/mez/sw.js
@@ -650,7 +671,7 @@ f66c6a917ce2b91fc5940d712a055553a0bca799caa544eddec55848b97c7e22  ./runtime/gurm
 bd2bc915e867051eab3456f7b058199e641ed0729059051fb1c208ed89fb9a40  ./runtime/oci.js
 a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compiler.genB.json
 a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compiler.genA.json
-48dcc8a3f2682e26e1c6cc84241900ff26709d7eee14523e79e9672c87355acc  ./build/theorem-proof.json
+d5cd0264a95f61aea11576fe091fbd3d908f4fa3da7398572131fb14687a1d55  ./build/theorem-proof.json
 57622a3c58f21fda3e59a89562f89c396da2be1bc25096638b3b731bd2f9a83c  ./build/hello.ir.json
 b87e431514090b08bb024e8f3cedc090e2c6deaae6390100a93c3ee9e7948512  ./build/bootstrap-evidence.json
 38c4aff56532d3d624547f92e6cf7f2db29ab862c74879ef480929ad9ff14670  ./build/spec-realization.json
@@ -660,7 +681,7 @@ a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compil
 1911094e71015af195974f77e6143b73bec622cc5706367dc6ab03235c79196e  ./build/frontend-theorem.json
 a095854f21d814a1bded10be926e716927166a8eb36ff1ba15e134f3244e866e  ./build/v2-theorem-proof.json
 80f7844c3a6d6ba7a2cb79d6468a2f2435394e7a169678afb5c6f5b2bebc5e1a  ./build/add.generated.mjs
-004d8f692365d21bff9d2dd7a4d80b003f85510e118d2e0c5012ab078b61fe8c  ./build/selfhost-evidence.json
+119bf96e3b3a334b7a74d6808d2665e22bca8f28ca2fac448239ae56ec9de568  ./build/selfhost-evidence.json
 d1d64129363c16bc54eeeb8cada1a4187bfd9f11b9a77d94c80790170a5c2e09  ./build/spec-run.json
 91431bc75a54e876ee0bd832d4073595eaf1774a7062df6d026efe535b872716  ./languages/forth.pni
 db301542884d7af5fa782e05872043f695544973ef081f1b358871ecf9a0a8bb  ./languages/typescript.pni
@@ -677,7 +698,7 @@ b7316099e2fe2829ff368e5b6ea477b50f60c6500303d3b4429d2f1b4d188ea2  ./languages/fo
 8a6f4e5539b8e5a6bdc3cac6b71f035f4227a6b8143a52bea71ed9d93a1e0d92  ./languages/prolog.pni
 a960ce4eb5ba44afe5ffc52b268dd6a578f0ffe86c24de615f3c266738e1dd30  ./languages/scheme.pni
 b7c0319aedd1a0951c0553bf362e267b2ff25db4f47393835229399ed611fd94  ./languages/cobol.pni
-0ddeae835c0ec236ed3def3a8ba8c3a8baaea2299cc0ce6ef1142a37acf15617  ./languages/assembly.pni
+625555c08b3cdafa3bd4b33ff1adb71d464f6ec2e14758f06739338616160143  ./languages/assembly.pni
 dedb327fa09c23d7add34dfd59227ee5b5d90bec599443eb2c59001772be2b5f  ./languages/clojure.pni
 086bc7dc592e11beb771110d1504e792393f6fc3f00906d8ffdf5fc4f25577d6  ./languages/python.pni
 ed80f37c14bd8fa6d1058ef55ef37d3fc1fb84ad4661003074c9ee161ede3a13  ./languages/go.pni
@@ -843,7 +864,7 @@ ba945ae8c87405f4bd12cb0998d09c4ff41be0891a0f6a3f31e04ac4d2a76f09  ./website/app.
 78c771f5c3285c04b27a1655f0389c64184e852d8c3911dca45edb7ebea3a959  ./website/status.json
 029f13fb527c3274a2ac63063bbb5adb458934ea14594e55b89be58c1c8f662d  ./website/vt100.js
 683bdc9204f0f1672a4c8613eaf75c7753b999186db58ecef91a4495f2435881  ./website/README.md
-181529911604ca4f5b78c929286140c950a6a70f1cac3f38e53bcb001f2691c8  ./MANIFEST.sha256
+b036370aa9578b3fbd0d77acec9fc50a5278e9a8e32d3a3e2970dd537d160167  ./MANIFEST.sha256
 cba5243834a58801d5f3460c1d21fe28c33b1e1c1bb8ce7513e1948eed3a19e4  ./fred.txt
 cce2fb28e7735b5a2a094ac190a3a91da4672b15d7ca901dd45dd13a9fddfa32  ./examples/factorial.pni
 6249f4b28afe520d345c68e79f94096d186c1224733d8490c91ec30817829873  ./examples/torch_like.py
@@ -987,6 +1008,9 @@ cb745ee2b8360bc77aab6be49121d4297985d6737d4e173228b588203f3e4063  ./examples/v2_
 0accb9d7554204889f3f9060735678df210f23fb8385b4bb19b85e7d41e2c1e6  ./LICENSE
 ae732b736c01bd9dfac040ce8a2ac7a285c0d9cc0e069ca7f69b7589835664ba  ./README.md
 9a92684da5c15ccdccfc5a8604269f4ce69d3a3928d538c13d7ed361565e5334  ./.github/workflows/build.yml
+bd16d05e3652e9f6b4102c84ac92d7db6f3147dbfb6a050ddb39dd62f31995d4  ./deposits/inbox/.gitkeep
+0e3b3f664c4d5a3f2f44911595b91dad826fddd4e2a40bb7c01513099a84344b  ./deposits/TASKS.md
+8d2f4f43f998aee4dc05463836fc50bbfabf46b3c575ee667cd150b1a317bd5c  ./deposits/README.md
 4f5dd8cc5d0c7783c86daccf35f26a1dd1fad09315e1456ac7d1f725d3714e83  ./cyclers/upstream/VAKIL.pni
 7d0c70ee6f7e6523b62031cc75467e14ec55990cdcde3e45d0ce55c30a811fb1  ./cyclers/upstream/CYCLER_SHELL.pni
 0b78b799f26878a29fedb6e1d5c0870d9a71f521b4e28c9cc48b90afc537009e  ./cyclers/upstream/Charbagh.pni
@@ -1019,6 +1043,7 @@ e4f88919821cf1ae32f20a8c172c3d4be94fda97d223abff75399ba1d618331d  ./cyclers/upst
 10deab9108ee47f9fb8a238bce8f6a4f84e7d764131b1f51036c25ad9f245446  ./cyclers/upstream/CHIRAG.pni
 9a46047bb02fea694e8604f2b0800d4efb799ee2b010bc843e1b6832c870124e  ./cyclers/upstream/awaz.pni
 c9957f4af3b03be9e6ee623c3419ac87600b747572c106e53b71fbf7e47e67cc  ./cyclers/upstream/FRIEND-PHILOSOPHER-SPIRITUAL-GUIDE-GENIE.pni
+8f287cddff12de046179b0fd8ea78fecc519c68713617e5465d6b54394b37d23  ./tests/asm_run.mjs
 cae73be191cd0de6a22426b7a91726ed4d9799e56be31c9b5129f6e8aff776d5  ./tests/iso15919_rt.mjs
 c81b80e4cbc5573615dd1cca3c5e95712fec305eaf8329474b26e80a6011fbf8  ./tests/standards/harness.mjs
 b780b2609edfef331d63c8cf34365fc9d4228c877c54d719e5ba2659436ec1ac  ./tests/standards/README.md
