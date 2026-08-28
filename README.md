@@ -76,17 +76,16 @@ Blocks close with `END`. Multiple paradigms are representable; this bootstrap ex
 
 ## Layout
 
+See **`LAYOUT.md`**. GitHub Pages = `docs/` (not `website/`).
+
 ```
-spec/          constitutional language spec
-compiler/      JS + PANINI compiler pipeline
-runtime/       interpreter, artifacts, provenance, cyclers
-stdlib/        standard library sources
-examples/      runnable programs
-tests/         bootstrap tests
-tools/         developer tools
-scripts/       bootstrap / self-host evidence
-docker/        container wrapper
-docs/          implementation notes
+spec/        constitution
+src/         CLI + PANINI-written frontends
+compiler/    Stage-0 JS
+runtime/     interpreter, shaili, gurmukhi, romenagri
+retrieved/   READ-ONLY Hindawi / Romenagri / APCISR / Punjabi maps
+docs/        site: index, view.html, hindawi.html, punjabi.html, workbench
+examples/    hello.pni, punjabi_hello.uhin
 ```
 
 ## Invariants honored by this bootstrap
@@ -100,4 +99,4 @@ docs/          implementation notes
 
 ## License
 
-MIT
+GPL-3.0-or-later. See `LICENSE`. Copyright (C) 1993-2026 Abhishek Choudhary.

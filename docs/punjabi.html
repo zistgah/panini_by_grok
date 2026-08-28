@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — Punjabi / Gurmukhi Hindawi port</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body class="site">
+<header class="site-head">
+  <strong>PANINI</strong>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="hindawi.html">Hindawi</a>
+    <a href="workbench.html">Workbench</a>
+  </nav>
+</header>
+<main class="site-main">
+  <h1>ਪੰਜਾਬੀ — Gurmukhi port of Hindawi</h1>
+  <p class="lead">Same architecture as Shaili Guru. Not a new keyword invention. Script layer uses Unicode name-projection; keywords are the retrieved Punjabi TSV.</p>
+  <ol>
+    <li><strong>Gurmukhi → Devanagari</strong> — replace <code>GURMUKHI</code> with <code>DEVANAGARI</code> in the Unicode character name (the method the Romenagri <code>*_to_deva.tsv</code> headers declare). 67 letters/signs map; 13 Gurmukhi-only names stay unmapped (addak, tippi, EE/OO naming).</li>
+    <li><strong>Gurmukhi → Romenagri → C</strong> — <code>retrieved/romenagri/langs/punjabi_c.tsv</code> (native, romenagri, c). Same three columns as Hindi’s h2c path, Punjabi rows.</li>
+  </ol>
+  <p>ਜੇ is not Hindi जे-as-if via h2c.lex. Punjabi ਜੇ → <code>jee</code> → <code>if</code> from the Punjabi table.</p>
+  <textarea id="src" rows="6" style="width:100%">ਜੇ (1) {
+  ਵਾਪਸ 0;
+}</textarea>
+  <p><button type="button" id="go">Port</button></p>
+  <pre id="out">…</pre>
+  <p class="fine">Maps: <a href="retrieved/gurmukhi_to_deva.tsv">gurmukhi_to_deva.tsv</a> ·
+     <a href="retrieved/punjabi_c.tsv">punjabi_c.tsv</a></p>
+</main>
+<script src="gurmukhi.js"></script>
+<script>
+PANINI_PA.load().then((p) => {
+  function run() {
+    const s = document.getElementById("src").value;
+    document.getElementById("out").textContent =
+      "script rules: " + p.script_count + "  keyword rules: " + p.keyword_count + "\n\n" +
+      "Devanagari:\n" + p.toDeva(s) + "\n\n" +
+      "Romenagri:\n" + p.toRomenagri(s) + "\n\n" +
+      "C:\n" + p.toC(s) + "\n\n" +
+      "unmapped Gurmukhi names (left as-is): " + p.unmapped.map((u) => u.name).join(", ");
+  }
+  document.getElementById("go").onclick = run;
+  run();
+}).catch((e) => { document.getElementById("out").textContent = String(e); });
+</script>
+</body>
+</html>

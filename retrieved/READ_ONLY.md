@@ -8,7 +8,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 | Path | Source | Retrieved |
 |---|---|---|
 | `legacy/APCISR/` | https://github.com/project-ilm/legacy `APCISR/` (fork of hindawiai/2023.12.21) | 2026-08-28 |
-| `legacy/Romenagri/` | https://github.com/project-ilm/legacy `Romenagri/` (lex/C maps, `acii2rmn` / `rmn2acii`) | 2026-08-28 |
+| `legacy/Hindawi/guru/` | https://github.com/project-ilm/legacy `Hindawi/guru` (`h2c.lex`, `c2h.lex`, `gurucc`) | 2026-08-28 |
 | `romenagri/` | https://github.com/project-ilm/romenagri (library: `src/`, `tables/`, `bindings/js/`) | 2026-08-28 |
 
 ## Rules

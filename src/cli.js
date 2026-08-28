@@ -174,6 +174,15 @@ async function main() {
       console.log(JSON.stringify(out, null, 2));
       return;
     }
+    case "punjabi":
+    case "gurmukhi": {
+      const { portPunjabi } = await import("../runtime/gurmukhi.js");
+      const src = args[1] && args[1] !== "-"
+        ? fs.readFileSync(args[1], "utf8")
+        : "ਜੇ (1) { ਵਾਪਸ 0; }";
+      console.log(JSON.stringify(portPunjabi(src), null, 2));
+      return;
+    }
     case "iso-c":
     case "iso": {
       await import("../scripts/iso_c_harness.mjs");

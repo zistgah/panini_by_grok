@@ -1,6 +1,6 @@
-/* Copyright (C) 1993-2026 Abhishek Choudhary
- * SPDX-License-Identifier: GPL-3.0-or-later
- * Audience tools: engineer, linguist, mathematician.
+/* Keyword tables below are NOT Hindawi and NOT ILM.
+ * Hindawi Shaili Guru is acii2uni | h2c.lex | gcc (see hindawi.html).
+ * These remain only as a labelled toy for the mathematician number words.
  */
 window.PANINI_TOOLS = {
   HI: { FUNCTION: "कार्य", RETURN: "लौटाओ", END: "अंत", PRINT: "छापो", TRUE: "सत्य", FALSE: "असत्य", IF: "अगर", WHILE: "जबतक", MODULE: "मापांक" },

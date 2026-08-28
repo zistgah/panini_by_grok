@@ -2,8 +2,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 /* PANINI in-browser VS Code workbench (Monaco). Full compiler remains Node CLI. */
-const FILES = { ...(window.PANINI_FILES || {}), ...(window.PANINI_CATALOG.samples || {}) };
-let editor, current = "examples/hello.pni";
+const FILES = { ...(window.PANINI_FILES || {}) };
+let editor, current = "examples/hello.pni", usingMonaco = false;
+
+function getValue() {
+  if (usingMonaco && editor && editor.getValue) return editor.getValue();
+  const ta = document.getElementById("editor-fallback");
+  return ta ? ta.value : (FILES[current] || "");
+}
+function setValue(v) {
+  if (usingMonaco && editor && editor.setValue) editor.setValue(v);
+  const ta = document.getElementById("editor-fallback");
+  if (ta) ta.value = v;
+}
 
 function setSide(mode) {
   document.querySelectorAll("#activity .act").forEach((b) => b.classList.toggle("active", b.dataset.side === mode));
@@ -11,11 +22,11 @@ function setSide(mode) {
   document.getElementById("side-title").textContent = title;
   const body = document.getElementById("side-body");
   if (mode === "explorer") {
-    body.innerHTML = Object.keys(FILES).concat(window.PANINI_TREE).filter((v, i, a) => a.indexOf(v) === i)
+    body.innerHTML = Object.keys(FILES).concat(window.PANINI_TREE || []).filter((v, i, a) => a.indexOf(v) === i)
       .map((f) => `<button class="file" data-file="${f}">${f}</button>`).join("");
     body.querySelectorAll(".file").forEach((b) => b.onclick = () => openFile(b.dataset.file));
   } else if (mode === "search" || mode === "ext") {
-    body.innerHTML = window.PANINI_CATALOG.features.map((f) =>
+    body.innerHTML = (window.PANINI_CATALOG && window.PANINI_CATALOG.features || []).map((f) =>
       `<button class="feat"><strong>${f.name}</strong> <span class="badge ${f.status === "VERIFIED" || f.status === "VERIFIED_SUBSET" ? "ok" : "part"}">${f.status}</span><br><span class="muted">${f.note}</span></button>`
     ).join("");
   } else if (mode === "arch") {
@@ -47,9 +58,9 @@ function openFile(name) {
   current = name;
   renderTabs();
   if (editor) {
-    monaco.editor.setModelLanguage(editor.getModel(), langOf(name));
-    editor.setValue(FILES[name]);
-  }
+    if (usingMonaco) monaco.editor.setModelLanguage(editor.getModel(), langOf(name));
+    setValue(FILES[name]);
+  } else setValue(FILES[name]);
   document.getElementById("sb-mode").textContent = name;
 }
 
@@ -113,7 +124,7 @@ function evalExpr(expr, env, fns) {
 }
 
 function runCurrent() {
-  if (editor) FILES[current] = editor.getValue();
+  if (editor) FILES[current] = getValue();
   const src = FILES[current] || "";
   let out;
   if (current.endsWith(".pni")) out = evalPanini(src).join("\n");
@@ -136,11 +147,17 @@ function setPanel(name) {
   }
   if (name === "blocks") {
     pre.hidden = true; canvas.hidden = true;
-    if (window.Blockly && blocks && !blocks._ws) {
-      blocks.style.height = "170px";
-      blocks._ws = Blockly.inject(blocks, {
-        toolbox: "<xml><block type=\"text_print\"></block><block type=\"math_number\"><field name=\"NUM\">42</field></block></xml>",
-      });
+    if (blocks && !blocks._ws) {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/blockly@11.1.1/blockly.min.js";
+      s.onload = () => {
+        if (!window.Blockly) return;
+        blocks.style.height = "170px";
+        blocks._ws = Blockly.inject(blocks, {
+          toolbox: "<xml><block type=\"text_print\"></block><block type=\"math_number\"><field name=\"NUM\">42</field></block></xml>",
+        });
+      };
+      document.head.appendChild(s);
     }
     return;
   }
@@ -160,8 +177,25 @@ document.querySelectorAll("[data-cmd]").forEach((b) => {
       setPanel("output");
       document.getElementById("panel-body").textContent = window.PANINI_FILES?.["docs/ARCHITECT_PROMPTS.md"] || "Architect prompts: docs/ARCHITECT_PROMPTS.md";
     }
+    if (b.dataset.cmd === "linguist") {
+      const src = getValue();
+      document.getElementById("panel-body").textContent =
+        "LINGUIST — Hindawi localization is NOT a keyword table.\n" +
+        "Pipeline (retrieved gurucc): acii2uni | h2c.lex | gcc\n" +
+        "Maps: docs/retrieved/h2c.map.json extracted from legacy/Hindawi/guru/h2c.lex\n" +
+        "See hindawi.html. Keyword-for-keyword if→यदि cannot debug at hardware.\n\n" +
+        "Current buffer (first 800 chars):\n" + src.slice(0, 800);
+      if (window.PANINI_SHAILI) {
+        PANINI_SHAILI.load().then((s) => {
+          document.getElementById("panel-body").textContent +=
+            "\n\nh2c rules loaded: " + s.h2c.length + " from " + s.source +
+            "\nDemo h2c('poor_nnaa_mka mukhya') → " + s.applyH2c("poor_nnaa_mka mukhya");
+        }).catch((e) => { document.getElementById("panel-body").textContent += "\n" + e; });
+      }
+      setPanel("output");
+    }
     if (b.dataset.cmd === "engineer") {
-      const src = editor ? editor.getValue() : "";
+      const src = getValue();
       document.getElementById("panel-body").textContent =
         "ENGINEER\naxes: " + window.PANINI_TOOLS.axes.join(", ") +
         "\nlines: " + src.split("\n").length +
@@ -170,17 +204,8 @@ document.querySelectorAll("[data-cmd]").forEach((b) => {
         "\nCLI: node src/cli.js parse FILE\nPANINI suite: node tests/panini/run.mjs\nStandards harness: node tests/standards/harness.mjs";
       setPanel("output");
     }
-    if (b.dataset.cmd === "linguist") {
-      const src = editor ? editor.getValue() : "";
-      const hi = window.PANINI_TOOLS.project(src, window.PANINI_TOOLS.HI);
-      const ar = window.PANINI_TOOLS.project(src, window.PANINI_TOOLS.AR);
-      document.getElementById("panel-body").textContent =
-        "LINGUIST  ILM projection (same program)\n--- Devanagari ---\n" + hi +
-        "\n--- Arabic ---\n" + ar;
-      setPanel("output");
-    }
     if (b.dataset.cmd === "math") {
-      const src = editor ? editor.getValue() : "एक योग द्वि";
+      const src = getValue() || "एक योग द्वि";
       const lines = src.split("\n").filter(Boolean).slice(0, 12);
       const out = lines.map((l) => l + "  =>  " + window.PANINI_TOOLS.sanskritEval(l));
       document.getElementById("panel-body").textContent =
@@ -196,40 +221,63 @@ document.querySelectorAll("#activity .act").forEach((b) => b.onclick = () => {
 });
 document.querySelectorAll(".ptab").forEach((b) => b.onclick = () => setPanel(b.dataset.panel));
 
-require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
-require(["vs/editor/editor.main"], () => {
-  monaco.languages.register({ id: "panini" });
-  monaco.languages.setMonarchTokensProvider("panini", {
-    tokenizer: {
-      root: [
-        [/\/\/.*$/, "comment"],
-        [/\b(MODULE|FUNCTION|RETURN|IF|ELSE|WHILE|END|PRINT|TRUE|FALSE)\b/, "keyword"],
-        [/@[A-Za-z_]+/, "type"],
-        [/"([^"\\]|\\.)*"/, "string"],
-        [/\d+/, "number"],
-      ],
-    },
-  });
-  editor = monaco.editor.create(document.getElementById("editor"), {
-    value: FILES[current],
-    language: "panini",
-    theme: "vs-dark",
-    automaticLayout: true,
-    minimap: { enabled: true },
-    fontSize: 14,
-  });
-  editor.onDidChangeCursorPosition((e) => {
-    document.getElementById("sb-pos").textContent = `Ln ${e.position.lineNumber}, Col ${e.position.column}`;
-  });
+function startFallbackEditor() {
+  usingMonaco = false;
+  const ta = document.getElementById("editor-fallback");
+  if (ta) {
+    ta.value = FILES[current] || "";
+    ta.addEventListener("input", () => { FILES[current] = ta.value; });
+  }
   renderTabs();
   setSide("explorer");
-  document.getElementById("panel-body").textContent = "Workbench ready. VT100 is the terminal. Blockly is the blocks panel.";
-  document.getElementById("ilm")?.addEventListener("change", (e) => {
-    const key = e.target.value.toUpperCase();
-    const table = window.PANINI_TOOLS[key];
-    const canonical = window.PANINI_TOOLS.deproject(editor.getValue());
-    editor.setValue(table ? window.PANINI_TOOLS.project(canonical, table) : canonical);
-  });
+  document.getElementById("panel-body").textContent =
+    "Workbench ready (textarea fallback if Monaco CDN is blocked). VT100 is the terminal. Blockly loads only on the Blocks tab.";
+}
+
+function startMonaco() {
+  require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
+  require(["vs/editor/editor.main"], () => {
+    usingMonaco = true;
+    monaco.languages.register({ id: "panini" });
+    monaco.languages.setMonarchTokensProvider("panini", {
+      tokenizer: {
+        root: [
+          [/\/\/.*$/, "comment"],
+          [/\b(MODULE|FUNCTION|RETURN|IF|ELSE|WHILE|END|PRINT|TRUE|FALSE|REM)\b/, "keyword"],
+          [/@[A-Za-z_]+/, "type"],
+          [/"([^"\\]|\\.)*"/, "string"],
+          [/\d+/, "number"],
+        ],
+      },
+    });
+    const host = document.getElementById("editor");
+    const ta = document.getElementById("editor-fallback");
+    if (ta) ta.style.display = "none";
+    editor = monaco.editor.create(host, {
+      value: FILES[current] || "",
+      language: "panini",
+      theme: "vs-dark",
+      automaticLayout: true,
+      minimap: { enabled: true },
+      fontSize: 14,
+    });
+    editor.onDidChangeCursorPosition((e) => {
+      document.getElementById("sb-pos").textContent = `Ln ${e.position.lineNumber}, Col ${e.position.column}`;
+    });
+    renderTabs();
+    setSide("explorer");
+    document.getElementById("panel-body").textContent = "Workbench ready. Monaco MIT © Microsoft. VT100 is the terminal.";
+  }, startFallbackEditor);
+}
+
+if (typeof require === "function" && require.config) startMonaco();
+else startFallbackEditor();
+
+document.getElementById("ilm")?.addEventListener("change", (e) => {
+  document.getElementById("panel-body").textContent =
+    "ILM is not a keyword table. Hindawi Shaili Guru: acii2uni | h2c | gcc.\nSelected: " +
+    e.target.value + "\nOpen hindawi.html for the retrieved pipeline.";
+  setPanel("output");
 });
 
 const termIn = document.getElementById("term-in");
