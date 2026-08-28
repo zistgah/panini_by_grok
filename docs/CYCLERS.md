@@ -25,5 +25,13 @@ person  →  cycler script (FAKIR / CHARBAGH / GENIE / …)
                  frontends-in-PANINI  ∧  standard environments
 ```
 
-This file records the requirement. Full Cognitive Workbench behavior
-needs the architecture pack the architect will supply. It is not guessed.
+A cycler is an **agentic AI harness for people who cannot afford API keys**.
+
+1. Assemble a prompt on this machine (no vendor owned).
+2. Hand it off by **URL** (ChatGPT, Claude, Gemini, Grok) or clipboard.
+3. The other AI’s reply is **copied or saved back** here (localStorage / files).
+4. Accept the stage. Next stage sees what was accepted.
+
+mez is itself that cycler. The six domain cyclers are workflows inside it.
+GENIE is elevation. None of this is “open a .pni and read it.”
+

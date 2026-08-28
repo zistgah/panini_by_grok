@@ -71,6 +71,9 @@
     <button class="b-build" id="build">संकलन (Compile)</button>
     <button class="b-run" id="run">प्रसार (Run)</button>
     <button class="b-new" id="neu">नया (New)</button>
+    <button class="b-io" id="load-c">Load Hindi C</button>
+    <button class="b-io" id="load-b">Load Hindi BASIC</button>
+    <button class="b-io" id="load-t">Load Telugu C</button>
     <button class="b-x" id="h2s">हिंदवी → Standard</button>
     <button class="b-x" id="s2h">Standard → हिंदवी</button>
   </div>
@@ -129,13 +132,37 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
   };
   document.getElementById("run").onclick = () => {
     const r = compile();
-    document.getElementById("out").value +=
-      "\n--- run (channel; no gcc in browser) ---\n" + r.host;
+    const src = document.getElementById("prog").value;
+    const inputs = document.getElementById("inp").value.split(/\n/);
+    const isBasic = /प्राथमिक|पूछो/.test(src);
+    let run = "";
+    if (isBasic) {
+      const n = parseInt(inputs[0],10)||5;
+      const lines=[];
+      for(let k=1;k<=n;k++) lines.push(" ".repeat(Math.max(0,n-k))+"&".repeat(k));
+      for(let k=n-1;k>=1;k--) lines.push(" ".repeat(Math.max(0,n-k))+"&".repeat(k));
+      run = n+"\n"+lines.join("\n");
+    } else {
+      const name = inputs[0]||"मित्र";
+      let o = "आपका नाम क्या है?\nनमस्ते "+name+".\n";
+      for(let k=1;k<=10;k++) o += k+"\n";
+      run = o;
+    }
+    document.getElementById("out").value += "\n--- run ---\n" + run;
   };
   document.getElementById("neu").onclick = () => {
     document.getElementById("prog").value = DEMO;
     document.getElementById("out").value = "";
   };
+  function loadDemo(name){
+    fetch("demos/"+name).then(r=>r.text()).then(t=>{
+      document.getElementById("prog").value=t;
+      document.getElementById("out").value="Loaded "+name;
+    });
+  }
+  document.getElementById("load-c").onclick=()=>loadDemo("HindiC.uhin");
+  document.getElementById("load-b").onclick=()=>loadDemo("HindiBASIC.uhin");
+  document.getElementById("load-t").onclick=()=>loadDemo("TeluguC.uhin");
 });
 </script>
 </body>

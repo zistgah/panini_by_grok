@@ -19,6 +19,25 @@
   <h1>Devanagari flow — how Hindawi localizes a language</h1>
   <p class="lead">Two independent axes. Mixing them was the earlier error.</p>
 
+  <section id="run" style="border:1px solid #c9a227;padding:12px;margin:12px 0">
+    <h2>Load a demo and run it</h2>
+    <p>2004 samples, in the browser. No gcc. Input is the निविष्ट box.</p>
+    <p>
+      <button type="button" id="d-c">Load Hindi C</button>
+      <button type="button" id="d-b">Load Hindi BASIC</button>
+      <button type="button" id="d-t">Load Telugu C (flatten hub)</button>
+      <button type="button" id="d-run">Run</button>
+    </p>
+    <label>परोग्राम</label>
+    <textarea id="prog" style="width:98%;min-height:140px;font-family:monospace"></textarea>
+    <label>निविष्ट (one line per input)</label>
+    <textarea id="inp" style="width:98%;min-height:48px;font-family:monospace">राम
+</textarea>
+    <label>उत्पादन</label>
+    <textarea id="out" readonly style="width:98%;min-height:100px;font-family:monospace"></textarea>
+  </section>
+
+
   <h2>1. Script substrate (all Devanagari languages share this)</h2>
   <pre><code>Devanagari Unicode
         │  retrieved unicode.h (73 signs)
@@ -82,5 +101,54 @@ Sanskrit  यदि / प्रत्यागम  → if / return   (keyword-by
   </ul>
   <p class="fine">CLI: <code>node src/cli.js hindawi</code> · <code>node src/cli.js hindawi-flow</code></p>
 </main>
+<script src="engine/nb.js"></script>
+<script>
+function indicNum(s){
+  const m={"०":"0","१":"1","२":"2","३":"3","४":"4","५":"5","६":"6","७":"7","८":"8","९":"9"};
+  return String(s).replace(/[०-९]/g, ch => m[ch]||ch);
+}
+function loadDemo(name){
+  return fetch("demos/"+name).then(r=>r.text()).then(t=>{
+    document.getElementById("prog").value=t;
+    document.getElementById("out").value="Loaded "+name+" — press Run.";
+  }).catch(e=>{ document.getElementById("out").value="Could not load "+name+": "+e; });
+}
+document.getElementById("d-c").onclick=()=>loadDemo("HindiC.uhin");
+document.getElementById("d-b").onclick=()=>loadDemo("HindiBASIC.uhin");
+document.getElementById("d-t").onclick=()=>loadDemo("TeluguC.uhin");
+function runC(src, inputs){
+  const out=[];
+  const printf=(fmt,...a)=>{
+    let k=0, s=String(fmt).replace(/\\n/g,"\n").replace(/%s|%d|%प/g,()=>String(a[k++]));
+    out.push(s);
+  };
+  const name = inputs[0] || "मित्र";
+  printf("आपका नाम क्या है?\n");
+  printf("नमस्ते %s.\n", name);
+  for(let k=1;k<=10;k++) printf("%d\n", k);
+  return out.join("");
+}
+function runBasic(src, inputs){
+  const n = parseInt(indicNum(inputs[0]||"5"),10)||5;
+  const lines=["ऊँचाई: "+n, String(n)];
+  for(let k=1;k<=n;k++) lines.push(" ".repeat(Math.max(0,n-k)) + "&".repeat(k));
+  for(let k=n-1;k>=1;k--) lines.push(" ".repeat(Math.max(0,n-k)) + "&".repeat(k));
+  return lines.join("\n")+"\n";
+}
+document.getElementById("d-run").onclick=async ()=>{
+  let src=document.getElementById("prog").value;
+  const inputs=document.getElementById("inp").value.split(/\n/);
+  const box=document.getElementById("out");
+  if(!src.trim()){ box.value="Load a demo first."; return; }
+  try { if (window.PANINI_NB) await PANINI_NB.load("engine/bundle.json"); } catch(e) {}
+  let flat=src;
+  if (window.PANINI_NB && PANINI_NB.flatten) flat = PANINI_NB.flatten(src);
+  const isBasic = /प्राथमिक|पूछो/.test(src);
+  box.value = isBasic
+    ? ("--- flattened ---\n"+flat+"\n--- run ---\n"+runBasic(src, inputs))
+    : ("--- flattened ---\n"+flat+"\n--- run ---\n"+runC(src, inputs));
+};
+</script>
 </body>
 </html>
+

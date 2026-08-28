@@ -12,6 +12,7 @@ export const PROVIDERS = [
   { id: 'chatgpt', name: 'ChatGPT',    url: p => 'https://chatgpt.com/?q=' + encodeURIComponent(p) },
   { id: 'claude',  name: 'Claude',     url: () => 'https://claude.ai/new' },
   { id: 'gemini',  name: 'Gemini',     url: () => 'https://gemini.google.com/app' },
+  { id: 'grok',    name: 'Grok',       url: p => 'https://grok.com/?q=' + encodeURIComponent(p) },
   { id: 'other',   name: 'Another AI', url: () => localStorage.getItem('mez.otherAI') || 'about:blank' }
 ];
 

@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-51. See all repos under zistgah, project-ilm, hindawiai. Retrieve ayesha org. Landing page becomes an explorer. Inlined repos get their own folders for spin-off. Confirm cyclers. Complete mez inside PANINI, using PANINI.
+52. Mez is a cycler: URL handoff to other AIs (no API), paste or save the reply back. Look up the original. Hindawi page needs Load demo buttons that actually execute.
+
 
 
 
