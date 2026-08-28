@@ -154,7 +154,9 @@
     else if (c === "cat") { out = a.map(function (p) { var rr = fs.read(p); return rr.ok ? rr.content : "cat: " + p; }).join(""); }
     else if (c === "echo") out = a.join(" ");
     else if (c === "mkdir") fs.mkdir(a[0] || "");
-    else if (c === "help") out = "pwd ls cd cat echo mkdir help";
+    else if (c === "help") out = "pwd ls cd cat echo mkdir help robot lekhak";
+    else if (c === "robot" || c === "रोबोट") out = "__ROBOT__";
+    else if (c === "lekhak" || c === "लेखक") out = "__LEKHAK__:" + (a[0] || "untitled.uhin");
     else if (c === "clear" || c === "cls") out = "\x1b[2J";
     else out = c + ": command not found";
     if (target) { fs.write(target, out + "\n"); return ""; }
@@ -188,6 +190,87 @@
     return bash(line);
   }
   window.PANINI_CONSOLE = { bash: bash, commandCom: commandCom, exec: exec };
+
+  /* Shaili Robot — retrieved ROBOT.C cardinal moves on this same glass. */
+  var robot = { x: 320, y: 192, pen: 1, color: "#33ff66", heading: 0, gfx: false };
+  var lek = { on: false, lines: [""], row: 0, col: 0, path: "untitled.uhin" };
+  function gfxClear() {
+    var ctx = glass.getContext("2d");
+    glass.width = 640; glass.height = 384;
+    ctx.fillStyle = "#001400";
+    ctx.fillRect(0, 0, 640, 384);
+  }
+  function gfxDot(x, y) {
+    var ctx = glass.getContext("2d");
+    ctx.fillStyle = robot.color;
+    ctx.fillRect(x, y, 2, 2);
+  }
+  function gfxLine(x0, y0, x1, y1) {
+    var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+    var dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    var err = dx + dy, e2;
+    while (true) {
+      if (robot.pen) gfxDot(x0, y0);
+      if (x0 === x1 && y0 === y1) break;
+      e2 = 2 * err;
+      if (e2 >= dy) { err += dy; x0 += sx; }
+      if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+  }
+  function robotCmd(raw) {
+    var s = String(raw || "").trim();
+    if (!s) return "";
+    if (/^(exit|quit|इति|बाहर)$/i.test(s)) { robot.gfx = false; initVt(); paint(); return "robot: text"; }
+    if (/^(साफ|cls|clear)$/i.test(s)) { gfxClear(); return ""; }
+    if (/^(घर|home)$/i.test(s)) { robot.x = 320; robot.y = 192; return ""; }
+    var m, n, x1, y1, nx, ny;
+    function go(dx, dy) {
+      nx = robot.x + dx; ny = robot.y + dy;
+      gfxLine(Math.round(robot.x), Math.round(robot.y), Math.round(nx), Math.round(ny));
+      robot.x = nx; robot.y = ny;
+    }
+    if ((m = s.match(/^(आगे|उत्तर|fd|forward)\s+(-?\d+)/i))) { n = +m[2]; go(0, -n); return ""; }
+    if ((m = s.match(/^(पीछे|दक्षिण|bk|back)\s+(-?\d+)/i))) { n = +m[2]; go(0, n); return ""; }
+    if ((m = s.match(/^(दाएं|दाएँ|पूर्व|rt|right)\s+(-?\d+)/i))) { n = +m[2]; go(n, 0); return ""; }
+    if ((m = s.match(/^(बाएं|बाएँ|पश्चिम|lt|left)\s+(-?\d+)/i))) { n = +m[2]; go(-n, 0); return ""; }
+    if ((m = s.match(/^(कलम|pen)\s+([01])/i))) { robot.pen = +m[2]; return ""; }
+    if ((m = s.match(/^(स्थान|setxy)\s+(-?\d+)\s*,\s*(-?\d+)/i))) {
+      x1 = +m[2]; y1 = +m[3];
+      gfxLine(Math.round(robot.x), Math.round(robot.y), x1, y1);
+      robot.x = x1; robot.y = y1; return "";
+    }
+    if (/^help|सहायता$/i.test(s)) return "आगे n  पीछे n  बाएं n  दाएं n  कलम 0|1  घर  साफ  इति\nShaili Robot 2004 (ROBOT.C). Cardinal pixels, one glass.";
+    return "robot: " + s;
+  }
+  function lekPaint() {
+    initVt();
+    vtWrite("LEKHAK  " + lek.path + "  ESC=quit  Ctrl-S=save\n");
+    var i, line;
+    for (i = 0; i < lek.lines.length && i < vt.rows - 2; i++) {
+      line = lek.lines[i] || "";
+      vtWrite((i === lek.row ? ">" : " ") + line + "\n");
+    }
+  }
+  function lekKey(e) {
+    if (e.key === "Escape") { lek.on = false; initVt(); paint(); vtWrite("lekhak saved? use Ctrl-S first. text mode.\n"); return; }
+    if (e.key === "s" && e.ctrlKey) {
+      fs.write(lek.path, lek.lines.join("\n"));
+      vtWrite("saved " + lek.path + "\n");
+      e.preventDefault(); return;
+    }
+    if (e.key === "Enter") {
+      lek.lines.splice(lek.row + 1, 0, "");
+      lek.row++; lek.col = 0; lekPaint(); e.preventDefault(); return;
+    }
+    if (e.key === "Backspace") {
+      var L = lek.lines[lek.row] || "";
+      lek.lines[lek.row] = L.slice(0, -1); lekPaint(); e.preventDefault(); return;
+    }
+    if (e.key.length === 1 && !e.ctrlKey) {
+      lek.lines[lek.row] = (lek.lines[lek.row] || "") + e.key;
+      lekPaint(); e.preventDefault();
+    }
+  }
 
   var glass = document.getElementById("glass");
   var cmd = document.getElementById("cmd");
@@ -254,6 +337,7 @@
   vtWrite("VT100 80x24  one glass\nType help. ls  cat readme.txt\n");
   if (shsel) shsel.onchange = function () { sh = shsel.value; ps1.textContent = prompt(); vtWrite("[shell " + sh + "]\n"); };
   cmd.onkeydown = function (e) {
+    if (lek.on) { lekKey(e); return; }
     if (e.key === "ArrowUp") {
       if (hist.length) { hi = Math.max(0, hi - 1); cmd.value = hist[hi] || ""; }
       e.preventDefault(); return;
@@ -265,10 +349,37 @@
     if (e.key !== "Enter") return;
     var line = cmd.value;
     hist.push(line); hi = hist.length;
-    vtWrite(prompt() + line + "\n");
     cmd.value = "";
+    if (robot.gfx) {
+      var rr = robotCmd(line);
+      if (rr) {
+        var ctx = glass.getContext("2d");
+        ctx.fillStyle = "#001400";
+        ctx.fillRect(0, 0, 640, 16);
+        ctx.fillStyle = "#33ff66";
+        ctx.font = "12px ui-monospace,monospace";
+        ctx.fillText(String(rr).split("\n")[0], 8, 12);
+      }
+      ps1.textContent = "robot> ";
+      return;
+    }
+    vtWrite(prompt() + line + "\n");
     var res = "";
     try { res = exec(sh, line); } catch (err) { res = String(err); }
+    if (res === "__ROBOT__") {
+      robot.gfx = true; robot.x = 320; robot.y = 192; gfxClear(); gfxDot(robot.x, robot.y);
+      ps1.textContent = "robot> ";
+      return;
+    }
+    if (String(res).indexOf("__LEKHAK__:") === 0) {
+      lek.path = String(res).slice(11);
+      var rf = fs.read(lek.path);
+      lek.lines = (rf.ok ? rf.content : "").split("\n");
+      if (!lek.lines.length) lek.lines = [""];
+      lek.row = 0; lek.on = true; lekPaint();
+      ps1.textContent = "lekhak> ";
+      return;
+    }
     if (res === "\x1b[2J") { initVt(); paint(); }
     else if (res) vtWrite(res.charAt(res.length - 1) === "\n" ? res : res + "\n");
   };

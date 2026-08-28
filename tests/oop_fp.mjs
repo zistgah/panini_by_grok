@@ -60,5 +60,13 @@ FUNCTION main()
     RETURN step(0, 0, 0, 1, 1, 1, 1)
 END
 `, 1);
+await check("robot north", `
+FUNCTION north(y, n)
+    RETURN y - n
+END
+FUNCTION main()
+    RETURN north(100, 10)
+END
+`, 90);
 console.log(fail ? `FAILED ${fail}/${n}` : `PASSED ${n}/${n}`);
 process.exit(fail ? 1 : 0);

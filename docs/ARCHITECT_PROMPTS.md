@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-76. Console not responding; two boxes — should be one monitor. Physical fidelity in CONTRACT/CONTEXT. Walk estate CONTRACT/CONTEXT. Port sims.ayecnse.site (speech: ayecnsc) to PANINI.
+77. Check Lekhak IDE in original Hindawi 2004. Shaili Robot too. Port them to our console.
+
 
 
 

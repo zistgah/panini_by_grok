@@ -17,7 +17,7 @@ Dialect tag: `<शैली NAME>` on line 1 (retrieved `hincc.awk`).
 | soochee | सूची | Python | `soochee/h2py.lex` | Romenagri |
 | shabda | शब्द | lex | `shabda/h2l.uhin` | Romenagri |
 | wyaaka | व्याकरण | yacc | `wyaaka/h2yacc.uhin` | Romenagri |
-| yantra | यांत्रिक | asm | `yantra/h2y.uhin` | Romenagri |
+| robot | रोबोट | Logo (Indic) | `src/jpchin/ROBOT.C` | graphics; named Robot for FreeBot ANGEL |
 
 These eight are **heritage**. Do not regenerate the kernel mappings.
 
