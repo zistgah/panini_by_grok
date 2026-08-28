@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-64. Completeness of language standards (scheduled + others). Call to action for CSV/dialect (phonetic, syntax, word). Publish mechanism not English-ISO-first. Template translatable. Hebrew C viewed as Hindi C; identifier dictionary is presentation; compile uses originals.
+65. Improve the estate explorer.
+
 
 
 

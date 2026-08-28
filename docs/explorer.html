@@ -3,66 +3,158 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI explorer</title>
+  <title>PANINI — estate explorer</title>
   <link rel="stylesheet" href="site.css" />
   <style>
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(16rem,1fr)); gap:.6rem; }
-    .card { border:1px solid #345; padding:.6rem .7rem; background:#0e1a28; }
-    .card h3 { margin:.1rem 0; font-size:.95rem; }
-    .card p { margin:.2rem 0 0; font-size:.8rem; opacity:.85; }
-    .org { margin:1.2rem 0 .4rem; }
-    input#q { width:100%; max-width:28rem; padding:.4rem; }
+    .ex { display:grid; grid-template-columns: minmax(16rem,1fr) minmax(18rem,.9fr); gap:1rem; }
+    @media (max-width: 800px) { .ex { grid-template-columns: 1fr; } }
+    .chips { display:flex; flex-wrap:wrap; gap:.35rem; margin:.5rem 0; }
+    .chips button, .chips a {
+      background:#1a3348; color:#e8d9a8; border:1px solid #c9a227;
+      font:12px ui-monospace,monospace; padding:.2rem .5rem; cursor:pointer; text-decoration:none;
+    }
+    .chips button.on { background:#c9a227; color:#070d18; }
+    #q { width:100%; max-width:36rem; padding:.45rem .6rem; background:#0e1a28; color:#e8d9a8; border:1px solid #345; }
+    .list { max-height:70vh; overflow:auto; border:1px solid #345; }
+    .row { display:block; padding:.45rem .6rem; border-bottom:1px solid #243; color:inherit; text-decoration:none; }
+    .row:hover, .row.on { background:#1a3348; }
+    .row b { font-size:.92rem; }
+    .row small { display:block; opacity:.8; font-size:.78rem; }
+    .tag { display:inline-block; font:10px ui-monospace,monospace; border:1px solid #c9a227; padding:0 .3rem; margin-right:.25rem; }
+    .detail { border:1px solid #c9a227; padding:.8rem; background:#0e1a28; min-height:12rem; }
+    .detail h2 { margin-top:0; }
+    .muted { opacity:.8; font-size:.9rem; }
+    .scale { background:#1a3348; padding:.5rem .7rem; margin:.6rem 0; font-size:.9rem; }
   </style>
 </head>
 <body class="site">
 <header class="site-head">
-  <strong>PANINI explorer</strong>
+  <strong>PANINI</strong>
   <nav>
-    <a href="mez/">mez desk</a>
-    <a href="nb.html">notebook</a>
-    <a href="cyclers.html">cyclers</a>
-    <a href="workbench.html">workbench</a>
+    <a href="index.html">Home</a>
+    <a href="standards/">Standards</a>
+    <a href="nb.html">Notebook</a>
+    <a href="mez/">mez</a>
+    <a href="dome/">Dome</a>
+    <a href="workbench.html">Workbench</a>
   </nav>
 </header>
 <main class="site-main">
   <h1>Estate explorer</h1>
-  <p class="lead">Landing is the map for now. Each inlined repo has <code>apps/<org>/<repo>/</code> so it can spin off. mez is the desk; cyclers are the work you run there, written in PANINI.</p>
-  <p><input id="q" placeholder="filter repos…" /></p>
-  <p id="note"></p>
-  <div id="root"></div>
+  <p class="lead">Landing is the map. This is not a live walk of 105 organisations. It is the public subset plus the annotations the architect handed over.</p>
+  <div class="scale" id="scale"></div>
+  <p><input id="q" placeholder="filter name, org, family, what…" autofocus /></p>
+  <div class="chips" id="orgs"></div>
+  <div class="chips" id="fams"></div>
+  <div class="chips">
+    <button type="button" data-flag="inlined">inlined in this tree</button>
+    <button type="button" data-flag="pages">GitHub Pages</button>
+    <button type="button" data-flag="fork">forks</button>
+    <button type="button" data-flag="named">named, no repo</button>
+  </div>
+  <div class="ex">
+    <div>
+      <p class="muted" id="count"></p>
+      <div class="list" id="list"></div>
+    </div>
+    <aside class="detail" id="detail">
+      <p class="muted">Select a repository. Inlined trees spin off from <code>apps/<org>/<repo></code>.</p>
+    </aside>
+  </div>
+  <h2>Sites (as handed)</h2>
+  <div class="chips" id="sites"></div>
+  <h2>Gaps (as handed)</h2>
+  <ul id="gaps"></ul>
+  <p class="fine">AyeAI org is recorded as public forks / historical sites — not branded as this estate’s product. Independence: not IBM, not HP. Source: <a href="ESTATE.md">ESTATE.md</a>.</p>
 </main>
 <script>
-fetch("explorer/repos.json").then(r=>r.json()).then(cat=>{
-  document.getElementById("note").textContent = cat.note +
-    "  zistgah "+cat.orgs.zistgah.length+
-    " · project-ilm "+cat.orgs["project-ilm"].length+
-    " · hindawiai "+cat.orgs.hindawiai.length+
-    " · AyeAI "+cat.orgs.AyeAI.length+" (forks recorded, not this estate’s product)";
-  const root=document.getElementById("root");
-  const inlined={
-    "zistgah/mez":"mez/","zistgah/fakir":"fakir/","zistgah/cycles":"cyclers.html",
-    "project-ilm/ilm.codes":"ilm/","hindawiai/hindawi-legacy":"hindawi.html"
-  };
-  function draw(filter){
-    root.innerHTML="";
-    for (const [org, repos] of Object.entries(cat.orgs)){
-      const h=document.createElement("h2"); h.className="org"; h.textContent=org;
-      root.appendChild(h);
-      const g=document.createElement("div"); g.className="grid";
-      repos.filter(x=>!filter || (x.name+" "+x.description).toLowerCase().includes(filter)).forEach(x=>{
-        const k=org+"/"+x.name;
-        const a=document.createElement("a");
-        a.className="card";
-        a.href = inlined[k] || x.html_url;
-        a.innerHTML="<h3>"+x.name+(x.fork?" (fork)":"")+"</h3><p>"+(x.description||"—")+"</p>";
-        g.appendChild(a);
-      });
-      root.appendChild(g);
-    }
+fetch("explorer/estate.json").then(r=>r.json()).then(E=>{
+  const scale = document.getElementById("scale");
+  scale.innerHTML = "Recorded estate: <strong>"+E.recorded_scale.orgs+" orgs / "+E.recorded_scale.repos+" repos</strong>. This view: "+
+    E.this_view.repos+" repos, "+E.this_view.orgs+" orgs, "+E.this_view.inlined+" inlined. "+E.note;
+  document.getElementById("sites").innerHTML = E.sites.map(s=>
+    "<a href=\""+s.url+"\" rel=\"noopener\">"+(s.name)+(s.note?" ("+s.note+")":"")+"</a>").join("");
+  document.getElementById("gaps").innerHTML = E.gaps.map(g=>"<li>"+g+"</li>").join("");
+
+  const orgs = [...new Set(E.items.map(i=>i.org))].sort();
+  const fams = [...new Set(E.items.map(i=>i.family))].sort();
+  const orgBox = document.getElementById("orgs");
+  const famBox = document.getElementById("fams");
+  orgBox.innerHTML = "<button type='button' class='on' data-org=''>all orgs</button>"+
+    orgs.map(o=>"<button type='button' data-org='"+o+"'>"+o+"</button>").join("");
+  famBox.innerHTML = "<button type='button' class='on' data-fam=''>all families</button>"+
+    fams.map(f=>"<button type='button' data-fam='"+f+"'>"+f+"</button>").join("");
+
+  const st = { q:"", org:"", fam:"", inlined:false, pages:false, fork:false, named:false, sel:null };
+
+  function hay(i){
+    return (i.key+" "+i.what+" "+i.description+" "+i.family+" "+i.state+" "+i.language).toLowerCase();
   }
-  draw("");
-  document.getElementById("q").oninput=e=>draw(e.target.value.trim().toLowerCase());
+  function filtered(){
+    return E.items.filter(i=>{
+      if (st.q && !hay(i).includes(st.q)) return false;
+      if (st.org && i.org!==st.org) return false;
+      if (st.fam && i.family!==st.fam) return false;
+      if (st.inlined && !i.inlined) return false;
+      if (st.pages && !i.pages) return false;
+      if (st.fork && !i.fork) return false;
+      return true;
+    }).sort((a,b)=> (b.inlined-a.inlined) || a.key.localeCompare(b.key));
+  }
+  function show(i){
+    st.sel = i.key;
+    const local = i.inlined ? ("<p>In this tree: <a href='"+i.href+"'>"+i.href+"</a></p><p>Spin-off path: <code>"+i.spinoff+"</code></p>") : "<p>Not inlined. Remote only.</p>";
+    const aye = i.ayeai_note ? "<p class='muted'>AyeAI listing is historical / forks. Not branded as this estate’s product.</p>" : "";
+    document.getElementById("detail").innerHTML =
+      "<h2>"+i.key+"</h2>"+
+      "<p>"+(i.what||i.description||"—")+"</p>"+
+      "<p><span class='tag'>"+i.family+"</span><span class='tag'>"+i.state+"</span>"+
+        (i.pages?"<span class='tag'>pages</span>":"")+(i.fork?"<span class='tag'>fork</span>":"")+
+        (i.inlined?"<span class='tag'>inlined</span>":"")+"</p>"+
+      "<p>Language (GitHub): "+(i.language||"—")+". Updated: "+(i.updated||"—")+".</p>"+
+      local+
+      "<p><a href='"+i.html_url+"' rel='noopener'>GitHub →</a></p>"+aye;
+    draw();
+  }
+  function draw(){
+    const rows = filtered();
+    document.getElementById("count").textContent = rows.length+" shown";
+    document.getElementById("list").innerHTML = rows.map(i=>
+      "<a class='row"+(st.sel===i.key?" on":"")+"' href='#"+i.key+"' data-key='"+i.key+"'>"+
+        "<b>"+i.key+"</b>"+
+        (i.inlined?" <span class='tag'>in</span>":"")+
+        "<small>"+(i.what||i.description||i.family)+"</small></a>"
+    ).join("");
+    document.getElementById("list").querySelectorAll(".row").forEach(a=>{
+      a.onclick = ev => { ev.preventDefault(); show(E.items.find(x=>x.key===a.dataset.key)); };
+    });
+  }
+
+  orgBox.onclick = e => {
+    const b=e.target.closest("button"); if(!b) return;
+    orgBox.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); st.org=b.dataset.org||""; draw();
+  };
+  famBox.onclick = e => {
+    const b=e.target.closest("button"); if(!b) return;
+    famBox.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); st.fam=b.dataset.fam||""; draw();
+  };
+  document.querySelectorAll("[data-flag]").forEach(b=>{
+    b.onclick = () => { st[b.dataset.flag]=!st[b.dataset.flag]; b.classList.toggle("on", st[b.dataset.flag]);
+      if (b.dataset.flag==="named") {
+        const box=document.getElementById("detail");
+        box.innerHTML = "<h2>Named, no repo</h2>"+E.named_no_repo.map(n=>"<p><strong>"+n.name+"</strong> — "+n.what+"</p>").join("");
+      }
+      draw();
+    };
+  });
+  document.getElementById("q").oninput = e => { st.q=e.target.value.trim().toLowerCase(); draw(); };
+  draw();
+  const first = filtered().find(i=>i.inlined) || filtered()[0];
+  if (first) show(first);
 });
 </script>
+<script src="skins/skins.js"></script>
 </body>
 </html>
