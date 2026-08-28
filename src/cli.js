@@ -174,6 +174,12 @@ async function main() {
       console.log(JSON.stringify(out, null, 2));
       return;
     }
+    case "shaili":
+    case "bhasha":
+    case "hindawi-flow": {
+      await import("../scripts/hindawi_flow.mjs");
+      return;
+    }
     case "hindawi": {
       const { hindawiGuru } = await import("../runtime/hindawi.js");
       const src = args[1]

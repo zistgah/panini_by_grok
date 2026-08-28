@@ -9,5 +9,6 @@ body.site { margin: 0; font: 16px/1.5 Georgia, serif; color: #102030; background
 .cta { display: flex; flex-wrap: wrap; gap: .5rem; }
 .btn { display: inline-block; padding: .4rem .9rem; background: #0b1c2c; color: #fff; text-decoration: none; }
 .btn.ghost { background: transparent; color: #0b1c2c; border: 1px solid #0b1c2c; }
-.fine { color: #556; font-size: .85rem; }
+.md table, .site-main table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.md td, .md th, .site-main td, .site-main th { border: 1px solid #c8c0b4; padding: 4px 8px; text-align: left; }
 @media (max-width: 640px) { .site-main { padding: 1rem; } }

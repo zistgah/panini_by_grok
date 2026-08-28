@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI — Hindawi is not a keyword table</title>
+  <title>PANINI — Devanagari Hindawi flow</title>
   <link rel="stylesheet" href="site.css" />
 </head>
 <body class="site">
@@ -16,37 +16,71 @@
   </nav>
 </header>
 <main class="site-main">
-  <h1>What Hindawi actually is</h1>
-  <p class="lead">Not Gurmukhi→Devanagari. Not <code>if</code>→<code>यदि</code>. A reversible pipeline so a C program written in a vernacular script still compiles with gcc and still debugs in that script.</p>
+  <h1>Devanagari flow — how Hindawi localizes a language</h1>
+  <p class="lead">Two independent axes. Mixing them was the earlier error.</p>
 
-  <h2>The retrieved Guru compiler</h2>
-  <pre><code>cat $1 | acii2uni | iconv | h2c > temp.c
-gcc temp.c</code></pre>
-  <ol>
-    <li><strong>unicode.h</strong> — Devanagari → ACII (8-bit phonetic layer).</li>
-    <li><strong>acii2rmn.c</strong> — stack: consonants carry implicit <code>a</code>; matras pop it. <code>मुख्य</code> → <code>mukhya</code>, not a letter-wise concat.</li>
-    <li><strong>h2c.lex</strong> — Romenagri tokens → C. <code>mukhya</code>→<code>main</code>, <code>ma_likhoa</code>→<code>printf</code>.</li>
-    <li>Identifiers stay Romenagri (<code>अ</code>→<code>_a</code>, <code>क</code>→<code>ka</code>) so they are legal C and reverse.</li>
-    <li>Strings stay UTF-8 vernacular. <strong>APCISR</strong> paints ACII as Indic in true text mode.</li>
-  </ol>
+  <h2>1. Script substrate (all Devanagari languages share this)</h2>
+  <pre><code>Devanagari Unicode
+        │  retrieved unicode.h (73 signs)
+        ▼
+      ACII  (8-bit phonetic; one layer for all Indic)
+        │  retrieved acii2rmn.c (stack: implicit a, matras pop it)
+        ▼
+    Romenagri ASCII   मुख्य → mukhya    अ → _a    क → ka
+        │
+        ▼
+  gcc / debugger see C-legal identifiers
+  APCISR paints the same ACII as Devanagari in true text mode</code></pre>
+  <p>Strings stay UTF-8. Identifiers never become English names. That is how you debug at the hardware in the vernacular.</p>
 
-  <h2>Executed: HindiC.uhin</h2>
-  <p>Retrieved sample, not reconstructed. CLI: <code>node src/cli.js hindawi</code></p>
-  <pre><code>पूर्णांक मुख्य()        →  int main()
-अक्षर अ[]          →  char _a[]
-पूर्णांक क              →  int ka
-म_लिखो(...)        →  printf("आपका नाम क्या है?\n")
-क्रम(क=1; …)        →  for(ka=1; …)
-वापस 0             →  return 0</code></pre>
-  <p><code>#समावेश</code> becomes <code>#samaawaeesha</code> (schwa) so it does not hit <code>#samaawesha</code> in h2c; <code>मानकपन.स</code> does become <code>stdio.h</code>. That gap is reported, not patched with an invented alias.</p>
+  <h2>2. Shaili (शैली) — which <em>host language</em></h2>
+  <p>Not Hindi vs Nepali. Which compiler you are localizing. Each is a retrieved lex filter:</p>
+  <table>
+    <tr><th>Shaili</th><th>Host</th><th>Filter</th><th>Layer</th></tr>
+    <tr><td>गुरु guru</td><td>C</td><td>h2c.lex</td><td>Romenagri</td></tr>
+    <tr><td>श्रेणी shraeni</td><td>C++</td><td>h2cpp.uhin</td><td>Romenagri</td></tr>
+    <tr><td>प्राथमिक praatha</td><td>BASIC</td><td>h2b.uhin</td><td>Devanagari keywords</td></tr>
+    <tr><td>कृत्रिम kritrima</td><td>Java</td><td>h2j.uhin</td><td>Romenagri</td></tr>
+    <tr><td>सूची soochee</td><td>Python</td><td>h2py.lex</td><td>Romenagri</td></tr>
+    <tr><td>शब्द shabda</td><td>lex</td><td>h2l.uhin</td><td>Romenagri</td></tr>
+    <tr><td>व्याकरण wyaaka</td><td>yacc</td><td>h2yacc.uhin</td><td>Romenagri then h2c</td></tr>
+    <tr><td>यांत्रिक yantra</td><td>asm</td><td>h2y.uhin</td><td>Romenagri → fasm</td></tr>
+  </table>
+  <p>Praatha writes the lex in Devanagari (<code>लिखो {printf("PRINT");}</code>). Guru writes it in Romenagri (<code>mukhya {printf("main");}</code>) after acii2rmn. Same idea, different layer.</p>
 
-  <h2>Punjabi / Gurmukhi</h2>
-  <p>Same stack. Script hub (name-projection into Devanagari, then unicode.h) is <em>not</em> the language. Punjabi words come from <code>punjabi_c.tsv</code>. The retrieved systems demo is Romenagri + <code>#define</code>:</p>
-  <pre><code>#define je if
-#define jada_taka while
-#define chhapo printf
-int gi_n_tee = 0;</code></pre>
-  <p><a href="punjabi.html">Punjabi page</a> · <a href="retrieved/HindiC.uhin">HindiC.uhin</a></p>
+  <h2>3. Bhasha — which <em>vernacular</em> on that script</h2>
+  <p>Hindi, Nepali, Marathi, Sanskrit all write Devanagari. They do not share C-keyword words. Retrieved TSVs:</p>
+  <pre><code>Hindi     यदि / लौटाओ     → if / return
+Nepali    यदि / फर्काऊ     → if / return
+Marathi   जर  / परत       → if / return
+Sanskrit  यदि / प्रत्यागम  → if / return   (keyword-by-keyword; not a Paninian parser)</code></pre>
+  <p>Executed:</p>
+  <pre><code>यदि (1) { लौटाओ 0; }      →  if (1) { return 0; }
+यदि (1) { फर्काऊ 0; }     →  if (1) { return 0; }
+जर (1) { परत 0; }        →  if (1) { return 0; }
+यदि (1) { प्रत्यागम 0; }   →  if (1) { return 0; }</code></pre>
+
+  <h2>4. Proof on retrieved samples</h2>
+  <p><strong>Guru / HindiC.uhin</strong></p>
+  <pre><code>पूर्णांक मुख्य()           →  int main()
+अक्षर अ[]               →  char _a[]
+म_लिखो("…")            →  printf("आपका नाम क्या है?\n")
+क्रम(क=1; क<=10; क++)   →  for(ka=1; ka<=10; ka++)
+वापस 0                  →  return 0</code></pre>
+  <p><strong>Praatha / HindiBASIC.uhin</strong></p>
+  <pre><code>पूछो "ऊँचाई: ", न   →  INPUT "ऊँचाई: ", न
+लिखो न               →  PRINT न
+क्रम क = १ से न      →  FOR क = १ TO न
+क्रमांत ख             →  NEXT ख</code></pre>
+  <p>Leftover <code>न</code>, <code>क</code> stay for the identifier/Romenagri step. Indic digits १ are not in unicode.h’s 73 rows — reported, not invented.</p>
+
+  <h2>5. What this is not</h2>
+  <ul>
+    <li>Not Gurmukhi→Devanagari as the localization of C.</li>
+    <li>Not an 8-word <code>if</code>→<code>यदि</code> toy in the linguist pane.</li>
+    <li>Not a Sanskrit grammar engine. Sanskrit here is the keyword TSV only.</li>
+  </ul>
+  <p class="fine">CLI: <code>node src/cli.js hindawi</code> · <code>node src/cli.js hindawi-flow</code></p>
 </main>
 </body>
 </html>
