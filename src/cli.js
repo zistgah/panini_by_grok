@@ -188,13 +188,15 @@ async function main() {
       console.log(JSON.stringify(hindawiGuru(src), null, 2));
       return;
     }
+    case "pa2c":
+    case "transducer":
     case "punjabi":
     case "gurmukhi": {
-      const { punjabiShaili } = await import("../runtime/hindawi.js");
-      const src = args[1] && args[1] !== "-"
+      const { pa2c, proveNotMacro } = await import("../runtime/transducer.js");
+      const src = args[1]
         ? fs.readFileSync(args[1], "utf8")
-        : "ਵਾਪਸ 0;";
-      console.log(JSON.stringify(punjabiShaili(src), null, 2));
+        : fs.readFileSync(new URL("../examples/punjabi_c.uhin", import.meta.url), "utf8");
+      console.log(JSON.stringify(args[0] === "pa2c" ? pa2c(src) : proveNotMacro(src), null, 2));
       return;
     }
     case "iso-c":
