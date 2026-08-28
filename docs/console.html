@@ -27,9 +27,21 @@
   <p>VT100-class text. bash and COMMAND.COM on an in-memory VFS. This page is self-contained (does not depend on a cached <code>console.js</code>).</p>
   <p>
     Shell:
-    <label><input type="radio" name="sh" value="bash" checked /> bash</label>
-    <label><input type="radio" name="sh" value="command.com" /> COMMAND.COM</label>
+    <select id="shsel">
+      <option value="bash">bash</option>
+      <option value="sh">sh</option>
+      <option value="dash">dash</option>
+      <option value="zsh">zsh</option>
+      <option value="ksh">ksh</option>
+      <option value="csh">csh</option>
+      <option value="command.com">COMMAND.COM</option>
+      <option value="cmd">cmd</option>
+      <option value="4dos">4DOS</option>
+      <option value="panini">panini</option>
+    </select>
+    <label><input type="checkbox" id="vt" checked /> VT100 80×24</label>
   </p>
+  <canvas id="vtcan" width="640" height="384" style="display:block;background:#001400;border:1px solid #0a4;margin:.4rem 0;image-rendering:pixelated"></canvas>
   <pre id="out"></pre>
   <div id="row"><span id="ps1">panini$ </span><input id="cmd" autocomplete="off" autofocus /></div>
 </main>
@@ -168,23 +180,89 @@
     if (c === "HELP") return "DIR CD TYPE ECHO CLS MD DEL COPY VER HELP";
     return "Bad command or file name";
   }
+  function family(sh) {
+    sh = String(sh || "bash").toLowerCase();
+    if (sh === "command.com" || sh === "cmd" || sh === "4dos" || sh === "command") return "command.com";
+    if (sh === "panini") return "panini";
+    return "bash";
+  }
+  function paniniLine(line) {
+    var s = String(line || "").trim();
+    if (!s) return "";
+    if (/^PRINT\s+/i.test(s)) return s.replace(/^PRINT\s+/i, "");
+    if (/^help$/i.test(s)) return "PANINI shell subset: PRINT …";
+    return s;
+  }
   function exec(sh, line) {
-    return sh === "command.com" ? commandCom(line) : bash(line);
+    var f = family(sh);
+    if (f === "command.com") return commandCom(line);
+    if (f === "panini") return paniniLine(line);
+    return bash(line);
   }
   window.PANINI_CONSOLE = { bash: bash, commandCom: commandCom, exec: exec };
 
   var outEl = document.getElementById("out");
   var cmd = document.getElementById("cmd");
   var ps1 = document.getElementById("ps1");
+  var shsel = document.getElementById("shsel");
+  var vtcan = document.getElementById("vtcan");
+  var vtchk = document.getElementById("vt");
   var sh = "bash";
   var hist = [], hi = 0;
-  function prompt() { return sh === "bash" ? "panini$ " : "C:\\> "; }
-  function append(t) { outEl.textContent += t; outEl.scrollTop = outEl.scrollHeight; }
-  append("PANINI 486-class console. Type help. Try: ls · cat readme.txt · echo नमस्ते > a.txt · cat a.txt\n");
-  var radios = document.querySelectorAll("input[name=sh]");
-  for (var ri = 0; ri < radios.length; ri++) {
-    radios[ri].onchange = function () { sh = this.value; ps1.textContent = prompt(); append("[shell " + sh + "]\n"); };
+  function initVt() {
+    vt.grid = [];
+    for (var y = 0; y < vt.rows; y++) {
+      var row = [];
+      for (var x = 0; x < vt.cols; x++) row.push(" ");
+      vt.grid.push(row);
+    }
+    vt.r = 0; vt.c = 0;
   }
+  initVt();
+  function vtPut(ch) {
+    if (ch === "\n") { vt.r = Math.min(vt.rows - 1, vt.r + 1); vt.c = 0; return; }
+    if (ch === "\r") { vt.c = 0; return; }
+    if (ch === "\b") { vt.c = Math.max(0, vt.c - 1); return; }
+    vt.grid[vt.r][vt.c] = ch;
+    vt.c++;
+    if (vt.c >= vt.cols) { vt.c = 0; vt.r = Math.min(vt.rows - 1, vt.r + 1); }
+  }
+  function vtWrite(s) {
+    s = String(s);
+    for (var i = 0; i < s.length; i++) {
+      if (s.charAt(i) === "\x1b" && s.charAt(i + 1) === "[" && s.charAt(i + 2) === "2" && s.charAt(i + 3) === "J") {
+        initVt(); vt.r = 0; vt.c = 0; i += 3; continue;
+      }
+      vtPut(s.charAt(i));
+    }
+    if (vtcan && vtcan.getContext) {
+      var ctx = vtcan.getContext("2d");
+      var cw = 8, ch = 16;
+      vtcan.width = vt.cols * cw;
+      vtcan.height = vt.rows * ch;
+      ctx.fillStyle = "#001400";
+      ctx.fillRect(0, 0, vtcan.width, vtcan.height);
+      ctx.fillStyle = "#33ff66";
+      ctx.font = "14px ui-monospace, monospace";
+      for (var y = 0; y < vt.rows; y++) ctx.fillText(vt.grid[y].join(""), 1, 13 + y * ch);
+      ctx.fillRect(vt.c * cw, vt.r * ch, 7, 14);
+    }
+  }
+  function prompt() {
+    var f = family(sh);
+    if (f === "command.com") return "C:\\> ";
+    if (f === "panini") return "pni> ";
+    if (sh === "csh") return "% ";
+    return "panini$ ";
+  }
+  function append(t) {
+    outEl.textContent += t;
+    outEl.scrollTop = outEl.scrollHeight;
+    if (!vtchk || vtchk.checked) vtWrite(t);
+  }
+  append("PANINI console · VT100 80×24 · shells: bash sh dash zsh ksh csh COMMAND.COM cmd 4DOS panini\nType help. Try: ls · cat readme.txt\n");
+  if (shsel) shsel.onchange = function () { sh = shsel.value; ps1.textContent = prompt(); append("[shell " + sh + "]\n"); };
+  if (vtchk) vtchk.onchange = function () { if (vtcan) vtcan.style.display = vtchk.checked ? "block" : "none"; };
   cmd.onkeydown = function (e) {
     if (e.key === "ArrowUp") {
       if (hist.length) { hi = Math.max(0, hi - 1); cmd.value = hist[hi] || ""; }

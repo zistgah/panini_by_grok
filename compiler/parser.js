@@ -923,7 +923,7 @@ export class Parser {
       const t = this.eat();
       return N.Literal(t.value, t.value);
     }
-    if (this.at("FUNCTION")) {
+    if (this.at("FUNCTION") || this.at("LAMBDA")) {
       this.eat();
       const params = this.at("(") ? this.parseParamList() : [];
       let rt = null;

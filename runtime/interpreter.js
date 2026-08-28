@@ -525,7 +525,10 @@ function getMember(obj, prop) {
     if (prop === "value") return obj.ok ? obj.value : vUnit();
     if (prop === "error") return obj.ok ? vUnit() : obj.error;
   }
-  throw new ReferenceError(`No property ${prop} on ${obj.tag}`);
+  if (obj.tag === Tag.Function) {
+    if (prop === "construct" || prop === "new") return obj;
+    if (prop === "name") return vStr(obj.name || obj.className || "fn");
+  }
 }
 
 function setMember(obj, prop, value) {

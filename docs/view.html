@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PANINI — document</title>
   <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="skins/jazz.css" />
   <style>
     .md pre { overflow: auto; background: #0b1c2c; color: #eee; padding: 12px; }
     .md code { font-family: ui-monospace, Menlo, monospace; font-size: .9em; }
     .md table { border-collapse: collapse; width: 100%; }
-    .md td, .md th { border: 1px solid #ccc; padding: 4px 8px; text-align: left; }
+    .md td, .md th { border: 1px solid rgba(201,162,39,.35); padding: 4px 8px; text-align: left; }
     .missing { color: #a40; }
   </style>
 </head>
@@ -101,5 +102,6 @@ if (!ALLOWED.includes(name)) {
     .catch(() => { document.getElementById("md").innerHTML = '<p class="missing">Could not load ' + name + '. GitHub Pages only serves files under docs/.</p>'; });
 }
 </script>
+<script src="skins/skins.js"></script>
 </body>
 </html>
