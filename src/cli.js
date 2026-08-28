@@ -122,6 +122,22 @@ async function main() {
     case "bash":
       await runSource(fs.readFileSync(new URL("../stdlib/bash.pni", import.meta.url), "utf8"), "bash.pni");
       return;
+    case "posix":
+      await runSource(fs.readFileSync(new URL("../stdlib/posix.pni", import.meta.url), "utf8"), "posix.pni");
+      return;
+    case "oci":
+    case "env": {
+      const { runEnv, ENVIRONMENTS, engine } = await import("../runtime/oci.js");
+      const name = args[1];
+      if (!name || name === "list") {
+        console.log(JSON.stringify({ engine: engine() || null, environments: ENVIRONMENTS }, null, 2));
+        return;
+      }
+      const r = runEnv(name, args.slice(2));
+      console.log(JSON.stringify(r, null, 2));
+      process.exitCode = r.ok ? 0 : 1;
+      return;
+    }
     case "selfhost":
       await import("../scripts/selfhost.mjs");
       return;
@@ -164,6 +180,9 @@ Usage:
   panini cc <file.c>          # invoke host cc
   panini cpp <file.cpp>       # invoke host c++
   panini repl
+  panini posix
+  panini env list
+  panini env env-python
   panini version
 `);
 }

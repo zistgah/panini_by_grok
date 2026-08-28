@@ -21,6 +21,11 @@ A Stage-0 bootstrap plus additive layers (v2/v3 workbench, frontends, VFS, VT100
 Self-host T0 (A=B=C) is verified on a **compiler subset**.  
 Foreign language frontends are **subsets**. Official language test suites are mapped, not passed.
 
+## Road
+
+JS interp → POSIX personality on VFS → OCI when present → official compiler images → official suites. Emulators later.
+See docs/ARCHITECTURE.md.
+
 ## Surfaces
 
 | Surface | Path |

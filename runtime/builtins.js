@@ -7,6 +7,8 @@ import { which, runPython, runC } from "./toolchain.js";
 import { axpy, scal, nrm2, gemv, gemm, autotuneGemm } from "./blas.js";
 import { tensor, matmul, tadd, relu } from "./tensor.js";
 import { createVfs } from "./vfs.js";
+import { createPosix, syscall } from "./posix.js";
+import { engine as ociEngine, ENVIRONMENTS, runEnv, ociConfig } from "./oci.js";
 import { createVt100, vtWrite, vtPlain, vtSnapshot } from "./vt100.js";
 import { defaultDosFont, loadFontFile, getFont, listFonts } from "./fonts.js";
 import { renderTextBitmap } from "./dosfont.js";
@@ -137,6 +139,22 @@ export function installBuiltins(env, runtime) {
   def("VFS_RM", (p) => wrap(vfs.rm(toStr(p))), 1);
   def("VFS_EXISTS", (p) => vBool(vfs.exists(toStr(p))), 1);
   def("VFS_TREE", () => vStr(vfs.tree()));
+
+  if (!runtime.posix) runtime.posix = createPosix(vfs);
+  const px = runtime.posix;
+  def("SYS_GETCWD", () => wrap(syscall(px.init, vfs, "getcwd", []).value));
+  def("SYS_CHDIR", (p) => wrap(syscall(px.init, vfs, "chdir", [toStr(p)])), 1);
+  def("SYS_MKDIR", (p) => wrap(syscall(px.init, vfs, "mkdir", [toStr(p)])), 1);
+  def("SYS_OPEN", (p, m) => wrap(syscall(px.init, vfs, "open", [toStr(p), m == null ? "r" : toStr(m)])), 1);
+  def("SYS_READ", (fd) => wrap(syscall(px.init, vfs, "read", [toNumber(fd)])), 1);
+  def("SYS_WRITE", (fd, data) => wrap(syscall(px.init, vfs, "write", [toNumber(fd), toStr(data)])), 2);
+  def("SYS_CLOSE", (fd) => wrap(syscall(px.init, vfs, "close", [toNumber(fd)])), 1);
+  def("SYS_UNLINK", (p) => wrap(syscall(px.init, vfs, "unlink", [toStr(p)])), 1);
+  def("SYS_STAT", (p) => wrap(syscall(px.init, vfs, "stat", [toStr(p)])), 1);
+  def("OCI_ENGINE", () => vStr(ociEngine() || ""));
+  def("OCI_LIST", () => wrap(Object.keys(ENVIRONMENTS)));
+  def("OCI_CONFIG", () => wrap(ociConfig()));
+  def("OCI_RUN", (name) => wrap(runEnv(toStr(name))), 1);
 
   if (!runtime.vt) runtime.vt = createVt100();
   defaultDosFont();
