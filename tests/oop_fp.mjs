@@ -84,5 +84,13 @@ FUNCTION main()
     RETURN LEN(stages_hin())
 END
 `, 4);
+await check("chakra jd", `
+FUNCTION jd_from_d(d)
+    RETURN d + 2451543.5
+END
+FUNCTION main()
+    RETURN jd_from_d(0)
+END
+`, 2451543.5);
 console.log(fail ? `FAILED ${fail}/${n}` : `PASSED ${n}/${n}`);
 process.exit(fail ? 1 : 0);
