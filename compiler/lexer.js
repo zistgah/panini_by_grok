@@ -69,6 +69,26 @@ export class Lexer {
     return this.token(TokenKind.COMMENT, text, start);
   }
 
+  readHashComment() {
+    const start = { line: this.line, column: this.column, index: this.i };
+    this.advance(); // #
+    let text = "";
+    while (this.peek() && this.peek() !== "\n") text += this.advance();
+    return this.token(TokenKind.COMMENT, text, start);
+  }
+
+  readLineRemainder(tag) {
+    const start = { line: this.line, column: this.column, index: this.i };
+    if (tag === "REM") {
+      this.advance(); this.advance(); this.advance();
+    } else if (tag === ";") {
+      this.advance();
+    }
+    let text = "";
+    while (this.peek() && this.peek() !== "\n") text += this.advance();
+    return this.token(TokenKind.COMMENT, text, start);
+  }
+
   readBlockComment() {
     const start = { line: this.line, column: this.column, index: this.i };
     this.match("/*");
@@ -162,6 +182,23 @@ export class Lexer {
       }
       if (ch === "/" && this.peek(1) === "*") {
         const tok = this.readBlockComment();
+        if (opts.emitComments) return tok;
+        continue;
+      }
+      /* Literate PANINI: markdown headings, BASIC REM, and ;-to-EOL comments.
+       * Documentation strand, not a syntax error. See spec/PANINI_LITERATE.md */
+      if (ch === "#") {
+        const tok = this.readHashComment();
+        if (opts.emitComments) return tok;
+        continue;
+      }
+      if (ch === ";") {
+        const tok = this.readLineRemainder(";");
+        if (opts.emitComments) return tok;
+        continue;
+      }
+      if ((ch === "R" || ch === "r") && /^REM\b/i.test(this.source.slice(this.i, this.i + 4))) {
+        const tok = this.readLineRemainder("REM");
         if (opts.emitComments) return tok;
         continue;
       }

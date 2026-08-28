@@ -121,16 +121,42 @@ async function main() {
     }
     case "cycler":
     case "cyclers": {
-      const { loadAll, loadCycler } = await import("../runtime/cycler_load.js");
+      const { loadAll, execCycler, execAll } = await import("../runtime/cycler_load.js");
       const dir = path.join(path.dirname(new URL(import.meta.url).pathname), "../cyclers/upstream");
       const name = args[1];
       if (!name || name === "list") {
         const all = loadAll(dir);
-        console.log(JSON.stringify({ source: "https://github.com/zistgah/cycles/tree/main/cyclers", count: all.length, cyclers: all }, null, 2));
+        const slim = all.map(({ name, dialect, bytes, title, kind, parse_ok, woven_ok, mode, tangle_kind }) =>
+          ({ name, dialect, bytes, title, kind, parse_ok, woven_ok, mode, tangle_kind }));
+        console.log(JSON.stringify({ source: "https://github.com/zistgah/cycles/tree/main/cyclers", count: slim.length, cyclers: slim }, null, 2));
+        return;
+      }
+      if (name === "exec" || name === "run") {
+        const all = await execAll(dir);
+        const summary = {
+          count: all.length,
+          executable: all.filter((c) => c.executable).length,
+          failed: all.filter((c) => !c.executable).map((c) => ({ name: c.name, err: c.exec_error })),
+          cyclers: all.map((c) => ({ name: c.name, dialect: c.dialect, executable: c.executable, tangle_kind: c.tangle_kind, parse_ok: c.parse_ok, prints: c.prints })),
+        };
+        console.log(JSON.stringify(summary, null, 2));
+        process.exitCode = summary.failed.length ? 2 : 0;
         return;
       }
       const file = path.join(dir, name.endsWith(".pni") ? name : name + ".pni");
-      console.log(JSON.stringify(loadCycler(file), null, 2));
+      const rec = await execCycler(file);
+      delete rec.woven;
+      console.log(JSON.stringify(rec, null, 2));
+      process.exitCode = rec.executable ? 0 : 1;
+      return;
+    }
+    case "torture":
+    case "panini-torture": {
+      await import("../scripts/panini_torture.mjs");
+      return;
+    }
+    case "cycler-torture": {
+      await import("../scripts/cycler_torture.mjs");
       return;
     }
     case "iso-c":
