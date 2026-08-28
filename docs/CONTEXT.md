@@ -15,6 +15,10 @@ PANINI is a computational language and L15 workbench whose point is **linguistic
 
 It sits in the Hindawi / AyeAI / ILM line of work: programming and systems in the operator’s language, not only through an English-centric toolchain.
 
+See docs/LINGUISTIC_EQUITY.md (architecture, not a social initiative).
+Estate: docs/ESTATE.md is retrieved, not a live walk (105 orgs / 486 repos). TRUST ME on handed artifacts.
+This sibling does not mint, does not author ontologies, and reports CAN_COMPILE: no for lowering (docs/CAN_COMPILE.md).
+
 ## What the JS tree is
 
 A Stage-0 bootstrap plus additive layers (v2/v3 workbench, frontends, VFS, VT100).  

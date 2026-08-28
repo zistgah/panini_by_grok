@@ -1,14 +1,12 @@
 # Estate map — retrieved from public orgs
 
 Copyright (C) 1993-2026 Abhishek Choudhary  
-Status of this file: SYNTHESIS of public GitHub records, 2026-08-28.
-Not a substitute for the 135-poster kitab.
+Status of this file: earlier public-GitHub subset. Superseded in scale by docs/ESTATE.md (architect, 28 Aug 2026). Recorded estate: 105 orgs / 486 repos. Not a live walk. Independence: INDEPENDENCE.md.
 
 ## Who
 
-Abhishek Choudhary — AyeAI, Hindawi Programming System, IBM Power / PowerAI,
-Project ILM custodian, ORCID 0009-0002-0684-8320.
-zistgah.org is the habitat site. GitHub orgs: `zistgah`, `project-ilm`.
+Abhishek Choudhary — AyeAI, Hindawi Programming System, Project ILM,
+ORCID 0009-0002-0684-8320. Habitat: zistgah.org.
 
 ## Two orgs
 

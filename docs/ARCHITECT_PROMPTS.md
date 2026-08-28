@@ -57,7 +57,10 @@ Register note: later turns include **affective register escalation** (frustratio
 45. HindiC.uhin is the bar, not gurmukhi_demo.c macros. Document Devanagari flow. All legacy shailis in Devanagari. Nepali, Marathi, Sanskrit (Sanskrit = keyword-by-keyword, not a Paninian parser).
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
-48. Devanagari round-trip completeness implies Brahmi-script round-trip. Localize all shailis to all Indic languages available. Notebook-class HTML, PANINI backend, browser-native. Urdu, Sindhi, Shahmukhi, Kashmiri, Farsi, Arabic, Dari, Pashto via ur_hi filter with documented round-trip limits. Update architect log. Refactor and reorganize the repo.
+48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
+50. Hindawi’s biggest drawback is documentation and UI. Document everything. Check hindawiai (2004 DOS), project-ilm/ilm.codes (site gone, migrate), zistgah/fakir (ISIC/ISCO/ISCED), zistgah/mez (Cognitive Workbench). Build mez inside this tree for now. Layout for easy spin-off.
+
+
 
 
 - Project Hindawi — Programming in your Mother Tongue (https://hindawi.in/team/)

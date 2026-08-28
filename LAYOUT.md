@@ -1,28 +1,30 @@
-# PANINI repository layout
+# PANINI repository layout (spin-off ready)
 
 Copyright (C) 1993-2026 Abhishek Choudhary  
-SPDX-License-Identifier: GPL-3.0-or-later
+SPDX-License-Identifier: GPL-3.0-or-later  
 
 GitHub Pages publishes **`docs/` only**.
 
 ```
-docs/                 Pages site
-  index.html          entry (not the workbench)
-  nb.html             Hindawi notebook UI (browser-native PANINI)
-  engine/             flatten + language bundle + nb.js
-  hindawi.html        Devanagari flow
-  punjabi.html        Gurmukhi lexer transducer
-  perso_arabic.html   manual urdu_map / fltr_ur_hi
-  workbench.html      Monaco IDE
-  ARCHITECT_PROMPTS.md
-retrieved/            READ-ONLY: APCISR, Romenagri, Hindawi shailis, notebooks pointer
-runtime/              Node: hindawi.js, shailis.js, transducer.js, perso_arabic.js, flatten via bundle
-src/                  CLI
-compiler/             Stage-0 JS
-spec/                 PANINI_SELF_HOSTING_SPEC.pni (do not rewrite)
-examples/             punjabi_c.uhin and peers
-tests/ scripts/ stdlib/ cyclers/
+spec/ compiler/ runtime/ src/ cyclers/ examples/ tests/ scripts/ stdlib/
+    → stays as zistgah/panini_by_grok  (the language)
+
+docs/                 Pages
+  index.html          entry
+  nb.html             Hindawi notebook UI
+  mez/                Cognitive Workbench (2D rung)
+  fakir/              ISIC/ISCO/ISCED explorer
+  ilm/                ilm.codes migration
+  engine/             flatten + language bundle
+  DOCUMENTATION.md SPINOFF.md ESTATE.md …
+
+apps/
+  mez/                future zistgah/mez root
+  fakir/              future zistgah/fakir slice (domains, not the 90MB dome)
+  ilm/                future project-ilm/ilm.codes slice
+  hindawi/            future hindawiai docs
+
+retrieved/            READ-ONLY pointers + vendor (no 100MB DOS image)
 ```
 
-Brahmi: `flatten_uni_dev.lex` → Devanagari hub, table-complete round-trip.
-Perso-Arabic: `urdu_map.csv` + `fltr_ur_hi`, lossy; linguistics residue.
+See `docs/SPINOFF.md`.

@@ -15,6 +15,12 @@ This is the working contract for changes to this tree.
 4. The original `spec/PANINI_SELF_HOSTING_SPEC.pni` text is not rewritten.
 4a. This estate is independent of all employers and clients. See `INDEPENDENCE.md`.
     Do not brand this work as IBM, HP, or any other company product.
+4b. TRUST ME (7 Aug): an artifact the architect hands over is the source of truth. Do not re-fetch or re-derive it as if memory were incomplete.
+4c. NON-DUAL-USE is a binding master clause (26 Jul). This tree is not a dual-use toolkit.
+4d. Public surfaces do not use religiously significant words as product or lab names.
+4e. SPI entities are not named without authorisation. This tree does not invent that list.
+4f. Lifecycle states when governance lands them: incubating → active → maintained → dormant → archived → withdrawn. This tree is active.
+4g. Dual-licence CLA/DCO and C8–C30 have no canonical home on governance main (404). UNRESOLVED. Do not draft them from memory.
 
 ## Honesty
 
