@@ -108,53 +108,30 @@ Sanskrit  यदि / प्रत्यागम  → if / return   (keyword-by
 </main>
 <script src="engine/nb.js"></script>
 <script>
-function indicNum(s){
-  const m={"०":"0","१":"1","२":"2","३":"3","४":"4","५":"5","६":"6","७":"7","८":"8","९":"9"};
-  return String(s).replace(/[०-९]/g, ch => m[ch]||ch);
-}
+PANINI_NB.load("engine/bundle.json");
 function loadDemo(name){
   return fetch("demos/"+name).then(r=>r.text()).then(t=>{
     document.getElementById("prog").value=t;
-    document.getElementById("out").value="Loaded "+name+" — press Run.";
+    document.getElementById("out").value="Loaded "+name+" — press Run (compiles, then interprets host).";
   }).catch(e=>{ document.getElementById("out").value="Could not load "+name+": "+e; });
 }
 document.getElementById("d-c").onclick=()=>loadDemo("HindiC.uhin");
 document.getElementById("d-b").onclick=()=>loadDemo("HindiBASIC.uhin");
 document.getElementById("d-t").onclick=()=>loadDemo("TeluguC.uhin");
 document.getElementById("d-pa").onclick=()=>loadDemo("punjabi_guru.uhin");
-function runC(src, inputs){
-  const out=[];
-  const printf=(fmt,...a)=>{
-    let k=0, s=String(fmt).replace(/\\n/g,"\n").replace(/%s|%d|%प/g,()=>String(a[k++]));
-    out.push(s);
-  };
-  const name = inputs[0] || "मित्र";
-  printf("आपका नाम क्या है?\n");
-  printf("नमस्ते %s.\n", name);
-  for(let k=1;k<=10;k++) printf("%d\n", k);
-  return out.join("");
-}
-function runBasic(src, inputs){
-  const n = parseInt(indicNum(inputs[0]||"5"),10)||5;
-  const lines=["ऊँचाई: "+n, String(n)];
-  for(let k=1;k<=n;k++) lines.push(" ".repeat(Math.max(0,n-k)) + "&".repeat(k));
-  for(let k=n-1;k>=1;k--) lines.push(" ".repeat(Math.max(0,n-k)) + "&".repeat(k));
-  return lines.join("\n")+"\n";
-}
 document.getElementById("d-run").onclick=async ()=>{
-  let src=document.getElementById("prog").value;
-  const inputs=document.getElementById("inp").value.split(/\n/);
+  const src=document.getElementById("prog").value;
   const box=document.getElementById("out");
   if(!src.trim()){ box.value="Load a demo first."; return; }
-  try { if (window.PANINI_NB) await PANINI_NB.load("engine/bundle.json"); } catch(e) {}
-  let flat=src;
-  if (window.PANINI_NB && PANINI_NB.flatten) flat = PANINI_NB.flatten(src);
-  const isBasic = /प्राथमिक|पूछो/.test(src);
-  box.value = isBasic
-    ? ("--- flattened ---\n"+flat+"\n--- run ---\n"+runBasic(src, inputs))
-    : ("--- flattened ---\n"+flat+"\n--- run ---\n"+runC(src, inputs));
+  if (!PANINI_NB.bundle()) await PANINI_NB.load("engine/bundle.json");
+  const shaili = /प्राथमिक|पूछो/.test(src) ? "praatha" : "guru";
+  const r = PANINI_NB.compile({ src, lang: "hindi", shaili });
+  const exec = PANINI_NB.run(r, document.getElementById("inp").value);
+  box.value = "--- host ("+shaili+", "+r.rule_count+" rules) ---\n"+r.host+
+    "\n--- run "+(exec.ok?"ok":"FAIL")+" ---\n"+exec.out;
 };
 </script>
 </body>
 </html>
+
 

@@ -132,23 +132,11 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
   };
   document.getElementById("run").onclick = () => {
     const r = compile();
-    const src = document.getElementById("prog").value;
-    const inputs = document.getElementById("inp").value.split(/\n/);
-    const isBasic = /प्राथमिक|पूछो/.test(src);
-    let run = "";
-    if (isBasic) {
-      const n = parseInt(inputs[0],10)||5;
-      const lines=[];
-      for(let k=1;k<=n;k++) lines.push(" ".repeat(Math.max(0,n-k))+"&".repeat(k));
-      for(let k=n-1;k>=1;k--) lines.push(" ".repeat(Math.max(0,n-k))+"&".repeat(k));
-      run = n+"\n"+lines.join("\n");
-    } else {
-      const name = inputs[0]||"मित्र";
-      let o = "आपका नाम क्या है?\nनमस्ते "+name+".\n";
-      for(let k=1;k<=10;k++) o += k+"\n";
-      run = o;
-    }
-    document.getElementById("out").value += "\n--- run ---\n" + run;
+    const exec = PANINI_NB.run(r, document.getElementById("inp").value);
+    document.getElementById("out").value =
+      (r.notes.length ? r.notes.join("\n")+"\n" : "") +
+      "--- host (" + r.shaili + ", " + r.rule_count + " rules) ---\n" + r.host +
+      "\n--- run " + (exec.ok ? "ok" : "FAIL") + " ---\n" + exec.out;
   };
   document.getElementById("neu").onclick = () => {
     document.getElementById("prog").value = DEMO;
@@ -160,9 +148,9 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
       document.getElementById("out").value="Loaded "+name;
     });
   }
-  document.getElementById("load-c").onclick=()=>loadDemo("HindiC.uhin");
-  document.getElementById("load-b").onclick=()=>loadDemo("HindiBASIC.uhin");
-  document.getElementById("load-t").onclick=()=>loadDemo("TeluguC.uhin");
+  document.getElementById("load-c").onclick=()=>{ document.getElementById("shaili").value="guru"; loadDemo("HindiC.uhin"); };
+  document.getElementById("load-b").onclick=()=>{ document.getElementById("shaili").value="praatha"; loadDemo("HindiBASIC.uhin"); };
+  document.getElementById("load-t").onclick=()=>{ document.getElementById("shaili").value="guru"; loadDemo("TeluguC.uhin"); };
 });
 </script>
 </body>

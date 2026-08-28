@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-56. Entire AGI stack: how shailis are captured/defined/described; tooling as Docker labs for roles; PANINI implementation; virtual web infrastructure.
+57. Notebook was faking Run (canned demo, not compiling). Review; compile through retrieved lexers; run the HOST.
+
 
 
 
