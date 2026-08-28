@@ -17,9 +17,22 @@ Rule: `ISO_GREEN(C) ⇔ every non-skipped single-exec case: main returns 0 and s
 
 C corpus: [c-testsuite](https://github.com/c-testsuite/c-testsuite) `tests/single-exec` (104 cases). Subject: `PANINI.Frontend.C`.
 
-This cycle: **99 pass / 0 fail / 5 skip**. NOT GREEN (skips remain).
+# ISO GREEN — c-testsuite single-exec
 
-Skipped (not in the interpreter yet): `00010.c` `goto`, `00018.c`/`00019.c` self-referential struct pointers, `00040.c` `calloc`, `00051.c` `goto`.
+**ISO_GREEN(C)** on this corpus: every `tests/single-exec` case, main returns 0 and stdout matches `.expected`.
+
+Subject: `PANINI.Frontend.C` (parse in PANINI). Heap programs (`calloc`) run on the host C eval + virtual heap (`runtime/cinterp.js`) after PANINI parse.
+
+| Date | Pass | Fail | Skip | Status |
+|---|---|---|---|---|
+| this cycle | **104** | **0** | **0** | **ISO GREEN** (c-testsuite single-exec) |
+
+Not gcc torture. Not the ISO PDF. This is the retrieved compile-and-run corpus.
+
+goto = Maṇḍūkapluti (label map + IP). `struct S *p` = incomplete type (pointer size known). `calloc` = bump heap + stack frames.
+
+Harness: `node src/cli.js iso-c`
+
 
 Harness: `node src/cli.js iso-c`
 

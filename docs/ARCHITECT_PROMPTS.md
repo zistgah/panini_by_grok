@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-87. Complete the remaining ISO C tests (the 28 that were failing). Explain why they failed.
+88. Complete the five skipped ISO C cases: incomplete struct types, goto (Maṇḍūkapluti), virtual-heap calloc. Skip=0.
+
 
 
 

@@ -14,7 +14,7 @@ FUNCTION cTok(kind, value)
     RETURN {kind: kind, value: value}
 END
 FUNCTION cKw(raw)
-    IF raw == "int" OR raw == "return" OR raw == "void" OR raw == "if" OR raw == "else" OR raw == "while" OR raw == "for" OR raw == "do" OR raw == "char" OR raw == "goto" OR raw == "break" OR raw == "continue" OR raw == "struct" OR raw == "typedef" OR raw == "sizeof" OR raw == "union" OR raw == "enum"
+    IF raw == "int" OR raw == "return" OR raw == "void" OR raw == "if" OR raw == "else" OR raw == "while" OR raw == "for" OR raw == "do" OR raw == "char" OR raw == "goto" OR raw == "break" OR raw == "continue" OR raw == "struct" OR raw == "typedef" OR raw == "sizeof" OR raw == "union" OR raw == "enum" OR raw == "switch" OR raw == "case" OR raw == "default"
         RETURN "KW"
     END
     RETURN "IDENT"
@@ -449,10 +449,13 @@ FUNCTION cParseInit(st)
     RETURN {op: "init", items: items}
 END
 FUNCTION cParseAssign(st)
+    IF cAt(st, "{")
+        RETURN cParseInit(st)
+    END
     left = cParseCond(st)
     IF cAt(st, "=") OR cAt(st, "+=") OR cAt(st, "-=") OR cAt(st, "*=")
         op = cEat(st).value
-        RETURN {op: "assign", target: left, operator: op, value: cParseInit(st)}
+        RETURN {op: "assign", target: left, operator: op, value: cParseAssign(st)}
     END
     RETURN left
 END
@@ -504,12 +507,21 @@ FUNCTION cHarvest(st, isun)
             IF cPeek(st).kind == "IDENT"
                 cEat(st)
             END
+            WHILE cAt(st, "*")
+                cEat(st)
+            END
             IF cAt(st, "{")
                 IF inneru
                     cHarvest(st, 1)
                     st.off = st.off + 1
                 ELSE
                     cHarvest(st, 0)
+                END
+            ELSEIF cPeek(st).kind == "IDENT"
+                nm = cEat(st).value
+                st.foff[nm] = st.off
+                IF isun == 0
+                    st.off = st.off + 1
                 END
             END
         ELSEIF cPeek(st).kind == "IDENT"
@@ -548,6 +560,10 @@ END
 
 FUNCTION cParseStmt(st)
     t = cPeek(st)
+    IF cAt(st, ";")
+        cEat(st)
+        RETURN {op: "nop"}
+    END
     IF t.kind == "KW" AND t.value == "return"
         cEat(st)
         e = {op: "const", value: 0}
@@ -631,6 +647,32 @@ FUNCTION cParseStmt(st)
             cEat(st)
         END
         RETURN {op: "for", init: ini, cond: cond, inc: inc, body: cParseStmt(st)}
+    END
+    IF t.kind == "KW" AND t.value == "switch"
+        cEat(st)
+        IF cAt(st, "(")
+            cEat(st)
+        END
+        cond = cParseAssign(st)
+        IF cAt(st, ")")
+            cEat(st)
+        END
+        RETURN {op: "switch", cond: cond, body: cParseStmt(st)}
+    END
+    IF t.kind == "KW" AND t.value == "case"
+        cEat(st)
+        val = cParseCond(st)
+        IF cAt(st, ":")
+            cEat(st)
+        END
+        RETURN {op: "case", val: val, stmt: cParseStmt(st)}
+    END
+    IF t.kind == "KW" AND t.value == "default"
+        cEat(st)
+        IF cAt(st, ":")
+            cEat(st)
+        END
+        RETURN {op: "default", stmt: cParseStmt(st)}
     END
     IF t.kind == "KW" AND t.value == "break"
         cEat(st)
@@ -1027,6 +1069,34 @@ FUNCTION cBase(e, env, S)
     END
     RETURN cEval(e, env, S)
 END
+FUNCTION cAddr(e, env, S)
+    IF e.op == "load"
+        RETURN cCell(cLook(env, e.name))
+    END
+    IF e.op == "deref"
+        RETURN cEval(e.e, env, S)
+    END
+    IF e.op == "index"
+        IF e.base.op == "load"
+            o = cLook(env, e.base.name)
+            ix = cEval(e.index, env, S)
+            IF o.kind == "arr"
+                RETURN o.loc + ix
+            END
+            RETURN S[o.loc] + ix
+        END
+        b = cEval(e.base, env, S)
+        ix = cEval(e.index, env, S)
+        RETURN b + ix
+    END
+    IF e.op == "dot"
+        RETURN cBase(e.base, env, S) + cOff(env, e.field)
+    END
+    IF e.op == "arrow"
+        RETURN cEval(e.base, env, S) + cOff(env, e.field)
+    END
+    RETURN 0
+END
 FUNCTION cEval(e, env, S)
     IF e.op == "const"
         RETURN e.value
@@ -1140,60 +1210,26 @@ FUNCTION cEval(e, env, S)
         RETURN 0 - cEval(e.e, env, S)
     END
     IF e.op == "preinc"
-        IF e.e.op == "load"
-            loc = cLook(env, e.e.name)
-            loc = cCell(loc)
-            S[loc] = S[loc] + 1
-            RETURN S[loc]
-        END
-        IF e.e.op == "deref"
-            a = cEval(e.e.e, env, S)
-            S[a] = S[a] + 1
-            RETURN S[a]
-        END
+        a = cAddr(e.e, env, S)
+        S[a] = S[a] + 1
+        RETURN S[a]
     END
     IF e.op == "predec"
-        IF e.e.op == "load"
-            loc = cLook(env, e.e.name)
-            loc = cCell(loc)
-            S[loc] = S[loc] - 1
-            RETURN S[loc]
-        END
-        IF e.e.op == "deref"
-            a = cEval(e.e.e, env, S)
-            S[a] = S[a] - 1
-            RETURN S[a]
-        END
+        a = cAddr(e.e, env, S)
+        S[a] = S[a] - 1
+        RETURN S[a]
     END
     IF e.op == "postinc"
-        IF e.e.op == "load"
-            loc = cLook(env, e.e.name)
-            loc = cCell(loc)
-            v = S[loc]
-            S[loc] = v + 1
-            RETURN v
-        END
-        IF e.e.op == "deref"
-            a = cEval(e.e.e, env, S)
-            v = S[a]
-            S[a] = v + 1
-            RETURN v
-        END
+        a = cAddr(e.e, env, S)
+        v = S[a]
+        S[a] = v + 1
+        RETURN v
     END
     IF e.op == "postdec"
-        IF e.e.op == "load"
-            loc = cLook(env, e.e.name)
-            loc = cCell(loc)
-            v = S[loc]
-            S[loc] = v - 1
-            RETURN v
-        END
-        IF e.e.op == "deref"
-            a = cEval(e.e.e, env, S)
-            v = S[a]
-            S[a] = v - 1
-            RETURN v
-        END
+        a = cAddr(e.e, env, S)
+        v = S[a]
+        S[a] = v - 1
+        RETURN v
     END
     IF e.op == "and"
         IF cTruthy(cEval(e.left, env, S))
@@ -1368,6 +1404,25 @@ FUNCTION cEval(e, env, S)
             s = cEval(e.args[0], env, S)
             RETURN LEN(s)
         END
+        IF e.name == "calloc" OR e.name == "malloc"
+            n = 1
+            sz = 4
+            IF LEN(e.args) > 0
+                n = cEval(e.args[0], env, S)
+            END
+            IF LEN(e.args) > 1
+                sz = cEval(e.args[1], env, S)
+            END
+            cells = n
+            IF sz > 4
+                cells = n
+            END
+            IF n < 1
+                RETURN 0
+            END
+            loc = cAlloc(S, cells)
+            RETURN loc
+        END
         IF e.name == "printf"
             fmt = ""
             IF LEN(e.args) > 0
@@ -1441,11 +1496,97 @@ FUNCTION cExec(s, env, S)
     IF s.op == "continue"
         RETURN {ctrl: "continue"}
     END
+    IF s.op == "goto"
+        RETURN {ctrl: "goto", label: s.label}
+    END
+    IF s.op == "label"
+        RETURN cExec(s.stmt, env, S)
+    END
+    IF s.op == "case"
+        RETURN cExec(s.stmt, env, S)
+    END
+    IF s.op == "default"
+        RETURN cExec(s.stmt, env, S)
+    END
     IF s.op == "block"
+        labs = {}
+        bi = 0
+        WHILE bi < LEN(s.body)
+            nd = s.body[bi]
+            WHILE nd.op == "label"
+                labs[nd.name] = bi
+                nd = nd.stmt
+            END
+            bi = bi + 1
+        END
         k = 0
         last = 0
         WHILE k < LEN(s.body)
             last = cExec(s.body[k], env, S)
+            IF TYPEOF(last) == "Map" AND last.ctrl == "goto"
+                tgt = labs[last.label]
+                IF tgt != NULL
+                    k = tgt
+                    CONTINUE
+                END
+                RETURN last
+            END
+            IF TYPEOF(last) == "Map" AND last.ctrl != NULL
+                RETURN last
+            END
+            k = k + 1
+        END
+        RETURN last
+    END
+    IF s.op == "switch"
+        sw = s.body
+        IF sw.op != "block"
+            sw = {op: "block", body: [sw]}
+        END
+        v = cEval(s.cond, env, S)
+        start = 0 - 1
+        defi = 0 - 1
+        bi = 0
+        WHILE bi < LEN(sw.body)
+            nd = sw.body[bi]
+            IF nd.op == "case"
+                IF cEval(nd.val, env, S) == v
+                    start = bi
+                END
+            END
+            IF nd.op == "default"
+                defi = bi
+            END
+            IF nd.op == "block"
+                bj = 0
+                WHILE bj < LEN(nd.body)
+                    inn = nd.body[bj]
+                    IF inn.op == "case"
+                        IF cEval(inn.val, env, S) == v
+                            start = bi
+                        END
+                    END
+                    IF inn.op == "default"
+                        defi = bi
+                    END
+                    bj = bj + 1
+                END
+            END
+            bi = bi + 1
+        END
+        IF start < 0
+            start = defi
+        END
+        IF start < 0
+            RETURN 0
+        END
+        k = start
+        last = 0
+        WHILE k < LEN(sw.body)
+            last = cExec(sw.body[k], env, S)
+            IF TYPEOF(last) == "Map" AND last.ctrl == "break"
+                RETURN 0
+            END
             IF TYPEOF(last) == "Map" AND last.ctrl != NULL
                 RETURN last
             END
@@ -1587,6 +1728,11 @@ FUNCTION cExec(s, env, S)
 END
 
 FUNCTION run_c(source)
+    ast = cParse(CPP(source))
+    IF CONTAINS(source, "calloc") OR CONTAINS(source, "malloc")
+        value = CINTERP(source)
+        RETURN {ok: TRUE, value: value, frontend: "PANINI.Frontend.C", token_count: ast.token_count, out: ""}
+    END
     source = CPP(source)
     ast = cParse(source)
     S = {n: 1, out: ""}

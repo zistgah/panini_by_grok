@@ -15,7 +15,6 @@ import { runFrontend } from "../runtime/foreign_front.js";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const local = path.join(root, "tests/iso/c/c-testsuite-master/tests/single-exec");
 const limit = Number(process.env.ISO_C_LIMIT || 0);
-const SKIP = /calloc|malloc|realloc|free\(|fopen|setjmp|_Complex|va_list|goto |struct S \*p/;
 
 function suiteDir() {
   if (fs.existsSync(local)) return local;
@@ -54,10 +53,6 @@ for (const f of files) {
   const cfile = path.join(suite, f);
   const src = fs.readFileSync(cfile, "utf8");
   const expected = fs.existsSync(cfile + ".expected") ? fs.readFileSync(cfile + ".expected", "utf8") : "";
-  if (SKIP.test(src)) {
-    report.panini.skip++;
-    continue;
-  }
   const p = await paniniRun(src);
   const code = Number(p.value);
   const stdoutOk = expected === "" || p.out === expected || p.out.replace(/\s+$/, "") === expected.replace(/\s+$/, "");
@@ -72,9 +67,9 @@ for (const f of files) {
 }
 
 report.attempted = report.panini.pass + report.panini.fail;
-report.green = report.panini.fail === 0 && report.panini.pass > 0 && report.panini.skip === 0;
+report.green = report.panini.fail === 0 && report.panini.skip === 0 && report.panini.pass === report.cases && report.cases > 0;
 report.status = report.green ? "ISO GREEN" : "NOT GREEN (progress: " + report.panini.pass + " pass / " + report.panini.fail + " fail / " + report.panini.skip + " skip of " + report.cases + ")";
 console.log(JSON.stringify(report, null, 2));
-process.exitCode = report.green ? 0 : 0;
+process.exitCode = report.green ? 0 : 2;
 fs.mkdirSync(path.join(root, "tests/iso/c"), { recursive: true });
 fs.writeFileSync(path.join(root, "tests/iso/c/last-report.json"), JSON.stringify(report, null, 2));
