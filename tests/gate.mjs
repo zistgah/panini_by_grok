@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const jobs = ["tests/run.mjs", "tests/elseif.mjs", "tests/nb_run.mjs", "tests/app_frontends.mjs", "tests/shell.mjs", "tests/console_page.mjs", "tests/oop_fp.mjs"];
+const jobs = ["tests/run.mjs", "tests/elseif.mjs", "tests/nb_run.mjs", "tests/app_frontends.mjs", "tests/shell.mjs", "tests/console_page.mjs", "tests/oop_fp.mjs", "tests/gate_cse.mjs"];
 let fail = 0;
 for (const j of jobs) {
   const r = spawnSync(process.execPath, [path.join(root, j)], { encoding: "utf8" });

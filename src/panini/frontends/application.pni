@@ -24,11 +24,11 @@ FUNCTION feTok(kind, value)
 END
 
 FUNCTION fePrintNames()
-    RETURN ["print", "PRINT", "log", "println", "WriteLine", "echo", "puts", "SELECT", "console"]
+    RETURN ["print", "PRINT", "log", "println", "WriteLine", "echo", "puts", "SELECT", "console", "writeln", "Write", "printf", "display", "putStr"]
 END
 
 FUNCTION feDefNames()
-    RETURN ["function", "def", "sub", "func", "PROCEDURE"]
+    RETURN ["function", "def", "sub", "func", "PROCEDURE", "fn", "fun", "Fun", "method", "proc"]
 END
 
 FUNCTION feLex(source)
@@ -342,6 +342,48 @@ FUNCTION run_basic(source)
 END
 FUNCTION run_logo(source)
     RETURN feRun(source, "PANINI.Frontend.Logo")
+END
+FUNCTION run_julia(source)
+    RETURN feRun(source, "PANINI.Frontend.Julia")
+END
+FUNCTION run_haskell(source)
+    RETURN feRun(source, "PANINI.Frontend.Haskell")
+END
+FUNCTION run_lisp(source)
+    RETURN feRun(source, "PANINI.Frontend.Lisp")
+END
+FUNCTION run_scheme(source)
+    RETURN feRun(source, "PANINI.Frontend.Scheme")
+END
+FUNCTION run_pascal(source)
+    RETURN feRun(source, "PANINI.Frontend.Pascal")
+END
+FUNCTION run_cobol(source)
+    RETURN feRun(source, "PANINI.Frontend.COBOL")
+END
+FUNCTION run_forth(source)
+    RETURN feRun(source, "PANINI.Frontend.Forth")
+END
+FUNCTION run_kotlin(source)
+    RETURN feRun(source, "PANINI.Frontend.Kotlin")
+END
+FUNCTION run_swift(source)
+    RETURN feRun(source, "PANINI.Frontend.Swift")
+END
+FUNCTION run_scala(source)
+    RETURN feRun(source, "PANINI.Frontend.Scala")
+END
+FUNCTION run_clojure(source)
+    RETURN feRun(source, "PANINI.Frontend.Clojure")
+END
+FUNCTION run_ocaml(source)
+    RETURN feRun(source, "PANINI.Frontend.OCaml")
+END
+FUNCTION run_prolog(source)
+    RETURN feRun(source, "PANINI.Frontend.Prolog")
+END
+FUNCTION run_assembly(source)
+    RETURN feRun(source, "PANINI.Frontend.Assembly")
 END
 
 FUNCTION main()

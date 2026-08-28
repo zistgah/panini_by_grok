@@ -39,6 +39,21 @@ const TABLE = {
   zig: { file: "src/panini/frontends/zig.pni", fn: "run_zig" },
   lua: { file: "src/panini/frontends/lua.pni", fn: "run_lua" },
   cpp: { file: "src/panini/frontends/c.pni", fn: "run_c" },
+  julia: { file: "src/panini/frontends/application.pni", fn: "run_julia" },
+  haskell: { file: "src/panini/frontends/application.pni", fn: "run_haskell" },
+  lisp: { file: "src/panini/frontends/application.pni", fn: "run_lisp" },
+  scheme: { file: "src/panini/frontends/application.pni", fn: "run_scheme" },
+  pascal: { file: "src/panini/frontends/application.pni", fn: "run_pascal" },
+  cobol: { file: "src/panini/frontends/application.pni", fn: "run_cobol" },
+  forth: { file: "src/panini/frontends/application.pni", fn: "run_forth" },
+  kotlin: { file: "src/panini/frontends/application.pni", fn: "run_kotlin" },
+  swift: { file: "src/panini/frontends/application.pni", fn: "run_swift" },
+  scala: { file: "src/panini/frontends/application.pni", fn: "run_scala" },
+  clojure: { file: "src/panini/frontends/application.pni", fn: "run_clojure" },
+  ocaml: { file: "src/panini/frontends/application.pni", fn: "run_ocaml" },
+  prolog: { file: "src/panini/frontends/application.pni", fn: "run_prolog" },
+  assembly: { file: "src/panini/frontends/application.pni", fn: "run_assembly" },
+  asm: { file: "src/panini/frontends/application.pni", fn: "run_assembly" },
 };
 
 export function supportedFrontends() {

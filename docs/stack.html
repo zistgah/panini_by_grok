@@ -22,9 +22,16 @@
   <h1>L0–L26 × shaili × lab × web × implementation</h1>
   <p>A shaili is captured as ⟨name, host, axis region, transducer, standard, lab image⟩.
      Script ≠ language ≠ shaili. Pages cannot run Docker; labs are opt-in images.</p>
-  <p><a href="view.html?src=AGI_STACK.md">Full map</a> ·
-     <a href="view.html?src=SHAILIS.md">Shailis</a> ·
-     <a href="https://github.com/zistgah/panini_by_grok/blob/main/labs/compose.yaml">labs/compose.yaml</a></p>
+  <p>
+    <label>Language
+      <select id="lang">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+      </select>
+    </label>
+    <a href="i18n/README.md">Publish in another language</a>
+    · <a href="../examples/gate_cse/">GATE CSE examples</a>
+  </p>
 
   <h2>Role labs (containers)</h2>
   <div class="labs" id="labs"></div>
@@ -56,6 +63,30 @@ const LAYERS = [
 document.getElementById("rows").innerHTML = LAYERS.map(r =>
   "<tr>"+r.map(c=>"<td>"+c+"</td>").join("")+"</tr>"
 ).join("");
+function applyI18n(pack) {
+  if (!pack) return;
+  document.title = pack.title || document.title;
+  var h = document.querySelector("h1");
+  if (h && pack.title) h.textContent = pack.title;
+  var lead = document.querySelector(".hero p:nth-of-type(2)");
+  if (lead && pack.lead) lead.textContent = pack.lead;
+  document.querySelectorAll("h2").forEach(function (el) {
+    if (/Role labs|प्रयोगशाला/.test(el.textContent) && pack.labsHeading) el.textContent = pack.labsHeading;
+    if (/Layers|परतें/.test(el.textContent) && pack.layersHeading) el.textContent = pack.layersHeading;
+  });
+  if (pack.layers) {
+    document.querySelectorAll("#rows tr").forEach(function (tr) {
+      var id = (tr.cells[0] || {}).textContent;
+      if (pack.layers[id] && pack.layers[id].domain) tr.cells[1].textContent = pack.layers[id].domain;
+    });
+  }
+}
+var q = new URLSearchParams(location.search).get("lang") || "en";
+document.getElementById("lang").value = q;
+document.getElementById("lang").onchange = function () {
+  location.search = "?lang=" + this.value;
+};
+fetch("i18n/stack." + q + ".json").then(function (r) { return r.ok ? r.json() : null; }).then(applyI18n);
 fetch("stack.json").then(r=>r.json()).then(j=>{
   document.getElementById("labs").innerHTML = j.labs.map(L =>
     "<div class=lab><h3>"+L.id+"</h3><p>"+L.role+"</p><p><code>"+L.image+

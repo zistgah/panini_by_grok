@@ -26,5 +26,9 @@ await check("basic", "basic", "PRINT 40+2", 42);
 await check("logo", "logo", "PRINT 40+2", 42);
 await check("js function", "javascript", "function f(x){ return x * 2 } console.log(f(21))", 42);
 
-console.log(fail ? `FAILED ${fail}/${n}` : `PASSED ${n}/${n}  (PANINI application frontends)`);
+await check("julia", "julia", "println(40+2)", 42);
+await check("haskell", "haskell", "print(40+2)", 42);
+await check("pascal", "pascal", "writeln(40+2)", 42);
+await check("kotlin", "kotlin", "println(40+2)", 42);
+await check("swift", "swift", "print(40+2)", 42);
 process.exit(fail ? 1 : 0);
