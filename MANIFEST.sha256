@@ -80,8 +80,12 @@ e1f8f066e2c84ed508ba3915dfd01e271514fa5c2484d18cb58087bc97d2053f  ./retrieved/le
 5ae967b83bc5a8917ee22f39312728e1f340c34482d3f080c4195b078dcdb689  ./retrieved/legacy/Hindawi/guru/c2h.uhin
 47790d94be069272783dd3c6798cc5946d2ead9c429479cd4c1d7cbb00d4e0ec  ./retrieved/legacy/Hindawi/guru/c2h
 c402cd17b27ca25470360db6de284d73e2eb313a3e498ebec8f0ad1a5a70538c  ./retrieved/legacy/Hindawi/guru/c2h.lex
-9f01bf072f1e39aea40fa072d1348aad5df2f2c9d9af2d1bcfa9ee846b68ce82  ./retrieved/legacy/Hindawi/lekhak/READ_ONLY.md
+3c3628db23a680cec451bf19efb63f9f8d2a80857703568a67d93c115e5c17a9  ./retrieved/legacy/Hindawi/lekhak/READ_ONLY.md
+8be7c1f88b578017b8e0615bef31a12b93d1ea9e898a5d6a70c51e46f169f9c0  ./retrieved/legacy/Hindawi/lekhak/make.bat
+fed8356d32252952fe0e680a39f61a8bba0c3e75c6d8cde94197756fb571e0d5  ./retrieved/legacy/Hindawi/lekhak/LEKHAK.BAT
 fed8356d32252952fe0e680a39f61a8bba0c3e75c6d8cde94197756fb571e0d5  ./retrieved/legacy/Hindawi/lekhak/lekhak.bat
+256385caf5a86ed4f15deab23bd02e646b1b925612347e015df51cae8d2c5ae2  ./retrieved/legacy/Hindawi/lekhak/LEKHAK.C
+7dc87244d20f95890bd9b791703453efa62e70965287a1a2f512f519a252383e  ./retrieved/legacy/Hindawi/lekhak/lekhak.uhin
 6dc74119eaac726153f56e769b72d26125884dcf787f9d010b22f36a822732b4  ./retrieved/legacy/Hindawi/extract_keywords
 68a62f263ce0c974a0c94feeb04b910627c8f5aea28da085ddfc1ff5cf2dcb91  ./retrieved/legacy/Hindawi/samples/HindiBASIC.uhin
 c75dcaa85da7deb3f35529ef90e78f6f865164c6b5af06089289794ee283f1ef  ./retrieved/legacy/Hindawi/samples/TeluguC.uhin
@@ -328,6 +332,8 @@ d098bd8656271c7087625a999c2ccbbf284a85d26b553375cbdbc0c1cd9b659a  ./attest/17879
 202bac9e2aaf29afdcb6d6a37c14512891826dc03927cd88b8389cf53a3bca45  ./attest/1787925744.630589932/MANIFEST.sha256
 be0ec9e368f8c2320977e6426300cb50dff1697180e57fbfaa49e9c5be3e3d6e  ./attest/1787935246.293618627/MANIFEST.sha256.ots
 cacc708b7660ba09cfd9b56e24e9ff88201f0f04f51fed0085eb64b00a303d2a  ./attest/1787935246.293618627/MANIFEST.sha256
+84f1ad0705f2413b1ee496393d6f90bf83627df903be32d8e0cfd9deaae2dd49  ./attest/1787942254.426973750/MANIFEST.sha256.ots
+a879b97491dce83a5a523787cbfe75c7e56dd92ea9adb316b2aaee41f5dda5df  ./attest/1787942254.426973750/MANIFEST.sha256
 222401fea1a8a489a3fa752e8fd91ca2f12aa25e68df8891e7fa3203b5529a43  ./attest/1787853249.636818849/MANIFEST.sha256.ots
 be5710f14b62bbf91348bad781c09fd82408e03d709d4d7aa1e1cf17692706a7  ./attest/1787853249.636818849/MANIFEST.sha256
 5bb010987bf28f0570b12f2560c8abbde9279e148f6f1222d597922883f30f2c  ./attest/1787841387.934870759/MANIFEST.sha256.ots
@@ -449,6 +455,9 @@ ef0bea780b0d6db8b9596f44b8e7af134b984ff91611752c70c3aa73d21aa284  ./docs/MODULES
 25f7803c5fa441a8d85e534138ae3605d6f8cba3a2253a2b14ff811fd13e10ed  ./docs/DOCUMENTATION.md
 e51c3673404c49b307f404c7f3a68e1412b70813da20932592474b0103f0c531  ./docs/.nojekyll
 f0f071d41cb03cd9d9a9c9da56238fe4fd74017b3fddeb5ea13a150c0ac913c1  ./docs/nb.html
+575707657fe55510522472ab15e5cfbc4bee636fac7dda88ac03d959c4b59183  ./docs/emu/CMD.COM
+3bd60c1469334e07897f2b82c31a1154ae79e198fa6e76df66e0bf7002f3c991  ./docs/emu/CWSDPMI.EXE
+c4899cd123dda72c41ff80fc5a9f4b32991cdc427e37cde84843396da72ad717  ./docs/emu/lekhakx.exe
 78f3eaa0f3973ea4ede8c36c42eab85c9fa911df269b6ac4b85e5ee295731297  ./docs/SHAILIS.md
 d529839d0ace9b46c1687c5b41e11593c8f358274348910a6aca0d4597aa75e4  ./docs/skins/contrast.css
 af8d4d55f97aeee689e08f594ca82d847395abf7b49ae54bb21d34f6b10632c2  ./docs/skins/jazz.css
@@ -481,6 +490,7 @@ a4901ed55ec4a18ba98a9812faa3cd9168c6f8450999c9fc1896e45cbcf95b43  ./docs/explore
 4048182144b5a16c625b13c5a97da741fd8203f28b79c2514e1475ece9e1b14a  ./docs/explorer/posters/fakir-ilm.png
 30910903a09a77ed67d31a2bf971fec7a55d99dc97622877ea0655acca99e781  ./docs/explorer/posters/cycler-substrate.png
 a22401b781c62e6ddec5fa87ca4292fe8f5853e6f4ac23fc3c016af5757e4ce0  ./docs/explorer/posters/fakir-the-guide.png
+8d27697e9839b3921ab1ee3c09eff09cd9fe4e668d67e08bc6e61a44a9299bd5  ./docs/emu.html
 f54df7e39a63f073cb4e7c5b73d0daca1bacf17f1b4f0451ef2d03bb3cbb1311  ./docs/sims/sim2-48.html
 db21a52d1ae6c3374b7676f44ba924647f3551d11c516337ef30684c95c850e3  ./docs/sims/sim2-02.html
 c02c8968f826717e09f7895c580b7fa70e40cd416f4c9b158061e4cb6928ddbf  ./docs/sims/sim2-21.html
@@ -551,7 +561,7 @@ f8dd45a1b891b4dab80f061cb8c6999928d6368ecc4af0d74c26513454375e4e  ./docs/workben
 82348f949ec76ebf8ea5ca20af85e0c927c9af8dd3460d8fb525afb174106a33  ./docs/REFERENCES.md
 bf0ef5bdec4d2607faa1050ca6740947d16135decd0bc004ee5c5eed191e65d1  ./docs/stack.json
 65bfbc7289a52b179b0f530f5738af5343c9336b92e90b57cfebd01fca8459f3  ./docs/explorer.html
-8fb6bd981081b96182e9ee433093787686a701a9f5dbda6ded4dd7ae8992d2d6  ./docs/index.html
+2770134cd7d207dbffe2221785193c850ea15bf34749cf82e30a3acb7ba66cfa  ./docs/index.html
 afac1224c64701b14b6bf7931d05ded3181cd611d9470a166e7e215067c187d8  ./docs/punjabi.html
 6f1e7587907ad87ebfcb3b365fe2282f1875a43e7697806e9c38216ea778e7ef  ./docs/TRACEABILITY.md
 dbffc1d057ad91a7d7b34640772f6f76da9eb941a8061840308310c6fa9054e0  ./docs/site.css
@@ -619,8 +629,9 @@ db7a85cbf6d3fb70818f37f4a90d17f9cf55b1f7dafba34f36cc01eb506c1367  ./docs/demos/l
 a0f490e2bd18deaf7f74e095c1940175d5f42051adad4f6cc0e3f7d59cca749d  ./docs/demos/langs/assamese_guru.uhin
 db7a85cbf6d3fb70818f37f4a90d17f9cf55b1f7dafba34f36cc01eb506c1367  ./docs/demos/langs/hindi_guru.uhin
 67bdf14b5d0f151f7aac02720002b74e3d87680013468ea9c055f46a9ebd7413  ./docs/demos/HindiASM.uhin
+7dc87244d20f95890bd9b791703453efa62e70965287a1a2f512f519a252383e  ./docs/demos/lekhak.uhin
 8f51e51f0893b1f795d01f15e0d7c4df5268446bcbb8418746e5d0413255b407  ./docs/demos/HindiJAVA.uhin
-aa5e015659f1f96d67ffc9812941ef8201fc8e441ed5419a96a23e38667a1dc6  ./docs/ARCHITECT_PROMPTS.md
+0bb4f2819f66de0efbb540efe6c3058571ec43f81ae3f44c49ac706142b44a9f  ./docs/ARCHITECT_PROMPTS.md
 81629aed16059928ae39eb284126c6c4d3c1d6e89df756dd81bd7415c647ac7b  ./docs/console.js
 41499fec2b3d0d33c88140f0043e6859c4b8df6f60e6eae511fe89d8c050f5c1  ./docs/CAN_COMPILE.md
 f2037f79699ed65cc3e83eaac3a4e34425f076a888a93bb9eeee835fe791e364  ./docs/DESIGN.md
@@ -647,7 +658,7 @@ a99ddd4953a33620263cb729abb54ec54b3c84ebd8a549b7c2a27eee2e095bb1  ./docs/shaili.
 e34f07c12b9b623e15dedd7d483b274b1bb5cf53d699d402d362d2ed06b58947  ./docs/research.html
 90476129dc6f4b055440bae0b7d82597d56e8ff1037515aa34b05526349942fd  ./docs/vtterm.js
 e94f977bef146d4beb7f64a512678725e2c7bae8438e3587f6451654e03388f9  ./docs/CONFORMANCE.md
-2a30fbf219c24bb5bed13ca195180a78a29c88f3b7d8514bb84cd8679a775c79  ./docs/console.html
+b0b39e489cfda3a115f2da06b551cae330e88fa8616ac2301f2f9bcce967e8a2  ./docs/console.html
 90beebd6113f67551d7d8a4b19cd88432d7a47f725f28453536b4b5d3f059d7a  ./docs/perso_arabic.html
 57b1a9a1096d02b6c9fbb030f93d99fab5b0ed9d5d5a01dbf8a53bf118d9f6e4  ./docs/nb.frozen.html
 ef765bc243a32702b82c00daab3741d5a7bdb27840f2c2a27c880186e8dd7213  ./docs/SUPPORTED_LANGUAGES.md
@@ -694,7 +705,7 @@ af7f2dff841d4c4821621a4b1d2af27ffa0459d358a975a26e839b1e588b52c5  ./docs/PARADIG
 f7cf6a0df4bf049fd36a71d7a5769547e8fdd83c7e41bffcf0c6899997b71e66  ./docs/dashboard.html
 6c60476ba22c3b8f10b8785110f317d821722fefe6739dd75da7c09214713565  ./docs/manifest.webmanifest
 1d776d35f11e201c983e8293cc8107f6aa262ce77339e832a21e26665c060e15  ./docs/PANINI.V2.WORKBENCH.md
-ad5012d94f5927607e75e7bdfb27309e9b84032612ca4e757745d965df2acab6  ./docs/CONTEXT.md
+43858adcc4d10453456ccedf42da82dbd354de603657a5f1a565b00a6a0cc20f  ./docs/CONTEXT.md
 4f342ea95e7074e9a5dc1188803de0574ac29ef555116d178c3d751d0e5c7c29  ./docs/AGI_STACK.md
 7ae0ee57116c6018514963dc32a956ac3453f66230bca7d453ebf70e408c8fed  ./docs/STATUS.md
 4581f6cc4e3f7828d3bf47c15a1176bf85e052710131ffa3cac57b9995bd9196  ./docs/poster-panini.jpg
@@ -797,7 +808,7 @@ bca07336b2e284dea002f466cc4cf508be695153668d23a54a4600484d6e898d  ./spec/PANINI_
 7d224e7bbb609ace0198110a0e9991fe81270c29f20a99cb16ec50839817e49a  ./spec/PANINI_V2_SPEC.pni
 00da8660bb258e470f2f4f43cf5ddbf6deb86f8c005916940d37faa64d28dc45  ./spec/THEOREM_FRONTEND_PANINI.pni
 a629e47bc399d35d36225965bb506a4ba1bcb472367ce1182086197d497a8fcf  ./package.json
-3029b87e517bd1359c833297fe8ddfeea692bc32dd79bf85afaae482dfe0181d  ./THIRD_PARTY.md
+0b5f1aa2c50b59b7f92a95dd7094c53a183e08f69bf298cb1c6830f9d3232365  ./THIRD_PARTY.md
 ff31c5f356605bbe032313f6f3e26af4a4c32b47e0b63395db399df58b0be6d2  ./tools/dump-ast.mjs
 ef2acb4e31d00ea1bb1a1aa97dd3ecb560887a1eabdc8b2bac73b93a2dd2afb5  ./tools/panini-lsp/cli.mjs
 46400414d42bc0a9f287a05611806ab46840e5545a62283103021e2156fb643a  ./tools/vscode-panini/syntaxes/panini.tmLanguage.json
@@ -844,7 +855,7 @@ f66c6a917ce2b91fc5940d712a055553a0bca799caa544eddec55848b97c7e22  ./runtime/gurm
 bd2bc915e867051eab3456f7b058199e641ed0729059051fb1c208ed89fb9a40  ./runtime/oci.js
 a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compiler.genB.json
 a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compiler.genA.json
-cf780f650b6302aaaea13a0e80cde7916f91bb00e1e25f83575281a42379552a  ./build/theorem-proof.json
+afc70ce80bb03523141577396336c464c8c0e3620187061bab02a3ef3a22ac2f  ./build/theorem-proof.json
 57622a3c58f21fda3e59a89562f89c396da2be1bc25096638b3b731bd2f9a83c  ./build/hello.ir.json
 b87e431514090b08bb024e8f3cedc090e2c6deaae6390100a93c3ee9e7948512  ./build/bootstrap-evidence.json
 38c4aff56532d3d624547f92e6cf7f2db29ab862c74879ef480929ad9ff14670  ./build/spec-realization.json
@@ -854,7 +865,7 @@ a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compil
 1911094e71015af195974f77e6143b73bec622cc5706367dc6ab03235c79196e  ./build/frontend-theorem.json
 a095854f21d814a1bded10be926e716927166a8eb36ff1ba15e134f3244e866e  ./build/v2-theorem-proof.json
 80f7844c3a6d6ba7a2cb79d6468a2f2435394e7a169678afb5c6f5b2bebc5e1a  ./build/add.generated.mjs
-0a457c10e7c12fb2fad6039fc5b624ea2bd52e0052deb9b8e8c63be29a1a84bc  ./build/selfhost-evidence.json
+20e8cd9a18abadfa8d4b4d003b08e6f48373614ed054ccfba47b507bab2e7cc0  ./build/selfhost-evidence.json
 d1d64129363c16bc54eeeb8cada1a4187bfd9f11b9a77d94c80790170a5c2e09  ./build/spec-run.json
 91431bc75a54e876ee0bd832d4073595eaf1774a7062df6d026efe535b872716  ./languages/forth.pni
 db301542884d7af5fa782e05872043f695544973ef081f1b358871ecf9a0a8bb  ./languages/typescript.pni
@@ -899,6 +910,7 @@ c77638c8470a13c4f6ec6cb6a1c99387d8be42a6c52d1542f6a2c48862768dc7  ./REQUIREMENTS
 65cfd28d6322d2e6197b1b8b2495a4f6401f18fe9408ede6b11092f2cf693ebd  ./src/panini/sims/diffdrive.pni
 d8283876089b20c8ae236583bd2e3d223e8ea5196e2b70411f414b87e3593aae  ./src/panini/yacc.pni
 d5745e91ce39fe54ee7fd215ed53206a9390cab9594dce0f6720def241c3e7c6  ./src/panini/lex.pni
+8c02fb013499ecc04455e14808cff6d82cd418da2a99690db0b839eccce16283  ./src/panini/lekhak.pni
 d3aec60b0f182d1fd0f44dcc2f6379ac95e6d81f393fe13760bc29a131af3f10  ./src/panini/hindawi_port.pni
 22e33535ea19ba28529c53f2e6fb47e432070a14f0969b15bf315005e63b849d  ./src/panini/parser.pni
 4f47ef9f4f192e527ef855f345aa8f0a11bbf92eb10f91749007fad74f1d5585  ./src/panini/frontends/typescript.pni
@@ -1121,7 +1133,7 @@ ba945ae8c87405f4bd12cb0998d09c4ff41be0891a0f6a3f31e04ac4d2a76f09  ./website/app.
 78c771f5c3285c04b27a1655f0389c64184e852d8c3911dca45edb7ebea3a959  ./website/status.json
 029f13fb527c3274a2ac63063bbb5adb458934ea14594e55b89be58c1c8f662d  ./website/vt100.js
 683bdc9204f0f1672a4c8613eaf75c7753b999186db58ecef91a4495f2435881  ./website/README.md
-22cdaddadce58f80149272040bfbfc02fc70c5ec22813f7bcd0eab5d9e0f6923  ./MANIFEST.sha256
+d850ed52c18380c659e4da2c6af276dff931112afdbe46912528e2e10e2f765e  ./MANIFEST.sha256
 cba5243834a58801d5f3460c1d21fe28c33b1e1c1bb8ce7513e1948eed3a19e4  ./fred.txt
 cce2fb28e7735b5a2a094ac190a3a91da4672b15d7ca901dd45dd13a9fddfa32  ./examples/factorial.pni
 6249f4b28afe520d345c68e79f94096d186c1224733d8490c91ec30817829873  ./examples/torch_like.py
@@ -1312,7 +1324,7 @@ c9957f4af3b03be9e6ee623c3419ac87600b747572c106e53b71fbf7e47e67cc  ./cyclers/upst
 db8b5de7a0e89dc55853ea7432e2f595dd38265c7181bc994509393d4c00546b  ./tests/view_dict.mjs
 1b747d0fd83b02558c800ee43bf0039b796ca86d673f548b62c51b8b7b42da20  ./tests/c_iso_iter1.mjs
 d8703900f8b617f71368f4d849581861971f59d84ae5a8f9571ca1dc4e7bb833  ./tests/gate.mjs
-497801f200e4503d25a67ea2e57b8b4566ead7f02c40775d520e6806a4fe2abe  ./tests/oop_fp.mjs
+e65e65d5faf2f536e4df3365cd69c7ca06e1edad0b8b3e17f3e0e130c5a2e9c2  ./tests/oop_fp.mjs
 cae73be191cd0de6a22426b7a91726ed4d9799e56be31c9b5129f6e8aff776d5  ./tests/iso15919_rt.mjs
 c81b80e4cbc5573615dd1cca3c5e95712fec305eaf8329474b26e80a6011fbf8  ./tests/standards/harness.mjs
 b780b2609edfef331d63c8cf34365fc9d4228c877c54d719e5ba2659436ec1ac  ./tests/standards/README.md
