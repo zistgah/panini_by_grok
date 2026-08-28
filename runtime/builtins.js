@@ -217,6 +217,10 @@ export function installBuiltins(env, runtime) {
   def("TAB", () => vStr("\t"));
   def("CR", () => vStr("\r"));
 
+  def("COS", (x) => vNum(Math.cos(toNumber(x))), 1);
+  def("SIN", (x) => vNum(Math.sin(toNumber(x))), 1);
+  env.define("PI", vNum(Math.PI), { constant: true });
+
   env.define("TRUE", vBool(true), { constant: true });
   env.define("FALSE", vBool(false), { constant: true });
   env.define("NULL", vUnit(), { constant: true });

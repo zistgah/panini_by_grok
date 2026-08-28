@@ -51,5 +51,14 @@ FUNCTION main()
 END
 END
 `, true);
+await check("diffdrive", `
+FUNCTION step(x, y, th, vl, vr, L, dt)
+    v = (vl + vr) / 2
+    RETURN v
+END
+FUNCTION main()
+    RETURN step(0, 0, 0, 1, 1, 1, 1)
+END
+`, 1);
 console.log(fail ? `FAILED ${fail}/${n}` : `PASSED ${n}/${n}`);
 process.exit(fail ? 1 : 0);

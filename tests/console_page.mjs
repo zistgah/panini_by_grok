@@ -31,4 +31,17 @@ if (html.includes('src="console.js"')) {
   console.log("FAIL console.html still depends on console.js (PWA cache)");
   process.exit(1);
 }
-console.log("ok   console.js exec + self-contained html");
+if (html.includes('id="out"') && html.includes('id="vtcan"')) {
+  console.log("FAIL two screens (out + vtcan)");
+  process.exit(1);
+}
+if (!html.includes('id="glass"')) {
+  console.log("FAIL no monitor glass");
+  process.exit(1);
+}
+if ((html.match(/<canvas/g) || []).length !== 1) {
+  console.log("FAIL expected one canvas");
+  process.exit(1);
+}
+console.log("ok   console.js exec + one-glass html");
+

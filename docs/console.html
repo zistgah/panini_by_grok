@@ -6,27 +6,39 @@
   <title>PANINI console</title>
   <link rel="stylesheet" href="site.css" />
   <style>
-    #out { background:#000; color:#cde; font:14px/1.35 ui-monospace,monospace; padding:.7rem;
-           min-height:18rem; max-height:70vh; overflow:auto; border:1px solid #c9a227; white-space:pre-wrap; margin:0; }
-    #row { display:flex; background:#000; border:1px solid #c9a227; border-top:0; padding:.35rem .5rem; font:14px ui-monospace,monospace; color:#cde; }
-    #row input { flex:1; background:#000; color:#cde; border:0; font:inherit; outline:none; }
+    .crt { max-width: 52rem; margin: 1rem auto 3rem; }
+    .bezel {
+      background: linear-gradient(180deg, #2a2a2a, #111);
+      border-radius: 18px;
+      padding: 18px 18px 14px;
+      box-shadow: 0 18px 40px #000, inset 0 1px 0 #555;
+    }
+    .led { width: 8px; height: 8px; border-radius: 50%; background: #3f3; box-shadow: 0 0 8px #3f3; margin: 0 0 8px auto; }
+    #glass { display: block; width: 100%; height: auto; background: #001400; border-radius: 4px; image-rendering: pixelated; }
+    .kbd {
+      display: flex; align-items: center; gap: .4rem;
+      margin-top: 10px; background: #1a1a1a; border-radius: 6px;
+      padding: .35rem .55rem; font: 14px ui-monospace, monospace; color: #8f8;
+    }
+    .kbd input { flex: 1; background: transparent; border: 0; color: #cfc; font: inherit; outline: none; }
+    .deck { margin: .6rem 0; font-size: .9rem; }
   </style>
 </head>
 <body class="site">
 <header class="site-head">
-  <strong>CONSOLE</strong>
+  <a href="index.html"><strong>PANINI</strong></a>
   <nav>
     <a href="index.html">Home</a>
+    <a href="sims/">Sims</a>
     <a href="nb.html">Notebook</a>
-    <a href="ontology.html">Ontology</a>
     <a href="workbench.html">Workbench</a>
   </nav>
 </header>
 <main class="site-main">
-  <h1>Online console</h1>
-  <p>VT100-class text. bash and COMMAND.COM on an in-memory VFS. This page is self-contained (does not depend on a cached <code>console.js</code>).</p>
-  <p>
-    Shell:
+  <h1>Console</h1>
+  <p>One monitor. The glass is the VT100. The strip under it is the keyboard. Not two screens.</p>
+  <p class="deck">
+    Shell
     <select id="shsel">
       <option value="bash">bash</option>
       <option value="sh">sh</option>
@@ -39,11 +51,14 @@
       <option value="4dos">4DOS</option>
       <option value="panini">panini</option>
     </select>
-    <label><input type="checkbox" id="vt" checked /> VT100 80×24</label>
   </p>
-  <canvas id="vtcan" width="640" height="384" style="display:block;background:#001400;border:1px solid #0a4;margin:.4rem 0;image-rendering:pixelated"></canvas>
-  <pre id="out"></pre>
-  <div id="row"><span id="ps1">panini$ </span><input id="cmd" autocomplete="off" autofocus /></div>
+  <section class="crt" aria-label="VT100 monitor">
+    <div class="bezel">
+      <div class="led" title="power"></div>
+      <canvas id="glass" width="640" height="384"></canvas>
+      <div class="kbd"><span id="ps1">panini$ </span><input id="cmd" autocomplete="off" autofocus /></div>
+    </div>
+  </section>
 </main>
 <script>
 (function () {
@@ -52,9 +67,8 @@
   var root = dir();
   root.children.home = dir();
   root.children.home.children.panini = dir();
-  root.children.home.children.panini.children["readme.txt"] = file("PANINI VFS\nCopyright (C) 1993-2026 Abhishek Choudhary\nType help.\n");
+  root.children.home.children.panini.children["readme.txt"] = file("PANINI VFS\nType help.\n");
   root.children.tmp = dir();
-  root.children.bin = dir();
   var state = { cwd: "/home/panini", root: root };
   function split(p) { return String(p).split("/").filter(Boolean); }
   function abs(path) {
@@ -113,8 +127,7 @@
     }
   };
   function tokenize(line) {
-    var out = [], cur = "", q = null, i, ch;
-    var s = String(line);
+    var out = [], cur = "", q = null, i, ch, s = String(line);
     for (i = 0; i < s.length; i++) {
       ch = s.charAt(i);
       if (q) { if (ch === q) q = null; else cur += ch; }
@@ -125,43 +138,26 @@
     if (cur) out.push(cur);
     return out;
   }
-  var histSh = [];
   function bash(line) {
     var raw = String(line || "").trim();
     if (!raw) return "";
-    histSh.push(raw);
     var toks = tokenize(raw), mode = null, target = null, cut = toks.length, i;
     for (i = 0; i < toks.length; i++) {
       if (toks[i] === ">" || toks[i] === ">>") { mode = toks[i]; target = toks[i + 1]; cut = i; break; }
     }
     var args = toks.slice(0, cut);
     var c = String(args[0] || "").toLowerCase();
-    var a = args.slice(1);
-    var out = "";
+    var a = args.slice(1), out = "", r, s;
     if (c === "pwd") out = fs.pwd();
-    else if (c === "ls") {
-      var r = fs.ls(a.filter(function (x) { return x.charAt(0) !== "-"; })[0] || ".");
-      out = r.ok ? r.names.join("\n") : "ls: cannot access: No such file or directory";
-    } else if (c === "cd") {
-      r = fs.cd(a[0] || "/home/panini");
-      out = r.ok ? "" : "bash: cd: " + a[0] + ": No such file or directory";
-    } else if (c === "cat") {
-      out = a.map(function (p) { var rr = fs.read(p); return rr.ok ? rr.content : "cat: " + p + ": No such file"; }).join("");
-    } else if (c === "echo") out = a.join(" ");
+    else if (c === "ls") { r = fs.ls(a.filter(function (x) { return x.charAt(0) !== "-"; })[0] || "."); out = r.ok ? r.names.join("\n") : "ls: No such file"; }
+    else if (c === "cd") { r = fs.cd(a[0] || "/home/panini"); out = r.ok ? "" : "bash: cd: No such file"; }
+    else if (c === "cat") { out = a.map(function (p) { var rr = fs.read(p); return rr.ok ? rr.content : "cat: " + p; }).join(""); }
+    else if (c === "echo") out = a.join(" ");
     else if (c === "mkdir") fs.mkdir(a[0] || "");
-    else if (c === "touch") { var prev = fs.read(a[0] || "a"); fs.write(a[0] || "a", prev.content || ""); }
-    else if (c === "rm") { r = fs.rm(a[0]); out = r.ok ? "" : "rm: cannot remove"; }
-    else if (c === "cp") { var s = fs.read(a[0]); if (s.ok) fs.write(a[1], s.content); else out = "cp: No such file"; }
-    else if (c === "mv") { s = fs.read(a[0]); if (s.ok) { fs.write(a[1], s.content); fs.rm(a[0]); } else out = "mv: No such file"; }
-    else if (c === "whoami") out = "panini";
-    else if (c === "uname") out = "PANINI-486";
-    else if (c === "help") out = "pwd ls cd cat echo mkdir touch rm cp mv whoami uname help";
+    else if (c === "help") out = "pwd ls cd cat echo mkdir help";
+    else if (c === "clear" || c === "cls") out = "\x1b[2J";
     else out = c + ": command not found";
-    if (target) {
-      var old = mode === ">>" ? (fs.read(target).content || "") : "";
-      fs.write(target, old + out + (out.slice(-1) === "\n" ? "" : "\n"));
-      return "";
-    }
+    if (target) { fs.write(target, out + "\n"); return ""; }
     return out;
   }
   function commandCom(line) {
@@ -173,80 +169,79 @@
     if (c === "TYPE") return bash("cat " + (t[1] || ""));
     if (c === "ECHO") return bash("echo " + t.slice(1).join(" "));
     if (c === "CLS") return "\x1b[2J";
-    if (c === "MD") return bash("mkdir " + t[1]);
-    if (c === "DEL") return bash("rm " + t[1]);
-    if (c === "COPY") return bash("cp " + t[1] + " " + t[2]);
-    if (c === "VER") return "PANINI COMMAND.COM";
-    if (c === "HELP") return "DIR CD TYPE ECHO CLS MD DEL COPY VER HELP";
+    if (c === "HELP") return "DIR CD TYPE ECHO CLS HELP";
     return "Bad command or file name";
   }
   function family(sh) {
     sh = String(sh || "bash").toLowerCase();
-    if (sh === "command.com" || sh === "cmd" || sh === "4dos" || sh === "command") return "command.com";
+    if (sh === "command.com" || sh === "cmd" || sh === "4dos") return "command.com";
     if (sh === "panini") return "panini";
     return "bash";
-  }
-  function paniniLine(line) {
-    var s = String(line || "").trim();
-    if (!s) return "";
-    if (/^PRINT\s+/i.test(s)) return s.replace(/^PRINT\s+/i, "");
-    if (/^help$/i.test(s)) return "PANINI shell subset: PRINT …";
-    return s;
   }
   function exec(sh, line) {
     var f = family(sh);
     if (f === "command.com") return commandCom(line);
-    if (f === "panini") return paniniLine(line);
+    if (f === "panini") {
+      if (/^PRINT\s+/i.test(line)) return String(line).replace(/^PRINT\s+/i, "");
+      return "pni: PRINT …";
+    }
     return bash(line);
   }
   window.PANINI_CONSOLE = { bash: bash, commandCom: commandCom, exec: exec };
 
-  var outEl = document.getElementById("out");
+  var glass = document.getElementById("glass");
   var cmd = document.getElementById("cmd");
   var ps1 = document.getElementById("ps1");
   var shsel = document.getElementById("shsel");
-  var vtcan = document.getElementById("vtcan");
-  var vtchk = document.getElementById("vt");
   var sh = "bash";
   var hist = [], hi = 0;
+  var vt = { cols: 80, rows: 24, r: 0, c: 0, grid: [] };
+  function blankRow() { var r = []; for (var x = 0; x < vt.cols; x++) r.push(" "); return r; }
   function initVt() {
     vt.grid = [];
-    for (var y = 0; y < vt.rows; y++) {
-      var row = [];
-      for (var x = 0; x < vt.cols; x++) row.push(" ");
-      vt.grid.push(row);
-    }
+    for (var y = 0; y < vt.rows; y++) vt.grid.push(blankRow());
     vt.r = 0; vt.c = 0;
   }
-  initVt();
+  function scroll() {
+    vt.grid.shift();
+    vt.grid.push(blankRow());
+    vt.r = vt.rows - 1;
+    vt.c = 0;
+  }
+  function paint() {
+    var ctx = glass.getContext("2d");
+    var cw = 8, ch = 16;
+    glass.width = vt.cols * cw;
+    glass.height = vt.rows * ch;
+    ctx.fillStyle = "#001400";
+    ctx.fillRect(0, 0, glass.width, glass.height);
+    ctx.fillStyle = "#33ff66";
+    ctx.font = "14px ui-monospace,monospace";
+    for (var y = 0; y < vt.rows; y++) ctx.fillText(vt.grid[y].join(""), 1, 13 + y * ch);
+    ctx.fillRect(vt.c * cw, vt.r * ch, 7, 14);
+  }
   function vtPut(ch) {
-    if (ch === "\n") { vt.r = Math.min(vt.rows - 1, vt.r + 1); vt.c = 0; return; }
+    if (ch === "\n") {
+      if (vt.r >= vt.rows - 1) scroll();
+      else { vt.r++; vt.c = 0; }
+      return;
+    }
     if (ch === "\r") { vt.c = 0; return; }
-    if (ch === "\b") { vt.c = Math.max(0, vt.c - 1); return; }
     vt.grid[vt.r][vt.c] = ch;
     vt.c++;
-    if (vt.c >= vt.cols) { vt.c = 0; vt.r = Math.min(vt.rows - 1, vt.r + 1); }
+    if (vt.c >= vt.cols) {
+      vt.c = 0;
+      if (vt.r >= vt.rows - 1) scroll();
+      else vt.r++;
+    }
   }
   function vtWrite(s) {
     s = String(s);
     for (var i = 0; i < s.length; i++) {
-      if (s.charAt(i) === "\x1b" && s.charAt(i + 1) === "[" && s.charAt(i + 2) === "2" && s.charAt(i + 3) === "J") {
-        initVt(); vt.r = 0; vt.c = 0; i += 3; continue;
-      }
+      if (s.charAt(i) === "\x1b" && s.substr(i, 4) === "\x1b[2J") { initVt(); i += 3; continue; }
       vtPut(s.charAt(i));
     }
-    if (vtcan && vtcan.getContext) {
-      var ctx = vtcan.getContext("2d");
-      var cw = 8, ch = 16;
-      vtcan.width = vt.cols * cw;
-      vtcan.height = vt.rows * ch;
-      ctx.fillStyle = "#001400";
-      ctx.fillRect(0, 0, vtcan.width, vtcan.height);
-      ctx.fillStyle = "#33ff66";
-      ctx.font = "14px ui-monospace, monospace";
-      for (var y = 0; y < vt.rows; y++) ctx.fillText(vt.grid[y].join(""), 1, 13 + y * ch);
-      ctx.fillRect(vt.c * cw, vt.r * ch, 7, 14);
-    }
+    paint();
   }
   function prompt() {
     var f = family(sh);
@@ -255,14 +250,9 @@
     if (sh === "csh") return "% ";
     return "panini$ ";
   }
-  function append(t) {
-    outEl.textContent += t;
-    outEl.scrollTop = outEl.scrollHeight;
-    if (!vtchk || vtchk.checked) vtWrite(t);
-  }
-  append("PANINI console · VT100 80×24 · shells: bash sh dash zsh ksh csh COMMAND.COM cmd 4DOS panini\nType help. Try: ls · cat readme.txt\n");
-  if (shsel) shsel.onchange = function () { sh = shsel.value; ps1.textContent = prompt(); append("[shell " + sh + "]\n"); };
-  if (vtchk) vtchk.onchange = function () { if (vtcan) vtcan.style.display = vtchk.checked ? "block" : "none"; };
+  initVt();
+  vtWrite("VT100 80x24  one glass\nType help. ls  cat readme.txt\n");
+  if (shsel) shsel.onchange = function () { sh = shsel.value; ps1.textContent = prompt(); vtWrite("[shell " + sh + "]\n"); };
   cmd.onkeydown = function (e) {
     if (e.key === "ArrowUp") {
       if (hist.length) { hi = Math.max(0, hi - 1); cmd.value = hist[hi] || ""; }
@@ -275,13 +265,12 @@
     if (e.key !== "Enter") return;
     var line = cmd.value;
     hist.push(line); hi = hist.length;
-    append(prompt() + line + "\n");
+    vtWrite(prompt() + line + "\n");
     cmd.value = "";
     var res = "";
-    try { res = exec(sh, line); }
-    catch (err) { res = String(err); }
-    if (res === "\x1b[2J") outEl.textContent = "";
-    else if (res) append(res.charAt(res.length - 1) === "\n" ? res : res + "\n");
+    try { res = exec(sh, line); } catch (err) { res = String(err); }
+    if (res === "\x1b[2J") { initVt(); paint(); }
+    else if (res) vtWrite(res.charAt(res.length - 1) === "\n" ? res : res + "\n");
   };
 })();
 </script>

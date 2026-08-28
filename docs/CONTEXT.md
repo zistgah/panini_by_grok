@@ -25,7 +25,15 @@ A Stage-0 bootstrap plus additive layers (v2/v3 workbench, frontends, VFS, VT100
 Self-host T0 (A=B=C) is verified on a **compiler subset**.  
 Foreign language frontends are **subsets**. Official language test suites are mapped, not passed.
 
-## Road
+## Physical fidelity
+
+Digital twins and UI stand-ins inherit the physical object's structure.
+Console = one monitor glass (80×24) + one keyboard strip.
+AyeCNSe/VIDYA sims live at github.com/AyeCNSe/sims (CNAME sims.ayecnse.site).
+This tree retrieves those HTML files and hosts a PANINI kinematics kernel
+(`src/panini/sims/diffdrive.pni`). Rewriting 48 Three.js scenes in PANINI
+this hour is not claimed.
+
 
 JS interp → POSIX personality on VFS → OCI when present → official compiler images → official suites. Emulators later.
 See docs/ARCHITECTURE.md.

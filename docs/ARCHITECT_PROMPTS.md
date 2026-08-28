@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-75. Website: more themes; Kitab theme editor; localStorage + download + GitHub. White reader hurts eyes — jazz primary. Bells 2D. Breadcrumb Home vs landing. VT100 on working console; more shells. Extract common. All in PANINI. Check OOP/FP vs spec v1–v3.
+76. Console not responding; two boxes — should be one monitor. Physical fidelity in CONTRACT/CONTEXT. Walk estate CONTRACT/CONTEXT. Port sims.ayecnse.site (speech: ayecnsc) to PANINI.
+
 
 
 
