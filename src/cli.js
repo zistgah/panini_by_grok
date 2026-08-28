@@ -180,6 +180,17 @@ async function main() {
       await import("../scripts/hindawi_flow.mjs");
       return;
     }
+    case "port":
+    case "hindawi-port": {
+      const { port, catalog } = await import("../runtime/hindawi_port.js");
+      const lang = (args.find((a, i) => args[i - 1] === "--lang") || "hindi");
+      const shaili = (args.find((a, i) => args[i - 1] === "--shaili") || "guru");
+      const file = args.filter((a, i) => a !== "--lang" && a !== "--shaili" && args[i - 1] !== "--lang" && args[i - 1] !== "--shaili")[1];
+      if (!file) { console.log(JSON.stringify(catalog(), null, 2)); return; }
+      const src = fs.readFileSync(file, "utf8");
+      console.log(JSON.stringify(port(src, { lang, shaili }), null, 2));
+      return;
+    }
     case "hindawi": {
       const { hindawiGuru } = await import("../runtime/hindawi.js");
       const src = args[1]
@@ -203,11 +214,6 @@ async function main() {
       return;
     }
     case "perso":
-    case "urdu":
-    case "arabic": {
-      await import("../scripts/explore_perso.mjs");
-      return;
-    }
     case "urdu":
     case "arabic": {
       await import("../scripts/explore_perso.mjs");

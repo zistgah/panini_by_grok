@@ -28,6 +28,11 @@ export const BHASHAS = [
   { id: "ne", name: "Nepali",   tsv: "retrieved/romenagri/langs/nepali_c.tsv",   script: "Devanagari" },
   { id: "mr", name: "Marathi",  tsv: "retrieved/romenagri/langs/marathi_c.tsv",  script: "Devanagari" },
   { id: "sa", name: "Sanskrit", tsv: "retrieved/romenagri/langs/sanskrit_c.tsv", script: "Devanagari", keyword_only: true },
+  { id: "pa", name: "Punjabi",  tsv: "retrieved/romenagri/langs/punjabi_c.tsv",  script: "Gurmukhi" },
+  { id: "bn", name: "Bengali",  tsv: "retrieved/romenagri/langs/bengali_c.tsv",  script: "Bengali" },
+  { id: "te", name: "Telugu",   tsv: "retrieved/romenagri/langs/telugu_c.tsv",  script: "Telugu" },
+  { id: "ta", name: "Tamil",    tsv: "retrieved/romenagri/langs/tamil_c.tsv",   script: "Tamil" },
+  { id: "ur", name: "Urdu",     tsv: "retrieved/romenagri/langs/urdu_c.tsv",    script: "Perso-Arabic", lossy: true },
 ];
 
 export function extractLexRules(text) {

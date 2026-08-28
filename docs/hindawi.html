@@ -26,6 +26,7 @@
       <button type="button" id="d-c">Load Hindi C</button>
       <button type="button" id="d-b">Load Hindi BASIC</button>
       <button type="button" id="d-t">Load Telugu C (flatten hub)</button>
+      <button type="button" id="d-pa">Load Punjabi C (Gurmukhi script)</button>
       <button type="button" id="d-run">Run</button>
     </p>
     <label>परोग्राम</label>
@@ -99,7 +100,11 @@ Sanskrit  यदि / प्रत्यागम  → if / return   (keyword-by
     <li>Not an 8-word <code>if</code>→<code>यदि</code> toy in the linguist pane.</li>
     <li>Not a Sanskrit grammar engine. Sanskrit here is the keyword TSV only.</li>
   </ul>
-  <p class="fine">CLI: <code>node src/cli.js hindawi</code> · <code>node src/cli.js hindawi-flow</code></p>
+  <p>CLI: <code>node src/cli.js port --lang punjabi --shaili guru file.uhin</code>
+     · all 8 shailis × Brahmi languages as script projections in <code>examples/hindawi/script/</code>
+     · bhasha keyword projections in <code>examples/hindawi/bhasha/</code>
+     · PANINI: <code>src/panini/hindawi_port.pni</code>
+     · Perso-Arabic flagged lossy.</p>
 </main>
 <script src="engine/nb.js"></script>
 <script>
@@ -116,6 +121,7 @@ function loadDemo(name){
 document.getElementById("d-c").onclick=()=>loadDemo("HindiC.uhin");
 document.getElementById("d-b").onclick=()=>loadDemo("HindiBASIC.uhin");
 document.getElementById("d-t").onclick=()=>loadDemo("TeluguC.uhin");
+document.getElementById("d-pa").onclick=()=>loadDemo("punjabi_guru.uhin");
 function runC(src, inputs){
   const out=[];
   const printf=(fmt,...a)=>{
