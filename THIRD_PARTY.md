@@ -30,6 +30,13 @@ their own licenses. They are not GPL-relicensed.
 - License: Bitstream Vera / DejaVu (see fonts’ own LICENSE)
 - Loaded only when `VT_LOAD_FONT` points at a host TTF.
 
+## c-testsuite (ISO C compile-and-run corpus)
+
+- https://github.com/c-testsuite/c-testsuite
+- Retrieved 2026-08-28 as `tests/iso/c/c-testsuite.tar.gz`
+- Used as the first executable corpus for ISO_GREEN(C)
+- License: see tarball LICENSE (not relicensed)
+
 ## Node.js
 
 - Runtime for the CLI. License: MIT (Node.js project).

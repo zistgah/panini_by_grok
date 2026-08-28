@@ -26,6 +26,21 @@ Foreign language frontends are **subsets**. Official language test suites are ma
 JS interp → POSIX personality on VFS → OCI when present → official compiler images → official suites. Emulators later.
 See docs/ARCHITECTURE.md.
 
+## Working stance (architect, 2026-08-28)
+
+This is not a generic-user session. Default hedging, early collapse, and
+"good enough subset" delivery are contract violations here.
+
+Done means comparable with the relevant industrial artifact, or it is
+labeled **not done** with the exact gap.
+
+Do not assume. Ask. Axes stay uncollapsed until the architect identifies them.
+
+Session-private remarks stay out of the public tree.
+
+This file is the durable memory for this tree. There is no separate
+long-term memory store outside conversation + these files.
+
 ## Surfaces
 
 | Surface | Path |

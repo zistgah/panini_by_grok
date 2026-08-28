@@ -23,6 +23,7 @@ const TABLE = {
   ts: { file: "src/panini/frontends/typescript.pni", fn: "run_typescript" },
   go: { file: "src/panini/frontends/go.pni", fn: "run_go" },
   zig: { file: "src/panini/frontends/zig.pni", fn: "run_zig" },
+  lua: { file: "src/panini/frontends/lua.pni", fn: "run_lua" },
 };
 
 function normalizeCpp(source) {

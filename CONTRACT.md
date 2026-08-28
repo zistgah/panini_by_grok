@@ -13,6 +13,8 @@ This is the working contract for changes to this tree.
 2. Copyright line is: Copyright (C) 1993-2026 Abhishek Choudhary
 3. Third-party works stay under their own licenses (`THIRD_PARTY.md`).
 4. The original `spec/PANINI_SELF_HOSTING_SPEC.pni` text is not rewritten.
+4a. This estate is independent of all employers and clients. See `INDEPENDENCE.md`.
+    Do not brand this work as IBM, HP, or any other company product.
 
 ## Honesty
 
@@ -38,6 +40,12 @@ This is the working contract for changes to this tree.
     full-depth substrate. Details not supplied by the architect are not invented.
 19. Do not assume the meaning of a requirement. If two requirements are
     stated, both stand.
+20. No early collapse of independent axes.
+21. "Done" means industry-comparable for that object, or the gap is named.
+22. ISO green is unflattened. For C that means ISO/IEC 9899:2018 (C17)
+    against the retrieved c-testsuite single-exec corpus, subject
+    PANINI.Frontend.C. Subset demos do not discharge this. Status until
+    the harness is all-pass: NOT GREEN. Zip every delivery turn.
 
 ## Delivery
 

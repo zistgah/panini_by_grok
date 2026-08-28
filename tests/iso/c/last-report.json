@@ -1,0 +1,68 @@
+{
+  "theorem": "ISO_GREEN(C)",
+  "standard": "ISO/IEC 9899:2018 (C17)",
+  "corpus": "c-testsuite tests/single-exec",
+  "oracle": "gcc -std=c17",
+  "subject": "PANINI.Frontend.C",
+  "green": false,
+  "cases": 220,
+  "gcc": {
+    "pass": 220,
+    "fail": 0
+  },
+  "panini": {
+    "pass": 0,
+    "fail": 220
+  },
+  "sample_fail": [
+    {
+      "case": "00001.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    },
+    {
+      "case": "00002.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    },
+    {
+      "case": "00003.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    },
+    {
+      "case": "00004.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    },
+    {
+      "case": "00005.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    },
+    {
+      "case": "00006.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    },
+    {
+      "case": "00007.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    },
+    {
+      "case": "00008.c",
+      "engine": "panini",
+      "stage": "frontend",
+      "frontend": "PANINI.subset.c"
+    }
+  ],
+  "status": "NOT GREEN"
+}

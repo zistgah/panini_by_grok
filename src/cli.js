@@ -133,6 +133,11 @@ async function main() {
       console.log(JSON.stringify(loadCycler(file), null, 2));
       return;
     }
+    case "iso-c":
+    case "iso": {
+      await import("../scripts/iso_c_harness.mjs");
+      return;
+    }
     case "bash":
       await runSource(fs.readFileSync(new URL("../stdlib/bash.pni", import.meta.url), "utf8"), "bash.pni");
       return;

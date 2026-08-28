@@ -13,6 +13,7 @@
     "src/panini/frontends/cpp.pni",
     "src/panini/frontends/fortran.pni",
     "src/panini/frontends/go.pni",
+    "src/panini/frontends/lua.pni",
     "src/panini/frontends/python.pni",
     "src/panini/frontends/rust.pni",
     "src/panini/frontends/typescript.pni",

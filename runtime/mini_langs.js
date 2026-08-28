@@ -13,7 +13,10 @@ export function runSubset(lang, source) {
   const prints = [];
   evalBlock(ast.body, env, prints, lang);
   if (typeof env.main !== "function") {
-    return { ok: true, value: 0, prints, frontend: "PANINI.subset." + lang, defs: Object.keys(env), ast: ast.body.map((s) => s.op + ":" + (s.name || "")) };
+    if (prints.length) {
+      return { ok: true, value: prints[prints.length - 1], prints, frontend: "PANINI.subset." + lang };
+    }
+    return { ok: true, value: 0, prints, frontend: "PANINI.subset." + lang };
   }
   if (typeof env.main === "function") {
     const v = env.main([]);
