@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI — Hindawi localization</title>
+  <title>PANINI — Hindawi is not a keyword table</title>
   <link rel="stylesheet" href="site.css" />
 </head>
 <body class="site">
@@ -11,48 +11,42 @@
   <strong>PANINI</strong>
   <nav>
     <a href="index.html">Overview</a>
-    <a href="view.html?src=HINDAWI_RETRIEVED.md">Retrieved note</a>
+    <a href="punjabi.html">Punjabi</a>
     <a href="workbench.html">Workbench</a>
   </nav>
 </header>
 <main class="site-main">
-  <h1>How Hindawi localizes a programming language</h1>
-  <p class="lead">Not a keyword dictionary. A reversible pipeline. Retrieved from Project Hindawi / ILM legacy, not reconstructed.</p>
+  <h1>What Hindawi actually is</h1>
+  <p class="lead">Not Gurmukhi→Devanagari. Not <code>if</code>→<code>यदि</code>. A reversible pipeline so a C program written in a vernacular script still compiles with gcc and still debugs in that script.</p>
 
-  <h2>Shaili Guru (Indic C) — the actual compiler script</h2>
-  <p>From <code>retrieved/legacy/Hindawi/guru/gurucc</code>:</p>
-  <pre><code>cat $1 | acii2uni | iconv -f UTF-16 -t UTF-8 | h2c > temp.c
-sed …
-gcc temp.c -o hin.exe</code></pre>
+  <h2>The retrieved Guru compiler</h2>
+  <pre><code>cat $1 | acii2uni | iconv | h2c > temp.c
+gcc temp.c</code></pre>
   <ol>
-    <li><strong>ACII / Romenagri</strong> — phonetic, case- and diacritic-independent layer. Round-trip with Unicode. Maps are the retrieved lex/tables, not invented.</li>
-    <li><strong>h2c.lex</strong> — lex filter: Romenagri forms of Hindi tokens → C (<code>mukhya</code> → <code>main</code>, headers, operators). Inverse is <code>c2h.lex</code>.</li>
-    <li><strong>Host C compiler</strong> — gcc sees ordinary C. Identifiers that were vernacular survive as the Latin phonetic form, so assembler and debugger names invert.</li>
-    <li><strong>APCISR</strong> — true text-mode Indic glyphs so the console, source, and debug listing stay the same objects. VT100 on this site is not APCISR.</li>
+    <li><strong>unicode.h</strong> — Devanagari → ACII (8-bit phonetic layer).</li>
+    <li><strong>acii2rmn.c</strong> — stack: consonants carry implicit <code>a</code>; matras pop it. <code>मुख्य</code> → <code>mukhya</code>, not a letter-wise concat.</li>
+    <li><strong>h2c.lex</strong> — Romenagri tokens → C. <code>mukhya</code>→<code>main</code>, <code>ma_likhoa</code>→<code>printf</code>.</li>
+    <li>Identifiers stay Romenagri (<code>अ</code>→<code>_a</code>, <code>क</code>→<code>ka</code>) so they are legal C and reverse.</li>
+    <li>Strings stay UTF-8 vernacular. <strong>APCISR</strong> paints ACII as Indic in true text mode.</li>
   </ol>
-  <p>A table that swaps <code>if</code> for <code>यदि</code> and leaves every identifier in English <strong>cannot</strong> debug at the hardware. That is why this tree must not invent keyword maps.</p>
 
-  <h2>Retrieved maps (extracted from lex, not authored here)</h2>
-  <p><code>h2c</code> rules: <span id="n-h2c">…</span> · <code>c2h</code> rules: <span id="n-c2h">…</span></p>
-  <p>Sample (first 12 h2c rules):</p>
-  <pre id="sample">loading…</pre>
-  <p>Try a Romenagri fragment (latin phonetic, as h2c sees it):</p>
-  <p><input id="in" value="poor_nnaa_mka mukhya" style="width:70%" /> <button id="go" type="button">h2c</button></p>
-  <pre id="out"></pre>
-  <p>Devanagari sample (retrieved): <a href="retrieved/HindiC.uhin">HindiC.uhin</a></p>
-  <p class="fine">Sources: project-ilm/legacy Hindawi/guru · Romenagri · APCISR. GPL. © 1993-2026 Abhishek Choudhary.</p>
+  <h2>Executed: HindiC.uhin</h2>
+  <p>Retrieved sample, not reconstructed. CLI: <code>node src/cli.js hindawi</code></p>
+  <pre><code>पूर्णांक मुख्य()        →  int main()
+अक्षर अ[]          →  char _a[]
+पूर्णांक क              →  int ka
+म_लिखो(...)        →  printf("आपका नाम क्या है?\n")
+क्रम(क=1; …)        →  for(ka=1; …)
+वापस 0             →  return 0</code></pre>
+  <p><code>#समावेश</code> becomes <code>#samaawaeesha</code> (schwa) so it does not hit <code>#samaawesha</code> in h2c; <code>मानकपन.स</code> does become <code>stdio.h</code>. That gap is reported, not patched with an invented alias.</p>
+
+  <h2>Punjabi / Gurmukhi</h2>
+  <p>Same stack. Script hub (name-projection into Devanagari, then unicode.h) is <em>not</em> the language. Punjabi words come from <code>punjabi_c.tsv</code>. The retrieved systems demo is Romenagri + <code>#define</code>:</p>
+  <pre><code>#define je if
+#define jada_taka while
+#define chhapo printf
+int gi_n_tee = 0;</code></pre>
+  <p><a href="punjabi.html">Punjabi page</a> · <a href="retrieved/HindiC.uhin">HindiC.uhin</a></p>
 </main>
-<script src="shaili.js"></script>
-<script>
-PANINI_SHAILI.load().then((s) => {
-  document.getElementById("n-h2c").textContent = s.h2c.length;
-  document.getElementById("n-c2h").textContent = s.c2h.length;
-  document.getElementById("sample").textContent = s.h2c.slice(0, 12).map((r) => r.from + "  →  " + r.to).join("\n");
-  document.getElementById("go").onclick = () => {
-    document.getElementById("out").textContent = s.applyH2c(document.getElementById("in").value);
-  };
-  document.getElementById("go").click();
-}).catch((e) => { document.getElementById("sample").textContent = String(e); });
-</script>
 </body>
 </html>

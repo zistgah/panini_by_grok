@@ -174,13 +174,21 @@ async function main() {
       console.log(JSON.stringify(out, null, 2));
       return;
     }
+    case "hindawi": {
+      const { hindawiGuru } = await import("../runtime/hindawi.js");
+      const src = args[1]
+        ? fs.readFileSync(args[1], "utf8")
+        : fs.readFileSync(new URL("../retrieved/legacy/Hindawi/samples/HindiC.uhin", import.meta.url), "utf8");
+      console.log(JSON.stringify(hindawiGuru(src), null, 2));
+      return;
+    }
     case "punjabi":
     case "gurmukhi": {
-      const { portPunjabi } = await import("../runtime/gurmukhi.js");
+      const { punjabiShaili } = await import("../runtime/hindawi.js");
       const src = args[1] && args[1] !== "-"
         ? fs.readFileSync(args[1], "utf8")
-        : "ਜੇ (1) { ਵਾਪਸ 0; }";
-      console.log(JSON.stringify(portPunjabi(src), null, 2));
+        : "ਵਾਪਸ 0;";
+      console.log(JSON.stringify(punjabiShaili(src), null, 2));
       return;
     }
     case "iso-c":
