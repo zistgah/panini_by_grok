@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-78. Need the original Lekhak in PANINI. Upgrade necessary components. What happened to the x86 emulator?
+79. Look for lekhak.hin. See how those are processed in 2004 Hindawi. .hin files were ISCII.
+
 
 
 

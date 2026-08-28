@@ -76,5 +76,13 @@ FUNCTION main()
     RETURN LEN(keys())
 END
 `, 5);
+await check("hincc stages", `
+FUNCTION stages_hin()
+    RETURN ["rmshaili", "acii2cf", "h2c", "gcc"]
+END
+FUNCTION main()
+    RETURN LEN(stages_hin())
+END
+`, 4);
 console.log(fail ? `FAILED ${fail}/${n}` : `PASSED ${n}/${n}`);
 process.exit(fail ? 1 : 0);

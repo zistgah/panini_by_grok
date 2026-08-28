@@ -218,7 +218,7 @@
       if (line.length > 78) line = line.slice(0, 78);
       vtWrite((vis === lek.row ? ">" : " ") + line + "\n");
     }
-    vtWrite("F1 help  F2 save  F3 open  Ctrl-Y cut-line  Alt-X exit\n");
+    vtWrite("F1 help  F2 save  F3 load  F4 search  F5 run  F9 compile  Alt-X exit\n");
   }
   function lekHelp() {
     initVt();
@@ -228,7 +228,8 @@
     vtWrite("Ctrl-ins/del  Shift-ins/del  Ctrl-Y\n");
     vtWrite("Ctrl-home/end  pgup/pgdn  home/end\n");
     vtWrite("Ctrl-lf/rt  Alt-K Alt-C Alt-M  Alt-X file_exit\n");
-    vtWrite("ins tab  127-char lines (LMAX). Any key returns.\n");
+    vtWrite("F4 search  F5 compile+run  F9 compile  (README 2004)\n");
+    vtWrite("First line of a .hin program: shaili tag. .hin = ISCII.\n");
   }
   function lekOpen(p) {
     lek.path = p || lek.path;
@@ -261,7 +262,28 @@
       if (p) lekOpen(p);
       lekPaint(); return;
     }
-    if (k === "F10") { lekPaint(); return; }
+    if (k === "F4") {
+      var q = window.prompt("search", "");
+      if (q) {
+        var n;
+        for (n = 0; n < lek.lines.length; n++) {
+          if ((lek.lines[n] || "").indexOf(q) >= 0) { lek.row = n; lek.col = lek.lines[n].indexOf(q); break; }
+        }
+      }
+      lekPaint(); return;
+    }
+    if (k === "F5" || k === "F9") {
+      var src = lek.lines.join("\n");
+      var tag = (lek.lines[0] || "").trim();
+      initVt();
+      vtWrite("Lekhak " + (k === "F5" ? "compile+run" : "compile") + "\n");
+      vtWrite("file " + lek.path + "\n");
+      vtWrite("line1 " + tag + "\n");
+      vtWrite(".hin = ISCII; guru.bat: rmshaili | acii2cf | h2c | gcc\n");
+      vtWrite(".uhin = UTF-8; hincc: iconv utf-16 | uni2acii | acii2cf | h2c\n");
+      vtWrite("F5 outside this CRT is the 2004 binary path (lekhakx.exe + DPMI).\n");
+      return;
+    }
     if ((alt && (k === "x" || k === "X")) || (k === "Escape" && sh)) {
       if (lek.changed) lekSave();
       lek.on = false; initVt(); paint(); vtWrite("lekhak file_exit\n");
