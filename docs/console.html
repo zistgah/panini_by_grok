@@ -24,7 +24,7 @@
 </header>
 <main class="site-main">
   <h1>Online console</h1>
-  <p>VT100-class text. bash and COMMAND.COM are shells on an in-memory VFS. Not a Linux distro. Canonical implementation: <code>runtime/vfs.js</code> + <code>runtime/shell.js</code>. This page is the Pages adapter.</p>
+  <p>VT100-class text. bash and COMMAND.COM on an in-memory VFS. This page is self-contained (does not depend on a cached <code>console.js</code>).</p>
   <p>
     Shell:
     <label><input type="radio" name="sh" value="bash" checked /> bash</label>
@@ -33,22 +33,159 @@
   <pre id="out"></pre>
   <div id="row"><span id="ps1">panini$ </span><input id="cmd" autocomplete="off" autofocus /></div>
 </main>
-<script src="console.js"></script>
 <script>
 (function () {
-  const out = document.getElementById("out");
-  const cmd = document.getElementById("cmd");
-  const ps1 = document.getElementById("ps1");
-  const C = window.PANINI_CONSOLE;
-  let sh = "bash";
-  let hist = [], hi = 0;
+  function dir() { return { type: "dir", children: Object.create(null) }; }
+  function file(x) { return { type: "file", content: String(x || "") }; }
+  var root = dir();
+  root.children.home = dir();
+  root.children.home.children.panini = dir();
+  root.children.home.children.panini.children["readme.txt"] = file("PANINI VFS\nCopyright (C) 1993-2026 Abhishek Choudhary\nType help.\n");
+  root.children.tmp = dir();
+  root.children.bin = dir();
+  var state = { cwd: "/home/panini", root: root };
+  function split(p) { return String(p).split("/").filter(Boolean); }
+  function abs(path) {
+    if (!path || path === ".") return state.cwd;
+    if (path === "..") { var a = split(state.cwd); a.pop(); return "/" + a.join("/"); }
+    if (path.charAt(0) === "/" || /^[A-Za-z]:/.test(path)) return "/" + split(path.replace(/^[A-Za-z]:/, "")).join("/");
+    return (state.cwd.replace(/\/$/, "") + "/" + path).replace(/\/+/g, "/");
+  }
+  function walk(parts, create) {
+    var cur = root;
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      if (!cur.children[p]) { if (!create) return null; cur.children[p] = dir(); }
+      cur = cur.children[p];
+      if (cur.type !== "dir") return null;
+    }
+    return cur;
+  }
+  function resolve(path) {
+    var full = abs(path);
+    if (full === "/" || full === "") return { path: "/", node: root };
+    var parts = split(full);
+    var name = parts.pop();
+    var d = walk(parts, false);
+    if (!d || !d.children[name]) return null;
+    return { path: "/" + parts.concat([name]).join("/"), node: d.children[name] };
+  }
+  var fs = {
+    pwd: function () { return state.cwd; },
+    cd: function (path) {
+      var n = resolve(path || "/home/panini");
+      if (!n || n.node.type !== "dir") return { ok: false };
+      state.cwd = n.path; return { ok: true };
+    },
+    ls: function (path) {
+      var n = resolve(path || ".");
+      if (!n || n.node.type !== "dir") return { ok: false, names: [] };
+      return { ok: true, names: Object.keys(n.node.children).sort() };
+    },
+    read: function (path) {
+      var n = resolve(path);
+      if (!n || n.node.type !== "file") return { ok: false, content: "" };
+      return { ok: true, content: n.node.content };
+    },
+    write: function (path, content) {
+      var parts = split(abs(path)); var name = parts.pop();
+      var d = walk(parts, true); if (!d) return { ok: false };
+      d.children[name] = file(content); return { ok: true };
+    },
+    mkdir: function (path) { walk(split(abs(path)), true); return { ok: true }; },
+    rm: function (path) {
+      var parts = split(abs(path)); var name = parts.pop();
+      var d = walk(parts, false);
+      if (!d || !d.children[name]) return { ok: false };
+      delete d.children[name]; return { ok: true };
+    }
+  };
+  function tokenize(line) {
+    var out = [], cur = "", q = null, i, ch;
+    var s = String(line);
+    for (i = 0; i < s.length; i++) {
+      ch = s.charAt(i);
+      if (q) { if (ch === q) q = null; else cur += ch; }
+      else if (ch === '"' || ch === "'") q = ch;
+      else if (/\s/.test(ch)) { if (cur) { out.push(cur); cur = ""; } }
+      else cur += ch;
+    }
+    if (cur) out.push(cur);
+    return out;
+  }
+  var histSh = [];
+  function bash(line) {
+    var raw = String(line || "").trim();
+    if (!raw) return "";
+    histSh.push(raw);
+    var toks = tokenize(raw), mode = null, target = null, cut = toks.length, i;
+    for (i = 0; i < toks.length; i++) {
+      if (toks[i] === ">" || toks[i] === ">>") { mode = toks[i]; target = toks[i + 1]; cut = i; break; }
+    }
+    var args = toks.slice(0, cut);
+    var c = String(args[0] || "").toLowerCase();
+    var a = args.slice(1);
+    var out = "";
+    if (c === "pwd") out = fs.pwd();
+    else if (c === "ls") {
+      var r = fs.ls(a.filter(function (x) { return x.charAt(0) !== "-"; })[0] || ".");
+      out = r.ok ? r.names.join("\n") : "ls: cannot access: No such file or directory";
+    } else if (c === "cd") {
+      r = fs.cd(a[0] || "/home/panini");
+      out = r.ok ? "" : "bash: cd: " + a[0] + ": No such file or directory";
+    } else if (c === "cat") {
+      out = a.map(function (p) { var rr = fs.read(p); return rr.ok ? rr.content : "cat: " + p + ": No such file"; }).join("");
+    } else if (c === "echo") out = a.join(" ");
+    else if (c === "mkdir") fs.mkdir(a[0] || "");
+    else if (c === "touch") { var prev = fs.read(a[0] || "a"); fs.write(a[0] || "a", prev.content || ""); }
+    else if (c === "rm") { r = fs.rm(a[0]); out = r.ok ? "" : "rm: cannot remove"; }
+    else if (c === "cp") { var s = fs.read(a[0]); if (s.ok) fs.write(a[1], s.content); else out = "cp: No such file"; }
+    else if (c === "mv") { s = fs.read(a[0]); if (s.ok) { fs.write(a[1], s.content); fs.rm(a[0]); } else out = "mv: No such file"; }
+    else if (c === "whoami") out = "panini";
+    else if (c === "uname") out = "PANINI-486";
+    else if (c === "help") out = "pwd ls cd cat echo mkdir touch rm cp mv whoami uname help";
+    else out = c + ": command not found";
+    if (target) {
+      var old = mode === ">>" ? (fs.read(target).content || "") : "";
+      fs.write(target, old + out + (out.slice(-1) === "\n" ? "" : "\n"));
+      return "";
+    }
+    return out;
+  }
+  function commandCom(line) {
+    var t = tokenize(line);
+    var c = String(t[0] || "").toUpperCase();
+    if (!c) return "";
+    if (c === "DIR") return bash("ls " + (t[1] || ""));
+    if (c === "CD") return bash("cd " + (t[1] || ""));
+    if (c === "TYPE") return bash("cat " + (t[1] || ""));
+    if (c === "ECHO") return bash("echo " + t.slice(1).join(" "));
+    if (c === "CLS") return "\x1b[2J";
+    if (c === "MD") return bash("mkdir " + t[1]);
+    if (c === "DEL") return bash("rm " + t[1]);
+    if (c === "COPY") return bash("cp " + t[1] + " " + t[2]);
+    if (c === "VER") return "PANINI COMMAND.COM";
+    if (c === "HELP") return "DIR CD TYPE ECHO CLS MD DEL COPY VER HELP";
+    return "Bad command or file name";
+  }
+  function exec(sh, line) {
+    return sh === "command.com" ? commandCom(line) : bash(line);
+  }
+  window.PANINI_CONSOLE = { bash: bash, commandCom: commandCom, exec: exec };
+
+  var outEl = document.getElementById("out");
+  var cmd = document.getElementById("cmd");
+  var ps1 = document.getElementById("ps1");
+  var sh = "bash";
+  var hist = [], hi = 0;
   function prompt() { return sh === "bash" ? "panini$ " : "C:\\> "; }
-  function append(t) { out.textContent += t; out.scrollTop = out.scrollHeight; }
+  function append(t) { outEl.textContent += t; outEl.scrollTop = outEl.scrollHeight; }
   append("PANINI 486-class console. Type help. Try: ls · cat readme.txt · echo नमस्ते > a.txt · cat a.txt\n");
-  document.querySelectorAll("input[name=sh]").forEach((r) => {
-    r.onchange = () => { sh = r.value; ps1.textContent = prompt(); append("[shell " + sh + "]\n"); };
-  });
-  cmd.onkeydown = (e) => {
+  var radios = document.querySelectorAll("input[name=sh]");
+  for (var ri = 0; ri < radios.length; ri++) {
+    radios[ri].onchange = function () { sh = this.value; ps1.textContent = prompt(); append("[shell " + sh + "]\n"); };
+  }
+  cmd.onkeydown = function (e) {
     if (e.key === "ArrowUp") {
       if (hist.length) { hi = Math.max(0, hi - 1); cmd.value = hist[hi] || ""; }
       e.preventDefault(); return;
@@ -58,15 +195,15 @@
       e.preventDefault(); return;
     }
     if (e.key !== "Enter") return;
-    const line = cmd.value;
+    var line = cmd.value;
     hist.push(line); hi = hist.length;
     append(prompt() + line + "\n");
     cmd.value = "";
-    let res = "";
-    try { res = C ? C.exec(sh, line) : "console not loaded"; }
+    var res = "";
+    try { res = exec(sh, line); }
     catch (err) { res = String(err); }
-    if (res === "\x1b[2J") out.textContent = "";
-    else if (res) append(res.endsWith("\n") ? res : res + "\n");
+    if (res === "\x1b[2J") outEl.textContent = "";
+    else if (res) append(res.charAt(res.length - 1) === "\n" ? res : res + "\n");
   };
 })();
 </script>

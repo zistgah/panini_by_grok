@@ -155,6 +155,6 @@
   }
   g.PANINI_CONSOLE = {
     bash, commandCom,
-    exec(sh, line) { return sh === "command.com" ? commandCom(line) : bash(line); },
+    exec: function (sh, line) { return sh === "command.com" ? commandCom(line) : bash(line); },
   };
 })(typeof window !== "undefined" ? window : globalThis);
