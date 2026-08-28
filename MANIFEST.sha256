@@ -106,6 +106,7 @@ e8e2353813001723fd3d53b93c72d0c9e0c26f7c505550747f0b0e9f5f8b05e4  ./retrieved/le
 94ceac6e81a818545b018ba5eaed0636b3e1d4718cfbb6ba1aa84e26d3925956  ./retrieved/legacy/Romenagri/ar_ipa.csv
 9ca1ec13a68ece7dbbd4a32fd4c317a50037442c7cab66535d6e878f0c2664fa  ./retrieved/legacy/Romenagri/acii2rmn.lex
 245c562532079755bcdb478a37ce88782d10fc30d8d6179e3d6a0f3b48071911  ./retrieved/legacy/Romenagri/uni2acii.c
+90ce74f8ae1dafb7afe4ace90ab66e5a79bd300c6b6e348d9618fc1d74fad602  ./retrieved/legacy/Romenagri/fltr_ur_hi
 64498aeffebd715614d3d8c3a05f783dd7c1d46b63049dbf1cde22bc29c86924  ./retrieved/legacy/Romenagri/test3.txt
 fc37df7c88e21914be0d90ebf0546f03ac84926edc60187696137d518e6dc3f6  ./retrieved/legacy/Romenagri/corp_ar_chars.txt
 3a30627c450a17beb9d08d7ebc37885bc3cf1ec8843b5bb0b3db5ff2550cd772  ./retrieved/legacy/Romenagri/corp_hi.txt
@@ -115,6 +116,7 @@ e7e73d9506465585596259794bddbfd785394fee9d913e4a25f0718a0963683e  ./retrieved/le
 b063f9d63634fab9ab2ca4813a540120e6e5b817fe00c14da985869551b8a13b  ./retrieved/legacy/Romenagri/test_hi.c
 e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4  ./retrieved/legacy/Romenagri/copying
 d8012b17bc23db470b9986f4b7be2abac81248a2132eee31e0755bd7e37df352  ./retrieved/legacy/Romenagri/iscii_map.csv
+532dc569b3eeebbb6efdd1685e9b5c63ea7c52e6fd413a9e65442fe41d091231  ./retrieved/legacy/Romenagri/fltr_ar_uni
 5077cf830cc7befe63909386f97378a97a0f35e765d96a1f8252674891b8df16  ./retrieved/legacy/Romenagri/acii2rmn.h
 10c24650a9d70bc9ca281ddb013dd7a54d690b3cdda1d4b12b7aad9024c19947  ./retrieved/legacy/Romenagri/acii2hin.c
 8cb4e9a87907cab55d5b22f241f5e8bb3f566dab7c4344bb8f855218555046cd  ./retrieved/legacy/Romenagri/arabic-generic.csv
@@ -153,6 +155,8 @@ fa7d57094c8a80a547e0d059b52fbe2393ecbddd8dfd0c6044551d282aac6ced  ./retrieved/le
 0716e1607a64255ffb6f125c6b6a5bcae90f588cfff618977e025bcc8b815025  ./retrieved/legacy/LICENSE
 b36f0d71973ab2b310b41d30ab7f9c5d11b88c3da3de4df325802b51b0dde24e  ./retrieved/legacy/README.md
 b61c9773c3392fdb7de322ffd0761414831b27f11721a54dab60c855f64cf9dd  ./retrieved/romenagri/bindings/js/romenagri.js
+9c923fa83dd325da0125ddd0eb401ec9090be5114c3864b7fb5511ef3540c543  ./retrieved/romenagri/results/PERSO_ARABIC.json
+40343880406755cf3f03ac99b6e11a70533bc63fa4856cf2fe1fd880ee57a7b3  ./retrieved/romenagri/filters/perso2deva_heur.py
 13f63321749f459921a4c089344cd7044277e0798f3ac24cd85e5edbb861760d  ./retrieved/romenagri/demos/gurmukhi_demo.c
 b3717975e5c5448a37048857b19dac00cbd1e409264e69433cbb3b64038b1d13  ./retrieved/romenagri/demos/punjabi_keywords.tsv
 5cfd1d0f7210aa26ee6522e2b0d0d66c7d59b3b23a5cdc0446b801938c889875  ./retrieved/romenagri/tables/buginese_to_deva.tsv
@@ -260,8 +264,12 @@ fa7d57094c8a80a547e0d059b52fbe2393ecbddd8dfd0c6044551d282aac6ced  ./retrieved/ro
 64ed38c5b7693e60d06c06b220b3c5bda5f2e40878247289219f285e0f575a8d  ./retrieved/romenagri/data/corp_ur.txt
 bcb411a72438174a11335eb616842a56f04ac881a6dbc4623b2eef447a28a28e  ./retrieved/romenagri/CITATION.cff
 745b432ea27b7e675625662faaf550b3d55840ad18fb00259cc48db2e3aae320  ./retrieved/romenagri/langs/hindi_c.tsv
+52a5a945c96564792596fe384dd133b86462efe822fefa7c8da16009d812575d  ./retrieved/romenagri/langs/urdu_c.tsv
+9cea4561d9fab0df1db412400442ec8ab5a95ab846756404ae7213b9237a91b5  ./retrieved/romenagri/langs/persian_c.tsv
+7f64a3d56d6aaf948978bed56b866d4adb5912b1b3e686820b4a80c168167fff  ./retrieved/romenagri/langs/arabic_c.tsv
 be329e0f28b5da6e94b44705a1173640801f5958718318eb5a4cb82b5f819f8c  ./retrieved/romenagri/langs/lang_punjabi.csv
 58402efceec7c9fc6723f2fd6456db1c7d0206854b2c6963ac50986f86fb1266  ./retrieved/romenagri/langs/punjabi_c.tsv
+6fae7af704b255d1fe6143a4d05286fab2f8fb8c0c39b029846b9c6d7191bf92  ./retrieved/romenagri/langs/UrduC_sample.uhin
 7c6b8bbe989e117cd9bf0306ea1e41447e8ff3b22ebb3f012fa7f7accd7c8d79  ./retrieved/romenagri/langs/nepali_c.tsv
 667ec8991ee5c45911891add9361911d072875293471f0b603924f8192092105  ./retrieved/romenagri/langs/sanskrit_c.tsv
 c01185c02778cebbe28514aeaee997b89646bc18e3e774bff79e93b05f17a92e  ./retrieved/romenagri/langs/marathi_c.tsv
@@ -317,6 +325,8 @@ cbd2761808c45d5bf51d1c0e0ce031ce2306eac802e55f4df3bbf6dbd49173f5  ./attest/17878
 ea400fd9d7ab6f9958209aa248b750d4ca21bd44ede7836998c521a571e10cb2  ./attest/1787853655.926623957/MANIFEST.sha256
 1076f1175e4040ab28cc56ee163214e82ee59f340d02ab2ed778420670a9ff58  ./attest/1787853222.650354702/MANIFEST.sha256.ots
 ef80566b8c6644d5de31944b3d10e5992ab26b909d7f622d8c4ac7f90d494a1e  ./attest/1787853222.650354702/MANIFEST.sha256
+8bf513b4d6109f105b44d7dd03f2a565645a442154d0c6ec83f248435347355c  ./attest/1787889390.364037833/MANIFEST.sha256.ots
+199862fc0245e7e3ed17cd7d1d0e363a8c1412678f60500592f9dd3cba7176b5  ./attest/1787889390.364037833/MANIFEST.sha256
 226e5344a2af8bf43987d29516e264207c51aea71f6161c8a60c95d4bf855d40  ./attest/1787854727.306912733/MANIFEST.sha256.ots
 8592a5a3b6d4004c774af187f3a164e2200fb5f35a9f7458b2ea8abad7b148a8  ./attest/1787854727.306912733/MANIFEST.sha256
 5e4c657f13391ffe867807b13bb00a8c1420808502469678a17f527eadd221fd  ./attest/1787853145.340145771/MANIFEST.sha256.ots
@@ -346,7 +356,7 @@ ac1136ba58053580afaa1a1a311d8b2fab08871fd96b1f76b5ac1bb9c2b206ee  ./docs/sw.js
 67cc03659ecb3ad87d147cc4edd8a4e02f39c7c50636fb3980ce5bcd2bb36097  ./docs/ARCHITECTURE.md
 539c87a08f72572e0b7beff288edc89e0a3cea04926963a5ec60a4f99d5f5116  ./docs/CONTRACT.md
 f8dd45a1b891b4dab80f061cb8c6999928d6368ecc4af0d74c26513454375e4e  ./docs/workbench.css
-90798828bc970b7f3f8ffa92e76e1b57ed7db28c5125b68c0ddcda40a2482f14  ./docs/index.html
+7effca1e318112d61bf183e8c09f4a38af0bb77d9a1165209bb23c067b57425f  ./docs/index.html
 afac1224c64701b14b6bf7931d05ded3181cd611d9470a166e7e215067c187d8  ./docs/punjabi.html
 0538ed10605bbe295e8fe77fe44343f8b2a6f07c75a1307aa7a5ed228cf0b525  ./docs/site.css
 02abbf016ae715561d3fd96220602ddffdc2a2512594657eb2d01b33623d460e  ./docs/HINDAWI_RETRIEVED.md
@@ -361,6 +371,7 @@ ea260a0138b931363642ecad0ceb0d649c8b5ef62a68d5c56fd2d01b3e151f76  ./docs/view.ht
 8026026bd14fa91c7868a18711c2c50883f60613b1ddf7543624781ef90633db  ./docs/languages.html
 123b2f81ee322bddcba85d57a91cf6feadfcac269bcc2afc14375b0003de768d  ./docs/cyclers.html
 90476129dc6f4b055440bae0b7d82597d56e8ff1037515aa34b05526349942fd  ./docs/vtterm.js
+90beebd6113f67551d7d8a4b19cd88432d7a47f725f28453536b4b5d3f059d7a  ./docs/perso_arabic.html
 ef765bc243a32702b82c00daab3741d5a7bdb27840f2c2a27c880186e8dd7213  ./docs/SUPPORTED_LANGUAGES.md
 51f950b8bdfefb829a51542d3d29f0aa477c0cbb58f13252b847338a3e869d8d  ./docs/hindawi.html
 a5aec99f116a1e486e00b60c39915bea7f10d520e49b41d639423bb15bf9414b  ./docs/V2.md
@@ -384,6 +395,7 @@ a37aac72def40e2a7424a293d34e4c30de39bd2a8f47feb969e41b4adaa65f27  ./scripts/prov
 e1be66cba0ad5d8d5add625a3c9043a1f0c0267499e722f29a6a3887c52d626b  ./scripts/cycler_torture.mjs
 2a306725f31285d28d70e4b2d5d387e7556702e2ad0da502acfad825f2375a30  ./scripts/prove_frontend_theorem.mjs
 3be7672b8b3e0a3f6bd3d06b900e87ff2d01485ed284142d524adc7f2729a1f5  ./scripts/autotune.mjs
+f96c1f5f14e2adc208668ae06bbebb6571fdefde437917f15b442f24fba0dadc  ./scripts/explore_perso.mjs
 b3acb35425ba938c0c02c7eb650910d09373f2091e3764f323cf8c68a6a42f02  ./scripts/selfhost.mjs
 3f9c4a097432ac91af8c32d807e50e7b5c40b04aafe7558d4d0d3f59f69a81b4  ./scripts/prove_v2.mjs
 843a928be6a26fad87ba3d2b7380df91dbece582837a4e6c1ee5e6a2a7e764ac  ./scripts/prove_transducer.mjs
@@ -442,6 +454,7 @@ a52770992445635de374e9410ce8534609ae9bd59854fc77f8a69f19bf66a9c3  ./runtime/ttf.
 bd562db7d886f9c0dec1c441a627058e7083cbd3aa1e631993b95ab94ed0a7da  ./runtime/provenance.js
 47061e07c863be485f886c4d85ff57a731d87834b381c0267aa55c3f4a43ed99  ./runtime/mini_langs.js
 369b7803326a87b709ef094cc700bd6dfc82d2fd0d6d7be021e4f4fc1a7f7a95  ./runtime/dosfont.js
+4659cd99e9d424a61c7f6de1027b0e1077da16387ef642d21516daf91d7c641e  ./runtime/perso_arabic.js
 cd16f4d0a164af500b12537aa25b58d0bb6b7dc5f67cd67cb2683ff0f426f2db  ./runtime/shaili.js
 10b61060a29cfe4e540f692a83562f0e91bc0ed9405f7ce77ade842561a71966  ./runtime/cyclers.js
 5058a169f795a906cd688e54b3d7b307fdf935362aea65d54d8135f1d80ec313  ./runtime/fonts.js
@@ -463,7 +476,7 @@ f66c6a917ce2b91fc5940d712a055553a0bca799caa544eddec55848b97c7e22  ./runtime/gurm
 bd2bc915e867051eab3456f7b058199e641ed0729059051fb1c208ed89fb9a40  ./runtime/oci.js
 a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compiler.genB.json
 a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compiler.genA.json
-ed57a02a3e1a41ff00cbcc0a27289e96b6eb4c24e806bf436d22fc3a68b43840  ./build/theorem-proof.json
+12e08cfdebadfe3dede19e78947779b0f7a2f54351cb978983bfeaac75c726f0  ./build/theorem-proof.json
 57622a3c58f21fda3e59a89562f89c396da2be1bc25096638b3b731bd2f9a83c  ./build/hello.ir.json
 b87e431514090b08bb024e8f3cedc090e2c6deaae6390100a93c3ee9e7948512  ./build/bootstrap-evidence.json
 38c4aff56532d3d624547f92e6cf7f2db29ab862c74879ef480929ad9ff14670  ./build/spec-realization.json
@@ -473,7 +486,7 @@ a129d9ffa53f1e0b80c3bc78869c5629150753ece139577416e758ac282de3f1  ./build/compil
 1911094e71015af195974f77e6143b73bec622cc5706367dc6ab03235c79196e  ./build/frontend-theorem.json
 a095854f21d814a1bded10be926e716927166a8eb36ff1ba15e134f3244e866e  ./build/v2-theorem-proof.json
 80f7844c3a6d6ba7a2cb79d6468a2f2435394e7a169678afb5c6f5b2bebc5e1a  ./build/add.generated.mjs
-6040c7bb26385c7ce15a8cec1988dfd2dafd652c9bd09d1e628cf111da22b38d  ./build/selfhost-evidence.json
+78cd1a73ac2bc4e77f26d9fd84f0524387638d79eaa1053fbe19e8fc1edbc9cd  ./build/selfhost-evidence.json
 d1d64129363c16bc54eeeb8cada1a4187bfd9f11b9a77d94c80790170a5c2e09  ./build/spec-run.json
 91431bc75a54e876ee0bd832d4073595eaf1774a7062df6d026efe535b872716  ./languages/forth.pni
 db301542884d7af5fa782e05872043f695544973ef081f1b358871ecf9a0a8bb  ./languages/typescript.pni
@@ -512,7 +525,7 @@ c77638c8470a13c4f6ec6cb6a1c99387d8be42a6c52d1542f6a2c48862768dc7  ./REQUIREMENTS
 571e5905a13157c0e24dfb5c6ea3ebfabedcea92717d26dca156cb9e2118f765  ./docker/Dockerfile.generated
 621e239abe30fdc740cf767e6cbf282a1d50047e35033c2a8e500229fcffea10  ./docker/Dockerfile
 0d73e10d6871a1d561ee352a5745ea7ea4d9cfc677e645f0ef65ab2c5b034283  ./src/index.js
-bea885239258418190bde9aa39e190a17cbef531d9702fb7c864d571bf786e2c  ./src/cli.js
+b324af6d79058ab7bd7f51961230d4d441722067488679d751b83a43c24d67da  ./src/cli.js
 0795cca3a13e0127492b63aa3ef3952e535a10407bc0a8dc75ad38ba44587552  ./src/panini/lexer.pni
 d8283876089b20c8ae236583bd2e3d223e8ea5196e2b70411f414b87e3593aae  ./src/panini/yacc.pni
 d5745e91ce39fe54ee7fd215ed53206a9390cab9594dce0f6720def241c3e7c6  ./src/panini/lex.pni
@@ -557,7 +570,7 @@ ba945ae8c87405f4bd12cb0998d09c4ff41be0891a0f6a3f31e04ac4d2a76f09  ./website/app.
 78c771f5c3285c04b27a1655f0389c64184e852d8c3911dca45edb7ebea3a959  ./website/status.json
 029f13fb527c3274a2ac63063bbb5adb458934ea14594e55b89be58c1c8f662d  ./website/vt100.js
 683bdc9204f0f1672a4c8613eaf75c7753b999186db58ecef91a4495f2435881  ./website/README.md
-8fdc0cb911545a6c6d65f8eb48da27f44ad8f0ec1e25752194bdf7c68f35a572  ./MANIFEST.sha256
+2a91a5573430cadcc33624446b5bac53ff30c1700575f8a30fd0e7e7f4174ff5  ./MANIFEST.sha256
 cba5243834a58801d5f3460c1d21fe28c33b1e1c1bb8ce7513e1948eed3a19e4  ./fred.txt
 cce2fb28e7735b5a2a094ac190a3a91da4672b15d7ca901dd45dd13a9fddfa32  ./examples/factorial.pni
 6249f4b28afe520d345c68e79f94096d186c1224733d8490c91ec30817829873  ./examples/torch_like.py
