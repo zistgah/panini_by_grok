@@ -57,7 +57,9 @@ This is the working contract for changes to this tree.
     are not overwritten. APCISR and Romenagri maps are retrieved.
     Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
 26. `docs/nb.frozen.html` is the approved 2022 notebook chrome. Do not restyle it. Additive boxes live on `docs/nb.html`.
-27. Collaborator work arrives in `deposits/inbox/`. Do not invent maps there. Process; do not bypass Unicode→ACII→Romenagri→lex.
+28. A language standard is the keyword table plus the ten clauses. It is not an English ISO text in another script. Identifier dictionaries are presentation. Compilation uses the original identifiers.
+29. CSV/dialect/glossary submissions land in `deposits/`. Gaps stay listed. Eighth Schedule languages without a TSV are not invented.
+
 
 
 

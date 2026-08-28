@@ -409,9 +409,96 @@
     }
   }
 
+  function walkTokens(src) {
+    const s = String(src);
+    const out = [];
+    let i = 0;
+    while (i < s.length) {
+      const ch = s[i];
+      if (ch === '"') {
+        let j = i + 1;
+        while (j < s.length && s[j] !== '"') { if (s[j] === "\\") j += 2; else j++; }
+        out.push({ kind: "str", text: s.slice(i, j + 1) });
+        i = j + 1; continue;
+      }
+      if (ch === "'") {
+        let j = i + 1;
+        while (j < s.length && s[j] !== "'") j++;
+        out.push({ kind: "str", text: s.slice(i, j + 1) });
+        i = j + 1; continue;
+      }
+      const o = ch.codePointAt(0);
+      const start = (o >= 65 && o <= 90) || (o >= 97 && o <= 122) || o === 95 || o >= 0x80;
+      if (start) {
+        let j = i + ch.length;
+        while (j < s.length) {
+          const c = s[j];
+          const p = c.codePointAt(0);
+          const ok = (p >= 48 && p <= 57) || (p >= 65 && p <= 90) || (p >= 97 && p <= 122) || p === 95 || p >= 0x80;
+          if (!ok) break;
+          j += c.length;
+        }
+        out.push({ kind: "id", text: s.slice(i, j) });
+        i = j; continue;
+      }
+      out.push({ kind: "ch", text: ch });
+      i++;
+    }
+    return out;
+  }
+  function tryRmn(id) {
+    if (!id) return "";
+    if (/^[\u0900-\u097F]+$/.test(id)) return devaToRmn(id);
+    return "";
+  }
+  function identDict(src, lang, glossary) {
+    glossary = glossary || {};
+    const kws = new Set();
+    const L = B.langs[lang];
+    if (L) for (const r of L.rows) if (r.native) kws.add(r.native);
+    const seen = Object.create(null);
+    const rows = [];
+    let n = 0;
+    for (const t of walkTokens(src)) {
+      if (t.kind !== "id") continue;
+      if (kws.has(t.text)) continue;
+      if (seen[t.text]) continue;
+      n++;
+      const rec = {
+        original: t.text,
+        slot: "id_" + n,
+        romenagri: tryRmn(t.text),
+        view: glossary[t.text] || tryRmn(t.text) || ("id_" + n)
+      };
+      seen[t.text] = rec;
+      rows.push(rec);
+    }
+    return rows;
+  }
+  function projectView(src, fromLang, toLang, glossary) {
+    const from = B.langs[fromLang];
+    const to = B.langs[toLang];
+    const c2to = Object.create(null);
+    if (to) for (const r of to.rows) if (r.c) c2to[r.c] = r.native;
+    const fromPairs = from ? from.rows.slice().sort((a, b) => [...b.native].length - [...a.native].length) : [];
+    const dict = identDict(src, fromLang, glossary);
+    const idMap = Object.create(null);
+    for (const d of dict) idMap[d.original] = d.view;
+    let out = "";
+    for (const t of walkTokens(src)) {
+      if (t.kind === "id") {
+        const row = fromPairs.find((r) => r.native === t.text);
+        if (row && c2to[row.c]) { out += c2to[row.c]; continue; }
+        if (idMap[t.text]) { out += idMap[t.text]; continue; }
+      }
+      out += t.text;
+    }
+    return { view: out, dictionary: dict, fromLang, toLang, compile_source: src };
+  }
+
   global.PANINI_NB = {
     load, flatten, unflatten, persoToDeva, devaToPerso, compile, run, runC, runBasic, runAsm, runJava,
-    devaToRmn, rmnToDeva, lexRmn,
+    devaToRmn, rmnToDeva, lexRmn, projectView, identDict, walkTokens,
     hin2std(src, lang, shaili) { return compile({ src, lang, shaili }).host; },
     std2hin(src, lang) {
       const L = B.langs[lang]; let out = src;

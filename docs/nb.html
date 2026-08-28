@@ -91,10 +91,19 @@
     <label>भाषा (22 + Perso-Arabic)</label>
     <select id="lang"></select>
     <button class="b-demo" id="loadlang">इस भाषा का गुरु डेमो</button>
+    <label>देखें (View as) — संकलन नहीं</label>
+    <select id="viewlang"></select>
+    <button class="b-x" id="doView">दृश्य दिखाएँ</button>
   </div>
 </div>
 <p class="warn" id="perso-warn" hidden>Perso-Arabic does not round-trip. Lowest-layer debug (gdb, nm) will not reconstruct the original letters. That is named, not hidden.</p>
 <div class="stages">
+  <div class="stage">
+    <h3>दृश्य (View) — dictionary overlay</h3>
+    <p class="why">Keywords follow the other standard. Names are a dictionary. Compile still uses the file on the left.</p>
+    <textarea id="view" readonly placeholder="View as…"></textarea>
+    <table id="dict" style="font-size:12px;width:100%"><thead><tr><th>original</th><th>view</th><th>Romenagri</th></tr></thead><tbody></tbody></table>
+  </div>
   <div class="stage">
     <h3>1. एक लिपि — Devanagari hub</h3>
     <p class="why">आपकी लिपि यहाँ एक जगह मिलती है। पुराने औज़ार यहीं से चलते हैं।</p>
@@ -136,7 +145,10 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
     o.value = k; o.textContent = k + (B.perso_family.includes(k) ? " (lossy)" : "");
     if (k === "hindi") o.selected = true;
     lang.appendChild(o);
+    const v = o.cloneNode(true);
+    document.getElementById("viewlang").appendChild(v);
   });
+  document.getElementById("viewlang").value = "hindi";
   function show(r, exec) {
     document.getElementById("flat").value = r.flattened || "";
     document.getElementById("rmn").value = r.romenagri || "";
@@ -200,6 +212,13 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
     }).catch(() => {
       document.getElementById("out").value = "No retrieved demo for "+k+". Not invented. See deposits/TASKS.md.";
     });
+  };
+  document.getElementById("doView").onclick = () => {
+    const src = document.getElementById("prog").value;
+    const r = PANINI_NB.projectView(src, lang.value, document.getElementById("viewlang").value);
+    document.getElementById("view").value = r.view;
+    document.getElementById("dict").querySelector("tbody").innerHTML =
+      r.dictionary.map((d) => "<tr><td>"+d.original+"</td><td>"+d.view+"</td><td>"+(d.romenagri||"")+"</td></tr>").join("");
   };
   document.getElementById("up").onclick = () => document.getElementById("file").click();
   document.getElementById("file").onchange = (e) => {

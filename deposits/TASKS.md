@@ -28,6 +28,8 @@ Pipeline invariant: Unicode → ACII → Romenagri → shaili lex → host. No J
 | T-PNI-GO | open | `languages/go.pni` | |
 | T-PNI-ASM | partial | `languages/assembly.pni` | must consume yantra host, not a hello stub |
 | T-PERSO-RT | open | Named residue list for the 4 ISO 15919 Aran keys that miss Deva | linguist lab, not a new map |
-| T-NB-LAYERS | merged-this-turn | Notebook: separate boxes + 8th-schedule demos | frozen chrome preserved |
+| T-STD-SHAILI | open | Fill guru-style standards for BASIC/C++/Java/ASM from retrieved shaili lex | docs/standards/<lang>-<shaili>.html |
+| T-STD-TRANSLATE | open | Translate TEMPLATE.md ten clauses; do not machine-fill keyword tables | deposits/standards/<lang>/TEMPLATE.csv |
+
 
 When you take a row, set `taken` and put your name/model in `inbox/<id>/NOTE.md`.
