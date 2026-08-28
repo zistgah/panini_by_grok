@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI console — 486 in the browser</title>
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    #term { background:#000; color:#cde; font:15px/1.35 ui-monospace,monospace; padding:.7rem; min-height:22rem;
+            border:1px solid #c9a227; white-space:pre-wrap; overflow:auto; }
+    #term input { background:#000; color:#cde; border:0; font:inherit; width:70%; outline:none; }
+  </style>
+</head>
+<body class="site">
+<header class="site-head">
+  <strong>CONSOLE</strong>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="nb.html">Notebook</a>
+    <a href="workbench.html">Workbench</a>
+    <a href="chakra/">Chakra</a>
+  </nav>
+</header>
+<main class="site-main">
+  <h1>Online console</h1>
+  <p>The architect started in the mid-1990s on a 486 with 4&nbsp;MB RAM and about 500&nbsp;MB of disk. That machine now fits in this tab. The terminal is VT100. The shells are applications on it.</p>
+  <p>
+    Shell:
+    <label><input type="radio" name="sh" value="bash" checked /> bash</label>
+    <label><input type="radio" name="sh" value="command.com" /> COMMAND.COM</label>
+  </p>
+  <div id="term"></div>
+  <p class="fine">VFS is in-memory. Not a Linux distro. POSIX/OCI remain later layers. Type <code>help</code>.</p>
+</main>
+<script src="console.js"></script>
+<script>
+(function () {
+  const term = document.getElementById("term");
+  const C = window.PANINI_CONSOLE;
+  let sh = "bash";
+  let buf = "PANINI 486-class console. 4 MiB would have been luxury.\nType help.\n";
+  function prompt() { return sh === "bash" ? "panini$ " : "C:\\> "; }
+  function draw() {
+    term.innerHTML = buf.replace(/</g,"<") + "<span>" + prompt() + "</span><input id='cmd' autocomplete='off' />";
+    const inp = document.getElementById("cmd");
+    inp.focus();
+    inp.onkeydown = (e) => {
+      if (e.key !== "Enter") return;
+      const line = inp.value;
+      buf += prompt() + line + "\n";
+      buf += (C ? C.exec(sh, line) : line) + (line ? "\n" : "");
+      draw();
+    };
+  }
+  document.querySelectorAll("input[name=sh]").forEach((r) => {
+    r.onchange = () => { sh = r.value; buf += "[shell " + sh + "]\n"; draw(); };
+  });
+  draw();
+})();
+</script>
+</body>
+</html>

@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-67. Formalize toward 100% linguistic equity. Rakhi/Rakshabandhan today. Pull project-ilm/chakra; implement with PANINI.
+68. Numbered requirements with traceability; architecture and design docs. Improve C toward ISO C piece by piece; formal lex and yacc (virtualized backend). Online console (486 / 4 MiB metaphor). Zip automation / spin-off. Wikipedia and press on Hindawi Programming System. Trivia: Chakra horoscope of the build; respectful, not prediction.
+
 
 
 

@@ -103,5 +103,16 @@
     if (c === "HELP") return "DIR CD TYPE ECHO CLS MD DEL COPY VER HELP";
     return "Bad command or file name";
   }
-  g.PANINI_CONSOLE = { bash, commandCom, state: st, ls };
+  g.PANINI_CONSOLE = {
+    bash, commandCom, state: st, ls,
+    exec(sh, line) {
+      const L = String(line || "").trim();
+      if (L === "help" || L === "HELP") {
+        return sh === "bash"
+          ? "pwd ls cat echo mkdir cd rm help"
+          : "DIR CD TYPE ECHO CLS MD DEL COPY VER HELP";
+      }
+      return sh === "bash" ? bash(L) : commandCom(L);
+    }
+  };
 })(window);

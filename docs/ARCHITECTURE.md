@@ -1,114 +1,45 @@
-# PANINI architecture — POSIX → OCI → standard environments
+# Architecture — panini_by_grok
 
 Copyright (C) 1993-2026 Abhishek Choudhary  
-GPL-3.0-or-later  
-tree-rev: 2026.08.28
+SPDX-License-Identifier: GPL-3.0-or-later  
 
-## Two independent invariants
+This sibling tree is a Stage-0 realization of `PANINI_SELF_HOSTING_SPEC` plus ILM/Hindawi retrieval and a Pages workbench. It is not `zistgah/panini` (prompt-cycle language) and not `panini_by_claude`.
 
-1. T_FRONTEND_PANINI — every language frontend is a PANINI module (GCC/LLVM shape).
-2. T_POSIX_OCI_ENVIRONMENTS — official compilers live in POSIX/OCI environments.
-
-Neither conjunct implies the other.
-
-## The mistake to stop making
-
-Re-implementing C, Python, Fortran, Julia *as parsers inside PANINI*
-does not yield language-standard implementations.
-
-Standard C is gcc/clang + libc.  
-Standard Python is CPython.  
-Those live in a **POSIX user space** (and today, usually an **OCI container**).
-
-PANINI’s job is to *govern* that stack with linguistic equity,
-not to replace libc.
-
-## Target stack
+## Context view
 
 ```
-Human  (any script / ILM projection / blocks / .pni)
-                │
-                ▼
-        PANINI IR + axes + provenance
-                │
-     ┌──────────┼──────────────┬─────────────┐
-     ▼          ▼              ▼             ▼
-  JS interp   POSIX         OCI runtime    Emulator
-  (today)     userspace     (docker/      (later:
-              personality    podman/       qemu,
-              on VFS         host)         user-mode)
-     │          │              │
-     └──────────┴──────┬───────┘
-                       ▼
-            Standard environments
-            gcc / CPython / gfortran / rustc / …
-            running official test suites
+Humanesque (constitution)     AyeAI triad (cognition · CNS · embodiment)
+        \                         /
+         \                       /
+          Zistgah (ecosystem) — cyclers — GENIE
+                    |
+         FAKIR (domain) × PEDLER (dynamics) × ILM (representation)
+                    |
+              PANINI (whole-structure language)
+                    |
+         Hindawi pipeline + Chakra (time) + C/lex/yacc frontends
+                    |
+         virtualized JS backend  →  later gcc / POSIX / OCI
 ```
 
-## Layers we will actually build, in order
+## Logical layers
 
-### L0 — Already here (subset)
-
-IR VM, PANINI self-host subset, VFS, VT100, bash subset.
-
-### L1 — POSIX personality (this revision)
-
-A process table, file descriptors, and a syscall surface
-(`open`, `read`, `write`, `close`, `chdir`, `getcwd`, `mkdir`, `unlink`, `stat`)
-implemented on the existing VFS.
-
-This is **not** a Linux kernel. It is a user-space POSIX *personality*
-so later we can attach a real libc or a container rootfs.
-
-### L2 — OCI / Docker
-
-PANINI emits an OCI config and, when a host engine exists
-(`docker` or `podman`), runs it.
-
-When no engine exists, the same config is still a first-class artifact
-(provenance + replay).
-
-### L3 — Standard environments
-
-Named images:
-
-| Env | Image intent | Official suite |
+| Layer | What | This tree |
 |---|---|---|
-| `env-c` | gcc + libc | gcc torture / c-testsuite |
-| `env-cxx` | g++ + libstdc++ | libstdc++ |
-| `env-python` | CPython | `Lib/test` |
-| `env-fortran` | gfortran | gfortran torture |
-| `env-julia` | julia | Julia `test/` |
-| `env-rust` | rustc | rustc ui |
-| `env-go` | golang | `go test` |
+| L representation | ILM, Romenagri, flatten, name-projection | retrieved + notebook |
+| L language | PANINI + shailis + foreign frontends in PANINI | C iter 1; others subset |
+| L tools | lex, yacc | formal tables, virtualized |
+| L time | CHAKRA | retrieved v1.4.1 |
+| L execution | interpreter, IR VM, VFS, VT100 | browser |
+| L workbench | Pages, PWA, console, mez, cyclers | docs/ |
+| L estate | explorer instrument, spin-off apps/ | DOI 22122422 |
 
-PANINI does not become those compilers. It *launches* them.
+## C / lex / yacc (foundations)
 
-### L4 — Emulators (not this revision)
+ISO C is **not** complete. Iteration 1: preprocessor skip, `int`/`char`/`void`, `if`/`else`/`while`/`for`, comparisons, `printf`, `/* */`, functions. Host: `runtime/mini_langs.js`. PANINI lexer/parser: `src/panini/frontends/c.pni`.
 
-QEMU system or user-mode, or a JS CPU, only after L1–L3 are boring.
+lex/yacc: `runtime/lexyacc_formal.js` (table-driven lexer + yacc-shaped expr grammar). Not AT&T lex / GNU bison. Next iterations: generate C from `.l` / `.y` through the Hindawi Shabda/Vyaakaran pipeline.
 
-## What “complete C” means under this architecture
+## Physical (Pages)
 
-Not “a bigger recursive-descent parser.”
-
-Complete C means:
-
-1. POSIX fds and a process can hold a C source file.
-2. An `env-c` container has `gcc`.
-3. `gcc` compiles that file.
-4. The gcc torture suite can be scheduled as a PANINI cycler.
-5. Provenance records compiler version + suite results.
-
-Until step 4 is green, status is **NOT CONFORMING**.
-
-## Equity mapping
-
-```
-ILM          → how the human writes
-PANINI IR    → what was meant
-POSIX/OCI    → where it runs
-gcc/CPython  → what “the language” is, legally
-```
-
-Those four must stay separable. That is the architecture.
+`docs/` is the GitHub Pages root. Spin-off trees under `apps/<org>/<repo>`. Zip automation reads `SPINOFF.json`.

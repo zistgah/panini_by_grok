@@ -58,7 +58,7 @@ FUNCTION cLex(source)
                                     i = i + 1
                                 END
                                 kind = "IDENT"
-                                IF raw == "int" OR raw == "return" OR raw == "void" OR raw == "printf"
+                                IF raw == "int" OR raw == "return" OR raw == "void" OR raw == "printf" OR raw == "if" OR raw == "else" OR raw == "while" OR raw == "for" OR raw == "char"
                                     kind = "KW"
                                 END
                                 APPEND(tokens, cTok(kind, raw))

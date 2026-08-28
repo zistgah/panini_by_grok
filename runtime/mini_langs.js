@@ -30,14 +30,19 @@ function lex(s) {
   const t = [];
   let i = 0;
   const n = s.length;
-  const kw = /^(fn|func|function|let|const|var|mut|pub|return|if|else|package|main|print|println|Println|console|log|debug|fmt|std|int|void|def|PROGRAM|END|PRINT|INTEGER)$/;
+  const kw = /^(fn|func|function|let|const|var|mut|pub|return|if|else|while|for|package|main|print|println|Println|console|log|debug|fmt|std|int|char|void|def|PROGRAM|END|PRINT|INTEGER)$/;
   while (i < n) {
     const c = s[i];
     if (/\s/.test(c)) { i++; continue; }
     if (c === "/" && s[i + 1] === "/") { while (i < n && s[i] !== "\n") i++; continue; }
+    if (c === "/" && s[i + 1] === "*") { i += 2; while (i < n && !(s[i] === "*" && s[i + 1] === "/")) i++; i += 2; continue; }
     if (c === "#") { while (i < n && s[i] !== "\n") i++; continue; }
-    if (c === "!" && s[i + 1] === "=") { t.push({ k: "OP", v: "!=" }); i += 2; continue; }
+    if (c === "<" && s[i + 1] === "=") { t.push({ k: "OP", v: "<=" }); i += 2; continue; }
+    if (c === ">" && s[i + 1] === "=") { t.push({ k: "OP", v: ">=" }); i += 2; continue; }
     if (c === "=" && s[i + 1] === "=") { t.push({ k: "OP", v: "==" }); i += 2; continue; }
+    if (c === "!" && s[i + 1] === "=") { t.push({ k: "OP", v: "!=" }); i += 2; continue; }
+    if (c === "+" && s[i + 1] === "+") { t.push({ k: "OP", v: "++" }); i += 2; continue; }
+    if (c === "-" && s[i + 1] === "-") { t.push({ k: "OP", v: "--" }); i += 2; continue; }
     if (c === ":" && s[i + 1] === "=") { t.push({ k: "OP", v: ":=" }); i += 2; continue; }
     if ("(){}[],.;:+-*/%<>=!".includes(c)) { t.push({ k: "OP", v: c }); i++; continue; }
     if (c === '"' || c === "'") {
@@ -67,6 +72,17 @@ function parse(toks, lang) {
   const eat = () => toks[i++];
   const at = (v) => peek().v === v;
   function expr() {
+    return cmp();
+  }
+  function cmp() {
+    let left = add();
+    while (at("==") || at("!=") || at("<") || at(">") || at("<=") || at(">=")) {
+      const op = eat().v;
+      left = { op: "bin", operator: op, left, right: add() };
+    }
+    return left;
+  }
+  function add() {
     let left = term();
     while (at("+") || at("-")) { const op = eat().v; left = { op: "bin", operator: op, left, right: term() }; }
     return left;
@@ -108,6 +124,16 @@ function parse(toks, lang) {
     if (at("(")) { eat(); const e = expr(); if (at(")")) eat(); return e; }
     eat();
     return { op: "const", value: 0 };
+  }
+  function blockOrOne() {
+    if (at("{")) {
+      eat();
+      const body = [];
+      while (!at("}") && peek().k !== "EOF") body.push(stmt());
+      if (at("}")) eat();
+      return body;
+    }
+    return [stmt()];
   }
   function stmt() {
     const t = peek();
@@ -169,18 +195,72 @@ function parse(toks, lang) {
       if (peek().v === "END") eat();
       return { op: "def", name, params, body };
     }
-    if (t.v === "return") { eat(); return { op: "return", arg: expr() }; }
-    if (t.v === "let" || t.v === "const" || t.v === "var" || t.v === "int" || t.v === "INTEGER") {
+    if (t.v === "if") {
+      eat();
+      if (at("(")) eat();
+      const cond = expr();
+      if (at(")")) eat();
+      const then = blockOrOne();
+      let els = null;
+      if (peek().v === "else") { eat(); els = blockOrOne(); }
+      return { op: "if", cond, then, else: els };
+    }
+    if (t.v === "while") {
+      eat();
+      if (at("(")) eat();
+      const cond = expr();
+      if (at(")")) eat();
+      return { op: "while", cond, body: blockOrOne() };
+    }
+    if (t.v === "for") {
+      eat();
+      if (at("(")) eat();
+      const init = at(";") ? null : stmt();
+      if (at(";")) eat();
+      const cond = at(";") ? { op: "const", value: 1 } : expr();
+      if (at(";")) eat();
+      let incr = null;
+      if (!at(")")) {
+        if (peek().k === "ID" && toks[i + 1] && toks[i + 1].v === "=") {
+          const name = eat().v; eat();
+          incr = { op: "assign", name, value: expr() };
+        } else if (peek().k === "ID" && toks[i + 1] && (toks[i + 1].v === "++" || toks[i + 1].v === "--")) {
+          const name = eat().v; const op = eat().v;
+          incr = { op: "assign", name, value: { op: "bin", operator: op === "++" ? "+" : "-", left: { op: "load", name }, right: { op: "const", value: 1 } } };
+        } else incr = stmt();
+      }
+      if (at(")")) eat();
+      return { op: "for", init, cond, incr, body: blockOrOne() };
+    }
+    if (t.v === "return") {
+      eat();
+      const arg = peek().v === ";" ? { op: "const", value: 0 } : expr();
+      if (at(";")) eat();
+      return { op: "return", arg };
+    }
+    if (t.v === "let" || t.v === "const" || t.v === "var" || t.v === "int" || t.v === "INTEGER" || t.v === "char") {
       eat();
       if (peek().v === "mut") eat();
       const name = eat().v;
-      if (at("=") || at(":=")) eat();
-      else if (at(":")) { eat(); while (!at("=") && peek().k !== "EOF") eat(); if (at("=")) eat(); }
-      return { op: "assign", name, value: expr() };
+      if (at("=") || at(":=")) {
+        eat();
+        const v = expr();
+        if (at(";")) eat();
+        return { op: "assign", name, value: v };
+      }
+      if (at(":")) { eat(); while (!at("=") && peek().k !== "EOF" && peek().v !== ";") eat(); if (at("=")) eat(); else return { op: "assign", name, value: { op: "const", value: 0 } }; return { op: "assign", name, value: expr() }; }
+      if (at(";")) eat();
+      return { op: "assign", name, value: { op: "const", value: 0 } };
     }
     if (t.k === "ID" && toks[i + 1] && (toks[i + 1].v === "=" || toks[i + 1].v === ":=")) {
       const name = eat().v; eat();
-      return { op: "assign", name, value: expr() };
+      const v = expr();
+      if (at(";")) eat();
+      return { op: "assign", name, value: v };
+    }
+    if (t.k === "ID" && toks[i + 1] && (toks[i + 1].v === "++" || toks[i + 1].v === "--")) {
+      const name = eat().v; const op = eat().v;
+      return { op: "assign", name, value: { op: "bin", operator: op === "++" ? "+" : "-", left: { op: "load", name }, right: { op: "const", value: 1 } } };
     }
     if (t.v === "PRINT" || t.v === "print") {
       eat();
@@ -204,11 +284,18 @@ function evalExpr(e, env) {
     if (e.operator === "+") return l + r;
     if (e.operator === "-") return l - r;
     if (e.operator === "*") return l * r;
-    return l / r;
+    if (e.operator === "/") return r ? l / r : 0;
+    if (e.operator === "==") return l === r ? 1 : 0;
+    if (e.operator === "!=") return l !== r ? 1 : 0;
+    if (e.operator === "<") return l < r ? 1 : 0;
+    if (e.operator === ">") return l > r ? 1 : 0;
+    if (e.operator === "<=") return l <= r ? 1 : 0;
+    if (e.operator === ">=") return l >= r ? 1 : 0;
+    return 0;
   }
   if (e.op === "call") {
     const n = e.name;
-    if (n === "print" || n === "println" || n === "Println" || n === "log" || n === "PRINT") {
+    if (n === "print" || n === "println" || n === "Println" || n === "log" || n === "PRINT" || n === "printf") {
       let v = 0;
       for (const a of e.args) {
         const x = evalExpr(a, env);
@@ -230,21 +317,51 @@ function evalExpr(e, env) {
 function evalBlock(stmts, env, prints) {
   env.__prints = prints;
   let last;
+  const ret = (v) => ({ __ret: true, v });
+  const unwrap = (r) => (r && r.__ret ? r : null);
   for (const s of stmts || []) {
     if (s.op === "nop") continue;
     if (s.op === "def") {
       env[s.name] = (args) => {
         const local = Object.create(env);
         s.params.forEach((p, i) => { local[p] = args[i]; });
-        return evalBlock(s.body, local, prints);
+        const r = evalBlock(s.body, local, prints);
+        return r && r.__ret ? r.v : r;
       };
     } else if (s.op === "assign") {
       env[s.name] = evalExpr(s.value, env);
+    } else if (s.op === "if") {
+      const r = evalExpr(s.cond, env) ? evalBlock(s.then, env, prints)
+        : (s.else ? evalBlock(s.else, env, prints) : undefined);
+      if (unwrap(r)) return r;
+      last = r;
+    } else if (s.op === "while") {
+      let guard = 0;
+      while (evalExpr(s.cond, env) && guard++ < 100000) {
+        const r = evalBlock(s.body, env, prints);
+        if (unwrap(r)) return r;
+        last = r;
+      }
+    } else if (s.op === "for") {
+      if (s.init) evalBlock([s.init], env, prints);
+      let guard = 0;
+      while ((!s.cond || evalExpr(s.cond, env)) && guard++ < 100000) {
+        const r = evalBlock(s.body, env, prints);
+        if (unwrap(r)) return r;
+        last = r;
+        if (s.incr) evalBlock([s.incr], env, prints);
+      }
     } else if (s.op === "return") {
-      return evalExpr(s.arg, env);
+      return ret(evalExpr(s.arg, env));
     } else if (s.op === "expr") {
       last = evalExpr(s.value, env);
     }
   }
   return last;
 }
+
+export function debugParse(lang, source) {
+  const toks = lex(String(source));
+  return { toks, ast: parse(toks, lang) };
+}
+
