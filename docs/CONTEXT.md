@@ -64,7 +64,11 @@ Read in this order: `CONTRACT.md` §24, `docs/linguist/README.md`, `docs/data/ro
 - **Script axis (nine common Indic):** `flatten_uni_dev.lex` / bundle 793 pairs. This is the 2004 working lex.
 - **Script axis (Hebrew, Phoenician, Aramaic, Syriac):** direct Unicode inventories in `docs/linguist/semitic/`. Not a Devanagari hub.
 - **Language axis:** `retrieved/romenagri/langs/*_c.tsv` (27). Native keywords, not macros.
-- **Perso-Arabic language:** `urdu_map.csv` — **lossy**. Residue is for the linguistics team.
+- **Perso-Arabic:** retrieved `urdu_map.csv` (lossy) **plus** retrieved ISO 15919 Aran↔Deva (62/62 co-rows) **plus** Unicode NFKC folding of presentation forms and tatweel strip. Abjad residue remains.
+- **Sinhala / Tamil extra:** ISO 15919 table (name-projection is weak where Unicode names do not parallel Devanagari, e.g. SINHALA LETTER AYANNA).
+- **Dome:** retrieved `zistgah/dome` (DOI 10.5281/zenodo.21449034). Pages mount `docs/dome/`. Three.js r128 is third-party (CDN).
+- **UI rungs:** console (workbench), 2D estate, academic paper skin, jazz skin, dome. Same maps.
+
 - **Cuneiform / Egyptian:** sign inventories only (`docs/linguist/undeciphered/`). Language keywords **[UNRESOLVED]**.
 - **7000 languages / dialects:** programme, not this clone.
 - **Shaili:** host-language localisation via retrieved lexers (`h2c.uhin` / `h2c.lex`). Independent of script/language axes.

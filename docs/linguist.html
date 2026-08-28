@@ -41,6 +41,9 @@
      Inventories <code>linguist/undeciphered/</code> ·
      Test: <code>node tests/roundtrip.mjs</code></p>
   <p class="fine">7000 languages and dialects are the <em>programme</em>. This clone has 27 language TSVs and no dialect layer. Do not report otherwise.</p>
+  <h2>Eighth Schedule (keyword TSVs only if retrieved)</h2>
+  <table><thead><tr><th>Language</th><th>Script</th><th>Keyword TSV</th></tr></thead><tbody id="in8"></tbody></table>
+  <p class="fine">Perso-Arabic improvement this turn: retrieved ISO 15919 Aran↔Deva (62/62 co-rows) plus NFKC folding of presentation forms. Abjad residue remains. Sinhala uses ISO 15919 (60 keys); name-projection cannot see AYANNA. Dome: <a href="dome/">zistgah/dome</a>.</p>
 </main>
 <script>
 fetch("data/roundtrip.json").then(r=>r.json()).then(S=>{
@@ -58,6 +61,13 @@ fetch("data/roundtrip.json").then(r=>r.json()).then(S=>{
     "<tr><td>"+k.lang+"</td><td>"+k.n+"</td><td>"+k.native_unique+"</td><td>"+(k.lossy?"lossy":"")+"</td></tr>"
   ).join("");
 });
+fetch("data/india.json").then(r=>r.json()).then(I=>{
+  document.getElementById("in8").innerHTML = I.eighth_schedule.map(r=>
+    "<tr><td>"+r.lang+"</td><td>"+r.script+"</td><td>"+(r.tsv||"<em>[no retrieved TSV — not invented]</em>")+"</td></tr>"
+  ).join("");
+});
 </script>
+<script src="skins/skins.js"></script>
 </body>
 </html>
+

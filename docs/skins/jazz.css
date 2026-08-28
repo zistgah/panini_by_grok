@@ -1,0 +1,10 @@
+/* Jazz / immersive-adjacent 2D skin — opt-in. */
+body.site, body.poster {
+  background:
+    radial-gradient(80% 50% at 20% 0%, #3a1d6e 0%, transparent 50%),
+    radial-gradient(80% 60% at 100% 20%, #7a3b12 0%, transparent 45%),
+    #07040e !important;
+}
+.site-head { background: rgba(0,0,0,.45) !important; }
+.role { background: rgba(255,255,255,.06) !important; box-shadow: 0 0 24px rgba(201,162,39,.15); }
+h1 { text-shadow: 0 0 32px rgba(201,162,39,.45); }

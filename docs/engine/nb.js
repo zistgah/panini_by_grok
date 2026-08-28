@@ -36,10 +36,11 @@
     return applyPairs(deva, pairs, "from", "to");
   }
   function persoToDeva(src) {
+    const folded = String(src).normalize("NFKC").replace(/\u0640/g, "");
     const pairs = [];
     for (const r of B.urdu_map.rows) for (const f of r.forms) pairs.push({ from: f, to: r.deva });
     pairs.sort((a, b) => [...b.from].length - [...a.from].length);
-    return applyPairs(src, pairs, "from", "to");
+    return applyPairs(folded, pairs, "from", "to");
   }
   function devaToPerso(src) {
     const pairs = B.urdu_map.rows.map((r) => ({ from: r.deva, to: r.arab }))

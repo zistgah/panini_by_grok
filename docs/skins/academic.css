@@ -1,0 +1,14 @@
+/* Academic paper skin — opt-in. Does not replace estate chrome unless chosen. */
+body.site, body.poster {
+  background: #faf8f4 !important;
+  color: #111 !important;
+  font: 18px/1.6 "Iowan Old Style", Palatino, Georgia, serif !important;
+}
+.site-head { background: #fff !important; color: #111 !important; border-bottom: 1px solid #222 !important; }
+.site-head a, .site-head strong { color: #111 !important; }
+h1, h2, h3 { color: #111 !important; letter-spacing: 0 !important; }
+a { color: #003399 !important; }
+.role { background: #fff !important; border-color: #222 !important; color: #111 !important; }
+.role h2 { color: #111 !important; }
+.cite, .fine { color: #444 !important; }
+table { background: #fff; }

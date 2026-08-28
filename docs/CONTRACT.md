@@ -56,7 +56,8 @@ This is the working contract for changes to this tree.
     names the fill method (Unicode name-projection). Gurmukhi retrieved rows
     are not overwritten. APCISR and Romenagri maps are retrieved.
     Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
-24. Linguistics: Brahmi scripts use Unicode name-projection onto Devanagari (Gurmukhi TSV header is the method). Semitic scripts are direct; they are not routed through Devanagari. Perso-Arabic *language* maps stay retrieved and lossy. Do not invent cuneiform or Egyptian **keywords**. Do not report 27 TSVs as 7000 languages. Round-trip is `node tests/roundtrip.mjs`. `retrieved/` maps are not replaced by `#define`.
+25. UI rungs (console, 2D, academic, jazz, dome) are projections. They do not fork the maps. Dome is retrieved zistgah/dome, not a reimplementation. Three.js r128 is named third-party.
+
 
 
 ## Delivery
