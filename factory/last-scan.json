@@ -1,11 +1,11 @@
 {
   "theorem": "SHIP_GREEN(requirements)",
-  "when": "2026-08-29T10:26:11.978Z",
+  "when": "2026-08-29T10:52:16.181Z",
   "requirements": {
-    "total": 24,
-    "ship_green": 23,
+    "total": 31,
+    "ship_green": 29,
     "named": 0,
-    "gap": 1
+    "gap": 2
   },
   "freeze": {
     "locked": 17,
@@ -579,15 +579,71 @@
       "honesty": null
     },
     {
-      "id": 25,
-      "text": "Every build iteration runs `node scripts/factory_scan.mjs` (browse, freeze-verify, derived report). Exit 0.",
+      "id": 26,
+      "text": "STANDARD GREEN TypeScript 20/20 (`scripts/std_green_harness.mjs typescript`).",
       "status": "SHIP GREEN",
-      "artifact": "docs/PROCESS.md",
-      "test": "scripts/factory_scan.mjs",
+      "artifact": "src/panini/frontends/typescript.pni",
+      "test": "scripts/std_green_harness.mjs",
       "honesty": null
+    },
+    {
+      "id": 27,
+      "text": "STANDARD GREEN JavaScript 20/20.",
+      "status": "SHIP GREEN",
+      "artifact": "src/panini/frontends/javascript.pni",
+      "test": "scripts/std_green_harness.mjs",
+      "honesty": null
+    },
+    {
+      "id": 28,
+      "text": "STANDARD GREEN Zig 20/20.",
+      "status": "SHIP GREEN",
+      "artifact": "src/panini/frontends/zig.pni",
+      "test": "scripts/std_green_harness.mjs",
+      "honesty": null
+    },
+    {
+      "id": 29,
+      "text": "STANDARD GREEN Lua 20/20.",
+      "status": "SHIP GREEN",
+      "artifact": "src/panini/frontends/lua.pni",
+      "test": "scripts/std_green_harness.mjs",
+      "honesty": null
+    },
+    {
+      "id": 30,
+      "text": "STANDARD GREEN Fortran 20/20.",
+      "status": "SHIP GREEN",
+      "artifact": "src/panini/frontends/fortran.pni",
+      "test": "scripts/std_green_harness.mjs",
+      "honesty": null
+    },
+    {
+      "id": 31,
+      "text": "STANDARD GREEN Pascal 20/20.",
+      "status": "SHIP GREEN",
+      "artifact": "src/panini/frontends/pascal.pni",
+      "test": "scripts/std_green_harness.mjs",
+      "honesty": null
+    },
+    {
+      "id": 32,
+      "text": "STANDARD GREEN BASIC 20/20 (Hindawi Shaili BASIC subset).",
+      "status": "SHIP GREEN",
+      "artifact": "src/panini/frontends/basic.pni",
+      "test": "scripts/std_green_harness.mjs",
+      "honesty": null
+    },
+    {
+      "id": 33,
+      "text": "Haskell/Prolog/Lisp/COBOL: GAP — not C-AST paradigms. Named, not faked.",
+      "status": "GAP",
+      "artifact": null,
+      "test": null,
+      "honesty": "Haskell/Prolog/Lisp/COBOL are not C-AST paradigms; museum only"
     }
   ],
   "green": true,
-  "status": "SHIP GREEN 23/24 (gap 1 named 0)",
+  "status": "SHIP GREEN 29/31 (gap 2 named 0)",
   "reuse": "Browse factory/REGISTRY.json before adding a file. Frozen components are not restyled."
 }

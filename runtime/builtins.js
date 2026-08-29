@@ -16,7 +16,7 @@ import { cinterp } from "./cinterp.js";
 import { cpplower } from "./cpplower.js";
 import { clower } from "./clower.js";
 import { gnuc } from "./gnuc.js";
-import { rustToC, goToC, juliaToC } from "./stdlower.js";
+import { rustToC, goToC, juliaToC, tsToC, jsToC, zigToC, luaToC, fortranToC, pascalToC, basicToC } from "./stdlower.js";
 import { renderTextBitmap } from "./dosfont.js";
 
 export function installBuiltins(env, runtime) {
@@ -54,6 +54,13 @@ export function installBuiltins(env, runtime) {
   def("RUSTLOWER", (x) => vStr(rustToC(toStr(x))), 1);
   def("GOLOWER", (x) => vStr(goToC(toStr(x))), 1);
   def("JULIALOWER", (x) => vStr(juliaToC(toStr(x))), 1);
+  def("TSLOWER", (x) => vStr(tsToC(toStr(x))), 1);
+  def("JSLOWER", (x) => vStr(jsToC(toStr(x))), 1);
+  def("ZIGLOWER", (x) => vStr(zigToC(toStr(x))), 1);
+  def("LUALOWER", (x) => vStr(luaToC(toStr(x))), 1);
+  def("FORTRANLOWER", (x) => vStr(fortranToC(toStr(x))), 1);
+  def("PASCALLOWER", (x) => vStr(pascalToC(toStr(x))), 1);
+  def("BASICLOWER", (x) => vStr(basicToC(toStr(x))), 1);
   def("ORD", (x) => {
     const s = toStr(x);
     return vInt(s.length ? s.charCodeAt(0) : 0);

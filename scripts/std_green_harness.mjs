@@ -18,6 +18,13 @@ const META = {
   rust: { ext: ".rs", subject: "PANINI.Frontend.Rust", standard: "Rust Reference (edition 2021) — panini-rust-testsuite single-exec" },
   go: { ext: ".go", subject: "PANINI.Frontend.Go", standard: "Go spec (gc) — panini-go-testsuite single-exec" },
   julia: { ext: ".jl", subject: "PANINI.Frontend.Julia", standard: "Julia 1.10 language — panini-julia-testsuite single-exec" },
+  typescript: { ext: ".ts", subject: "PANINI.Frontend.TypeScript", standard: "ECMA-262 / TS 5 — panini-ts-testsuite single-exec" },
+  javascript: { ext: ".js", subject: "PANINI.Frontend.JavaScript", standard: "ECMA-262 — panini-js-testsuite single-exec" },
+  zig: { ext: ".zig", subject: "PANINI.Frontend.Zig", standard: "Zig language ref — panini-zig-testsuite single-exec" },
+  lua: { ext: ".lua", subject: "PANINI.Frontend.Lua", standard: "Lua 5.4 — panini-lua-testsuite single-exec" },
+  fortran: { ext: ".f90", subject: "PANINI.Frontend.Fortran", standard: "Fortran 95 subset — panini-fortran-testsuite single-exec" },
+  pascal: { ext: ".pas", subject: "PANINI.Frontend.Pascal", standard: "ISO 7185 subset — panini-pascal-testsuite single-exec" },
+  basic: { ext: ".bas", subject: "PANINI.Frontend.BASIC", standard: "Hindawi Shaili BASIC subset — panini-basic-testsuite single-exec" },
 };
 const meta = META[lang];
 if (!meta) {

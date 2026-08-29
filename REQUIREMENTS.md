@@ -27,6 +27,14 @@ GPL-3.0-or-later
 22. SHIP GREEN is the requirements bar (`docs/SHIP_GREEN.md`). Named ≠ green.
 23. The factory registry (`factory/REGISTRY.json`) is consulted before adding a file. Reuse first.
 24. Optimized components are FROZEN (hash-locked). Touch only with `factory/DELIBERATION.md`.
-25. Every build iteration runs `node scripts/factory_scan.mjs` (browse, freeze-verify, derived report). Exit 0.
+26. STANDARD GREEN TypeScript 20/20 (`scripts/std_green_harness.mjs typescript`).
+27. STANDARD GREEN JavaScript 20/20.
+28. STANDARD GREEN Zig 20/20.
+29. STANDARD GREEN Lua 20/20.
+30. STANDARD GREEN Fortran 20/20.
+31. STANDARD GREEN Pascal 20/20.
+32. STANDARD GREEN BASIC 20/20 (Hindawi Shaili BASIC subset).
+33. Haskell/Prolog/Lisp/COBOL: GAP — not C-AST paradigms. Named, not faked.
+
 
 

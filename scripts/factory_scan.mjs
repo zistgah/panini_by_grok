@@ -58,10 +58,18 @@ const EVIDENCE = {
   23: { artifact: "factory/REGISTRY.json", test: "scripts/factory_scan.mjs" },
   24: { artifact: "factory/DELIBERATION.md", test: "factory/REGISTRY.json" },
   25: { artifact: "docs/PROCESS.md", test: "scripts/factory_scan.mjs" },
+  26: { artifact: "src/panini/frontends/typescript.pni", test: "scripts/std_green_harness.mjs" },
+  27: { artifact: "src/panini/frontends/javascript.pni", test: "scripts/std_green_harness.mjs" },
+  28: { artifact: "src/panini/frontends/zig.pni", test: "scripts/std_green_harness.mjs" },
+  29: { artifact: "src/panini/frontends/lua.pni", test: "scripts/std_green_harness.mjs" },
+  30: { artifact: "src/panini/frontends/fortran.pni", test: "scripts/std_green_harness.mjs" },
+  31: { artifact: "src/panini/frontends/pascal.pni", test: "scripts/std_green_harness.mjs" },
+  32: { artifact: "src/panini/frontends/basic.pni", test: "scripts/std_green_harness.mjs" },
 };
 
 const GAPS = {
   16: "GNU C pre-pass is live; statement-expr / asm / .lds named, not kernel-complete",
+  33: "Haskell/Prolog/Lisp/COBOL are not C-AST paradigms; museum only",
 };
 
 const registry = JSON.parse(fs.readFileSync(regPath, "utf8"));
