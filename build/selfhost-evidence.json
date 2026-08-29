@@ -13,66 +13,66 @@
       "stage": "stage-0 js-compile-sample",
       "ok": true,
       "detail": "functions=1",
-      "at": "2026-08-29T03:57:57.029Z"
+      "at": "2026-08-29T04:27:55.794Z"
     },
     {
       "stage": "stage-1 load",
       "ok": true,
       "detail": "functions registered=37",
-      "at": "2026-08-29T03:57:57.045Z"
+      "at": "2026-08-29T04:27:55.808Z"
     },
     {
       "stage": "stage-1..4 panini-compile(sample-path)",
       "ok": true,
       "detail": "tokens=3425 functions=37 steps=2318228",
-      "at": "2026-08-29T03:57:57.651Z"
+      "at": "2026-08-29T04:27:56.341Z"
     },
     {
       "stage": "stage-5 ir-vm compile compiler",
       "ok": true,
       "detail": "functions=37",
-      "at": "2026-08-29T03:57:57.826Z"
+      "at": "2026-08-29T04:27:56.487Z"
     },
     {
       "stage": "stage-5 compare A vs B",
       "ok": true,
       "detail": "identical IR",
-      "at": "2026-08-29T03:57:57.832Z"
+      "at": "2026-08-29T04:27:56.490Z"
     },
     {
       "stage": "stage-6 generation C",
       "ok": true,
       "detail": "functions=37",
-      "at": "2026-08-29T03:57:57.983Z"
+      "at": "2026-08-29T04:27:56.635Z"
     },
     {
       "stage": "stage-6 B == C",
       "ok": true,
       "detail": "fixed point",
-      "at": "2026-08-29T03:57:57.984Z"
+      "at": "2026-08-29T04:27:56.635Z"
     },
     {
       "stage": "stage-4 codegen run sample",
       "ok": true,
       "detail": "fn=1",
-      "at": "2026-08-29T03:57:57.985Z"
+      "at": "2026-08-29T04:27:56.636Z"
     },
     {
       "stage": "stage-6 spec-runnable",
       "ok": true,
       "detail": "live_functions=4",
-      "at": "2026-08-29T03:57:57.994Z"
+      "at": "2026-08-29T04:27:56.644Z"
     },
     {
       "stage": "stage-6 spec-selfhost-compile",
       "ok": true,
       "detail": "tokens=2800 functions=11",
-      "at": "2026-08-29T03:57:58.362Z"
+      "at": "2026-08-29T04:27:56.978Z"
     }
   ],
   "provenance": {
     "created_by": "scripts/selfhost.mjs",
-    "created_at": "2026-08-29T03:57:58.362Z",
+    "created_at": "2026-08-29T04:27:56.978Z",
     "epistemic_status": "VERIFIED"
   }
 }
