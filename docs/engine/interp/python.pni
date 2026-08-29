@@ -54,7 +54,7 @@ FUNCTION pyLex(source)
                                 i = i + 1
                             END
                             kind = "IDENT"
-                            IF raw == "def" OR raw == "return" OR raw == "print" OR raw == "if" OR raw == "else" OR raw == "True" OR raw == "False"
+                            IF raw == "def" OR raw == "return" OR raw == "print" OR raw == "if" OR raw == "else" OR raw == "while" OR raw == "True" OR raw == "False"
                                 kind = "KW"
                             END
                             APPEND(tokens, pyTok(kind, raw))
@@ -211,6 +211,31 @@ FUNCTION pyParseStmt(st)
         pyEat(st)
         RETURN {op: "return", arg: pyParseExpr(st)}
     END
+    IF t.kind == "KW" AND t.value == "if"
+        pyEat(st)
+        cond = pyParseExpr(st)
+        IF pyPeek(st).value == ":"
+            pyEat(st)
+        END
+        then = pyParseStmt(st)
+        el = {op: "nop"}
+        IF pyPeek(st).kind == "KW" AND pyPeek(st).value == "else"
+            pyEat(st)
+            IF pyPeek(st).value == ":"
+                pyEat(st)
+            END
+            el = pyParseStmt(st)
+        END
+        RETURN {op: "if", cond: cond, then: then, else: el}
+    END
+    IF t.kind == "KW" AND t.value == "while"
+        pyEat(st)
+        cond = pyParseExpr(st)
+        IF pyPeek(st).value == ":"
+            pyEat(st)
+        END
+        RETURN {op: "while", cond: cond, body: pyParseStmt(st)}
+    END
     IF t.kind == "IDENT"
         nxti = st.i + 1
         IF nxti < LEN(st.tokens) AND st.tokens[nxti].value == "="
@@ -355,6 +380,15 @@ FUNCTION pyCStmt(s)
     END
     IF s.op == "assign"
         RETURN "  int " + s.name + "; " + s.name + " = " + pyCExpr(s.value) + ";" + NEWLINE()
+    END
+    IF s.op == "if"
+        RETURN "  if (" + pyCExpr(s.cond) + ") {" + NEWLINE() + pyCStmt(s.then) + "  } else {" + NEWLINE() + pyCStmt(s.else) + "  }" + NEWLINE()
+    END
+    IF s.op == "while"
+        RETURN "  while (" + pyCExpr(s.cond) + ") {" + NEWLINE() + pyCStmt(s.body) + "  }" + NEWLINE()
+    END
+    IF s.op == "nop"
+        RETURN ""
     END
     IF s.op == "expr"
         RETURN "  " + pyCExpr(s.value) + ";" + NEWLINE()

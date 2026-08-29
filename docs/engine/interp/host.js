@@ -27,10 +27,11 @@ export async function loadCWasm() {
   if (interp) return interp;
   const py = await readPni("python.pni");
   const toC = await readPni("to_c.pni");
+  const cpp = await readPni("cpp.pni");
   const c = await readPni("c.pni");
   const w = await readPni("wasm.pni");
   const sink = { write() {} };
-  const { interpreter } = await runSource(py + "\n" + toC + "\n" + c + "\n" + w, "front+c+wasm.pni", {
+  const { interpreter } = await runSource(py + "\n" + toC + "\n" + cpp + "\n" + c + "\n" + w, "front+c+wasm.pni", {
     runMain: false,
     maxSteps: 2_000_000_000,
     stdout: sink,

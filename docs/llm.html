@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — llama.cpp / llm.cpp</title>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="skins/jazz.css" />
+</head>
+<body class="site">
+<header class="site-head">
+  <a href="index.html"><strong>PANINI</strong></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="flow.html">C → WASM</a>
+    <a href="llm.html" class="now">llama.cpp</a>
+    <a href="path/research.html">Researchers</a>
+  </nav>
+</header>
+<main class="site-main">
+  <p class="cite">C++11 toolchain · cmake · ggml-org/llama.cpp · CPU</p>
+  <h1>llama.cpp</h1>
+  <p class="lead">Two paths. They are not the same program.</p>
+  <table>
+    <tr><th>Path</th><th>What it is</th><th>Status</th></tr>
+    <tr><td>Native</td><td><code>g++</code> + <code>cmake</code> build of ggml-org/llama.cpp. Ingests local <code>.gguf</code>.</td><td id="st">see llm.json</td></tr>
+    <tr><td>PANINI C++ subset → WASM</td><td>Numeric C++ on <a href="flow.html">flow.html</a>. Not llama.cpp. Cannot load GGUF.</td><td>compute(5)=25</td></tr>
+  </table>
+  <h2>Proven on this builder</h2>
+  <pre id="proof">loading docs/data/llm.json</pre>
+  <h2>Build (your machine)</h2>
+  <pre translate="no">python3 -m pip install cmake   # if needed
+git clone --depth 1 https://github.com/ggml-org/llama.cpp.git
+cd llama.cpp
+cmake -B build -DCMAKE_BUILD_TYPE=Release \
+  -DGGML_NATIVE=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_CURL=OFF
+cmake --build build --config Release --target llama-cli
+./build/bin/llama-cli --version
+./build/bin/llama-cli -m model.gguf -p "Once upon a time" -n 16 -st --no-jinja</pre>
+  <p>Script in the tree: <code>tools/llm/build.sh /path/to/llama.cpp</code></p>
+  <h2>Optional GPU</h2>
+  <ul>
+    <li>NVIDIA: CUDA Toolkit, <code>-DGGML_CUDA=ON</code></li>
+    <li>Apple: Metal via Xcode (built-in)</li>
+    <li>AMD: ROCm/hipBLAS, <code>-DGGML_HIP=ON</code></li>
+    <li>Vulkan SDK, <code>-DGGML_VULKAN=ON</code></li>
+  </ul>
+  <p class="warn">GitHub Pages does not run this binary. The C++ frontend on the site is the subset path. Native llama.cpp is the host toolchain.</p>
+  <p class="fine">Data: <a href="data/llm.json">llm.json</a></p>
+</main>
+<footer class="pfoot">Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later</footer>
+<script src="skins/skins.js"></script>
+<script>
+fetch("data/llm.json").then(r=>r.json()).then(j=>{
+  document.getElementById("proof").textContent =
+    j.build.version + "\n" +
+    j.build.built_with + "\n" +
+    "prompt: " + j.execute.prompt + "\n" +
+    "completion: " + j.execute.completion + "\n" +
+    "tok/s: " + j.execute.generation_tps;
+});
+</script>
+</body>
+</html>

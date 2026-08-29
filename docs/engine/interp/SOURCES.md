@@ -6,7 +6,7 @@ GitHub Pages serves `docs/`. These files are copies of the canonical tree so the
 
 | Here | Canonical |
 |---|---|
-| `python.pni` | `src/panini/frontends/python.pni` |
+| `cpp.pni` | `src/panini/frontends/cpp.pni` |
 | `to_c.pni` | `src/panini/frontends/to_c.pni` |
 | `wasm.pni` | `src/panini/backends/wasm.pni` |
 | `interpreter.js` | `runtime/interpreter.js` (parser import patched; `process` shim) |

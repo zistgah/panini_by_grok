@@ -10,7 +10,8 @@ WASM backend: PANINI.Backend.Wasm emits WAT; in-tree wat2wasm; `compute(5)=25` p
 Notebook: `#समावेश <मानकपन.स>` must remain `#include <stdio.h>` — only the Shaili pragma is stripped.
 Hindi C++ demo is `docs/demos/HindiCPP.uhin` (not an HTML 404).
 FAQ: docs/faq.html — `#define` is not a lexer; copilot WAT last-mile is not a backend.
-Frontends on flow.html: C, Hindi C, Python (AST→C), Rust/Go/TS/Zig/Lua/C++ (subset→C) then wasm.pni. compute(5)=25 proven for those.
+llama.cpp: built with g++ 12.2 / cmake 4.4.2. llama-cli --version 0.3.0-dev. Executed GGUF: "Once upon a time" → "One day, a little girl named Lucya came to visit" (203 t/s). tools/llm/build.sh. docs/llm.html. Not the WASM C++ subset.
+
 
 
 
