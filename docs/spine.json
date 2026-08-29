@@ -24,6 +24,7 @@
         { "href": "console.html", "label": "Console · VFS" },
         { "href": "emu.html", "label": "x86 guest" },
         { "href": "llm.html", "label": "llama.cpp" },
+        { "href": "story.html", "label": "Story spinner" },
         { "href": "nb.html", "label": "Notebook" },
         { "href": "workbench.html", "label": "Workbench" },
         { "href": "flow.html", "label": "C → WASM" },
