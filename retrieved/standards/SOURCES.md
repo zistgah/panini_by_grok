@@ -17,6 +17,9 @@ We do not paste paid ISO text. Committee drafts and ECMA/PSF/Go/Lua texts are pu
 | `cpython-3.12/test_unary.py` | CPython 3.12 | Official unary language tests | https://raw.githubusercontent.com/python/cpython/3.12/Lib/test/test_unary.py |
 | `cpython-3.12/test_bool.py` | CPython 3.12 | Official bool tests | https://raw.githubusercontent.com/python/cpython/3.12/Lib/test/test_bool.py |
 | `cpython-3.12/test_grammar.py` | CPython 3.12 | Official grammar tests | https://raw.githubusercontent.com/python/cpython/3.12/Lib/test/test_grammar.py |
+| `pascal-p5/` | Pascal-P5 / ISO 7185 | `iso7185prtNNNN.pas` reject extract + `hello.pas` | https://github.com/samiam95124/Pascal-P5 |
+| `qb64pe/` | QB64 Phoenix Edition | `tests/compile_tests/const/expression.bas` vs `.output` | https://github.com/QB64-Phoenix-Edition/QB64pe |
+| `gfortran-dg/` | GCC 13.2 gfortran | official `{ dg-do run }` / fortran-torture execute (retrieved; **not skip=0**) | https://github.com/gcc-mirror/gcc |
 | `go-spec.html` | Go project | The Go Programming Language Specification | https://go.dev/ref/spec |
 | `lua-5.4-manual.html` | lua.org | Lua 5.4 reference manual | https://www.lua.org/manual/5.4/manual.html |
 | `lua-5.4-tests/` | lua.org | Official Lua 5.4.7 test archive | https://www.lua.org/tests/lua-5.4.7-tests.tar.gz |

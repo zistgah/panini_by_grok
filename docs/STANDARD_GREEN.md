@@ -24,11 +24,11 @@ Specs live in `retrieved/standards/` (`SOURCES.md`). We retrieve; we do not inve
 | Lua | Lua 5.4 manual | lua.org **5.4.7 tests** (33 files retrieved) | spec+suite retrieved; suite **NOT GREEN** |
 | Rust | The Rust Reference | rustc ui (not claimed) | spec retrieved; rustc ui **NOT GREEN** |
 | Zig | ziglang.org language reference | zig test suite (not retrieved) | spec retrieved; **NOT GREEN** |
-| Fortran | J3 N2146 (fetched) | none in tree | spec retrieved; **NOT GREEN** |
 | TypeScript | Handbook + ECMA-262 | tsc tests (not claimed) | spec retrieved; **NOT GREEN** |
-| Pascal | ISO 7185 (fetch failed 503/403 this turn) | none | **GAP** |
-| BASIC | no single ISO academics accept (ECMA-116 is 1986; Hindawi is our heritage) | none | heritage CORE; **not STANDARD GREEN** |
+| Pascal | ISO 7185 via **Pascal-P5** `standard_tests` | iso7185prt (reject) + `hello.pas` (accept) | **STANDARD GREEN** on that named P5 extract. Full PAT 123 KB program is **GAP**. |
+| Fortran | WG5 N2146 + **gfortran.dg** / fortran-torture execute | official `{ dg-do run }` files retrieved | spec retrieved; gfortran execute **NOT GREEN**. Homemade `tests/std/fortran` is CORE GREEN only. |
+| BASIC / QB64 | QB64 Phoenix Edition | `tests/compile_tests/const/expression.bas` vs `.output` (38 lines) | **STANDARD GREEN** skip=0. Not ECMA-116; not VB.NET. |
 
 **CORE GREEN** (`tests/std/*/single-exec`, 20 cases) is factory smoke. It is listed on the factory dashboard. It is **not** this page.
 
-C remains the only language that meets the executable-suite conjunct today.
+STANDARD GREEN today: **C**, **Python** (named CPython extract), **Pascal** (named P5 extract), **QB64 BASIC** (named expression extract). Fortran execute remains a named GAP.

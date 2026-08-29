@@ -296,6 +296,23 @@
       "owns": "derived SHIP/STANDARD per layer",
       "status": "live",
       "freeze": false
+    },
+    {
+      "id": "qb64",
+      "path": "runtime/qb64.js",
+      "owns": "QB64 CONST/PRINT STANDARD GREEN on expression.bas",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "vga",
+      "path": "runtime/vga.js",
+      "owns": "VGA Mode 13h/12h and SVGA 101/103 on the VT100 CRT",
+      "status": "live",
+      "freeze": false,
+      "adapter": [
+        "docs/console.html"
+      ]
     }
   ],
   "adapters": [

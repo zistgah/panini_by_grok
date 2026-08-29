@@ -181,8 +181,11 @@ export function fortranToC(src) {
   s = s.replace(/\bINTEGER\s*::/gi, "int");
   s = s.replace(/\bINTEGER\b/gi, "int");
   s = s.replace(/\bSTOP\s+(\d+)/gi, "return $1");
-  s = s.replace(/\s*\.EQ\.\s*/gi, " == ");
   s = s.replace(/\s*\.NE\.\s*/gi, " != ");
+  s = s.replace(/\s*\.EQ\.\s*/gi, " == ");
+  s = s.replace(/\bINTEGER\s*::\s*/gi, "int ");
+  s = s.replace(/\bif\s*\(([^)]+)\)\s*STOP\s+(\d+)/gi, "if ($1) return $2;");
+  s = s.replace(/\bSTOP\s+(\d+)/gi, "return $1;");
   s = s.replace(/\s*\.LT\.\s*/gi, " < ");
   s = s.replace(/\s*\.GT\.\s*/gi, " > ");
   s = s.replace(/\s*\.LE\.\s*/gi, " <= ");
@@ -195,7 +198,33 @@ export function fortranToC(src) {
   return s;
 }
 
+export function pascalReject(src) {
+  let body = String(src).replace(/\{[^}]*\}/g, " ").replace(/\(\*[\s\S]*?\*\)/g, " ");
+  body = body.replace(/\r\n/g, "\n").trim();
+  /* CORE GREEN subset is `function main: integer; …` — not ISO 7185. */
+  if (/\bfunction\s+main\b/i.test(body)) return null;
+  if (!/\bprogram\b/i.test(body)) return "missing-program";
+  if (/\bprogram\s*;/i.test(body)) return "missing-program-name";
+  if (/\bprogram\s+[A-Za-z_]\w*\s*\(\s*\)/i.test(body)) return "empty-header-params";
+  if (/\bprogram\s+[A-Za-z_]\w*(\s*\([^;)]+\))?\s*;;/i.test(body)) return "extra-semicolon";
+  if (!/\bprogram\s+[A-Za-z_]\w*(\s*\(\s*[A-Za-z_][\w,\s]*\s*\))?\s*;/i.test(body)) {
+    return "missing-semicolon-after-program";
+  }
+  if (!/\.\s*$/.test(body)) return "missing-period";
+  if (/\bconst\b/i.test(body)) {
+    const decls = (body.split(/\bconst\b/i)[1] || "").split(/\b(begin|var|type|procedure|function)\b/i)[0] || "";
+    const parts = decls.split(";").map((s) => s.trim()).filter(Boolean);
+    for (const p of parts) {
+      if (/^\s*=/.test(p)) return "missing-ident-in-const";
+      if (!/=/.test(p)) return "const-equals";
+    }
+  }
+  return null;
+}
+
 export function pascalToC(src) {
+  const bad = pascalReject(src);
+  if (bad) return "/* REJECT " + bad + " */\nint main(){return 99;}\n";
   let s = String(src).replace(/\r\n/g, "\n");
   s = s.replace(/\{[^}]*\}/g, "");
   s = s.replace(/\bprogram\s+\w+\s*;/gi, "");

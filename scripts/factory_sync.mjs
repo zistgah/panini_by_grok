@@ -24,6 +24,8 @@ const COPIES = [
   ["src/panini/frontends/fortran.pni", "docs/engine/interp/fortran.pni"],
   ["src/panini/frontends/pascal.pni", "docs/engine/interp/pascal.pni"],
   ["src/panini/frontends/basic.pni", "docs/engine/interp/basic.pni"],
+  ["runtime/qb64.js", "docs/engine/interp/qb64.js"],
+  ["runtime/vga.js", "docs/engine/interp/vga.js"],
   ["runtime/ccpp.js", "docs/engine/interp/ccpp.js"],
   ["runtime/values.js", "docs/engine/interp/values.js"],
   ["runtime/env.js", "docs/engine/interp/env.js"],

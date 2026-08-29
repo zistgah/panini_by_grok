@@ -285,5 +285,48 @@ await test("python_standard_green_cpython_language", async () => {
   assert.ok(g.pass >= 60);
 });
 
+await test("qb64_pascal_fortran_std_green", async () => {
+  const { spawnSync } = await import("node:child_process");
+  for (const s of ["qb64_std_green.mjs", "pascal_std_green.mjs", "fortran_std_green.mjs"]) {
+    const r = spawnSync(process.execPath, [path.join(root, "scripts", s)], { encoding: "utf8" });
+    assert.equal(r.status, 0, s + " " + (r.stderr || r.stdout || ""));
+  }
+  const q = JSON.parse(fs.readFileSync(path.join(root, "docs/data/qb64-std-green.json"), "utf8"));
+  const p = JSON.parse(fs.readFileSync(path.join(root, "docs/data/pascal-std-green.json"), "utf8"));
+  const f = JSON.parse(fs.readFileSync(path.join(root, "docs/data/fortran-std-green.json"), "utf8"));
+  assert.equal(q.skip0, true);
+  assert.equal(q.standard_green, true);
+  assert.ok(q.pass >= 30);
+  assert.equal(p.skip0, true);
+  assert.equal(p.standard_green, true);
+  assert.equal(f.standard_green, false);
+});
+
+await test("console_one_glass_vga", async () => {
+  const html = fs.readFileSync(path.join(root, "docs/console.html"), "utf8");
+  assert.equal((html.match(/<canvas/g) || []).length, 1);
+  assert.ok(html.includes('id="glass"'));
+  assert.ok(!html.includes('id="vtcan"'));
+  assert.ok(html.includes('c === "vga"'));
+  assert.ok(html.includes('c === "screen"'));
+  assert.ok(html.includes("pset"));
+  const { createVga, vgaPset, vgaScreen, vgaToImageData } = await import("../runtime/vga.js");
+  const v = createVga(13);
+  assert.equal(v.w, 320);
+  assert.equal(v.h, 200);
+  vgaPset(v, 10, 10, 14);
+  assert.equal(v.pixels[10 * 320 + 10], 14);
+  vgaScreen(v, 12);
+  assert.equal(v.w, 640);
+  assert.equal(v.h, 480);
+  const img = vgaToImageData(v);
+  assert.equal(img.w, 640);
+  vgaScreen(v, 101);
+  assert.equal(v.w, 640);
+  vgaScreen(v, 103);
+  assert.equal(v.w, 800);
+  assert.equal(v.h, 600);
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

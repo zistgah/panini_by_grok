@@ -30,7 +30,7 @@
 <script src="spine.js"></script>
 <main class="site-main">
   <h1>Console</h1>
-  <p>One monitor. The glass is the VT100. The strip under it is the keyboard. Not two screens.</p>
+  <p>One monitor. The glass is the VT100, and VGA / Super VGA pixels on the same CRT. Not two screens.</p>
   <p class="deck">
     Shell
     <select id="shsel">
@@ -157,11 +157,19 @@
     else if (c === "echo") out = a.join(" ");
     else if (c === "mkdir") fs.mkdir(a[0] || "");
     else if (c === "bios") { r = fs.read("/bios/README.txt"); out = (r.ok ? r.content : "") + "ls /bios\n" + (fs.ls("/bios").names || []).join("\n"); }
+    else if (c === "help") out = "pwd ls cd cat echo mkdir bios llama robot lekhak emu clear\nvga | screen 13|12|101|103|0   pset x y [c]   line x0 y0 x1 y1 [c]\nOne glass. VT100 text or VGA / Super VGA pixels on this CRT.";
+    else if (c === "vga") out = vgaMode(13);
+    else if (c === "screen") out = vgaMode(parseInt(a[0] || "13", 10));
+    else if (c === "pset") { vgaDoPset(+a[0] || 0, +a[1] || 0, a[2] != null ? +a[2] : null); out = ""; }
+    else if (c === "line") { vgaDoLine(+a[0] || 0, +a[1] || 0, +a[2] || 0, +a[3] || 0, a[4] != null ? +a[4] : null); out = ""; }
     else if (c === "emu" || c === "v86") out = "__EMU__";
     else if (c === "llama-cli" || c === "llama" || c === "llm") out = "__LLAMA__:" + a.join("\x1f");
     else if (c === "robot" || c === "रोबोट") out = "__ROBOT__";
     else if (c === "lekhak" || c === "लेखक") out = "__LEKHAK__:" + (a[0] || "lekhak.uhin");
-    else if (c === "clear" || c === "cls") out = "\x1b[2J";
+    else if (c === "clear" || c === "cls") {
+      if (typeof vga !== "undefined" && vga.on && vga.pix) { vga.pix.fill(0); paint(); out = ""; }
+      else out = "\x1b[2J";
+    }
     else out = c + ": command not found";
     if (target) { fs.write(target, out + "\n"); return ""; }
     return out;
@@ -175,7 +183,10 @@
     if (c === "TYPE") return bash("cat " + (t[1] || ""));
     if (c === "ECHO") return bash("echo " + t.slice(1).join(" "));
     if (c === "CLS") return "\x1b[2J";
-    if (c === "HELP") return "DIR CD TYPE ECHO CLS HELP";
+    if (c === "HELP") return "DIR CD TYPE ECHO CLS HELP SCREEN VGA PSET LINE";
+    if (c === "SCREEN" || c === "VGA") return bash("screen " + (t[1] || "13"));
+    if (c === "PSET") return bash("pset " + t.slice(1).join(" "));
+    if (c === "LINE") return bash("line " + t.slice(1).join(" "));
     return "Bad command or file name";
   }
   function family(sh) {
@@ -433,6 +444,49 @@
   var sh = "bash";
   var hist = [], hi = 0;
   var vt = { cols: 80, rows: 24, r: 0, c: 0, grid: [] };
+  var vga = { on: false, mode: 13, w: 320, h: 200, pix: null, c: 15 };
+  function vgaMode(mode) {
+    mode = mode | 0;
+    if (mode === 0 || mode === 3) {
+      vga.on = false; vga.pix = null;
+      initVt(); paint();
+      return "VGA text (VT100)";
+    }
+    var spec = { 13: [320, 200], 12: [640, 480], 18: [640, 480], 101: [640, 480], 103: [800, 600] };
+    if (!spec[mode]) mode = 13;
+    var s = spec[mode];
+    vga.on = true; vga.mode = mode; vga.w = s[0]; vga.h = s[1]; vga.c = 15;
+    vga.pix = new Uint8Array(vga.w * vga.h);
+    paint();
+    return "mode " + mode + " " + vga.w + "x" + vga.h;
+  }
+  function vgaPut(x, y, c) {
+    x |= 0; y |= 0;
+    if (c != null && !isNaN(c)) vga.c = c & 255;
+    if (!vga.pix) return;
+    if (x >= 0 && y >= 0 && x < vga.w && y < vga.h) vga.pix[y * vga.w + x] = vga.c;
+  }
+  function vgaDoPset(x, y, c) {
+    if (!vga.on) vgaMode(13);
+    vgaPut(x, y, c);
+    paint();
+  }
+  function vgaDoLine(x0, y0, x1, y1, c) {
+    if (!vga.on) vgaMode(13);
+    if (c != null && !isNaN(c)) vga.c = c & 255;
+    x0 |= 0; y0 |= 0; x1 |= 0; y1 |= 0;
+    var dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0);
+    var sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+    var err = dx - dy, x = x0, y = y0;
+    for (;;) {
+      vgaPut(x, y, vga.c);
+      if (x === x1 && y === y1) break;
+      var e2 = 2 * err;
+      if (e2 > -dy) { err -= dy; x += sx; }
+      if (e2 < dx) { err += dx; y += sy; }
+    }
+    paint();
+  }
   function blankRow() { var r = []; for (var x = 0; x < vt.cols; x++) r.push(" "); return r; }
   function initVt() {
     vt.grid = [];
@@ -447,6 +501,22 @@
   }
   function paint() {
     var ctx = glass.getContext("2d");
+    if (vga.on && vga.pix) {
+      glass.width = vga.w;
+      glass.height = vga.h;
+      var img = ctx.createImageData(vga.w, vga.h);
+      var pal16 = [[0,0,0],[0,0,170],[0,170,0],[0,170,170],[170,0,0],[170,0,170],[170,85,0],[170,170,170],[85,85,85],[85,85,255],[85,255,85],[85,255,255],[255,85,85],[255,85,255],[255,255,85],[255,255,255]];
+      for (var i = 0; i < vga.pix.length; i++) {
+        var ci = vga.pix[i] & 255;
+        var rgb = ci < 16 ? pal16[ci] : [ci, ci, ci];
+        img.data[i * 4] = rgb[0];
+        img.data[i * 4 + 1] = rgb[1];
+        img.data[i * 4 + 2] = rgb[2];
+        img.data[i * 4 + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      return;
+    }
     var cw = 8, ch = 16;
     glass.width = vt.cols * cw;
     glass.height = vt.rows * ch;
@@ -488,7 +558,7 @@
     return "panini$ ";
   }
   initVt();
-  vtWrite("VT100 80x24  one glass\nType help. ls  cat readme.txt\n");
+  vtWrite("VT100 80x24  VGA/SVGA on this glass\nType help. ls  cat  vga  screen 13  pset x y\n");
   if (shsel) shsel.onchange = function () { sh = shsel.value; ps1.textContent = prompt(); vtWrite("[shell " + sh + "]\n"); };
   cmd.onkeydown = function (e) {
     if (lek.on) { lekKey(e); return; }

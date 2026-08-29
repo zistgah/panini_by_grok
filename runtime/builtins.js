@@ -16,7 +16,9 @@ import { cinterp } from "./cinterp.js";
 import { cpplower } from "./cpplower.js";
 import { clower } from "./clower.js";
 import { gnuc } from "./gnuc.js";
-import { rustToC, goToC, juliaToC, tsToC, jsToC, zigToC, luaToC, fortranToC, pascalToC, basicToC } from "./stdlower.js";
+import { rustToC, goToC, juliaToC, tsToC, jsToC, zigToC, luaToC, fortranToC, pascalToC, pascalReject, basicToC } from "./stdlower.js";
+import { qb64Run } from "./qb64.js";
+import { createVga, vgaPset, vgaLine, vgaScreen, vgaCls } from "./vga.js";
 import { renderTextBitmap } from "./dosfont.js";
 
 export function installBuiltins(env, runtime) {
@@ -60,7 +62,26 @@ export function installBuiltins(env, runtime) {
   def("LUALOWER", (x) => vStr(luaToC(toStr(x))), 1);
   def("FORTRANLOWER", (x) => vStr(fortranToC(toStr(x))), 1);
   def("PASCALLOWER", (x) => vStr(pascalToC(toStr(x))), 1);
+  def("PASCALREJECT", (x) => vStr(pascalReject(toStr(x)) || ""), 1);
   def("BASICLOWER", (x) => vStr(basicToC(toStr(x))), 1);
+  def("QB64RUN", (x) => wrap(qb64Run(toStr(x))), 1);
+  {
+    let _vga = createVga(13);
+    def("VGA", () => wrap({ mode: _vga.mode, w: _vga.w, h: _vga.h, name: _vga.name }));
+    def("SCREEN", (m) => {
+      vgaScreen(_vga, toNumber(m));
+      return wrap({ mode: _vga.mode, w: _vga.w, h: _vga.h, name: _vga.name });
+    }, 1);
+    def("PSET", (x, y, c) => {
+      vgaPset(_vga, toNumber(x), toNumber(y), c == null ? null : toNumber(c));
+      return vUnit();
+    }, 2);
+    def("VGALINE", (x0, y0, x1, y1, c) => {
+      vgaLine(_vga, toNumber(x0), toNumber(y0), toNumber(x1), toNumber(y1), c == null ? null : toNumber(c));
+      return vUnit();
+    }, 4);
+    def("VGACLS", (c) => { vgaCls(_vga, c == null ? 0 : toNumber(c)); return vUnit(); });
+  }
   def("ORD", (x) => {
     const s = toStr(x);
     return vInt(s.length ? s.charCodeAt(0) : 0);

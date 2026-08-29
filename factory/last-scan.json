@@ -1,6 +1,6 @@
 {
   "theorem": "SHIP_GREEN(requirements)",
-  "when": "2026-08-29T11:52:51.565Z",
+  "when": "2026-08-29T12:33:08.699Z",
   "requirements": {
     "total": 32,
     "ship_green": 31,
@@ -8,7 +8,7 @@
     "gap": 1
   },
   "freeze": {
-    "locked": 16,
+    "locked": 17,
     "drift": 0,
     "items": [
       {
@@ -77,8 +77,9 @@
       {
         "id": "python-frontend",
         "path": "src/panini/frontends/python.pni",
-        "status": "re-locked",
-        "hash": "cc90e61d44605fa1"
+        "status": "FROZEN",
+        "expected": "cc90e61d44605fa1",
+        "got": "cc90e61d44605fa1"
       },
       {
         "id": "cpp-frontend",
