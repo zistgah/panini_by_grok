@@ -142,6 +142,16 @@ function encodeInstr(node, ctx, labels) {
   if (op === "call") return [0x10, ...uleb(ctx.funcIndex(atom(rest[0])))];
   if (op === "br") return [0x0c, ...uleb(ctx.labelIndex(atom(rest[0]), labels))];
   if (op === "br_if") return [0x0d, ...uleb(ctx.labelIndex(atom(rest[0]), labels))];
+  if (op === "br_table") {
+    const labs = rest.map(atom).filter(Boolean);
+    const def = labs.length ? labs[labs.length - 1] : "0";
+    const vec = labs.slice(0, -1);
+    const out = [0x0e, ...uleb(vec.length)];
+    for (const l of vec) out.push(...uleb(ctx.labelIndex(l, labels)));
+    out.push(...uleb(ctx.labelIndex(def, labels)));
+    return out;
+  }
+  if (op === "unreachable") return [0x00];
   if (op === "return") return [0x0f];
   if (op === "drop") return [0x1a];
   if (op === "nop") return [0x01];

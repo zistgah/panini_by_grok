@@ -10,8 +10,8 @@ WASM backend: PANINI.Backend.Wasm emits WAT; in-tree wat2wasm; `compute(5)=25` p
 Notebook: `#समावेश <मानकपन.स>` must remain `#include <stdio.h>` — only the Shaili pragma is stripped.
 Hindi C++ demo is `docs/demos/HindiCPP.uhin` (not an HTML 404).
 FAQ: docs/faq.html — `#define` is not a lexer; copilot WAT last-mile is not a backend.
-Local Hindawi: dist/hindawi — ./configure && make check. hincc compiles HindiC.uhin with gcc. #include <stdio.h> survives.
-22 scheduled languages: keyword TSV + flatten, or Hindi hub (labelled), or awaiting CSV (Manipuri, Santali).
+WASM: dual backend. Structured if/while if no goto. Maṇḍūkapluti → br_table dispatcher (goto_skip returns 1). Docs: WASM_MANDUKAPLUTI.md.
+
 
 
 

@@ -18,6 +18,8 @@ const cases = [
   ["ptr", "int main(){int s;int *p;s=42;p=&s;return *p;}", 42],
   ["fact", "int fact(int n){if(n<=1) return 1; return n*fact(n-1);} int main(){return fact(5);}", 120],
   ["calloc", "int main(){int *t; t=calloc(4,4); t[0]=7; return t[0];}", 7],
+  ["goto_skip", "int main(){ int x; x=1; goto skip; x=2; skip: return x; }", 1],
+  ["goto_loop", "int main(){ int i; int s; i=0; s=0; loop: if(i>=5) goto done; s=s+i; i=i+1; goto loop; done: return s; }", 10],
 ];
 
 let fail = 0;

@@ -26,7 +26,7 @@ Source (C / Hindi C after flatten) → PANINI.Frontend.C AST
 
 ## Honest limits
 
-- `goto` (Maṇḍūkapluti) still runs on the C interpreter. WASM structured control uses `block`/`loop`/`if`. A `br_table` dispatcher for arbitrary CFG is the next lowering.
+- Maṇḍūkapluti (`goto`): function-level bypass. No `goto` → structured `if`/`loop`. With `goto` → CFG → `br_table` dispatcher. See [WASM_MANDUKAPLUTI.md](WASM_MANDUKAPLUTI.md). Relooper shape detection is named, not this turn.
 - Not a full WASI libc. `calloc` is in-module.
 - Not gcc. This is a verified subset that executes.
 
