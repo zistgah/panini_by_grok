@@ -25,10 +25,12 @@ async function readPni(name) {
 
 export async function loadCWasm() {
   if (interp) return interp;
+  const py = await readPni("python.pni");
+  const toC = await readPni("to_c.pni");
   const c = await readPni("c.pni");
   const w = await readPni("wasm.pni");
   const sink = { write() {} };
-  const { interpreter } = await runSource(c + "\n" + w, "c+wasm.pni", {
+  const { interpreter } = await runSource(py + "\n" + toC + "\n" + c + "\n" + w, "front+c+wasm.pni", {
     runMain: false,
     maxSteps: 2_000_000_000,
     stdout: sink,
@@ -47,6 +49,24 @@ async function callNamed(name, args) {
 
 export async function emitCWat(source) {
   return String(await callNamed("emit_c_wat", [String(source)]));
+}
+
+export async function lowerToC(lang, source) {
+  if (!lang || lang === "c" || lang === "C") return String(source);
+  return String(await callNamed("lower_to_c", [String(lang), String(source)]));
+}
+
+export async function compileLangWasm(lang, source) {
+  const host = await lowerToC(lang, source);
+  const wat = await emitCWat(host);
+  const bytes = wat2wasm(wat);
+  return { host, wat, bytes, lang, frontend: "PANINI.Frontend." + lang, backend: "PANINI.Backend.Wasm" };
+}
+
+export async function runLangWasm(lang, source, exportName = "main", args = []) {
+  const { host, wat, bytes } = await compileLangWasm(lang, source);
+  const value = await wasmRun(bytes, exportName, args);
+  return { ok: true, value, wat, bytes, host, exportName, lang };
 }
 
 export async function parseCAst(source) {

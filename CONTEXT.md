@@ -10,7 +10,8 @@ WASM backend: PANINI.Backend.Wasm emits WAT; in-tree wat2wasm; `compute(5)=25` p
 Notebook: `#समावेश <मानकपन.स>` must remain `#include <stdio.h>` — only the Shaili pragma is stripped.
 Hindi C++ demo is `docs/demos/HindiCPP.uhin` (not an HTML 404).
 FAQ: docs/faq.html — `#define` is not a lexer; copilot WAT last-mile is not a backend.
-C→WASM on site: docs/flow.html. Host: docs/engine/interp (c.pni+wasm.pni). Proven: compute(5)=25, Hindi गण(5)=25, goto skip=1.
+Frontends on flow.html: C, Hindi C, Python (AST→C), Rust/Go/TS/Zig/Lua/C++ (subset→C) then wasm.pni. compute(5)=25 proven for those.
+
 
 
 

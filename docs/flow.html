@@ -32,13 +32,13 @@
   </nav>
 </header>
 <main class="site-main">
-  <p class="cite">PANINI.Frontend.C · PANINI.Backend.Wasm · wat2wasm · your browser</p>
+  <p class="cite">Frontends in PANINI · host C · wasm.pni · your browser</p>
   <h1>End to end</h1>
-  <p class="lead">Type C (or Hindi C). The same <code>c.pni</code> and <code>wasm.pni</code> the tests use lower it here. No wabt. No server.</p>
+  <p class="lead">Pick a frontend. It lowers to C (Python via AST; braced languages via a documented subset). Then the same <code>c.pni</code> + <code>wasm.pni</code> the tests use. No wabt. No server.</p>
 
   <div class="pipe" id="pipe">
-    <div class="st" id="s0"><b>1 SOURCE</b>C or Hindi C</div>
-    <div class="st" id="s1"><b>2 HOST C</b>flatten · shaili · lex</div>
+    <div class="st" id="s0"><b>1 SOURCE</b>frontend</div>
+    <div class="st" id="s1"><b>2 HOST C</b>lower_to_c / flatten</div>
     <div class="st" id="s3"><b>3 AST</b>c.pni</div>
     <div class="st" id="s4"><b>4 WAT</b>wasm.pni</div>
     <div class="st" id="s5"><b>5 WASM</b>instantiate · result</div>
@@ -49,13 +49,22 @@
       <select id="kind">
         <option value="c">C</option>
         <option value="hindi">Hindi C</option>
+        <option value="python">Python</option>
+        <option value="cpp">C++</option>
+        <option value="rust">Rust</option>
+        <option value="go">Go</option>
+        <option value="ts">TypeScript</option>
+        <option value="zig">Zig</option>
+        <option value="lua">Lua</option>
       </select>
     </label>
     <button type="button" id="lower">Lower</button>
     <button type="button" id="run">Lower and run</button>
-    <button type="button" class="ghost" id="ex-compute">compute(5)</button>
-    <button type="button" class="ghost" id="ex-goto">goto skip</button>
+    <button type="button" class="ghost" id="ex-compute">C compute(5)</button>
+    <button type="button" class="ghost" id="ex-goto">C goto</button>
     <button type="button" class="ghost" id="ex-hindi">Hindi गण(5)</button>
+    <button type="button" class="ghost" id="ex-py">Python</button>
+    <button type="button" class="ghost" id="ex-rs">Rust</button>
     <label>export <input id="exp" value="main" size="10" /></label>
     <label>arg <input id="arg" value="" size="6" placeholder="optional" /></label>
   </div>
@@ -95,7 +104,7 @@ int main() {
 <script src="skins/skins.js"></script>
 <script src="i18n/gt.js"></script>
 <script type="module">
-import { emitCWat, runCWasm, parseCAst, loadCWasm } from "./engine/interp/host.js";
+import { emitCWat, runCWasm, parseCAst, loadCWasm, lowerToC, runLangWasm } from "./engine/interp/host.js";
 
 const COMPUTE = document.getElementById("src").value;
 const GOTO = `int main(){ int x; x=1; goto skip; x=2; skip: return x; }`;
@@ -119,11 +128,31 @@ function mark(n) {
   });
 }
 
+const PY = `def compute(x):
+    result = x + 10 * 2
+    return result
+def main():
+    return compute(5)
+`;
+const RS = `fn compute(x: i32) -> i32 {
+  let mut result = 0;
+  result = x + 10 * 2;
+  return result;
+}
+fn main() -> i32 {
+  return compute(5);
+}
+`;
+
 async function toHost(src, kind) {
-  if (kind !== "hindi") return { host: src, notes: ["kind=C — no flatten"] };
-  await PANINI_NB.load("engine/bundle.json");
-  const r = PANINI_NB.compile({ src, lang: "hindi", shaili: "guru" });
-  return { host: r.host, notes: (r.notes || []).concat(["kind=Hindi C — flatten · shaili · lex → host C"]), romenagri: r.romenagri };
+  if (kind === "hindi") {
+    await PANINI_NB.load("engine/bundle.json");
+    const r = PANINI_NB.compile({ src, lang: "hindi", shaili: "guru" });
+    return { host: r.host, notes: (r.notes || []).concat(["Hindi C → flatten · shaili · lex"]), romenagri: r.romenagri };
+  }
+  if (kind === "c") return { host: src, notes: ["kind=C"] };
+  const host = await lowerToC(kind, src);
+  return { host, notes: ["PANINI.Frontend." + kind + " → host C (numeric subset)"] };
 }
 
 async function lower() {
@@ -188,6 +217,18 @@ document.getElementById("ex-goto").onclick = () => {
 document.getElementById("ex-hindi").onclick = () => {
   document.getElementById("kind").value = "hindi";
   document.getElementById("src").value = HINDI;
+  document.getElementById("exp").value = "main";
+  document.getElementById("arg").value = "";
+};
+document.getElementById("ex-py").onclick = () => {
+  document.getElementById("kind").value = "python";
+  document.getElementById("src").value = PY;
+  document.getElementById("exp").value = "main";
+  document.getElementById("arg").value = "";
+};
+document.getElementById("ex-rs").onclick = () => {
+  document.getElementById("kind").value = "rust";
+  document.getElementById("src").value = RS;
   document.getElementById("exp").value = "main";
   document.getElementById("arg").value = "";
 };
