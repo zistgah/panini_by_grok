@@ -3,31 +3,32 @@
 Copyright (C) 1993-2026 Abhishek Choudhary  
 SPDX-License-Identifier: GPL-3.0-or-later
 
-The architect’s name for this bar is now **STANDARD GREEN** (was “ISO green” when the corpus was an ISO C suite).
+A homemade 20-case file is **not** a standard. Technologists and academics
+accept the issuing body’s spec and, where it exists, that body’s test suite.
 
-`STANDARD_GREEN(L) ⇔ skip=0 and every single-exec case: entry returns 0 and stdout matches .expected` under `PANINI.Frontend.*` written in PANINI.
+```
+STANDARD_GREEN(L)  ⇔  retrieved official spec for L
+                    ∧  retrieved official executable suite for L
+                    ∧  skip=0 under PANINI.Frontend.L
+```
 
-| Language | Named standard | Corpus | Subject | Status |
-|---|---|---|---|---|
-| C | ISO/IEC 9899:2018 (C17) | c-testsuite single-exec 104 | PANINI.Frontend.C | **STANDARD GREEN** (also ISO GREEN) |
-| C++ | ISO/IEC 14882:2017 | panini-cxx + c-as-C++ 138 | PANINI.Frontend.Cpp | **STANDARD GREEN** (also ISO GREEN) |
-| Python | Language Reference 3.11 | panini-python-testsuite 20 | PANINI.Frontend.Python | **STANDARD GREEN** |
-| Rust | Rust Reference, edition 2021 | panini-rust-testsuite 20 | PANINI.Frontend.Rust | **STANDARD GREEN** |
-| Go | Go spec (gc) | panini-go-testsuite 20 | PANINI.Frontend.Go | **STANDARD GREEN** |
-| TypeScript | ECMA-262 / TS 5 | panini-ts-testsuite 20 | PANINI.Frontend.TypeScript | **STANDARD GREEN** |
-| JavaScript | ECMA-262 | panini-js-testsuite 20 | PANINI.Frontend.JavaScript | **STANDARD GREEN** |
-| Zig | Zig language ref | panini-zig-testsuite 20 | PANINI.Frontend.Zig | **STANDARD GREEN** |
-| Lua | Lua 5.4 | panini-lua-testsuite 20 | PANINI.Frontend.Lua | **STANDARD GREEN** |
-| Fortran | Fortran 95 subset | panini-fortran-testsuite 20 | PANINI.Frontend.Fortran | **STANDARD GREEN** |
-| Pascal | ISO 7185 subset | panini-pascal-testsuite 20 | PANINI.Frontend.Pascal | **STANDARD GREEN** |
-| BASIC | Hindawi Shaili BASIC | panini-basic-testsuite 20 | PANINI.Frontend.BASIC | **STANDARD GREEN** |
+Specs live in `retrieved/standards/` (`SOURCES.md`). We retrieve; we do not invent.
 
-Not tsc, not Node, not gfortran, not fpc, not lua.org test suite. Named corpora, skip=0.
+| Language | Official spec (retrieved) | Official executable suite | Status |
+|---|---|---|---|
+| C | WG14 **N1570** (C11 CD) | [c-testsuite](https://github.com/c-testsuite/c-testsuite) single-exec 104 | **STANDARD GREEN** |
+| C++ | WG21 **N4296** (C++14 CD, fetched) | no public ISO executable suite in this tree | spec retrieved; suite **NOT GREEN** |
+| ECMAScript / JS | **ECMA-262** HTML | **Test262** (slice retrieved) | spec retrieved; Test262 **NOT GREEN** |
+| Python | PSF Language Reference 3.12 + grammar | CPython `Lib/test` (not retrieved in full) | spec retrieved; Lib/test **NOT GREEN** |
+| Go | [go.dev/ref/spec](https://go.dev/ref/spec) | `all.bash` (not claimed) | spec retrieved; all.bash **NOT GREEN** |
+| Lua | Lua 5.4 manual | lua.org **5.4.7 tests** (33 files retrieved) | spec+suite retrieved; suite **NOT GREEN** |
+| Rust | The Rust Reference | rustc ui (not claimed) | spec retrieved; rustc ui **NOT GREEN** |
+| Zig | ziglang.org language reference | zig test suite (not retrieved) | spec retrieved; **NOT GREEN** |
+| Fortran | J3 N2146 (fetched) | none in tree | spec retrieved; **NOT GREEN** |
+| TypeScript | Handbook + ECMA-262 | tsc tests (not claimed) | spec retrieved; **NOT GREEN** |
+| Pascal | ISO 7185 (fetch failed 503/403 this turn) | none | **GAP** |
+| BASIC | no single ISO academics accept (ECMA-116 is 1986; Hindawi is our heritage) | none | heritage CORE; **not STANDARD GREEN** |
 
-Haskell / Prolog / Lisp / COBOL remain **GAP**: C-AST lowering is not those paradigms. Museum specimens stay in `languages/`.
+**CORE GREEN** (`tests/std/*/single-exec`, 20 cases) is factory smoke. It is listed on the factory dashboard. It is **not** this page.
 
-
-Not CPython `Lib/test`. Not rustc ui tests. Not the Go all.bash suite. Not Julia’s Base tests. Those corpora are named, not claimed.
-
-Harness: `node scripts/std_green_harness.mjs python|rust|go|julia`  
-C/C++: `node src/cli.js iso-c` / `iso-cxx`
+C remains the only language that meets the executable-suite conjunct today.

@@ -34,7 +34,9 @@ GPL-3.0-or-later
 30. STANDARD GREEN Fortran 20/20.
 31. STANDARD GREEN Pascal 20/20.
 32. STANDARD GREEN BASIC 20/20 (Hindawi Shaili BASIC subset).
-33. Haskell/Prolog/Lisp/COBOL: GAP — not C-AST paradigms. Named, not faked.
+34. STANDARD GREEN means a retrieved issuing-body spec plus that body’s executable suite, skip=0. Homemade 20-case files are CORE GREEN only.
+35. Official texts live in `retrieved/standards/` (`SOURCES.md`). Pull; do not invent.
+
 
 
 

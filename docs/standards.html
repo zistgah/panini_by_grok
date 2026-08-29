@@ -11,8 +11,21 @@
   <nav><a href="index.html">Overview</a><a href="languages.html">Languages</a><a href="workbench.html">Workbench</a></nav>
 </header>
 <main class="site-main">
-  <h1>Official standards</h1>
-  <p>These are the suites that count as “standards.” This tree maps them. It does not mark them PASS.</p>
+  <h1>Official standards (retrieved)</h1>
+  <p class="lead">Fetched from the issuing bodies. A 20-case homemade file is factory smoke, not a standard. See <a href="STANDARD_GREEN.md">STANDARD GREEN</a> and <a href="SOURCES_STANDARDS.md">SOURCES</a>.</p>
+  <table>
+    <tr><th>Language</th><th>Retrieved spec</th><th>Official suite</th><th>STANDARD GREEN</th></tr>
+    <tr><td>C</td><td>WG14 N1570</td><td>c-testsuite 104</td><td>YES</td></tr>
+    <tr><td>C++</td><td>WG21 N4296 (URL; PDF too large for zip)</td><td>—</td><td>no</td></tr>
+    <tr><td>ECMAScript</td><td>ECMA-262 HTML</td><td>Test262 slice</td><td>no</td></tr>
+    <tr><td>Python</td><td>3.12 grammar + reference</td><td>Lib/test not in tree</td><td>no</td></tr>
+    <tr><td>Go</td><td>go.dev/ref/spec</td><td>all.bash not claimed</td><td>no</td></tr>
+    <tr><td>Lua</td><td>5.4 manual</td><td>lua.org 5.4.7 tests (33)</td><td>no</td></tr>
+    <tr><td>Rust</td><td>The Rust Reference</td><td>rustc ui not claimed</td><td>no</td></tr>
+    <tr><td>Zig</td><td>ziglang.org langref</td><td>—</td><td>no</td></tr>
+    <tr><td>Fortran</td><td>J3 N2146 (URL)</td><td>—</td><td>no</td></tr>
+  </table>
+
   <ul>
     <li>C — ISO/IEC 9899, gcc torture, c-testsuite</li>
     <li>C++ — ISO/IEC 14882, libc++ / libstdc++</li>

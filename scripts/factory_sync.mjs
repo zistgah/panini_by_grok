@@ -37,7 +37,7 @@ const COPIES = [
   ["compiler/lexer.js", "docs/engine/interp/lexer.js"],
   ["compiler/parser.js", "docs/engine/interp/parser.js"],
   ["compiler/tokens.js", "docs/engine/interp/tokens.js"],
-  ["factory/CORRELATION.md", "docs/CORRELATION.md"],
+  ["retrieved/standards/SOURCES.md", "docs/SOURCES_STANDARDS.md"],
 ];
 
 let n = 0;

@@ -1,11 +1,11 @@
 {
   "theorem": "SHIP_GREEN(requirements)",
-  "when": "2026-08-29T10:52:16.181Z",
+  "when": "2026-08-29T11:03:39.937Z",
   "requirements": {
-    "total": 31,
-    "ship_green": 29,
+    "total": 32,
+    "ship_green": 31,
     "named": 0,
-    "gap": 2
+    "gap": 1
   },
   "freeze": {
     "locked": 17,
@@ -635,15 +635,23 @@
       "honesty": null
     },
     {
-      "id": 33,
-      "text": "Haskell/Prolog/Lisp/COBOL: GAP — not C-AST paradigms. Named, not faked.",
-      "status": "GAP",
-      "artifact": null,
-      "test": null,
-      "honesty": "Haskell/Prolog/Lisp/COBOL are not C-AST paradigms; museum only"
+      "id": 34,
+      "text": "STANDARD GREEN means a retrieved issuing-body spec plus that body’s executable suite, skip=0. Homemade 20-case files are CORE GREEN only.",
+      "status": "SHIP GREEN",
+      "artifact": "docs/STANDARD_GREEN.md",
+      "test": "retrieved/standards/SOURCES.md",
+      "honesty": null
+    },
+    {
+      "id": 35,
+      "text": "Official texts live in `retrieved/standards/` (`SOURCES.md`). Pull; do not invent.",
+      "status": "SHIP GREEN",
+      "artifact": "retrieved/standards/n1570.pdf",
+      "test": "retrieved/standards/go-spec.html",
+      "honesty": null
     }
   ],
   "green": true,
-  "status": "SHIP GREEN 29/31 (gap 2 named 0)",
+  "status": "SHIP GREEN 31/32 (gap 1 named 0)",
   "reuse": "Browse factory/REGISTRY.json before adding a file. Frozen components are not restyled."
 }

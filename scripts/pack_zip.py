@@ -16,9 +16,11 @@ with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=4) as z:
             continue
         for f in fns:
             low = f.lower()
+            p = os.path.join(dp, f)
             if low.endswith(forbidden_ext):
                 continue
-            p = os.path.join(dp, f)
+            if low.endswith(".pdf") and os.path.getsize(p) > 2_000_000:
+                continue
             try:
                 os.stat(p)
             except OSError:
