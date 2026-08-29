@@ -275,6 +275,14 @@
       "owns": "canonical → adapter copy",
       "status": "live",
       "freeze": false
+    },
+    {
+      "id": "ayebios",
+      "path": "retrieved/ayebios/",
+      "owns": "AyeBIOS SeaBIOS×Guru retrieved",
+      "status": "live",
+      "freeze": false,
+      "reuse": "hincc + Frontend.C, not a second C"
     }
   ],
   "adapters": [

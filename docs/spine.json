@@ -23,6 +23,7 @@
       "items": [
         { "href": "console.html", "label": "Console · VFS" },
         { "href": "emu.html", "label": "x86 guest" },
+        { "href": "ayebios.html", "label": "AyeBIOS" },
         { "href": "llm.html", "label": "llama.cpp" },
         { "href": "story.html", "label": "Story spinner" },
         { "href": "nb.html", "label": "Notebook" },

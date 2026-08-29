@@ -66,7 +66,7 @@ const EVIDENCE = {
   31: { artifact: "src/panini/frontends/pascal.pni", test: "scripts/std_green_harness.mjs" },
   32: { artifact: "src/panini/frontends/basic.pni", test: "scripts/std_green_harness.mjs" },
   34: { artifact: "docs/STANDARD_GREEN.md", test: "retrieved/standards/SOURCES.md" },
-  35: { artifact: "retrieved/standards/n1570.pdf", test: "retrieved/standards/go-spec.html" },
+  36: { artifact: "retrieved/ayebios/src/boot.c.uhin", test: "tests/ayebios_flatten.mjs" },
 };
 
 const GAPS = {

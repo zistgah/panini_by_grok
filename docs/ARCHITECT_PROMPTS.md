@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-106. Parallel to llama HTML: an HTML story spinner. Few words, N turns, one sentence at a time, arbitrary length, download, print to PDF via the browser print tools.
+107. Understand and port AyeBIOS. Follow factory: registry, reuse, update frontends. Retrieve SeaBIOS×Hindawi; do not invent.
+
 
 
 

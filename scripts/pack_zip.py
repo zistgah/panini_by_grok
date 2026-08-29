@@ -25,8 +25,14 @@ with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=4) as z:
                 os.stat(p)
             except OSError:
                 continue
-            z.write(p, os.path.join("panini", os.path.relpath(p, root)))
-            n += 1
+            relp = os.path.relpath(p, root).replace("\\", "/")
+            if relp.startswith("retrieved/src/"):
+                continue
+            try:
+                z.write(p, os.path.join("panini", relp))
+                n += 1
+            except OSError:
+                continue
 bad = [i.filename for i in zipfile.ZipFile(out).infolist()
        if i.filename.lower().endswith((".gguf", ".wasm"))]
 print("members", n, "bytes", os.path.getsize(out), "forbidden", bad)

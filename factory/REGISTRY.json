@@ -39,7 +39,8 @@
     {"id": "micro-libc", "path": "include/", "owns": "micro-headers, not /usr/include", "status": "live", "freeze": false},
     {"id": "spine", "path": "docs/spine.json", "owns": "canonical menu", "status": "live", "freeze": false, "note": "add entries; do not flatten"},
     {"id": "factory-scan", "path": "scripts/factory_scan.mjs", "owns": "browse + freeze verify + ship-green", "status": "live", "freeze": false},
-    {"id": "factory-sync", "path": "scripts/factory_sync.mjs", "owns": "canonical → adapter copy", "status": "live", "freeze": false}
+    {"id": "factory-sync", "path": "scripts/factory_sync.mjs", "owns": "canonical → adapter copy", "status": "live", "freeze": false},
+    {"id": "ayebios", "path": "retrieved/ayebios/", "owns": "AyeBIOS SeaBIOS×Guru retrieved", "status": "live", "freeze": false, "reuse": "hincc + Frontend.C, not a second C"}
   ],
   "adapters": [
     {"from": "runtime/vfs.js", "to": "docs/console.js", "why": "Pages UMD"},

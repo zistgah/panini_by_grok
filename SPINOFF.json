@@ -11,6 +11,6 @@
     {"path": "apps/zistgah/dome", "repo": "zistgah/dome"},
     {"path": "apps/hindawiai/hindawi-legacy", "repo": "hindawiai/hindawi-legacy"},
     {"path": "retrieved/legacy", "repo": "project-ilm/legacy", "read_only": true},
-    {"path": "retrieved/romenagri", "repo": "project-ilm/romenagri", "read_only": true}
+    {"path": "retrieved/ayebios", "repo": "ayebios/ayebios", "read_only": true},
   ]
 }
