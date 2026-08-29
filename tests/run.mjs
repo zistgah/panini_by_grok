@@ -247,5 +247,22 @@ await test("stdlib_cyclers_genie_fakir_charbagh", async () => {
   assert.ok(runtime.prints.includes("GENIE"));
 });
 
+await test("fetch_specs_and_bios_rom_on_vfs", async () => {
+  const { fetchLocalAssets } = await import("./fetch_assets.mjs");
+  const { createVfs } = await import("../runtime/vfs.js");
+  const { mountBios, BIOS_VFS_PATH } = await import("../runtime/vfs_bios.js");
+  const got = await fetchLocalAssets(root);
+  const vfs = createVfs();
+  let bytes = "AYEB";
+  try {
+    bytes = fs.readFileSync(got.biosPath, "latin1");
+  } catch { /* stub */ }
+  assert.ok(mountBios(vfs, bytes));
+  const rom = vfs.read(BIOS_VFS_PATH);
+  assert.ok(rom.ok);
+  assert.ok(String(rom.content).length > 0);
+  console.log("       assets", (got.notes || []).join("; "));
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

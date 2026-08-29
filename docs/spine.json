@@ -66,7 +66,7 @@
         { "href": "dashboard.html", "label": "Dashboard" },
         { "href": "path/research.html", "label": "Layers" },
         { "href": "coverage.html", "label": "Coverage" },
-        { "href": "factory.html", "label": "Factory" },
+        { "href": "factory.html", "label": "Factory" }
       ]
     },
     {

@@ -37,7 +37,8 @@ const COPIES = [
   ["compiler/lexer.js", "docs/engine/interp/lexer.js"],
   ["compiler/parser.js", "docs/engine/interp/parser.js"],
   ["compiler/tokens.js", "docs/engine/interp/tokens.js"],
-  ["retrieved/ayebios/src/boot.c.uhin", "docs/demos/ayebios-boot.c.uhin"],
+  ["CONTRACT.md", "docs/CONTRACT.md"],
+  ["CONTEXT.md", "docs/CONTEXT.md"],
 ];
 
 let n = 0;

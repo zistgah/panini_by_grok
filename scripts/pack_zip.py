@@ -28,6 +28,14 @@ with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=4) as z:
             relp = os.path.relpath(p, root).replace("\\", "/")
             if relp.startswith("retrieved/src/"):
                 continue
+            if relp.startswith("build/"):
+                continue
+            if relp.startswith("retrieved/standards/") and not relp.endswith("SOURCES.md"):
+                continue
+            if relp.startswith("retrieved/legacy/Notebooks/"):
+                continue
+            if low.endswith(".bin"):
+                continue
             try:
                 z.write(p, os.path.join("panini", relp))
                 n += 1

@@ -66,6 +66,9 @@
   root.children.tmp = dir();
   root.children.bin = dir();
   root.children.bin.children["llama-cli"] = file("PANINI VFS exec: llama.cpp WASM (wllama)\n");
+  root.children.bios = dir();
+  root.children.bios.children["bios.bin"] = file("(fetching SeaBIOS stand-in for AyeBIOS)\n");
+  root.children.bios.children["README.txt"] = file("AyeBIOS: retrieved/ayebios — SeaBIOS × Hindawi Guru. ROM at /bios/bios.bin.\n");
   root.children.models = dir();
   root.children.models.children["stories15M.Q4_0.gguf"] = file("(binary on /models/ — fetch via llama-cli)\n");
   var state = { cwd: "/home/panini", root: root };
@@ -153,7 +156,7 @@
     else if (c === "cat") { out = a.map(function (p) { var rr = fs.read(p); return rr.ok ? rr.content : "cat: " + p; }).join(""); }
     else if (c === "echo") out = a.join(" ");
     else if (c === "mkdir") fs.mkdir(a[0] || "");
-    else if (c === "help") out = "pwd ls cd cat echo mkdir help robot lekhak emu llama-cli llama";
+    else if (c === "bios") { r = fs.read("/bios/README.txt"); out = (r.ok ? r.content : "") + "ls /bios\n" + (fs.ls("/bios").names || []).join("\n"); }
     else if (c === "emu" || c === "v86") out = "__EMU__";
     else if (c === "llama-cli" || c === "llama" || c === "llm") out = "__LLAMA__:" + a.join("\x1f");
     else if (c === "robot" || c === "रोबोट") out = "__ROBOT__";
@@ -544,6 +547,14 @@
     }
     else if (res) vtWrite(res.charAt(res.length - 1) === "\n" ? res : res + "\n");
   };
+  fetch("https://github.com/copy/v86/raw/master/bios/seabios.bin")
+    .then(function (r) { return r.ok ? r.arrayBuffer() : Promise.reject(new Error("bios " + r.status)); })
+    .then(function (buf) {
+      var u = new Uint8Array(buf), s = "", i;
+      for (i = 0; i < u.length; i++) s += String.fromCharCode(u[i]);
+      fs.write("/bios/bios.bin", s);
+    })
+    .catch(function () { fs.write("/bios/bios.bin", "AYEB SeaBIOS stand-in (offline)\n"); });
 })();
 </script>
 </body>

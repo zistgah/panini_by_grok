@@ -1,7 +1,17 @@
-# tree-rev: 2026.08.28
+# PANINI
+
+**Read first (this is the contract for every collaborator, human or AI):**
+
+1. [`AGENTS.md`](AGENTS.md)
+2. [`CONTRACT.md`](CONTRACT.md)
+3. [`CONTEXT.md`](CONTEXT.md)
+
+---
+
+# tree-rev: 2026.08.29
 # Copyright (C) 1993-2026 Abhishek Choudhary
 # SPDX-License-Identifier: GPL-3.0-or-later
-# PANINI
+
 
 Self-hosting general-purpose computational language and execution environment.
 

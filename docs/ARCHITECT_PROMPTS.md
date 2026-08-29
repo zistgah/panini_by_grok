@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-107. Understand and port AyeBIOS. Follow factory: registry, reuse, update frontends. Retrieve SeaBIOS×Hindawi; do not invent.
+108. Zip bloat: fetch large assets in tests/run.mjs; do not ship them. Uploader script is immutable. BIOS ROM on VFS. Restore menu (spine JSON). CONTRACT and CONTEXT on top for every AI.
+
 
 
 
