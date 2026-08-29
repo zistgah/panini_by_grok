@@ -60,6 +60,7 @@ Register note: later turns include **affective register escalation** (frustratio
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
 111. Pascal, Fortran, and QB64 for BASIC next. Graphics: VT100 expanded to VGA / Super VGA on the same CRT.
 112. Complete C++ ISO GREEN, then ECMAScript, TypeScript; add Smalltalk, Java, Haskell (OOP side). All ISO / STANDARD GREEN on named official extracts.
+113. Common Lisp and Prolog STANDARD GREEN. List STANDARD GREEN status. Refactor and reorganize the factory. Other frontends may be low-hanging after this turn.
 
 
 

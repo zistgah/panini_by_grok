@@ -22,6 +22,8 @@ import { js262Run, ts262Run } from "./js262.js";
 import { stRunFile } from "./steval.js";
 import { haskellRun } from "./hseval.js";
 import { cppReject } from "./cpplower.js";
+import { lispRun } from "./cleval.js";
+import { prologRun } from "./pleval.js";
 import { createVga, vgaPset, vgaLine, vgaScreen, vgaCls } from "./vga.js";
 import { renderTextBitmap } from "./dosfont.js";
 
@@ -76,6 +78,8 @@ export function installBuiltins(env, runtime) {
   def("HASKELLRUN", (x) => wrap(haskellRun(toStr(x))), 1);
   def("SMALLTALKRUN", (x) => wrap(stRunFile(toStr(x))), 1);
   def("CPPREJECT", (x) => vStr(cppReject(toStr(x)) || ""), 1);
+  def("LISPRUN", (x) => wrap(lispRun(toStr(x))), 1);
+  def("PROLOGRUN", (x) => wrap(prologRun(toStr(x))), 1);
   {
     let _vga = createVga(13);
     def("VGA", () => wrap({ mode: _vga.mode, w: _vga.w, h: _vga.h, name: _vga.name }));

@@ -140,6 +140,7 @@ for (const p of files) {
 }
 const adapterPrefixes = [
   "docs/engine/interp/", "docs/cyclers/", "docs/ontology/", "docs/explorer/posters/",
+  "docs/data/", "docs/FACTORY.md", "docs/DELIBERATION.md",
   "apps/", "retrieved/", "cyclers/upstream/", "languages/", "website/",
   "docs/CONTEXT.md", "docs/CONTRACT.md", "docs/REQUIREMENTS.md",
 ];
@@ -178,5 +179,64 @@ fs.mkdirSync(path.join(root, "docs/data"), { recursive: true });
 fs.writeFileSync(path.join(root, "docs/data/ship-green.json"), JSON.stringify(report, null, 2));
 fs.writeFileSync(path.join(root, "docs/data/factory-registry.json"), JSON.stringify(registry, null, 2));
 fs.writeFileSync(path.join(root, "factory/last-scan.json"), JSON.stringify(report, null, 2));
-console.log(JSON.stringify({ status: report.status, freeze: report.freeze.locked, drift: report.freeze.drift, ship: ship, named, gap: gaps, dupes: dupes.length }, null, 2));
+
+const langIndexPath = path.join(root, "factory/languages.json");
+let langIndex = { languages: [] };
+try { langIndex = JSON.parse(fs.readFileSync(langIndexPath, "utf8")); } catch { /* missing */ }
+const stdReports = [];
+try {
+  for (const f of fs.readdirSync(path.join(root, "docs/data"))) {
+    if (!f.endsWith("-std-green.json")) continue;
+    try { stdReports.push(JSON.parse(fs.readFileSync(path.join(root, "docs/data", f), "utf8"))); } catch { /* skip */ }
+  }
+} catch { /* no data dir */ }
+try {
+  const c = JSON.parse(fs.readFileSync(path.join(root, "tests/iso/c/last-report.json"), "utf8"));
+  stdReports.push({
+    language: "c",
+    pass: c.panini && c.panini.pass,
+    n: c.cases,
+    skip0: !!(c.green && c.panini && c.panini.skip === 0),
+    standard_green: !!c.green,
+    suite: c.standard,
+  });
+} catch { /* C report missing */ }
+const ALIAS = { "common-lisp": "lisp", "basic/qb64": "basic" };
+const reportById = new Map();
+for (const r of stdReports) reportById.set(ALIAS[r.language] || r.language, r);
+const merged = (langIndex.languages || []).map((L) => {
+  const r = reportById.get(L.id);
+  return {
+    id: L.id,
+    language: L.id,
+    suite: (r && r.suite) || L.suite || "",
+    pass: r ? r.pass : null,
+    n: r ? r.n : null,
+    skip0: r ? !!r.skip0 : false,
+    standard_green: r ? !!r.standard_green : !!L.standard_green,
+    gap: L.gap || null,
+    frontend: L.frontend,
+  };
+});
+const stdGreen = merged.filter((r) => r.standard_green);
+const stdIndex = {
+  theorem: "STANDARD_GREEN(languages)",
+  when: report.when,
+  n: merged.length,
+  standard_green: stdGreen.length,
+  languages: merged,
+  reports: stdReports.map((r) => ({
+    language: r.language,
+    pass: r.pass,
+    n: r.n,
+    skip0: r.skip0,
+    standard_green: r.standard_green,
+    suite: r.suite,
+  })),
+  index: langIndex.languages || [],
+  groups: registry.groups || {},
+};
+fs.writeFileSync(path.join(root, "docs/data/standard-green-index.json"), JSON.stringify(stdIndex, null, 2));
+
+console.log(JSON.stringify({ status: report.status, freeze: report.freeze.locked, drift: report.freeze.drift, ship: ship, named, gap: gaps, dupes: dupes.length, standard_green: stdGreen.length }, null, 2));
 process.exit(0);

@@ -315,6 +315,19 @@ await test("oop_standard_green_cpp_js_ts_java_st_hs", async () => {
   }
 });
 
+await test("lisp_prolog_standard_green", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const r = spawnSync(process.execPath, [path.join(root, "scripts/lisp_prolog_std_green.mjs")], { encoding: "utf8", timeout: 120000 });
+  assert.equal(r.status, 0, r.stderr || r.stdout || "");
+  for (const name of ["lisp", "prolog"]) {
+    const g = JSON.parse(fs.readFileSync(path.join(root, "docs/data", name + "-std-green.json"), "utf8"));
+    assert.equal(g.skip0, true, name + " skip0 " + JSON.stringify(g.fails || []).slice(0, 200));
+    assert.equal(g.standard_green, true, name);
+    assert.ok(g.pass > 0, name);
+    assert.equal(g.skip, 0, name);
+  }
+});
+
 await test("console_one_glass_vga", async () => {
   const html = fs.readFileSync(path.join(root, "docs/console.html"), "utf8");
   assert.equal((html.match(/<canvas/g) || []).length, 1);

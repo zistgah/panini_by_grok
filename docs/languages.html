@@ -20,27 +20,31 @@
   <h2>Host language</h2>
   <p>PANINI (.pni) — self-host subset verified A=B=C on the compiler core.</p>
   <h2>Frontends written in PANINI (subsets)</h2>
+  <p>Browse <a href="data/languages.json">factory/languages.json</a> before adding a frontend.
+     <strong>STANDARD GREEN</strong> is <a href="STANDARD_GREEN.md">STANDARD_GREEN.md</a> (issuing-body suite, skip=0).
+     Homemade 20-case files are CORE GREEN only. <code>languages/*.pni</code> are AGI catalog stubs, not a second compiler.</p>
   <ul>
-    <li>Python — print, def, return, lists, tensor/matmul</li>
-    <li>C — functions, return, printf, arithmetic</li>
-    <li>Python — Language Reference 3.11 frontend in PANINI. STANDARD GREEN 20/20 on panini-python-testsuite. Not CPython Lib/test.</li>
-    <li>Rust — edition 2021 frontend in PANINI. STANDARD GREEN 20/20. Native rustc remains available as host.</li>
-    <li>Go — spec (gc) frontend in PANINI. STANDARD GREEN 20/20.</li>
-    <li>TypeScript / JavaScript / Zig / Lua / Fortran / Pascal / BASIC — STANDARD GREEN 20/20 each on named panini-*-testsuite. Lowered to the frozen C AST. Not tsc/Node/gfortran/fpc.</li>
-    <li>Fortran — PROGRAM / PRINT</li>
-    <li>Rust — fn, let, println</li>
-    <li>TypeScript — function, console.log</li>
-    <li>Go — func, fmt.Println</li>
-    <li>Zig — pub fn, debug.print</li>
+    <li>C — WG14 N1570 / c-testsuite 104. STANDARD GREEN. Frozen frontend.</li>
+    <li>C++ — g++.dg/expr named extract 5. STANDARD GREEN. cpp.pni frozen; work in cpplower.js.</li>
+    <li>Python — CPython 3.12 language extract 68. STANDARD GREEN. Frozen frontend.</li>
+    <li>ECMAScript — Test262 language extract 13. STANDARD GREEN.</li>
+    <li>TypeScript — tsc v5.4.5 compiler extract 2. STANDARD GREEN.</li>
+    <li>Pascal — Pascal-P5 PRT+hello 10. STANDARD GREEN.</li>
+    <li>BASIC / QB64 — expression.bas 38. STANDARD GREEN.</li>
+    <li>Java — OpenJDK javac Parens extract 4. STANDARD GREEN. Not Java™.</li>
+    <li>Smalltalk — GST intmath 31. STANDARD GREEN.</li>
+    <li>Haskell — GHC cgrun 3. STANDARD GREEN.</li>
+    <li>Common Lisp — ansi-test self-contained deftest 19. STANDARD GREEN.</li>
+    <li>Prolog — Ciao ISO 8.6/8.7 arith 23. STANDARD GREEN.</li>
+    <li>Fortran / Go / Rust / Julia / Lua / Zig — CORE GREEN or named GAP. See the factory index.</li>
   </ul>
-  <h2>Not present</h2>
-  <p>Julia frontend is listed on the standards map and is not implemented.</p>
+  <p>Low-hanging next: Lua (5.4.7 tests retrieved), Scheme, Forth, OCaml, Clojure.</p>
   <h2>Classifications</h2>
   <ul>
-    <li>VERIFIED — PANINI self-host subset</li>
-    <li>VERIFIED_SUBSET — foreign frontend tests in tests/lang_cases</li>
-    <li>PARTIAL — PyTorch-shaped ops, WebGPU, LSP, debugger</li>
-    <li>NOT_RUN — official upstream suites</li>
+    <li>STANDARD GREEN — issuing-body spec ∧ that body’s executable suite, skip=0. See <a href="STANDARD_GREEN.md">STANDARD_GREEN.md</a>.</li>
+    <li>CORE GREEN — homemade factory 20-case smoke. Not a standard.</li>
+    <li>NAMED GAP — spec retrieved, suite not skip=0 (Fortran execute, Go all.bash, Rust rustc ui, Zig, Lua).</li>
+    <li>Museum stub — <code>languages/*.pni</code> axis character. Not a compiler.</li>
   </ul>
   <p>On the site they lower to host C, then <a href="flow.html">C → WASM</a>. Python uses the AST. Braced languages use a numeric subset transducer (<code>to_c.pni</code>). Proven: compute(5)=25 for Python, Rust, Go, TypeScript, Zig, Lua, C++.</p>
 </main>

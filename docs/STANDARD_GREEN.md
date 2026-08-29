@@ -31,7 +31,11 @@ Specs live in `retrieved/standards/` (`SOURCES.md`). We retrieve; we do not inve
 | Java | OpenJDK javac (JLS proxy). Not Java™. | `Parens1/2/3` `@compile/fail` reject + `LambdaConv01` `@compile` accept (4), skip=0 | **STANDARD GREEN** on that named javac extract. `LambdaConv01` `@run main` execute is **GAP**. |
 | Smalltalk | GNU Smalltalk / ANSI Smalltalk | `tests/intmath.st` Eval[] before LargeIntegers vs `intmath.ok`, skip=0 | **STANDARD GREEN** on that named GST intmath extract. LargeIntegers / factorial are **GAP**. |
 | Haskell | Haskell 2010 via GHC | `codeGen/should_run` cgrun001/002/005 vs official `.stdout` (3), skip=0 | **STANDARD GREEN** on that named GHC codeGen extract. Full GHC testsuite is **GAP**. |
+| Common Lisp | ANSI INCITS 226-1994 / CLHS | Paul Dietz **ansi-test** `numbers/{plus,minus,times}` `cons/{cons,list}` `eval` self-contained `deftest`, skip=0 | **STANDARD GREEN** on that named ansi-test extract. `loop`/`*numbers*`/`compile` are **GAP**. Full ansi-test is **GAP**. |
+| Prolog | ISO/IEC 13211-1 | Ciao **iso_tests** ISO 8.6 `is/2` + 8.7 arithmetic comparison, skip=0 | **STANDARD GREEN** on that named Ciao ISO arith extract. bagof/setof/IO/exceptions are **GAP**. |
 
 **CORE GREEN** (`tests/std/*/single-exec`, 20 cases) is factory smoke. It is listed on the factory dashboard. It is **not** this page.
 
-STANDARD GREEN today: **C**, **C++** (named g++.dg/expr extract), **ECMAScript** (named Test262 extract), **TypeScript** (named tsc compiler extract), **Python** (named CPython extract), **Pascal** (named P5 extract), **QB64 BASIC** (named expression extract), **Java** (named OpenJDK javac Parens extract), **Smalltalk** (named GST intmath extract), **Haskell** (named GHC codeGen extract). Fortran execute remains a named GAP.
+STANDARD GREEN today: **C**, **C++**, **ECMAScript**, **TypeScript**, **Python**, **Pascal**, **QB64 BASIC**, **Java**, **Smalltalk**, **Haskell**, **Common Lisp**, **Prolog**. Fortran execute remains a named GAP.
+
+Low-hanging next (suite in tree or a thin cousin extract): **Lua** (5.4.7 tests retrieved), **Scheme** (lisp cousin), **Forth**, **OCaml**. Spec retrieved, suite GAP: **Go**, **Rust**, **Zig**.

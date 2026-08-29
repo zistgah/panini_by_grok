@@ -7,6 +7,14 @@
     "SPINOFF.json"
   ],
   "frozen_rule": "Do not edit freeze:true without factory/DELIBERATION.md.",
+  "languages_index": "factory/languages.json",
+  "groups": {
+    "frozen": ["spec-v1", "vfs", "shell", "interp", "vt100", "romenagri", "wasm-front", "wat2wasm", "c-frontend", "python-frontend", "cpp-frontend", "rust-frontend", "go-frontend", "julia-frontend", "notebook-frozen", "license", "retrieved"],
+    "frontends-live": ["javascript-frontend", "typescript-frontend", "java-frontend", "haskell-frontend", "smalltalk-frontend", "lisp-frontend", "prolog-frontend"],
+    "runtimes-live": ["clower", "gnuc", "cpplower", "stdlower", "cinterp", "ccpp", "qb64", "js262", "steval", "hseval", "cleval", "pleval", "vga"],
+    "factory": ["factory-scan", "factory-sync", "agi-map", "agi-green", "languages-index", "spine"],
+    "estate": ["monitor", "wgsl", "softmmu", "esp32", "isa-riscv", "isa-arm", "sysml", "micro-libc", "workbench-spec"]
+  },
   "components": [
     {
       "id": "spec-v1",
@@ -367,6 +375,41 @@
       "id": "smalltalk-frontend",
       "path": "src/panini/frontends/smalltalk.pni",
       "owns": "Smalltalk STANDARD GREEN on GNU Smalltalk intmath extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "lisp-frontend",
+      "path": "src/panini/frontends/lisp.pni",
+      "owns": "Common Lisp STANDARD GREEN on ansi-test named extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "prolog-frontend",
+      "path": "src/panini/frontends/prolog.pni",
+      "owns": "Prolog STANDARD GREEN on Ciao ISO 8.6/8.7 arith extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "cleval",
+      "path": "runtime/cleval.js",
+      "owns": "ANSI Common Lisp subset eval (ansi-test extract)",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "pleval",
+      "path": "runtime/pleval.js",
+      "owns": "ISO Prolog arith subset eval (Ciao iso_tests extract)",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "languages-index",
+      "path": "factory/languages.json",
+      "owns": "Language factory index. Browse before adding a frontend.",
       "status": "live",
       "freeze": false
     }

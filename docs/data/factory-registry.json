@@ -7,6 +7,71 @@
     "SPINOFF.json"
   ],
   "frozen_rule": "Do not edit freeze:true without factory/DELIBERATION.md.",
+  "languages_index": "factory/languages.json",
+  "groups": {
+    "frozen": [
+      "spec-v1",
+      "vfs",
+      "shell",
+      "interp",
+      "vt100",
+      "romenagri",
+      "wasm-front",
+      "wat2wasm",
+      "c-frontend",
+      "python-frontend",
+      "cpp-frontend",
+      "rust-frontend",
+      "go-frontend",
+      "julia-frontend",
+      "notebook-frozen",
+      "license",
+      "retrieved"
+    ],
+    "frontends-live": [
+      "javascript-frontend",
+      "typescript-frontend",
+      "java-frontend",
+      "haskell-frontend",
+      "smalltalk-frontend",
+      "lisp-frontend",
+      "prolog-frontend"
+    ],
+    "runtimes-live": [
+      "clower",
+      "gnuc",
+      "cpplower",
+      "stdlower",
+      "cinterp",
+      "ccpp",
+      "qb64",
+      "js262",
+      "steval",
+      "hseval",
+      "cleval",
+      "pleval",
+      "vga"
+    ],
+    "factory": [
+      "factory-scan",
+      "factory-sync",
+      "agi-map",
+      "agi-green",
+      "languages-index",
+      "spine"
+    ],
+    "estate": [
+      "monitor",
+      "wgsl",
+      "softmmu",
+      "esp32",
+      "isa-riscv",
+      "isa-arm",
+      "sysml",
+      "micro-libc",
+      "workbench-spec"
+    ]
+  },
   "components": [
     {
       "id": "spec-v1",
@@ -313,6 +378,97 @@
       "adapter": [
         "docs/console.html"
       ]
+    },
+    {
+      "id": "js262",
+      "path": "runtime/js262.js",
+      "owns": "Test262 language extract eval (ECMAScript STANDARD GREEN)",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "steval",
+      "path": "runtime/steval.js",
+      "owns": "GNU Smalltalk intmath Eval subset",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "hseval",
+      "path": "runtime/hseval.js",
+      "owns": "GHC codeGen should_run subset",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "javascript-frontend",
+      "path": "src/panini/frontends/javascript.pni",
+      "owns": "ECMAScript STANDARD GREEN on Test262 language extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "typescript-frontend",
+      "path": "src/panini/frontends/typescript.pni",
+      "owns": "TypeScript STANDARD GREEN on tsc compiler extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "java-frontend",
+      "path": "src/panini/frontends/java.pni",
+      "owns": "Java STANDARD GREEN on OpenJDK javac Parens extract. Not Java™.",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "haskell-frontend",
+      "path": "src/panini/frontends/haskell.pni",
+      "owns": "Haskell STANDARD GREEN on GHC codeGen should_run extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "smalltalk-frontend",
+      "path": "src/panini/frontends/smalltalk.pni",
+      "owns": "Smalltalk STANDARD GREEN on GNU Smalltalk intmath extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "lisp-frontend",
+      "path": "src/panini/frontends/lisp.pni",
+      "owns": "Common Lisp STANDARD GREEN on ansi-test named extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "prolog-frontend",
+      "path": "src/panini/frontends/prolog.pni",
+      "owns": "Prolog STANDARD GREEN on Ciao ISO 8.6/8.7 arith extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "cleval",
+      "path": "runtime/cleval.js",
+      "owns": "ANSI Common Lisp subset eval (ansi-test extract)",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "pleval",
+      "path": "runtime/pleval.js",
+      "owns": "ISO Prolog arith subset eval (Ciao iso_tests extract)",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "languages-index",
+      "path": "factory/languages.json",
+      "owns": "Language factory index. Browse before adding a frontend.",
+      "status": "live",
+      "freeze": false
     }
   ],
   "adapters": [

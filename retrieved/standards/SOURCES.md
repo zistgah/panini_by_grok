@@ -18,6 +18,8 @@ We do not paste paid ISO text. Committee drafts and ECMA/PSF/Go/Lua texts are pu
 | `openjdk-javac/` | OpenJDK jdk-21-ga javac | `Parens1/2/3.java` `@compile/fail` + `lambda/LambdaConv01.java` accept. Not Java™. | https://github.com/openjdk/jdk |
 | `gst-intmath/` | GNU Smalltalk | `tests/intmath.st` + `intmath.ok` (Eval before LargeIntegers) | https://github.com/gnu-smalltalk/smalltalk |
 | `ghc-cgrun/` | GHC | `codeGen/should_run` cgrun001/002/005 + official `.stdout` | https://github.com/ghc/ghc |
+| `ansi-test/` | Paul Dietz ansi-test (ANSI CL) | `numbers/{plus,minus,times}` `cons/{cons,list}` `eval` self-contained deftest | https://github.com/pfdietz/ansi-test |
+| `ciao-iso/` | Ciao iso_tests | `src/iso_tests.pl` ISO 8.6 is/2 + 8.7 arith comparison | https://github.com/ciao-lang/iso_tests |
 | `python-grammar.html` | PSF | Python 3.12 language grammar | https://docs.python.org/3.12/reference/grammar.html |
 | `cpython-3.12/test_unary.py` | CPython 3.12 | Official unary language tests | https://raw.githubusercontent.com/python/cpython/3.12/Lib/test/test_unary.py |
 | `cpython-3.12/test_bool.py` | CPython 3.12 | Official bool tests | https://raw.githubusercontent.com/python/cpython/3.12/Lib/test/test_bool.py |

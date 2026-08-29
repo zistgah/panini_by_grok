@@ -13,6 +13,8 @@ We do not paste paid ISO text. Committee drafts and ECMA/PSF/Go/Lua texts are pu
 | `n2146.pdf` | J3 / WG5 | Fortran 2018 draft. Fetched; **not in zip** (9 MB) | https://j3-fortran.org/doc/year/18/18-007r1.pdf |
 | `ecma262.html` | Ecma TC39 | ECMA-262 (ECMAScript) living spec | https://tc39.es/ecma262/ |
 | `test262/` | TC39 | Official ECMA-262 *executable* suite (slice) | https://github.com/tc39/test262 |
+| `ansi-test/` | Paul Dietz ansi-test (ANSI CL) | `numbers/{plus,minus,times}` `cons/{cons,list}` `eval` self-contained deftest | https://github.com/pfdietz/ansi-test |
+| `ciao-iso/` | Ciao iso_tests | `src/iso_tests.pl` ISO 8.6 is/2 + 8.7 arith comparison | https://github.com/ciao-lang/iso_tests |
 | `python-grammar.html` | PSF | Python 3.12 language grammar | https://docs.python.org/3.12/reference/grammar.html |
 | `python-reference-index.html` | PSF | Python 3.12 language reference | https://docs.python.org/3.12/reference/index.html |
 | `go-spec.html` | Go project | The Go Programming Language Specification | https://go.dev/ref/spec |
