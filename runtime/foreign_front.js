@@ -38,7 +38,8 @@ const TABLE = {
   go: { file: "src/panini/frontends/go.pni", fn: "run_go" },
   zig: { file: "src/panini/frontends/zig.pni", fn: "run_zig" },
   lua: { file: "src/panini/frontends/lua.pni", fn: "run_lua" },
-  cpp: { file: "src/panini/frontends/c.pni", fn: "run_c" },
+  cpp: { file: "src/panini/frontends/cpp.pni", fn: "run_cpp", withC: true },
+  "c++": { file: "src/panini/frontends/cpp.pni", fn: "run_cpp", withC: true },
   julia: { file: "src/panini/frontends/application.pni", fn: "run_julia" },
   haskell: { file: "src/panini/frontends/application.pni", fn: "run_haskell" },
   lisp: { file: "src/panini/frontends/application.pni", fn: "run_lisp" },
@@ -63,8 +64,11 @@ export function supportedFrontends() {
 export async function runFrontend(lang, source) {
   const spec = TABLE[lang];
   if (!spec) return { ok: false, error: "unknown frontend " + lang };
-  const file = path.join(root, spec.file);
-  const { interpreter } = await runSource(fs.readFileSync(file, "utf8"), file, { runMain: false, maxSteps: 2000000000 });
+  let srcText = fs.readFileSync(path.join(root, spec.file), "utf8");
+  if (spec.withC) {
+    srcText += "\n" + fs.readFileSync(path.join(root, "src/panini/frontends/c.pni"), "utf8");
+  }
+  const { interpreter } = await runSource(srcText, spec.file, { runMain: false, maxSteps: 2000000000 });
   const fn = interpreter.runtime.functions.get(spec.fn);
   if (!fn) return { ok: false, error: "PANINI frontend missing " + spec.fn };
   const panini = unwrap(await interpreter.callValue(fn, [wrap(source)], interpreter.global));

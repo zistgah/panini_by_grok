@@ -18,7 +18,11 @@
       var w = new Wllama({
         "single-thread/wllama.wasm": R + "engine/wllama/wllama.wasm"
       }, { allowOffline: true });
-      return w.loadModelFromUrl(R + "models/stories15M.Q4_0.gguf", { n_ctx: 128, n_batch: 64 }).then(function () {
+      var local = R + "models/stories15M.Q4_0.gguf";
+      var remote = "https://huggingface.co/ggml-org/models/resolve/main/tinyllamas/stories15M-q4_0.gguf";
+      return w.loadModelFromUrl(local, { n_ctx: 128, n_batch: 64 }).catch(function () {
+        return w.loadModelFromUrl(remote, { n_ctx: 128, n_batch: 64 });
+      }).then(function () {
         inst = w;
         return w;
       });

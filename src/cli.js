@@ -235,6 +235,11 @@ async function main() {
       await import("../scripts/iso_c_harness.mjs");
       return;
     }
+    case "iso-cxx":
+    case "iso-c++": {
+      await import("../scripts/iso_cxx_harness.mjs");
+      return;
+    }
     case "wasm": {
       const { emitCWat, runCWasm } = await import("../runtime/wasm_front.js");
       const src = readInput(args[1]);

@@ -13,7 +13,8 @@
         { "href": "dome/", "label": "Dome" },
         { "href": "chakra/", "label": "Chakra" },
         { "href": "ontology.html", "label": "Ontology" },
-        { "href": "fakir/", "label": "FAKIR" }
+        { "href": "fakir/", "label": "FAKIR" },
+        { "href": "sims.html", "label": "Sims" }
       ]
     },
     {
@@ -25,7 +26,9 @@
         { "href": "llm.html", "label": "llama.cpp" },
         { "href": "nb.html", "label": "Notebook" },
         { "href": "workbench.html", "label": "Workbench" },
-        { "href": "flow.html", "label": "C → WASM" }
+        { "href": "flow.html", "label": "C → WASM" },
+        { "href": "wasm.html", "label": "WASM / Maṇḍūkapluti" },
+        { "href": "pspice.html", "label": "PSpice" }
       ]
     },
     {
@@ -33,18 +36,35 @@
       "label": "Languages",
       "kind": "lang-select",
       "href": "stack.html",
-      "note": "Script × language × shaili. One page, dropdown, not repeated cards."
+      "note": "Script × language × shaili. One page, dropdown, not repeated cards.",
+      "items": [
+        { "href": "stack.html", "label": "Stack dropdown" },
+        { "href": "ports.html", "label": "Hindawi ports" },
+        { "href": "standards/", "label": "Standards" },
+        { "href": "languages.html", "label": "Frontends" },
+        { "href": "grammar.html", "label": "PANINI grammar" }
+      ]
     },
     {
-      "id": "research",
-      "label": "Research",
+      "id": "linguistics",
+      "label": "Linguistics",
       "items": [
-        { "href": "path/research.html", "label": "Layers" },
         { "href": "path/roundtrip.html", "label": "Round-trip lab" },
-        { "href": "standards/", "label": "Standards" },
-        { "href": "grammar.html", "label": "Grammar" },
-        { "href": "faq.html", "label": "FAQ" },
-        { "href": "linguist.html", "label": "Linguist" }
+        { "href": "linguist.html", "label": "Linguist lab" },
+        { "href": "perso_arabic.html", "label": "Perso-Arabic" },
+        { "href": "punjabi.html", "label": "Gurmukhi" },
+        { "href": "deposits/", "label": "Deposits / CSV" }
+      ]
+    },
+    {
+      "id": "agi",
+      "label": "AGI stack",
+      "items": [
+        { "href": "agi.html", "label": "Status (derived)" },
+        { "href": "dashboard.html", "label": "Dashboard" },
+        { "href": "path/research.html", "label": "Layers" },
+        { "href": "coverage.html", "label": "Coverage" },
+        { "href": "faq.html", "label": "FAQ" }
       ]
     },
     {

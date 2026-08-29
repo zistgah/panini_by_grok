@@ -5,7 +5,8 @@ Copyright (C) 1993-2026 Abhishek Choudhary
 SPDX-License-Identifier: GPL-3.0-or-later  
 Tree-rev: 2026.08.29
 
-ISO C on the retrieved c-testsuite single-exec is GREEN (104/0/0) for PANINI.Frontend.C.
+ISO C++: PANINI.Frontend.Cpp ISO GREEN 138/0/0 (40 cxx-testsuite + 98 c-testsuite-as-C++). 6 C-only cases skipped. Not libstdc++.
+
 WASM backend: PANINI.Backend.Wasm emits WAT; in-tree wat2wasm; `compute(5)=25` proven.
 Notebook: `#समावेश <मानकपन.स>` must remain `#include <stdio.h>` — only the Shaili pragma is stripped.
 Hindi C++ demo is `docs/demos/HindiCPP.uhin` (not an HTML 404).

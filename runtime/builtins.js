@@ -13,6 +13,7 @@ import { createVt100, vtWrite, vtPlain, vtSnapshot } from "./vt100.js";
 import { defaultDosFont, loadFontFile, getFont, listFonts } from "./fonts.js";
 import { ccpp } from "./ccpp.js";
 import { cinterp } from "./cinterp.js";
+import { cpplower } from "./cpplower.js";
 import { renderTextBitmap } from "./dosfont.js";
 
 export function installBuiltins(env, runtime) {
@@ -44,6 +45,7 @@ export function installBuiltins(env, runtime) {
   def("INT", (x) => vInt(toNumber(x)), 1);
   def("CPP", (x) => vStr(ccpp(toStr(x))), 1);
   def("CINTERP", (x) => vInt(cinterp(toStr(x)) | 0), 1);
+  def("CPPLOWER", (x) => vStr(cpplower(toStr(x))), 1);
   def("ORD", (x) => {
     const s = toStr(x);
     return vInt(s.length ? s.charCodeAt(0) : 0);

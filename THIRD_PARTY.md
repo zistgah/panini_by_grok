@@ -13,8 +13,16 @@
 
 - https://github.com/copy/v86 — BSD-2-Clause
 - Estate fork: https://github.com/hindawiai/v86
-- Pages: `docs/emu.html` iframes `https://copy.sh/v86/?profile=freedos`. Not vendored.
-- js-dos / em-dosbox also catalogued under hindawiai; not mounted this turn.
+- Pages: `docs/emu.html` boots v86 as a guest (libv86), not an iframe of copy.sh as the product.
+- js-dos / em-dosbox also catalogued under hindawiai.
+
+## @wllama/wllama 2.3.1 (llama.cpp → WASM)
+
+- https://github.com/ngxson/wllama — MIT
+- Author: Xuan Son NGUYEN
+- Vendored: `docs/engine/wllama/` (single-thread wasm)
+- Invoked as `llama-cli` on the VFS (`docs/console.html`, `docs/llm.html`)
+- This is llama.cpp, not a reimplementation.
 
 ## Hindawi 2004 binaries (GPL)
 

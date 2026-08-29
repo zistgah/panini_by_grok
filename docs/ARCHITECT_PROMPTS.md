@@ -58,7 +58,9 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-97. Do not flatten the homepage. Spine menu. Language dropdown once, all languages. Urdu keyword gaps go to cyclers, not invented tables. Runtime is VFS + x86 guest + llama-cli (llama.cpp WASM). Not “Pages cannot run this” as the architecture.
+99. Remove GGUF and WASM from the zip. tests/test.mjs fetches them. Instrument test.mjs: all frontend torture, Romenagri round-trip, generate Indic / Perso-Arabic / Hebrew / Cyrillic language files. Dashboard derived. Never fail the uploader (exit 0). Refactor the spine for all tech.
+
+
 
 
 

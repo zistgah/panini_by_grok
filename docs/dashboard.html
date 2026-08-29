@@ -40,7 +40,9 @@
   <p id="l9"></p>
   <h2>Workbench L0–L26</h2>
   <p id="l26"></p>
-  <p class="fine">Full narrative: <a href="view.html?src=STATUS.md">STATUS.md</a> · data <a href="data/status.json">status.json</a></p>
+  <h2>Derived from tests/test.mjs</h2>
+  <p id="derived" class="fine">Loading test-report.json…</p>
+  <table><thead><tr><th>Section</th><th>pass</th><th>n</th></tr></thead><tbody id="derived-sec"></tbody></table>
 </main>
 <script>
 fetch("data/status.json").then(r=>r.json()).then(S => {
@@ -72,6 +74,14 @@ fetch("data/status.json").then(r=>r.json()).then(S => {
   document.getElementById("l9").textContent = S.fakir.layers_L0_L9.map(l => l.id+" "+l.name).join(" · ");
   document.getElementById("l26").textContent = S.workbench_L0_L26.map(l => l.id+" "+l.name).join(" · ");
 });
+fetch("data/test-report.json").then(r => r.ok ? r.json() : null).then(T => {
+  if (!T) { document.getElementById("derived").textContent = "No test-report.json. Run node tests/test.mjs"; return; }
+  document.getElementById("derived").textContent = T.when + " · " + (T.derived && T.derived.greenish) + " · exit " + T.exit_policy;
+  const d = T.derived || {};
+  document.getElementById("derived-sec").innerHTML = Object.keys(d).filter(k => d[k] && d[k].n != null).map(k =>
+    "<tr><td>"+k+"</td><td>"+d[k].pass+"</td><td>"+d[k].n+"</td></tr>"
+  ).join("");
+}).catch(() => {});
 </script>
 </body>
 </html>
