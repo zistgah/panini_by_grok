@@ -14,6 +14,7 @@ import { defaultDosFont, loadFontFile, getFont, listFonts } from "./fonts.js";
 import { ccpp } from "./ccpp.js";
 import { cinterp } from "./cinterp.js";
 import { cpplower } from "./cpplower.js";
+import { rustToC, goToC, juliaToC } from "./stdlower.js";
 import { renderTextBitmap } from "./dosfont.js";
 
 export function installBuiltins(env, runtime) {
@@ -46,6 +47,9 @@ export function installBuiltins(env, runtime) {
   def("CPP", (x) => vStr(ccpp(toStr(x))), 1);
   def("CINTERP", (x) => vInt(cinterp(toStr(x)) | 0), 1);
   def("CPPLOWER", (x) => vStr(cpplower(toStr(x))), 1);
+  def("RUSTLOWER", (x) => vStr(rustToC(toStr(x))), 1);
+  def("GOLOWER", (x) => vStr(goToC(toStr(x))), 1);
+  def("JULIALOWER", (x) => vStr(juliaToC(toStr(x))), 1);
   def("ORD", (x) => {
     const s = toStr(x);
     return vInt(s.length ? s.charCodeAt(0) : 0);

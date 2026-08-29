@@ -5,7 +5,8 @@ Copyright (C) 1993-2026 Abhishek Choudhary
 SPDX-License-Identifier: GPL-3.0-or-later  
 Tree-rev: 2026.08.29
 
-ISO C++: PANINI.Frontend.Cpp ISO GREEN 138/0/0 (40 cxx-testsuite + 98 c-testsuite-as-C++). 6 C-only cases skipped. Not libstdc++.
+STANDARD GREEN: Python 20/20, Rust 20/20, Go 20/20, Julia 20/20 on panini-*-testsuite single-exec. Not CPython Lib/test / rustc ui / all.bash / Base tests.
+
 
 WASM backend: PANINI.Backend.Wasm emits WAT; in-tree wat2wasm; `compute(5)=25` proven.
 Notebook: `#समावेश <मानकपन.स>` must remain `#include <stdio.h>` — only the Shaili pragma is stripped.

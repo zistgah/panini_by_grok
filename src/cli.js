@@ -240,6 +240,15 @@ async function main() {
       await import("../scripts/iso_cxx_harness.mjs");
       return;
     }
+    case "std-python":
+    case "std-rust":
+    case "std-go":
+    case "std-julia": {
+      const lang = args[0].replace("std-", "");
+      process.argv.push(lang);
+      await import("../scripts/std_green_harness.mjs");
+      return;
+    }
     case "wasm": {
       const { emitCWat, runCWasm } = await import("../runtime/wasm_front.js");
       const src = readInput(args[1]);
