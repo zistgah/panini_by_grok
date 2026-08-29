@@ -52,6 +52,7 @@
   <p>The assembler is the same file the tests use. Instantiate is the W3C engine in your browser.</p>
   <div class="row">
     <button type="button" id="run">Instantiate and run</button>
+    <button type="button" id="lower">Lower C → WAT</button>
     <button type="button" class="ghost" id="load-compute">Load compute(x)</button>
     <label>export <input id="exp" value="compute" size="10" /></label>
     <label>arg <input id="arg" value="5" size="6" /></label>
@@ -62,7 +63,7 @@
       <textarea class="mono" id="wat" spellcheck="false"></textarea>
     </div>
     <div>
-      <h3>C source (reference — emitter is wasm.pni)</h3>
+      <h3>C source — live emitter (c.pni → wasm.pni)</h3>
       <textarea class="mono" id="c" spellcheck="false">int compute(int x) {
   int result;
   result = x + 10 * 2;
@@ -84,6 +85,7 @@
 <script src="i18n/gt.js"></script>
 <script type="module">
 import { wat2wasm, wasmRun } from "./engine/wat2wasm.js";
+import { emitCWat, runCWasm, loadCWasm } from "./engine/interp/host.js";
 
 const COMPUTE = `(module
   (memory (export "memory") 1)
@@ -105,6 +107,19 @@ document.getElementById("load-compute").onclick = () => {
   document.getElementById("wat").value = COMPUTE;
   document.getElementById("exp").value = "compute";
   document.getElementById("arg").value = "5";
+};
+
+document.getElementById("lower").onclick = async () => {
+  const out = document.getElementById("out");
+  out.textContent = "lowering via PANINI.Frontend.C + PANINI.Backend.Wasm…";
+  try {
+    await loadCWasm();
+    const wat = await emitCWat(document.getElementById("c").value);
+    document.getElementById("wat").value = wat;
+    out.textContent = "Lowered " + wat.length + " chars WAT. Instantiate to run.";
+  } catch (e) {
+    out.textContent = String(e.message || e);
+  }
 };
 
 document.getElementById("run").onclick = async () => {

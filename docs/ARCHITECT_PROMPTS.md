@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-93. Front page is the path: Arabic stack, Tamil stack, Romenagri round-trip stress/torture, researchers on latest layers. Easy doors. Do not collapse axes. Do not paint over conjunct residue.
+94. Combine C frontend and WASM backend into an end-to-end site flow. Same c.pni and wasm.pni. No wabt. Hindi C flattens first.
+
 
 
 

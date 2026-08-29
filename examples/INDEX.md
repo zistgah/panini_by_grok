@@ -8,6 +8,6 @@ Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
 | `hindawi/HindiCPP.uhin` | श्रेणी (C++). `अ_बाहर` / `पनप्रवाह.स`. |
 | `hindawi/guru_samavesh.uhin` | Minimal include specimen. |
 | `faq/define_is_not_a_lexer.c` | Negative example: `#define je if`. |
-| `../docs/path/` | Front-page stacks: Arabic, Tamil, round-trip lab |
+| `wasm/gana.uhin` | Hindi C `गण(5)=25` through flatten → WASM |
 
 | `../dist/hindawi/examples/<lang>/guru.uhin` | 22 scheduled ports. Local `hincc` / `guru`. |

@@ -26,7 +26,7 @@
   <table>
     <tr><th>Layer</th><th>Status</th><th>Exercise</th></tr>
     <tr><td>PANINI.Frontend.C</td><td>ISO c-testsuite single-exec 104/104 GREEN</td><td><a href="../coverage.html">coverage</a></td></tr>
-    <tr><td>PANINI.Backend.Wasm</td><td>14/14 including <code>goto skip</code> = 1, goto-loop = 10. Dual backend: structured vs <code>br_table</code></td><td><a href="../wasm.html">wasm.html</a> · <a href="../view.html?src=WASM_MANDUKAPLUTI.md">Maṇḍūkapluti</a></td></tr>
+    <tr><td>C → WASM on the site</td><td>Same c.pni + wasm.pni in the browser. compute(5)=25, Hindi गण(5)=25, goto skip=1</td><td><a href="../flow.html">flow.html</a></td></tr>
     <tr><td>Hindawi pipeline</td><td><code>#समावेश</code> → <code>#include <stdio.h></code>. Notebook compiles.</td><td><a href="../nb.html?demo=HindiC.uhin">notebook</a></td></tr>
     <tr><td>Local compiler</td><td><code>dist/hindawi</code> <code>configure && make check</code>. <code>hincc</code> + gcc GNU11</td><td><a href="../ports.html">ports</a></td></tr>
     <tr><td>22 scheduled languages</td><td>TSV + flatten, or Hindi hub labelled, or awaiting CSV (Manipuri, Santali)</td><td><a href="index.html">stacks</a></td></tr>
@@ -37,7 +37,7 @@
   </table>
   <h2>Run here</h2>
   <p>
-    <a class="btn" href="../wasm.html">WASM compute(5)=25</a>
+    <a class="btn" href="../flow.html">C → WASM live</a>
     <a class="btn" href="../nb.html?demo=HindiC.uhin">Compile Hindi C</a>
     <a class="btn" href="roundtrip.html">Torture flatten</a>
     <a class="btn" href="../console.html">VT100 console</a>
