@@ -46,8 +46,9 @@ This is the working contract for changes to this tree.
     against the retrieved c-testsuite single-exec corpus, subject
     PANINI.Frontend.C. Subset demos do not discharge this. Status until
     the harness is all-pass: NOT GREEN. Zip every delivery turn.
-23. `retrieved/` is read-only vendor. APCISR and Romenagri maps are retrieved.
-    Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
+26. SHIP GREEN is the requirements bar. STANDARD GREEN is the language bar.
+27. The factory registry is consulted before a new file is added. Frozen components are hash-locked.
+
 
 ## Delivery
 

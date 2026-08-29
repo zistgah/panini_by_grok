@@ -31,7 +31,8 @@ Parser invariant: the lexer is newline-insensitive. `ELSE` followed by `IF` is a
 
 This is a standing order, not a reminder in chat.
 
-1. **Pull / diff** retrieved GitHub sources when used. Do not reconstruct maps.
+0. **Factory scan.** `node scripts/factory_scan.mjs`. Browse `factory/REGISTRY.json`. Do not touch `freeze:true` without a deliberation. Reuse before write.
+
 2. **Fix the named bug.** Do not restyle a page that was already accepted (notebook frozen chrome stays).
 3. **Grow `examples/`.** At least one new runnable or retrieved specimen this cycle, linked from the page that needed it.
 4. **Publish.** Architect prompts (`docs/ARCHITECT_PROMPTS.md`), CONTEXT, this file if the process changed. FAQ if a flattening error recurred (`#define`, copilot last-mile, HTML 404 as source).

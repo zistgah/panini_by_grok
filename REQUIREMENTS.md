@@ -23,5 +23,10 @@ GPL-3.0-or-later
 18. Micro-libc headers live in `include/`. Do not parse `/usr/include`.
 19. Roadmap 1–12 + ISA matrix (RISC-V/Shakti, ARM, ESP32, Arduino, SysML) is `docs/ROADMAP.md`. Honesty wall stands.
 20. Zip never contains `.gguf` or `.wasm`. `tests/test.mjs` always exits 0.
-21. Linguistic equity packs retrieve ILM. Do not invent maps.
+11. One surface: distro CLI, Pages, PWA.
+22. SHIP GREEN is the requirements bar (`docs/SHIP_GREEN.md`). Named ≠ green.
+23. The factory registry (`factory/REGISTRY.json`) is consulted before adding a file. Reuse first.
+24. Optimized components are FROZEN (hash-locked). Touch only with `factory/DELIBERATION.md`.
+25. Every build iteration runs `node scripts/factory_scan.mjs` (browse, freeze-verify, derived report). Exit 0.
+
 

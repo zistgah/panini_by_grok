@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — software and systems factory</title>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="skins/jazz.css" />
+</head>
+<body class="site">
+<header class="site-head"></header>
+<script src="spine.js"></script>
+<main class="site-main">
+  <p class="cite">Browse the registry before writing a file. Frozen components are not restyled.</p>
+  <h1>Software and systems factory</h1>
+  <p class="lead"><strong>SHIP GREEN</strong> is the requirements bar. <strong>STANDARD GREEN</strong> is the language bar. Optimized components are hash-locked.</p>
+  <p>
+    <a class="btn" href="SHIP_GREEN.md">SHIP GREEN</a>
+    <a class="btn" href="data/factory-registry.json">REGISTRY.json</a>
+    <a class="btn" href="../factory/DELIBERATION.md">Unfreeze protocol</a>
+    <a class="btn" href="data/ship-green.json">Derived report</a>
+  </p>
+  <h2>This build</h2>
+  <pre id="rep">loading docs/data/ship-green.json …</pre>
+  <h2>Components</h2>
+  <table id="tbl"><thead><tr><th>id</th><th>path</th><th>status</th><th>freeze</th></tr></thead><tbody></tbody></table>
+</main>
+<footer class="pfoot">Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later</footer>
+<script src="skins/skins.js"></script>
+<script>
+fetch("data/ship-green.json").then(r => r.json()).then(j => {
+  document.getElementById("rep").textContent = JSON.stringify({status:j.status, requirements:j.requirements, freeze:{locked:j.freeze.locked, drift:j.freeze.drift}}, null, 2);
+}).catch(() => { document.getElementById("rep").textContent = "report not generated — run node scripts/factory_scan.mjs"; });
+fetch("data/factory-registry.json").then(r => r.json()).then(j => {
+  const tb = document.querySelector("#tbl tbody");
+  for (const c of j.components) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td>"+c.id+"</td><td><code>"+c.path+"</code></td><td>"+c.status+"</td><td>"+(c.freeze?"FROZEN":"")+"</td>";
+    tb.appendChild(tr);
+  }
+}).catch(() => {});
+</script>
+</body>
+</html>
