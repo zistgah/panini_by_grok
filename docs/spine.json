@@ -64,7 +64,7 @@
         { "href": "dashboard.html", "label": "Dashboard" },
         { "href": "path/research.html", "label": "Layers" },
         { "href": "coverage.html", "label": "Coverage" },
-        { "href": "faq.html", "label": "FAQ" }
+        { "href": "roadmap.html", "label": "Roadmap" },
       ]
     },
     {

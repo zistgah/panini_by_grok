@@ -1728,6 +1728,7 @@ FUNCTION cExec(s, env, S)
 END
 
 FUNCTION run_c(source)
+    source = CLOWER(source)
     ast = cParse(CPP(source))
     IF CONTAINS(source, "calloc") OR CONTAINS(source, "malloc")
         value = CINTERP(source)

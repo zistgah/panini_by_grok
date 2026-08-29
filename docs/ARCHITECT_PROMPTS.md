@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-100. Call ISO green STANDARD green. Make Rust, Julia, Python, Go STANDARD GREEN.
+101. Lowering via C AST (4 C passes, 5 C++ rules). Micro-STL. Honesty: not kernel/Boost. Go tuples / Rust fat pointers. 12-point sovereignty + RISC-V/Shakti, ARM, ESP32 Web Serial, SysML. Freeze WASM. STANDARD GREEN stays the line.
+
 
 
 

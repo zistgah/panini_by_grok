@@ -4,6 +4,7 @@
  * Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
  */
 import { ccpp } from "./ccpp.js";
+import { clower } from "./clower.js";
 
 class Jump {
   constructor(kind, val) { this.kind = kind; this.val = val; }
@@ -48,7 +49,7 @@ function tok(src) {
 }
 
 export function cinterp(source) {
-  source = ccpp(String(source));
+  source = clower(ccpp(String(source)));
   const T = tok(source);
   let i = 0;
   const peek = () => T[i] || {k:"EOF", v:""};

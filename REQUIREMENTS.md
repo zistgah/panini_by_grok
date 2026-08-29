@@ -14,4 +14,14 @@ GPL-3.0-or-later
 8. Ship a zip of `artifacts/panini` whenever the tree changes.
 9. Engineer / linguist / mathematician views are tools, not labels.
 10. ILM multilingual projection is first-class (not English-only).
-11. One surface: distro CLI, Pages, PWA.
+12. STANDARD GREEN is the line: named corpus, skip=0, PANINI frontend. Not Lib/test / rustc ui / all.bash.
+13. `run_c` and WASM/WAT emission stay frozen. New C/C++/Rust/Go/Julia work is lowering pre-passes (REQ-L1…L4).
+14. REQ-L1 C four passes: CPP, void* casts, designated-init flatten, tentative merge (`runtime/clower.js`).
+15. REQ-L2 C++ five: mangling, this, monomorphize, vtable, RAII. Micro-STL not libstdc++ (`include/microstl/`).
+16. REQ-L3 GNU C for kernel: attributes, `?:`, range init, builtins. Statement-expr / asm / `.lds` named, not claimed.
+17. REQ-L4 Go tuples and Rust slices lower to synthetic C structs.
+18. Micro-libc headers live in `include/`. Do not parse `/usr/include`.
+19. Roadmap 1–12 + ISA matrix (RISC-V/Shakti, ARM, ESP32, Arduino, SysML) is `docs/ROADMAP.md`. Honesty wall stands.
+20. Zip never contains `.gguf` or `.wasm`. `tests/test.mjs` always exits 0.
+21. Linguistic equity packs retrieve ILM. Do not invent maps.
+
