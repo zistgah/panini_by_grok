@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PANINI — all stacks</title>
+  <link rel="stylesheet" href="../site.css" />
+  <link rel="stylesheet" href="../skins/jazz.css" />
+</head>
+<body class="site">
+<header class="site-head">
+  <a href="../index.html"><strong>PANINI</strong></a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="now">Stacks</a>
+    <a href="arabic.html">Arabic</a>
+    <a href="tamil.html">Tamil</a>
+    <a href="roundtrip.html">Round-trip</a>
+    <a href="research.html">Researchers</a>
+  </nav>
+</header>
+<main class="site-main">
+  <h1>Stacks</h1>
+  <p class="lead">One kernel. A stack is ⟨script, language, shaili⟩. Click through. Nothing here is <code>#define</code>.</p>
+  <div class="paths" id="g"></div>
+  <p class="fine">Awaiting maps (not invented): Manipuri, Santali. Devanagari hub until CSV: Bodo, Dogri, Konkani, Maithili.</p>
+</main>
+<footer class="pfoot">Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later</footer>
+<script src="../skins/skins.js"></script>
+<script src="../i18n/gt.js"></script>
+<script>
+const stacks = [
+  { id:"arabic", native:"العربية", name:"Arabic", href:"arabic.html", tag:"lossy perso-arabic" },
+  { id:"tamil", native:"தமிழ்", name:"Tamil", href:"tamil.html", tag:"brahmi complete" },
+  { id:"hindi", native:"हिन्दी", name:"Hindi", href:"../nb.html?lang=hindi&demo=HindiC.uhin", tag:"2004 bar" },
+  { id:"punjabi", native:"ਪੰਜਾਬੀ", name:"Punjabi", href:"../nb.html?lang=punjabi&demo=punjabi_guru.uhin", tag:"gurmukhi" },
+  { id:"urdu", native:"اردو", name:"Urdu", href:"../nb.html?lang=urdu&demo=urdu_guru.uhin", tag:"lossy" },
+  { id:"telugu", native:"తెలుగు", name:"Telugu", href:"../nb.html?lang=telugu&demo=telugu_guru.uhin", tag:"brahmi" },
+  { id:"bengali", native:"বাংলা", name:"Bengali", href:"../nb.html?lang=bengali&demo=bengali_guru.uhin", tag:"brahmi" },
+  { id:"kannada", native:"ಕನ್ನಡ", name:"Kannada", href:"../nb.html?lang=kannada&demo=kannada_guru.uhin", tag:"brahmi" },
+  { id:"malayalam", native:"മലയാളം", name:"Malayalam", href:"../nb.html?lang=malayalam&demo=malayalam_guru.uhin", tag:"brahmi" },
+  { id:"gujarati", native:"ગુજરાતી", name:"Gujarati", href:"../nb.html?lang=gujarati&demo=gujarati_guru.uhin", tag:"brahmi" },
+  { id:"odia", native:"ଓଡ଼ିଆ", name:"Odia", href:"../nb.html?lang=odia&demo=odia_guru.uhin", tag:"brahmi" },
+  { id:"marathi", native:"मराठी", name:"Marathi", href:"../nb.html?lang=marathi&demo=marathi_guru.uhin", tag:"devanagari" },
+  { id:"sanskrit", native:"संस्कृतम्", name:"Sanskrit", href:"../nb.html?lang=sanskrit&demo=sanskrit_guru.uhin", tag:"keyword TSV" },
+  { id:"hebrew", native:"עברית", name:"Hebrew", href:"../nb.html?lang=hebrew", tag:"direct, not Deva hub" },
+];
+document.getElementById("g").innerHTML = stacks.map(s =>
+  '<a class="path" href="'+s.href+'"><span class="native">'+s.native+'</span><h2>'+s.name+'</h2><p class="tag">'+s.tag+'</p></a>'
+).join("");
+</script>
+</body>
+</html>

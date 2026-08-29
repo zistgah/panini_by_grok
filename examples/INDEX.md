@@ -8,6 +8,6 @@ Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
 | `hindawi/HindiCPP.uhin` | श्रेणी (C++). `अ_बाहर` / `पनप्रवाह.स`. |
 | `hindawi/guru_samavesh.uhin` | Minimal include specimen. |
 | `faq/define_is_not_a_lexer.c` | Negative example: `#define je if`. |
-| `wasm/goto.c` | Maṇḍūkapluti. `goto skip` returns 1 via br_table. |
+| `../docs/path/` | Front-page stacks: Arabic, Tamil, round-trip lab |
 
 | `../dist/hindawi/examples/<lang>/guru.uhin` | 22 scheduled ports. Local `hincc` / `guru`. |

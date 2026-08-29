@@ -150,6 +150,19 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
     document.getElementById("viewlang").appendChild(v);
   });
   document.getElementById("viewlang").value = "hindi";
+  const q = new URLSearchParams(location.search);
+  if (q.get("lang") && B.langs[q.get("lang")]) {
+    lang.value = q.get("lang");
+    document.getElementById("viewlang").value = q.get("lang");
+  }
+  if (q.get("demo")) {
+    const name = q.get("demo");
+    fetch("demos/"+name).then(r => r.ok ? r.text() : Promise.reject()).then(t => {
+      if (!/^\s*<!DOCTYPE html/i.test(t)) document.getElementById("prog").value = t;
+    }).catch(() => fetch("demos/langs/"+name).then(r=>r.ok?r.text():"").then(t => {
+      if (t && !/^\s*<!DOCTYPE html/i.test(t)) document.getElementById("prog").value = t;
+    }));
+  }
   function show(r, exec) {
     document.getElementById("flat").value = r.flattened || "";
     document.getElementById("rmn").value = r.romenagri || "";

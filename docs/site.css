@@ -68,6 +68,22 @@ button, .btn {
 }
 button:hover, .btn:hover { border-color: var(--gold); color: #fff; }
 .warn { background: rgba(201,162,39,.12); border: 1px solid var(--gold); padding: .7rem; }
+.paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: .75rem; margin: 1rem 0 1.6rem; }
+.path {
+  display: block; text-decoration: none; color: inherit;
+  border: 1px solid rgba(201,162,39,.4);
+  background: rgba(8,16,32,.75);
+  padding: 1rem 1.1rem;
+  min-height: 8.5rem;
+}
+.path:hover { border-color: var(--gold); }
+.path .native { font-size: 1.35rem; color: var(--gold); display: block; margin-bottom: .25rem; }
+.path h2 { margin: 0 0 .3rem; font-size: 1.05rem; }
+.path p { margin: 0; font-size: .92rem; color: var(--ink); }
+.path .tag { font-size: .75rem; color: var(--dim); letter-spacing: .04em; }
+.ok { color: #8fd18f; }
+.fail { color: #e07a7a; }
+.rt-out { min-height: 6rem; width: 100%; }
 @media (max-width: 640px) {
   .site-main { padding: 1rem; }
   body.site, body.poster { font-size: 16px; }

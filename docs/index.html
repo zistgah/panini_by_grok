@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#070d18" />
-  <title>PANINI — Humanesque estate</title>
+  <title>PANINI — find your stack</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="site.css" />
   <link rel="stylesheet" href="skins/jazz.css" />
@@ -13,40 +13,76 @@
 <header class="site-head">
   <a href="index.html"><strong>PANINI</strong></a>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="stack.html">AGI stack</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="workbench.html">Workbench</a>
-    <a href="ports.html">Local ports</a>
-    <a href="faq.html">FAQ</a>
-    <a href="wasm.html">WASM</a>
-    <a href="grammar.html">Grammar</a>
-    <a href="apps.html">Apps</a>
-    <a href="mez/desk.html">Mez desk</a>
-    <a href="dome/">Dome</a>
-    <a href="chakra/">Chakra</a>
-    <a href="disclaimers.html">Disclaimers</a>
-    <a href="coverage.html">Coverage</a>
-    <a href="mez/desk.html">Mez desk</a>
+    <a href="index.html" class="now">Home</a>
+    <a href="path/">Stacks</a>
+    <a href="path/roundtrip.html">Round-trip</a>
+    <a href="path/research.html">Researchers</a>
     <a href="nb.html">Notebook</a>
-    <a href="standards/">Standards</a>
-    <a href="emu.html">x86</a>
-    <a href="ontology.html">Ontology</a>
-    <a href="legacy.html">Legacy</a>
-    <a href="lineage.html">Lineage</a>
-    <a href="REQUIREMENTS.md">Requirements</a>
-    <a href="REFERENCES.md">References</a>
-    <a href="explorer.html">Estate</a>
+    <a href="workbench.html">Workbench</a>
+    <a href="faq.html">FAQ</a>
+    <a href="apps.html">All apps</a>
   </nav>
 </header>
 <main class="site-main">
   <p class="cite">Humanesque · Veritas · Humanitas · Libertas</p>
   <h1>PANINI</h1>
-  <p class="lead">A universal programming and orchestration language: for humans, for AI, for AGI, and beyond ASI. One semantic artefact; many projections. Representation remains independent of computation.</p>
-  <p class="claim">PANINI expresses the language that PANINI itself needs to build PANINI.</p>
+  <p class="lead">Pick a stack. You should not have to know the architecture to use it. Researchers still get the latest layers underneath.</p>
+
+  <h2>Find your stack</h2>
+  <p>Script, language, and shaili stay separate. These doors do not collapse them.</p>
+  <div class="paths">
+    <a class="path" href="path/arabic.html" dir="rtl" lang="ar">
+      <span class="native">العربية</span>
+      <h2>Arabic stack</h2>
+      <p>Perso-Arabic script, Arabic keywords, Guru → C. Round-trip is named lossy (abjad). Open, compile, see the maps.</p>
+      <span class="tag">SCRIPT · LANGUAGE · SHAILI</span>
+    </a>
+    <a class="path" href="path/tamil.html" lang="ta">
+      <span class="native">தமிழ்</span>
+      <h2>Tamil stack</h2>
+      <p>Brahmi flatten hub, Tamil letters, Guru → C. Reverse-map rows round-trip. Whole-file residue belongs in the torture lab.</p>
+      <span class="tag">BRAHMI · ROUND-TRIP</span>
+    </a>
+    <a class="path" href="path/roundtrip.html">
+      <span class="native">रोमननागरी</span>
+      <h2>Romenagri + round-trip</h2>
+      <p>Across scripts: flatten → Romenagri → back. Stress test. Torture test. Live, in the browser.</p>
+      <span class="tag">KERNEL · ASCII-7</span>
+    </a>
+    <a class="path" href="path/research.html">
+      <span class="native">L0–L26</span>
+      <h2>Researchers</h2>
+      <p>Exercise the latest layers: ISO C 104, WASM + Maṇḍūkapluti, hincc, cyclers, AGI stack. Not a brochure.</p>
+      <span class="tag">LAYERS · PROVEN</span>
+    </a>
+    <a class="path" href="nb.html?lang=hindi&demo=HindiC.uhin">
+      <span class="native">हिन्दी</span>
+      <h2>Hindi C (Guru)</h2>
+      <p>The 2004 bar. Line two is समावेश. Notebook compiles it.</p>
+      <span class="tag">RETRIEVED 2004</span>
+    </a>
+    <a class="path" href="nb.html?lang=punjabi&demo=punjabi_guru.uhin">
+      <span class="native">ਪੰਜਾਬੀ</span>
+      <h2>Punjabi stack</h2>
+      <p>Gurmukhi → Devanagari hub → Romenagri. Not <code>#define</code>.</p>
+      <span class="tag">GURMUKHI</span>
+    </a>
+    <a class="path" href="nb.html?lang=urdu&demo=urdu_guru.uhin">
+      <span class="native">اردو</span>
+      <h2>Urdu stack</h2>
+      <p>Same Perso-Arabic maps as Arabic. Language TSV is Urdu. Lossy, labelled.</p>
+      <span class="tag">PERSO-ARABIC</span>
+    </a>
+    <a class="path" href="nb.html?lang=telugu&demo=telugu_guru.uhin">
+      <span class="native">తెలుగు</span>
+      <h2>Telugu stack</h2>
+      <p>Flatten reverse is table-complete. Open the notebook on the Telugu Guru demo.</p>
+      <span class="tag">BRAHMI</span>
+    </a>
+  </div>
+  <p class="fine">More languages: <a href="path/">all stacks</a> · <a href="standards/">standards per language</a> · <a href="ports.html">local hincc</a></p>
 
   <h2>Enter by vocation</h2>
-  <p>The architecture is one. The door you use need not be.</p>
   <div class="roles">
     <a class="role" href="nb.html">
       <h2>Beginner</h2>
@@ -54,31 +90,15 @@
     </a>
     <a class="role" href="workbench.html">
       <h2>Computer engineer</h2>
-      <p>Source → AST → IR → host → gcc, as Hindawi has done since 2004. Labs, tests, shailis.</p>
+      <p>Source → AST → IR → host → gcc, as Hindawi has done since 2004.</p>
     </a>
-    <a class="role" href="standards/">
+    <a class="role" href="linguist.html">
       <h2>Linguist</h2>
-      <p>Hindi C, Bangla C, Hebrew C — the standard is the keyword table, not an English ISO in another script. Submit a CSV.</p>
+      <p>Keyword tables, flatten maps, round-trip rates. Submit a CSV. Do not invent.</p>
     </a>
-    <a class="role" href="view.html?src=PANINI.V2.WORKBENCH.md">
-      <h2>Mathematician</h2>
-      <p>Notation as a projection of AST and IR. Theorems, tensors, Sanskrit mathematical structure.</p>
-    </a>
-    <a class="role" href="fakir/">
-      <h2>Sociologist</h2>
-      <p>FAKIR: ISIC, ISCO, ISCED. Work, education, and knowledge as a lattice, not an anecdote.</p>
-    </a>
-    <a class="role" href="dome/">
-      <h2>Immersive</h2>
-      <p>zistgah/dome. Same laboratory. The maps do not change when the room does.</p>
-    </a>
-    <a class="role" href="mez/desk.html">
-      <h2>Operator</h2>
-      <p>Mez desk. Cases on the tray. No API key. Clipboard is the path.</p>
-    </a>
-    <a class="role" href="view.html?src=LINGUISTIC_EQUITY.md">
-      <h2>Anthropologist</h2>
-      <p>Linguistic equity as architecture. Identity is not a preprocessor step. Cyclers, Humanesque, L25–L26.</p>
+    <a class="role" href="path/research.html">
+      <h2>Mathematician / researcher</h2>
+      <p>WASM CFG, ISO C, theorems, tensors. Exercise the layer, don’t only read it.</p>
     </a>
   </div>
 
@@ -88,30 +108,15 @@
   <p class="cite">
     Choudhary, A. (2026). <em>PANINI Self-Hosting Specification</em> (Version 1.0.0).
     <a href="https://doi.org/10.5281/zenodo.22121524">doi:10.5281/zenodo.22121524</a>
-    — poster. The Hindawi compilers emit machine code via gcc and kin; see
-    <a href="view.html?src=CAN_COMPILE.md">CAN_COMPILE</a>.
   </p>
-
   <div class="eve">
     <strong>The problem this estate answers.</strong>
-    Large language models flatten how people write and strip the identity carried in their words.
-    Forcing a community through English into a model is the same error as
+    Forcing a community through English is the same error as
     <code>#define je if</code>: the soul of the programme dies before compilation.
-    ILM restores representation; PANINI restores computation; mez is the harness that does not require an API key.
+    ILM restores representation; PANINI restores computation.
   </div>
-
-  <p class="fine" style="margin-top:1.5rem">
-    <a href="wasm.html">WASM backend</a> ·
-    <a href="stack.html">L0–L26 AGI stack</a> ·
-    <a href="view.html?src=SHAILIS.md">Shailis</a> ·
-    <a href="view.html?src=PARADIGM.md">Paradigm</a> ·
-    <a href="view.html?src=MRD.md">MRD</a> ·
-    <a href="view.html?src=PANINI.V2.WORKBENCH.md">L15 workbench spec</a>
-  </p>
 </main>
 <footer class="pfoot">
-  We do not build PANINI to replace humanity. We build PANINI to empower humanity —
-  to explore, to understand, to create, and to govern wisely.<br />
   Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later · Hail PANINI
 </footer>
 <script src="skins/skins.js"></script>
