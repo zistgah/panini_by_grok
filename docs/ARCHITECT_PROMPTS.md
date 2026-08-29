@@ -58,7 +58,8 @@ Register note: later turns include **affective register escalation** (frustratio
 46. Claude note: `#define je if` is not localization. Lexer transducers, diagnostics, gdb, nm. File it.
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
-96. Complete frontends. Build and execute llama.cpp (llm.cpp): cmake + g++ C++11, llama-cli, GGUF generate. Pages cannot run the binary. Two paths stay uncollapsed.
+97. Do not flatten the homepage. Spine menu. Language dropdown once, all languages. Urdu keyword gaps go to cyclers, not invented tables. Runtime is VFS + x86 guest + llama-cli (llama.cpp WASM). Not “Pages cannot run this” as the architecture.
+
 
 
 

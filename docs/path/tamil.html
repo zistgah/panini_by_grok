@@ -2,77 +2,11 @@
 <html lang="ta">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI — Tamil stack</title>
-  <link rel="stylesheet" href="../site.css" />
-  <link rel="stylesheet" href="../skins/jazz.css" />
+  <meta http-equiv="refresh" content="0; url=../stack.html?lang=tamil" />
+  <title>Tamil stack</title>
+  <link rel="canonical" href="../stack.html?lang=tamil" />
 </head>
-<body class="site">
-<header class="site-head">
-  <a href="../index.html"><strong>PANINI</strong></a>
-  <nav>
-    <a href="../index.html">Home</a>
-    <a href="index.html">Stacks</a>
-    <a href="arabic.html">Arabic</a>
-    <a href="tamil.html" class="now">Tamil</a>
-    <a href="roundtrip.html">Round-trip</a>
-    <a href="../nb.html?lang=tamil&demo=tamil_guru.uhin">Notebook</a>
-  </nav>
-</header>
-<main class="site-main">
-  <p class="cite">Brahmi flatten · Tamil script · Guru → C · table-complete reverse</p>
-  <h1>தமிழ் அடுக்கு</h1>
-  <p class="lead">This is the Tamil stack. Letters flatten to the Devanagari hub, then Romenagri, then Guru lex, then C. Reverse-map <em>rows</em> round-trip. A whole Hindi C file may still show conjunct residue — that is what the torture lab is for, not something we paint over.</p>
-  <p>
-    <a class="btn" href="../nb.html?lang=tamil&demo=tamil_guru.uhin">Open Tamil Guru in notebook</a>
-    <a class="btn" href="../standards/tamil-c.html">Tamil C standard</a>
-    <a class="btn" href="roundtrip.html?script=tamil">Round-trip this script</a>
-  </p>
-  <h2>What you are looking at</h2>
-  <table>
-    <tr><th>Axis</th><th>This stack</th><th>Mechanism</th></tr>
-    <tr><td>Script</td><td>Tamil</td><td><code>flatten_uni_dev.lex</code> reverse <code>tamil</code></td></tr>
-    <tr><td>Language</td><td>Tamil keywords</td><td><code>tamil_c.tsv</code></td></tr>
-    <tr><td>Shaili</td><td>Guru</td><td>same h2c as Hindi C</td></tr>
-    <tr><td>Host</td><td>C</td><td>UTF-8 identifiers, gcc GNU11 / notebook</td></tr>
-  </table>
-  <h2>Demo (retrieved projection)</h2>
-  <textarea id="prog" class="rt-out" translate="no"></textarea>
-  <p>
-    <button id="rt">Round-trip Tamil → hub → Tamil</button>
-    <button id="rmn">Romenagri kernel</button>
-    <button id="compile">Host C</button>
-  </p>
-  <textarea id="out" class="rt-out" readonly translate="no"></textarea>
-  <p class="fine">gdb sees Romenagri, not a Unicode bypass. <a href="../faq.html">FAQ</a>.</p>
-</main>
-<footer class="pfoot">Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later</footer>
-<script src="../engine/nb.js"></script>
-<script src="../i18n/gt.js"></script>
-<script>
-PANINI_NB.load("../engine/bundle.json").then(async () => {
-  const src = await fetch("../demos/langs/tamil_guru.uhin").then(r => r.text());
-  document.getElementById("prog").value = src;
-  document.getElementById("rt").onclick = () => {
-    const s = document.getElementById("prog").value;
-    const hub = PANINI_NB.flatten(s);
-    const back = PANINI_NB.unflatten(hub, "tamil");
-    const again = PANINI_NB.flatten(back);
-    const ok = hub === again;
-    document.getElementById("out").value = (ok ? "ROUND-TRIP OK (hub identity)\n" : "ROUND-TRIP MISMATCH\n") +
-      "--- hub ---\n" + hub + "\n--- tamil ---\n" + back;
-  };
-  document.getElementById("rmn").onclick = () => {
-    const s = document.getElementById("prog").value;
-    const r = PANINI_NB.devaToRmn(PANINI_NB.flatten(s));
-    document.getElementById("out").value = r;
-  };
-  document.getElementById("compile").onclick = () => {
-    const s = document.getElementById("prog").value;
-    const c = PANINI_NB.compile({ src: s, lang: "tamil", shaili: "guru" });
-    document.getElementById("out").value = c.host;
-  };
-});
-</script>
+<body>
+  <p><a href="../stack.html?lang=tamil">Tamil stack</a></p>
 </body>
 </html>

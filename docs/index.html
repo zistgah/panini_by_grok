@@ -4,103 +4,39 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#070d18" />
-  <title>PANINI — find your stack</title>
+  <title>PANINI</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="site.css" />
   <link rel="stylesheet" href="skins/jazz.css" />
 </head>
 <body class="site">
-<header class="site-head">
-  <a href="index.html"><strong>PANINI</strong></a>
-  <nav>
-    <a href="index.html" class="now">Home</a>
-    <a href="path/">Stacks</a>
-    <a href="path/roundtrip.html">Round-trip</a>
-    <a href="path/research.html">Researchers</a>
-    <a href="nb.html">Notebook</a>
-    <a href="llm.html">llama.cpp</a>
-    <a href="faq.html">FAQ</a>
-    <a href="apps.html">All apps</a>
-  </nav>
-</header>
+<header class="site-head"></header>
+<script src="spine.js"></script>
 <main class="site-main">
   <p class="cite">Humanesque · Veritas · Humanitas · Libertas</p>
   <h1>PANINI</h1>
-  <p class="lead">Pick a stack. You should not have to know the architecture to use it. Researchers still get the latest layers underneath.</p>
+  <p class="lead">Computation in your linguistic substrate. Representation is ILM. The machine you are on is a VFS plus guests — not a flattened brochure.</p>
 
-  <h2>Find your stack</h2>
-  <p>Script, language, and shaili stay separate. These doors do not collapse them.</p>
-  <div class="paths">
-    <a class="path" href="path/arabic.html" dir="rtl" lang="ar">
-      <span class="native">العربية</span>
-      <h2>Arabic stack</h2>
-      <p>Perso-Arabic script, Arabic keywords, Guru → C. Round-trip is named lossy (abjad). Open, compile, see the maps.</p>
-      <span class="tag">SCRIPT · LANGUAGE · SHAILI</span>
-    </a>
-    <a class="path" href="path/tamil.html" lang="ta">
-      <span class="native">தமிழ்</span>
-      <h2>Tamil stack</h2>
-      <p>Brahmi flatten hub, Tamil letters, Guru → C. Reverse-map rows round-trip. Whole-file residue belongs in the torture lab.</p>
-      <span class="tag">BRAHMI · ROUND-TRIP</span>
-    </a>
-    <a class="path" href="path/roundtrip.html">
-      <span class="native">रोमननागरी</span>
-      <h2>Romenagri + round-trip</h2>
-      <p>Across scripts: flatten → Romenagri → back. Stress test. Torture test. Live, in the browser.</p>
-      <span class="tag">KERNEL · ASCII-7</span>
-    </a>
-    <a class="path" href="path/research.html">
-      <span class="native">L0–L26</span>
-      <h2>Researchers</h2>
-      <p>Exercise the latest layers: ISO C 104, WASM + Maṇḍūkapluti, hincc, cyclers, AGI stack. Not a brochure.</p>
-      <span class="tag">LAYERS · PROVEN</span>
-    </a>
-    <a class="path" href="nb.html?lang=hindi&demo=HindiC.uhin">
-      <span class="native">हिन्दी</span>
-      <h2>Hindi C (Guru)</h2>
-      <p>The 2004 bar. Line two is समावेश. Notebook compiles it.</p>
-      <span class="tag">RETRIEVED 2004</span>
-    </a>
-    <a class="path" href="nb.html?lang=punjabi&demo=punjabi_guru.uhin">
-      <span class="native">ਪੰਜਾਬੀ</span>
-      <h2>Punjabi stack</h2>
-      <p>Gurmukhi → Devanagari hub → Romenagri. Not <code>#define</code>.</p>
-      <span class="tag">GURMUKHI</span>
-    </a>
-    <a class="path" href="nb.html?lang=urdu&demo=urdu_guru.uhin">
-      <span class="native">اردو</span>
-      <h2>Urdu stack</h2>
-      <p>Same Perso-Arabic maps as Arabic. Language TSV is Urdu. Lossy, labelled.</p>
-      <span class="tag">PERSO-ARABIC</span>
-    </a>
-    <a class="path" href="nb.html?lang=telugu&demo=telugu_guru.uhin">
-      <span class="native">తెలుగు</span>
-      <h2>Telugu stack</h2>
-      <p>Flatten reverse is table-complete. Open the notebook on the Telugu Guru demo.</p>
-      <span class="tag">BRAHMI</span>
-    </a>
-  </div>
-  <p class="fine">More languages: <a href="path/">all stacks</a> · <a href="standards/">standards per language</a> · <a href="ports.html">local hincc</a></p>
+  <h2>This machine</h2>
+  <ol>
+    <li><a href="console.html">Console</a> — one VT100. bash and COMMAND.COM on the VFS.</li>
+    <li><a href="emu.html">x86 guest</a> — v86, i386. Lekhak EXE, FreeDOS, DPMI. Not an iframe of someone else’s demo if the guest is ours.</li>
+    <li><a href="llm.html">llama.cpp</a> — same VFS, <code>llama-cli</code>. The guest is llama.cpp compiled to WASM (x86_64 ELF does not run in v86). Type it on the console.</li>
+    <li><a href="nb.html">Notebook</a> — Hindawi 2004 pipeline (flatten · shaili · host C).</li>
+  </ol>
+
+  <h2>Language</h2>
+  <p>The paragraph is here once. A stack is ⟨script, language, shaili⟩. Brahmi scripts round-trip through the Devanagari hub. Perso-Arabic is named lossy. Keyword tables that are short of the Hindi bar go to cyclers — they are not invented in this tree.</p>
+  <p><a class="btn" href="stack.html">Open the stack (dropdown of every language)</a></p>
 
   <h2>Enter by vocation</h2>
-  <div class="roles">
-    <a class="role" href="nb.html">
-      <h2>Beginner</h2>
-      <p>PRINT, Shaili, a first programme. The rest of the stack waits until you ask for it.</p>
-    </a>
-    <a class="role" href="workbench.html">
-      <h2>Computer engineer</h2>
-      <p>Source → AST → IR → host → gcc, as Hindawi has done since 2004.</p>
-    </a>
-    <a class="role" href="linguist.html">
-      <h2>Linguist</h2>
-      <p>Keyword tables, flatten maps, round-trip rates. Submit a CSV. Do not invent.</p>
-    </a>
-    <a class="role" href="path/research.html">
-      <h2>Mathematician / researcher</h2>
-      <p>WASM CFG, ISO C, theorems, tensors. Exercise the layer, don’t only read it.</p>
-    </a>
-  </div>
+  <ul>
+    <li><a href="nb.html">Beginner</a> — PRINT, Shaili, first programme.</li>
+    <li><a href="workbench.html">Computer engineer</a> — source → AST → IR → host → gcc, since 2004.</li>
+    <li><a href="linguist.html">Linguist</a> — tables, flatten maps, round-trip. Submit a CSV.</li>
+    <li><a href="path/research.html">Researcher</a> — ISO C, WASM CFG, theorems.</li>
+    <li><a href="cyclers.html">Cycler / Mez</a> — harness for people without API keys.</li>
+  </ul>
 
   <figure class="poster-wrap">
     <img src="poster-panini.jpg" alt="PANINI poster: ecosystem wheel, self-hosting path, Humanesque estate" />
@@ -110,10 +46,10 @@
     <a href="https://doi.org/10.5281/zenodo.22121524">doi:10.5281/zenodo.22121524</a>
   </p>
   <div class="eve">
-    <strong>The problem this estate answers.</strong>
-    Forcing a community through English is the same error as
-    <code>#define je if</code>: the soul of the programme dies before compilation.
-    ILM restores representation; PANINI restores computation.
+    <strong>Do not flatten.</strong>
+    Script, language, shaili, host, and guest are independent axes.
+    A homepage of eight cards that repeat the same sentence is a flattening.
+    The spine is <code>spine.json</code>. Change the menu there, not by rewriting this file.
   </div>
 </main>
 <footer class="pfoot">

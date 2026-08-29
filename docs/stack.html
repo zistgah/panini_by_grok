@@ -3,96 +3,76 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI — AGI stack × shaili × labs</title>
+  <title>PANINI — language stack</title>
   <link rel="stylesheet" href="site.css" />
-  <style>
-    body.poster { background:#070d18; color:#e8d9a8; font-family: Georgia, serif; }
-    .hero { max-width: 70rem; margin:0 auto; padding:1.2rem; }
-    a { color:#c9a227; }
-    table { width:100%; border-collapse:collapse; font-size:.82rem; }
-    th, td { border-bottom:1px solid rgba(201,162,39,.25); padding:.4rem; text-align:left; vertical-align:top; }
-    .labs { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:.6rem; }
-    .lab { border:1px solid rgba(201,162,39,.3); padding:.7rem; }
-    code { color:#f3e6b6; }
-  </style>
+  <link rel="stylesheet" href="skins/jazz.css" />
 </head>
-<body class="poster">
-<div class="hero">
-  <p><a href="index.html">← PANINI</a></p>
-  <h1>L0–L26 × shaili × lab × web × implementation</h1>
-  <p>A shaili is captured as ⟨name, host, axis region, transducer, standard, lab image⟩.
-     Script ≠ language ≠ shaili. Pages cannot run Docker; labs are opt-in images.</p>
+<body class="site">
+<header class="site-head"></header>
+<script src="spine.js"></script>
+<main class="site-main">
+  <p class="cite">One kernel. Three axes. Not a card per language with the same paragraph.</p>
+  <h1>Language stack</h1>
+  <p class="lead">A stack is ⟨script, language, shaili⟩. The host is C (Guru) unless you pick another shaili. Keywords are a table. Identifiers stay in the source and get a <em>view</em> dictionary. Compilation does not rewrite names into English.</p>
   <p>
     <label>Language
-      <select id="lang">
-        <option value="en">English</option>
-        <option value="hi">हिन्दी</option>
-      </select>
+      <select id="lang"></select>
     </label>
-    <a href="i18n/README.md">Publish in another language</a>
-    · <a href="../examples/gate_cse/">GATE CSE examples</a>
+    <a class="btn" id="nb" href="nb.html">Notebook</a>
+    <a class="btn" id="std" href="standards/">Standard</a>
+    <a class="btn" href="cyclers.html">Send gaps to a cycler</a>
   </p>
-
-  <h2>Role labs (containers)</h2>
-  <div class="labs" id="labs"></div>
-
-  <h2>Layers</h2>
   <table>
-    <thead><tr><th>L</th><th>Domain</th><th>Shailis</th><th>Lab</th><th>Web</th><th>PANINI here</th></tr></thead>
-    <tbody id="rows"></tbody>
+    <tr><th>Axis</th><th>This stack</th></tr>
+    <tr><td>Language</td><td id="ax-lang">—</td></tr>
+    <tr><td>Script / round-trip</td><td id="ax-rt">—</td></tr>
+    <tr><td>Keywords in table</td><td id="ax-n">—</td></tr>
+    <tr><td>Shaili</td><td>Guru → C (same pipeline as Hindi 2004)</td></tr>
   </table>
-</div>
+  <p class="warn" id="gap" hidden></p>
+  <h2>Keyword table</h2>
+  <p>Shown once. Change the dropdown; the table follows. Incomplete tables are a linguistics deposit, not something this tree invents.</p>
+  <table id="kw"><thead><tr><th>native</th><th>romenagri</th><th>C</th></tr></thead><tbody></tbody></table>
+</main>
+<footer class="pfoot">Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later</footer>
+<script src="skins/skins.js"></script>
 <script>
-const LAYERS = [
-  ["L0","Physical substrate","—","(PRATIK)","—","specified"],
-  ["L3","Hardware / asm","यांत्रिक","engineer","workbench","heritage h2y"],
-  ["L7","OS/runtime","गुरु POSIX path","engineer","—","posix.js subset"],
-  ["L8","Execution","सूची · जाल","engineer","workbench","interpreter"],
-  ["L9","Simulation","रेखा → sim","agi","—","specified"],
-  ["L12","ILM representation","(script/language, not shaili)","linguist","hindawi.html","flatten · Romenagri · TSV"],
-  ["L13","Programming language","all shailis","all","nb.html","grammar · cyclers"],
-  ["L14","Compiler","heritage 8 transducers","engineer","hindawi.html","hindawi_port.js · T0 subset"],
-  ["L15","Workbench","—","all","workbench.html · mez/","Monaco · cycler · PWA"],
-  ["L16","Interaction","प्राथमिक · रेखा","beginner","nb.html","demos run"],
-  ["L18","Cognition","—","agi","mez/","URL harness"],
-  ["L21","Agents","—","agi","mez/","cyclers .pni"],
-  ["L23","Verification","गणित · तर्क · गणना","math","prove","prove_v2 subset"],
-  ["L25","Sovereignty","—","enterprise","CONTRACT","GPL-3 · signoff"],
-  ["L26","Civilizational","—","agi","fakir/","domains retrieved"]
-];
-document.getElementById("rows").innerHTML = LAYERS.map(r =>
-  "<tr>"+r.map(c=>"<td>"+c+"</td>").join("")+"</tr>"
-).join("");
-function applyI18n(pack) {
-  if (!pack) return;
-  document.title = pack.title || document.title;
-  var h = document.querySelector("h1");
-  if (h && pack.title) h.textContent = pack.title;
-  var lead = document.querySelector(".hero p:nth-of-type(2)");
-  if (lead && pack.lead) lead.textContent = pack.lead;
-  document.querySelectorAll("h2").forEach(function (el) {
-    if (/Role labs|प्रयोगशाला/.test(el.textContent) && pack.labsHeading) el.textContent = pack.labsHeading;
-    if (/Layers|परतें/.test(el.textContent) && pack.layersHeading) el.textContent = pack.layersHeading;
+const HINDI_BAR = 29;
+PANINI_NB_HINT = 0;
+fetch("engine/bundle.json").then(r => r.json()).then(b => {
+  const sel = document.getElementById("lang");
+  const langs = b.langs || {};
+  Object.keys(langs).sort().forEach(id => {
+    const o = document.createElement("option");
+    o.value = id; o.textContent = id;
+    sel.appendChild(o);
   });
-  if (pack.layers) {
-    document.querySelectorAll("#rows tr").forEach(function (tr) {
-      var id = (tr.cells[0] || {}).textContent;
-      if (pack.layers[id] && pack.layers[id].domain) tr.cells[1].textContent = pack.layers[id].domain;
-    });
+  const want = new URLSearchParams(location.search).get("lang") || "hindi";
+  if (langs[want]) sel.value = want;
+  function show() {
+    const id = sel.value;
+    const L = langs[id] || { rows: [] };
+    const rows = L.rows || [];
+    document.getElementById("ax-lang").textContent = id;
+    document.getElementById("ax-rt").textContent = (L.roundtrip || L.script || "") + "";
+    document.getElementById("ax-n").textContent = rows.length + " / Hindi bar " + HINDI_BAR;
+    document.getElementById("nb").href = "nb.html?lang=" + encodeURIComponent(id);
+    document.getElementById("std").href = "standards/" + id + "-c.html";
+    const gap = document.getElementById("gap");
+    if (rows.length < HINDI_BAR) {
+      gap.hidden = false;
+      gap.innerHTML = id + " has " + rows.length + " keywords. Hindi C has " + HINDI_BAR +
+        ". Do not invent the rest here. Open a cycler deposit: " +
+        "<a href=\"deposits/linguist/KEYWORD_GAPS.md\">KEYWORD_GAPS.md</a>.";
+    } else gap.hidden = true;
+    const tb = document.querySelector("#kw tbody");
+    tb.innerHTML = rows.map(r => "<tr><td dir=\"auto\">" + (r.native||"") +
+      "</td><td><code>" + (r.romenagri||"") + "</code></td><td><code>" + (r.c||"") +
+      "</code></td></tr>").join("") || "<tr><td colspan=3>No rows.</td></tr>";
+    history.replaceState(null, "", "stack.html?lang=" + encodeURIComponent(id));
   }
-}
-var q = new URLSearchParams(location.search).get("lang") || "en";
-document.getElementById("lang").value = q;
-document.getElementById("lang").onchange = function () {
-  location.search = "?lang=" + this.value;
-};
-fetch("i18n/stack." + q + ".json").then(function (r) { return r.ok ? r.json() : null; }).then(applyI18n);
-fetch("stack.json").then(r=>r.json()).then(j=>{
-  document.getElementById("labs").innerHTML = j.labs.map(L =>
-    "<div class=lab><h3>"+L.id+"</h3><p>"+L.role+"</p><p><code>"+L.image+
-    "</code></p><p>layers "+L.layers.join(" · ")+"</p><p>shailis "+
-    (L.shailis.join(", ")||"—")+"</p><p><a href='"+L.web+"'>web</a></p></div>"
-  ).join("");
+  sel.onchange = show;
+  show();
 });
 </script>
 </body>

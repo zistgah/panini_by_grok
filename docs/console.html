@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PANINI console</title>
   <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="skins/jazz.css" />
   <style>
     .crt { max-width: 52rem; margin: 1rem auto 3rem; }
     .bezel {
@@ -25,15 +26,8 @@
   </style>
 </head>
 <body class="site">
-<header class="site-head">
-  <a href="index.html"><strong>PANINI</strong></a>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="sims/">Sims</a>
-    <a href="nb.html">Notebook</a>
-    <a href="workbench.html">Workbench</a>
-  </nav>
-</header>
+<header class="site-head"></header>
+<script src="spine.js"></script>
 <main class="site-main">
   <h1>Console</h1>
   <p>One monitor. The glass is the VT100. The strip under it is the keyboard. Not two screens.</p>
@@ -60,6 +54,7 @@
     </div>
   </section>
 </main>
+<script src="engine/llm.js"></script>
 <script>
 (function () {
   function dir() { return { type: "dir", children: Object.create(null) }; }
@@ -69,6 +64,10 @@
   root.children.home.children.panini = dir();
   root.children.home.children.panini.children["readme.txt"] = file("PANINI VFS\nType help.\n");
   root.children.tmp = dir();
+  root.children.bin = dir();
+  root.children.bin.children["llama-cli"] = file("PANINI VFS exec: llama.cpp WASM (wllama)\n");
+  root.children.models = dir();
+  root.children.models.children["stories15M.Q4_0.gguf"] = file("(binary on /models/ — fetch via llama-cli)\n");
   var state = { cwd: "/home/panini", root: root };
   function split(p) { return String(p).split("/").filter(Boolean); }
   function abs(path) {
@@ -154,8 +153,9 @@
     else if (c === "cat") { out = a.map(function (p) { var rr = fs.read(p); return rr.ok ? rr.content : "cat: " + p; }).join(""); }
     else if (c === "echo") out = a.join(" ");
     else if (c === "mkdir") fs.mkdir(a[0] || "");
-    else if (c === "help") out = "pwd ls cd cat echo mkdir help robot lekhak emu";
+    else if (c === "help") out = "pwd ls cd cat echo mkdir help robot lekhak emu llama-cli llama";
     else if (c === "emu" || c === "v86") out = "__EMU__";
+    else if (c === "llama-cli" || c === "llama" || c === "llm") out = "__LLAMA__:" + a.join("\x1f");
     else if (c === "robot" || c === "रोबोट") out = "__ROBOT__";
     else if (c === "lekhak" || c === "लेखक") out = "__LEKHAK__:" + (a[0] || "lekhak.uhin");
     else if (c === "clear" || c === "cls") out = "\x1b[2J";
@@ -530,8 +530,16 @@
       return;
     }
     if (res === "__EMU__") {
-      vtWrite("x86: opening emulator (v86 / FreeDOS)\n");
+      vtWrite("x86: opening emulator (v86 guest)\n");
       window.location.href = "emu.html";
+      return;
+    }
+    if (String(res).indexOf("__LLAMA__:") === 0) {
+      var argv = String(res).slice(10).split("\x1f").filter(Boolean);
+      vtWrite("llama-cli: loading llama.cpp WASM + GGUF on the VFS…\n");
+      (window.PANINI_LLM ? window.PANINI_LLM.llamaCli(argv) : Promise.reject(new Error("llm.js missing")))
+        .then(function (t) { vtWrite(t.charAt(t.length - 1) === "\n" ? t : t + "\n"); })
+        .catch(function (err) { vtWrite(String(err.message || err) + "\n"); });
       return;
     }
     else if (res) vtWrite(res.charAt(res.length - 1) === "\n" ? res : res + "\n");

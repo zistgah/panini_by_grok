@@ -2,69 +2,11 @@
 <html lang="ar">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PANINI — Arabic stack</title>
-  <link rel="stylesheet" href="../site.css" />
-  <link rel="stylesheet" href="../skins/jazz.css" />
+  <meta http-equiv="refresh" content="0; url=../stack.html?lang=arabic" />
+  <title>Arabic stack</title>
+  <link rel="canonical" href="../stack.html?lang=arabic" />
 </head>
-<body class="site">
-<header class="site-head">
-  <a href="../index.html"><strong>PANINI</strong></a>
-  <nav>
-    <a href="../index.html">Home</a>
-    <a href="index.html">Stacks</a>
-    <a href="arabic.html" class="now">Arabic</a>
-    <a href="tamil.html">Tamil</a>
-    <a href="roundtrip.html">Round-trip</a>
-    <a href="../nb.html?lang=arabic">Notebook</a>
-  </nav>
-</header>
-<main class="site-main">
-  <p class="cite">Perso-Arabic script · Arabic language TSV · Shaili Guru → C</p>
-  <h1 dir="rtl">المكدس العربي</h1>
-  <p class="lead">This is the Arabic stack. Script is Perso-Arabic. Keywords are the retrieved Arabic C table. Host is C via Guru. The three axes are not collapsed.</p>
-  <p class="warn">Round-trip is <strong>not</strong> guaranteed. Abjad + tashkil + joining. That is named, not hidden. gdb at the lowest layer will not reconstruct every original letter. Brahmi stacks do; this one does not.</p>
-  <p>
-    <a class="btn" href="../nb.html?lang=arabic">Open in notebook</a>
-    <a class="btn" href="../standards/arabic-c.html">Arabic C standard</a>
-    <a class="btn" href="../perso_arabic.html">Manual maps (2000s)</a>
-    <a class="btn" href="roundtrip.html?family=perso">Round-trip (lossy)</a>
-  </p>
-  <h2>What you are looking at</h2>
-  <table>
-    <tr><th>Axis</th><th>This stack</th><th>Mechanism</th></tr>
-    <tr><td>Script</td><td>Arabic / Nastaliq</td><td><code>urdu_map.csv</code> / <code>fltr_ur_hi</code></td></tr>
-    <tr><td>Language</td><td>Arabic keywords</td><td><code>arabic_c.tsv</code> (retrieved)</td></tr>
-    <tr><td>Shaili</td><td>Guru</td><td>same h2c as Hindi C</td></tr>
-    <tr><td>Host</td><td>C</td><td>gcc / in-browser subset</td></tr>
-  </table>
-  <h2>Try it</h2>
-  <p>Hindi C, viewed as Arabic keywords. Compile still uses the source on the left of the notebook. This box is a <em>view</em>.</p>
-  <textarea id="prog" class="rt-out" dir="rtl" translate="no"></textarea>
-  <p>
-    <button id="view">View as Arabic</button>
-    <button id="compile">Compile path</button>
-  </p>
-  <textarea id="out" class="rt-out" readonly translate="no" placeholder="host C / notes"></textarea>
-  <p class="fine">Not <code>#define</code>. Lexer maps, then host. See <a href="../faq.html">FAQ</a>.</p>
-</main>
-<footer class="pfoot">Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later</footer>
-<script src="../engine/nb.js"></script>
-<script src="../i18n/gt.js"></script>
-<script>
-PANINI_NB.load("../engine/bundle.json").then(async () => {
-  const src = await fetch("../demos/HindiC.uhin").then(r => r.text());
-  const r = PANINI_NB.projectView(src, "hindi", "arabic");
-  document.getElementById("prog").value = r.view;
-  document.getElementById("view").onclick = () => {
-    const cur = document.getElementById("prog").value;
-    document.getElementById("out").value = PANINI_NB.projectView(src, "hindi", "arabic").view;
-  };
-  document.getElementById("compile").onclick = () => {
-    const c = PANINI_NB.compile({ src, lang: "arabic", shaili: "guru" });
-    document.getElementById("out").value = (c.notes||[]).join("\n") + "\n--- host ---\n" + c.host + "\n--- romenagri ---\n" + c.romenagri;
-  };
-});
-</script>
+<body>
+  <p><a href="../stack.html?lang=arabic">Arabic stack</a></p>
 </body>
 </html>

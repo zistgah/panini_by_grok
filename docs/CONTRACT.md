@@ -58,7 +58,11 @@ This is the working contract for changes to this tree.
     Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
 26. `docs/nb.frozen.html` is the approved 2022 notebook chrome. Do not restyle it. Additive boxes live on `docs/nb.html`.
 28. A language standard is the keyword table plus the ten clauses. It is not an English ISO text in another script. Identifier dictionaries are presentation. Compilation uses the original identifiers.
-32. **Physical fidelity.** A digital entity reflects the physical entity it stands for: same parts, same counts, same affordances. A VT100 is one CRT plus one keyboard, not two text boxes. A differential-drive robot is two wheels and an axle, not a picture of a robot. Do not invent extra screens, extra joints, or extra controls the physical object does not have.
+33. **Do not flatten the interface.** Independent axes stay independent on the page: script, language, shaili, host, guest (i386 vs llama.cpp WASM), vocation. A grid of cards that repeat the same paragraph is a flattening. One explanation, then a dropdown or a menu.
+34. **Spine.** `docs/spine.json` + `docs/spine.js` is the site menu. Do not rewrite a private `<nav>` on the homepage each turn. Change the spine file.
+35. **Runtime is the VFS.** GitHub Pages is a publish path, not the machine. Console, x86 guest (v86 i386), and llama-cli (llama.cpp WASM on the VFS) are the online infrastructure. Do not tell the visitor “Pages cannot run this” as if that were the architecture.
+36. Incomplete language tables go to **cycler deposits** (`docs/deposits/`). Do not invent keywords to look complete.
+
 
 
 
