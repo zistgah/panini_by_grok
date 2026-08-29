@@ -27,6 +27,16 @@ Parser invariant: the lexer is newline-insensitive. `ELSE` followed by `IF` is a
 
 `ontology/core.json` is identity. Labels are views. Overlays from other AIs merge by `id` in the ontology browser. Do not fork a second graph in markdown.
 
-## Examples
+## Every turn (architect, 2026-08-29)
+
+This is a standing order, not a reminder in chat.
+
+1. **Pull / diff** retrieved GitHub sources when used. Do not reconstruct maps.
+2. **Fix the named bug.** Do not restyle a page that was already accepted (notebook frozen chrome stays).
+3. **Grow `examples/`.** At least one new runnable or retrieved specimen this cycle, linked from the page that needed it.
+4. **Publish.** Architect prompts (`docs/ARCHITECT_PROMPTS.md`), CONTEXT, this file if the process changed. FAQ if a flattening error recurred (`#define`, copilot last-mile, HTML 404 as source).
+5. **Test the claim.** If you say `#include` survives, a test must fail when it does not.
+6. **Zip.** Do not push. The architect’s automation consumes the zip.
 
 Identifiers in examples should be ontology labels of the operator language, not only English. English remains a view. Lexer already accepts Unicode letters.
+

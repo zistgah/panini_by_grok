@@ -81,7 +81,7 @@
     <select id="demo">
       <option value="HindiBASIC.uhin">शैली प्राथमिक (Hindi Basic)</option>
       <option value="HindiC.uhin" selected>शैली गुरु (Hindi C)</option>
-      <option value="HindiC++.uhin">शैली श्रेणी (Hindi C++)</option>
+      <option value="HindiCPP.uhin">शैली श्रेणी (Hindi C++)</option>
       <option value="HindiLEX.uhin">शैली शब्द (Hindi Lex)</option>
       <option value="HindiYACC.uhin">शैली व्याक (Hindi Yacc)</option>
       <option value="HindiASM.uhin">शैली यांत्रिक (Hindi Asm)</option>
@@ -128,6 +128,7 @@
 <p class="fine">Frozen chrome: <a href="nb.frozen.html">nb.frozen.html</a> (do not restyle). Compile is Unicode → ACII → Romenagri → shaili lex. Native gurucc then gcc. This page only <em>shows</em> those boxes. Original Colab: retrieved/legacy/Notebooks.</p>
 <input id="file" type="file" hidden />
 <script src="engine/nb.js"></script>
+<script src="i18n/gt.js"></script>
 <script>
 function shailiOf(src){
   if (/प्राथमिक|praatha/.test(src)) return "praatha";
@@ -187,12 +188,25 @@ PANINI_NB.load("engine/bundle.json").then((B) => {
   };
   document.getElementById("load").onclick = () => {
     const name = document.getElementById("demo").value;
-    fetch("demos/"+name).then(r=>r.text()).then(t=>{
+    function take(t, label) {
+      if (/^\s*<!DOCTYPE html/i.test(t) || /^\s*<html[\s>]/i.test(t)) {
+        document.getElementById("out").value = "Demo " + label + " is missing (server returned HTML). Not loaded.";
+        return;
+      }
       document.getElementById("prog").value = t;
-      document.getElementById("out").value = "Loaded "+name;
-    }).catch(()=> fetch("../retrieved/legacy/Hindawi/samples/"+name).then(r=>r.text()).then(t=>{
-      document.getElementById("prog").value = t;
-    }));
+      document.getElementById("out").value = "Loaded " + label;
+    }
+    fetch("demos/"+name).then(r => {
+      if (!r.ok) throw new Error("no demo");
+      return r.text();
+    }).then(t => take(t, name)).catch(() =>
+      fetch("../retrieved/legacy/Hindawi/samples/"+name).then(r => {
+        if (!r.ok) throw new Error("no sample");
+        return r.text();
+      }).then(t => take(t, name)).catch(() => {
+        document.getElementById("out").value = "No retrieved demo named " + name + ". See deposits/TASKS.md.";
+      })
+    );
   };
   document.getElementById("down").onclick = () => {
     const blob = new Blob([document.getElementById("prog").value], {type:"text/plain"});

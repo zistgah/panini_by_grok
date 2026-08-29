@@ -30,6 +30,9 @@
     return out;
   }
   function flatten(src) { return applyPairs(src, B.flatten.pairs, "from", "to"); }
+  function stripShailiPragma(host) {
+    return String(host).replace(/<\s*(STYLE|शैली)[^>]*>/gi, "");
+  }
   function unflatten(deva, script) {
     const map = B.flatten.reverse[script] || {};
     const pairs = Object.keys(map).sort((a, b) => [...b].length - [...a].length).map((to) => ({ from: to, to: map[to] }));
@@ -169,7 +172,8 @@
     const hostFromUhin = applyShaili(shaili || "guru", flat);
     /* Lowest layer is Romenagri lex. Unicode-on-JS shaili is fallback only, and is labelled. */
     const usedRmn = !!(hostFromRmn && shaili !== "praatha");
-    const host = (usedRmn ? hostFromRmn : hostFromUhin).replace(/<[^>\n]+>/g, "");
+    /* Strip only the Shaili pragma. Never strip C/C++ #include <header.h> — that is समावेश. */
+    const host = stripShailiPragma(usedRmn ? hostFromRmn : hostFromUhin);
     const back = rmnToDeva(romenagri);
     return {
       invented_maps: false, perso, notes, source: src, flattened: flat,
@@ -291,6 +295,8 @@
     };
     let js = indic(host);
     js = js.replace(/^#.*$/gm, "");
+    js = js.replace(/\busing\s+namespace\s+std\s*;/g, "");
+    js = js.replace(/\b(?:std::)?cout\s*<<\s*"([^"]*)"\s*(?:<<\s*endl)?\s*;/g, 'printf("$1");');
     js = js.replace(/\b(int|void)\s+main\s*\([^)]*\)/g, "function __main()");
     js = js.replace(/\bscanf\s*\(\s*("[^"]*")\s*,\s*([^;]+)\)/g, function (_, fmt, rest) {
       return rest.split(",").map(function (id) {
@@ -498,7 +504,7 @@
 
   global.PANINI_NB = {
     load, flatten, unflatten, persoToDeva, devaToPerso, compile, run, runC, runBasic, runAsm, runJava,
-    devaToRmn, rmnToDeva, lexRmn, projectView, identDict, walkTokens,
+    devaToRmn, rmnToDeva, lexRmn, projectView, identDict, walkTokens, stripShailiPragma,
     hin2std(src, lang, shaili) { return compile({ src, lang, shaili }).host; },
     std2hin(src, lang) {
       const L = B.langs[lang]; let out = src;
