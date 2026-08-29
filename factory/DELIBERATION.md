@@ -18,4 +18,4 @@ To touch one:
 
 | Date | id | Why |
 |---|---|---|
-| (none yet) | — | Factory minted this turn. Existing optimized files were locked, not rewritten. |
+| 2026-08-29 | python-frontend | Architect: take Python to STANDARD GREEN. Official suite is CPython 3.12 Lib/test language files, not homemade 20-case. Unfreeze python.pni to add unary/**/hex/bitwise/ternary/False required by retrieved test_unary.py + test_bool.py + test_grammar.py self-contained asserts. Re-lock after. |

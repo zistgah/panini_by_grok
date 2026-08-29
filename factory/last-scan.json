@@ -1,6 +1,6 @@
 {
   "theorem": "SHIP_GREEN(requirements)",
-  "when": "2026-08-29T11:19:02.105Z",
+  "when": "2026-08-29T11:52:51.565Z",
   "requirements": {
     "total": 32,
     "ship_green": 31,
@@ -8,7 +8,7 @@
     "gap": 1
   },
   "freeze": {
-    "locked": 17,
+    "locked": 16,
     "drift": 0,
     "items": [
       {
@@ -77,9 +77,8 @@
       {
         "id": "python-frontend",
         "path": "src/panini/frontends/python.pni",
-        "status": "FROZEN",
-        "expected": "acdade129adc3c71",
-        "got": "acdade129adc3c71"
+        "status": "re-locked",
+        "hash": "cc90e61d44605fa1"
       },
       {
         "id": "cpp-frontend",
@@ -192,6 +191,13 @@
       "paths": [
         "docs/CORRELATION.md",
         "factory/CORRELATION.md"
+      ]
+    },
+    {
+      "base": "PANINI.V2.WORKBENCH.md",
+      "paths": [
+        "docs/PANINI.V2.WORKBENCH.md",
+        "spec/PANINI.V2.WORKBENCH.md"
       ]
     },
     {
@@ -383,13 +389,6 @@
       "paths": [
         "docs/engine/wat2wasm.js",
         "runtime/wat2wasm.js"
-      ]
-    },
-    {
-      "base": "index.js",
-      "paths": [
-        "docs/engine/wllama/index.js",
-        "src/index.js"
       ]
     }
   ],
@@ -643,11 +642,11 @@
       "honesty": null
     },
     {
-      "id": 36,
-      "text": "AyeBIOS retrieved from github.com/ayebios/ayebios. Flatten `boot.c.uhin` through hincc (Shaili Guru). No second C frontend. 16-bit ROM binar",
+      "id": 37,
+      "text": "PANINI.V2.WORKBENCH (L15) specified; T0 not altered. AGI stack reports SHIP GREEN and STANDARD GREEN per layer from factory/agi_map.json. ST",
       "status": "SHIP GREEN",
-      "artifact": "retrieved/ayebios/src/boot.c.uhin",
-      "test": "tests/ayebios_flatten.mjs",
+      "artifact": "spec/PANINI.V2.WORKBENCH.md",
+      "test": "scripts/agi_green.mjs",
       "honesty": null
     }
   ],

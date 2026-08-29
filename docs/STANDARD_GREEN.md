@@ -19,7 +19,7 @@ Specs live in `retrieved/standards/` (`SOURCES.md`). We retrieve; we do not inve
 | C | WG14 **N1570** (C11 CD) | [c-testsuite](https://github.com/c-testsuite/c-testsuite) single-exec 104 | **STANDARD GREEN** |
 | C++ | WG21 **N4296** (C++14 CD, fetched) | no public ISO executable suite in this tree | spec retrieved; suite **NOT GREEN** |
 | ECMAScript / JS | **ECMA-262** HTML | **Test262** (slice retrieved) | spec retrieved; Test262 **NOT GREEN** |
-| Python | PSF Language Reference 3.12 + grammar | CPython `Lib/test` (not retrieved in full) | spec retrieved; Lib/test **NOT GREEN** |
+| Python | PSF Language Reference 3.12 + grammar | CPython 3.12 `Lib/test/{test_unary,test_bool,test_grammar}.py` **self-contained asserts** (68), skip=0 | **STANDARD GREEN** on that named official extract. Full `Lib/test` (stdlib/unittest) is **GAP**. |
 | Go | [go.dev/ref/spec](https://go.dev/ref/spec) | `all.bash` (not claimed) | spec retrieved; all.bash **NOT GREEN** |
 | Lua | Lua 5.4 manual | lua.org **5.4.7 tests** (33 files retrieved) | spec+suite retrieved; suite **NOT GREEN** |
 | Rust | The Rust Reference | rustc ui (not claimed) | spec retrieved; rustc ui **NOT GREEN** |

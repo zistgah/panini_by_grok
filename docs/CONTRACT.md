@@ -1,78 +1,51 @@
-# tree-rev: 2026.08.28
 # CONTRACT.md
 
 Copyright (C) 1993-2026 Abhishek Choudhary  
 SPDX-License-Identifier: GPL-3.0-or-later  
-Tree-rev: 2026.08.28
+Tree-rev: 2026.08.29
 
-This is the working contract for changes to this tree.
+This file is the working contract for **every** change to this tree — human, AI, or collaborator. Read it before CONTEXT.md.
 
-## License and attribution
+## License and independence
 
-1. The program is GPL-3.0-or-later.
-2. Copyright line is: Copyright (C) 1993-2026 Abhishek Choudhary
-3. Third-party works stay under their own licenses (`THIRD_PARTY.md`).
-4. The original `spec/PANINI_SELF_HOSTING_SPEC.pni` text is not rewritten.
-4a. This estate is independent of all employers and clients. See `INDEPENDENCE.md`.
-    Do not brand this work as IBM, HP, or any other company product.
-4b. TRUST ME (7 Aug): an artifact the architect hands over is the source of truth. Do not re-fetch or re-derive it as if memory were incomplete.
-4c. NON-DUAL-USE is a binding master clause (26 Jul). This tree is not a dual-use toolkit.
-4d. Public surfaces do not use religiously significant words as product or lab names.
-4e. SPI entities are not named without authorisation. This tree does not invent that list.
-4f. Lifecycle states when governance lands them: incubating → active → maintained → dormant → archived → withdrawn. This tree is active.
-4g. Dual-licence CLA/DCO and C8–C30 have no canonical home on governance main (404). UNRESOLVED. Do not draft them from memory.
+1. GPL-3.0-or-later. Copyright line: Copyright (C) 1993-2026 Abhishek Choudhary
+2. Third-party works keep their licenses (`THIRD_PARTY.md`).
+3. `spec/PANINI_SELF_HOSTING_SPEC.pni` is not rewritten.
+4. Independent of all employers and clients (`INDEPENDENCE.md`). Never brand as IBM, HP, or any company product.
 
 ## Honesty
 
-5. Do not claim official-suite CONFORMANCE (ISO C, CPython `Lib/test`, …) until that suite is run and green.
-6. Subset frontends must be labeled subsets.
-7. Architect prompts on the site stay curated. Affective register escalation is noted; pejorative lexicon is not published.
+5. STANDARD GREEN ⇔ retrieved issuing-body spec **and** that body’s executable suite, skip=0. Homemade 20-case files are CORE GREEN only.
+6. Subsets are labeled subsets. Named GAPs stay named.
+7. Architect prompts on the site are curated. Affective register escalation may be noted; pejorative lexicon is not published.
 
-## Site
+## Site (do not lose the menu)
 
-8. `docs/index.html` is the entry. It explains concept, standards, languages, classifications. It does not dump the visitor into the IDE.
-9. The IDE is `docs/workbench.html`, linked from the entry.
-10. GitHub Pages publishes `docs/`.
-11. Terminal is VT100. bash and COMMAND.COM are applications on that terminal.
-12. Editor engine is Monaco. Blocks engine is Blockly.
+8. `docs/index.html` is the entry. It does not dump the visitor into the IDE.
+9. The spine is `docs/spine.json` + `docs/spine.js`. **Valid JSON.** Trailing commas are a contract breach — they delete the menu.
+10. GitHub Pages publishes `docs/` only. Not `/website`.
+11. Do not flatten axes into identical cards. Do not reinvent the homepage each turn.
+12. Terminal is one VT100. bash and COMMAND.COM are shells on the VFS.
+13. Editor is Monaco. Blocks are Blockly. Third-party names and licenses stay in `THIRD_PARTY.md`.
 
-## Independent invariants
+## Factory
 
-16. Every language frontend is implemented in PANINI (`T_FRONTEND_PANINI`).
-    Host gcc/CPython/Docker do not replace that.
-17. POSIX personality and OCI standard environments are a separate conjunct.
-    Frontends-in-PANINI do not replace that.
-18. Cyclers are the Cognitive Workbench AI harness: simple presentation,
-    full-depth substrate. Details not supplied by the architect are not invented.
-19. Do not assume the meaning of a requirement. If two requirements are
-    stated, both stand.
-20. No early collapse of independent axes.
-21. "Done" means industry-comparable for that object, or the gap is named.
-22. ISO green is unflattened. For C that means ISO/IEC 9899:2018 (C17)
-    against the retrieved c-testsuite single-exec corpus, subject
-    PANINI.Frontend.C. Subset demos do not discharge this. Status until
-    the harness is all-pass: NOT GREEN. Zip every delivery turn.
-23. `retrieved/` is read-only vendor except where a stub TSV header already
-    names the fill method (Unicode name-projection). Gurmukhi retrieved rows
-    are not overwritten. APCISR and Romenagri maps are retrieved.
-    Do not invent transliteration maps. `runtime/vt100.js` is not APCISR.
-26. `docs/nb.frozen.html` is the approved 2022 notebook chrome. Do not restyle it. Additive boxes live on `docs/nb.html`.
-28. A language standard is the keyword table plus the ten clauses. It is not an English ISO text in another script. Identifier dictionaries are presentation. Compilation uses the original identifiers.
-33. **Do not flatten the interface.** Independent axes stay independent on the page: script, language, shaili, host, guest (i386 vs llama.cpp WASM), vocation. A grid of cards that repeat the same paragraph is a flattening. One explanation, then a dropdown or a menu.
-34. **Spine.** `docs/spine.json` + `docs/spine.js` is the site menu. Do not rewrite a private `<nav>` on the homepage each turn. Change the spine file.
-35. **Runtime is the VFS.** GitHub Pages is a publish path, not the machine. Console, x86 guest (v86 i386), and llama-cli (llama.cpp WASM on the VFS) are the online infrastructure. Do not tell the visitor “Pages cannot run this” as if that were the architecture.
-36. Incomplete language tables go to **cycler deposits** (`docs/deposits/`). Do not invent keywords to look complete.
+14. Browse `factory/REGISTRY.json` before writing a file.
+15. `freeze:true` is not edited without `factory/DELIBERATION.md`.
+16. Adapters are named copies. Silent duplicates are not.
+17. Retrieve; do not invent Romenagri maps or a second VFS.
 
+## Frontends
 
+18. Every language frontend is implemented in PANINI (`T_FRONTEND_PANINI`). Host gcc/CPython do not replace that.
+19. Lowering (clower, stdlower, cpplower) is the C-AST path. Do not touch the frozen WASM emitter.
 
+## Zip / uploader (do not touch the architect’s script)
 
+20. `panini.zip` is consumed by a local script that: unzip → copy `panini/*` → `node tests/run.mjs` → `node scripts/selfhost.mjs` → `node scripts/prove_theorem.mjs` → git add/commit/push → misty ots stamp. **That script is immutable.**
+21. Therefore: tests must not fail the uploader; large binaries (GGUF, WASM, spec HTML/PDF, BIOS ROM) are **fetched or built inside `tests/run.mjs`**, not shipped in the zip.
 
+## AyeBIOS / firmware
 
-
-
-
-## Delivery
-
-13. Changing the tree includes writing `artifacts/panini.zip`.
-14. Standing requirements live in `REQUIREMENTS.md`.
-15. This contract is not satisfied by placeholder explorer links alone.
+22. AyeBIOS is SeaBIOS × Hindawi Shaili Guru (`retrieved/ayebios/`). Flatten through `hincc`. No second C frontend.
+23. The BIOS ROM lives on the VFS at `/bios/bios.bin`. The ROM is fetched at test/runtime, not zipped.

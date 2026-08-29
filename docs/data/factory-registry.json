@@ -94,10 +94,10 @@
     {
       "id": "python-frontend",
       "path": "src/panini/frontends/python.pni",
-      "owns": "STANDARD GREEN Python eval",
+      "owns": "Python STANDARD GREEN on CPython 3.12 language extract",
       "status": "optimized",
       "freeze": true,
-      "hash": "acdade129adc3c71"
+      "hash": "cc90e61d44605fa1"
     },
     {
       "id": "cpp-frontend",
@@ -277,12 +277,25 @@
       "freeze": false
     },
     {
-      "id": "ayebios",
-      "path": "retrieved/ayebios/",
-      "owns": "AyeBIOS SeaBIOS×Guru retrieved",
+      "id": "workbench-spec",
+      "path": "spec/PANINI.V2.WORKBENCH.md",
+      "owns": "L15 workbench spec; does not alter T0",
       "status": "live",
-      "freeze": false,
-      "reuse": "hincc + Frontend.C, not a second C"
+      "freeze": false
+    },
+    {
+      "id": "agi-map",
+      "path": "factory/agi_map.json",
+      "owns": "L0–L26 → registry components",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "agi-green",
+      "path": "scripts/agi_green.mjs",
+      "owns": "derived SHIP/STANDARD per layer",
+      "status": "live",
+      "freeze": false
     }
   ],
   "adapters": [

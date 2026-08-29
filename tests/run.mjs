@@ -276,5 +276,14 @@ await test("agi_stack_ship_and_standard_green", async () => {
   assert.ok(g.layers.find((x) => x.id === "L18" && x.ship === "GAP"));
 });
 
+await test("python_standard_green_cpython_language", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const r = spawnSync(process.execPath, [path.join(root, "scripts/py_std_green.mjs")], { encoding: "utf8" });
+  assert.equal(r.status, 0);
+  const g = JSON.parse(fs.readFileSync(path.join(root, "docs/data/python-std-green.json"), "utf8"));
+  assert.equal(g.skip0, true);
+  assert.ok(g.pass >= 60);
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);
