@@ -1,6 +1,6 @@
 {
   "theorem": "SHIP_GREEN(requirements)",
-  "when": "2026-08-29T09:26:52.229Z",
+  "when": "2026-08-29T10:26:11.978Z",
   "requirements": {
     "total": 24,
     "ship_green": 23,
@@ -185,6 +185,13 @@
         "labs/engineer/Dockerfile",
         "labs/enterprise/Dockerfile",
         "labs/linguist/Dockerfile"
+      ]
+    },
+    {
+      "base": "CORRELATION.md",
+      "paths": [
+        "docs/CORRELATION.md",
+        "factory/CORRELATION.md"
       ]
     },
     {
@@ -383,13 +390,6 @@
       "paths": [
         "docs/engine/wllama/index.js",
         "src/index.js"
-      ]
-    },
-    {
-      "base": "gurmukhi.js",
-      "paths": [
-        "docs/gurmukhi.js",
-        "runtime/gurmukhi.js"
       ]
     }
   ],

@@ -13,7 +13,10 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
+import { spawnSync } from "node:child_process";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+spawnSync(process.execPath, [path.join(root, "scripts/factory_sync.mjs")], { stdio: "inherit" });
 const regPath = path.join(root, "factory/REGISTRY.json");
 const reqPath = path.join(root, "REQUIREMENTS.md");
 

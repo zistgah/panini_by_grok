@@ -24,7 +24,9 @@ apps/
   ilm/                future project-ilm/ilm.codes slice
   hindawi/            future hindawiai docs
 
-retrieved/            READ-ONLY pointers + vendor (no 100MB DOS image)
+factory/              REGISTRY.json · CORRELATION.md · freeze protocol
+    scripts/factory_scan.mjs factory_sync.mjs
+
 ```
 
 See `docs/SPINOFF.md`.

@@ -7,6 +7,11 @@ import {
   wrap, unwrap, display, typeName, toNumber, toStr,
 } from "./values.js";
 import { ccpp } from "./ccpp.js";
+import { clower } from "./clower.js";
+import { gnuc } from "./gnuc.js";
+import { cpplower } from "./cpplower.js";
+import { rustToC, goToC, juliaToC } from "./stdlower.js";
+import { cinterp } from "./cinterp.js";
 
 export function installBuiltins(env, runtime) {
   const def = (name, fn, arity) => {
@@ -32,6 +37,14 @@ export function installBuiltins(env, runtime) {
   def("STR", (x) => vStr(toStr(x)), 1);
   def("INT", (x) => vInt(toNumber(x)), 1);
   def("CPP", (x) => vStr(ccpp(toStr(x))), 1);
+  def("CLOWER", (x) => vStr(clower(toStr(x))), 1);
+  def("GNUC", (x) => vStr(gnuc(toStr(x))), 1);
+  def("CPPLOWER", (x) => vStr(cpplower(toStr(x))), 1);
+  def("RUSTLOWER", (x) => vStr(rustToC(toStr(x))), 1);
+  def("GOLOWER", (x) => vStr(goToC(toStr(x))), 1);
+  def("JULIALOWER", (x) => vStr(juliaToC(toStr(x))), 1);
+  def("CINTERP", (x) => vInt(cinterp(toStr(x)) | 0), 1);
+  def("CONTAINS", (xs, w) => vBool(toStr(xs).indexOf(toStr(w)) >= 0), 2);
   def("ORD", (x) => {
     const s = toStr(x);
     return vInt(s.length ? s.charCodeAt(0) : 0);

@@ -13,7 +13,11 @@ Copyright (C) 1993-2026 Abhishek Choudhary
 | Hindawi port | `runtime/hindawi_port.js` | retrieved pipeline | new maps | notebook |
 | Chakra | `apps/project-ilm/chakra` | retrieved ephemeris | reconstructed astronomy | `docs/chakra/` |
 | Ontology | `ontology/core.json` | node identity, labels, edges | FAKIR ISIC tables | `docs/ontology/` + `docs/ontology.html` |
-| Estate | `docs/explorer/` | 31-panel instrument | mint/seal | — |
+| C lowering | `runtime/clower.js` + `gnuc.js` | C four-pass + GNU pre-pass | WASM emitter | `docs/engine/interp/clower.js` (sync) |
+| Pages interp | `docs/engine/interp/` | browser C→WASM | Node toolchain | factory_sync from canonical |
+| Language museum | `languages/*.pni` | axis character | STANDARD GREEN claims | frontends are `src/panini/frontends/` |
+| Factory | `factory/REGISTRY.json` | freeze + reuse | rewriting frozen files | `scripts/factory_scan.mjs` |
+
 
 **Replication found this turn (kept only as named adapters):**
 

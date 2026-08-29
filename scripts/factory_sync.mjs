@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+/**
+ * One-way canonical → adapter sync. Does not touch freeze:true sources.
+ * Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+/** from is canonical. to is the adapter. Never reverse. */
+const COPIES = [
+  ["src/panini/frontends/c.pni", "docs/engine/interp/c.pni"],
+  ["src/panini/frontends/cpp.pni", "docs/engine/interp/cpp.pni"],
+  ["src/panini/frontends/python.pni", "docs/engine/interp/python.pni"],
+  ["src/panini/frontends/rust.pni", "docs/engine/interp/rust.pni"],
+  ["src/panini/frontends/go.pni", "docs/engine/interp/go.pni"],
+  ["src/panini/frontends/julia.pni", "docs/engine/interp/julia.pni"],
+  ["src/panini/frontends/to_c.pni", "docs/engine/interp/to_c.pni"],
+  ["runtime/ccpp.js", "docs/engine/interp/ccpp.js"],
+  ["runtime/values.js", "docs/engine/interp/values.js"],
+  ["runtime/env.js", "docs/engine/interp/env.js"],
+  ["runtime/artifacts.js", "docs/engine/interp/artifacts.js"],
+  ["runtime/clower.js", "docs/engine/interp/clower.js"],
+  ["runtime/gnuc.js", "docs/engine/interp/gnuc.js"],
+  ["runtime/cpplower.js", "docs/engine/interp/cpplower.js"],
+  ["runtime/stdlower.js", "docs/engine/interp/stdlower.js"],
+  ["runtime/cinterp.js", "docs/engine/interp/cinterp.js"],
+  ["compiler/ast.js", "docs/engine/interp/ast.js"],
+  ["compiler/lexer.js", "docs/engine/interp/lexer.js"],
+  ["compiler/parser.js", "docs/engine/interp/parser.js"],
+  ["compiler/tokens.js", "docs/engine/interp/tokens.js"],
+  ["factory/CORRELATION.md", "docs/CORRELATION.md"],
+];
+
+let n = 0;
+for (const [from, to] of COPIES) {
+  const src = path.join(root, from);
+  const dst = path.join(root, to);
+  if (!fs.existsSync(src)) {
+    console.log("missing canonical", from);
+    continue;
+  }
+  fs.mkdirSync(path.dirname(dst), { recursive: true });
+  const a = fs.readFileSync(src);
+  const b = fs.existsSync(dst) ? fs.readFileSync(dst) : null;
+  if (b && Buffer.compare(a, b) === 0) continue;
+  fs.writeFileSync(dst, a);
+  n++;
+  console.log("synced", from, "→", to);
+}
+console.log("factory_sync", n, "updated");
