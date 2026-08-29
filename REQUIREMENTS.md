@@ -35,7 +35,8 @@ GPL-3.0-or-later
 31. STANDARD GREEN Pascal 20/20.
 32. STANDARD GREEN BASIC 20/20 (Hindawi Shaili BASIC subset).
 34. STANDARD GREEN means a retrieved issuing-body spec plus that body’s executable suite, skip=0. Homemade 20-case files are CORE GREEN only.
-36. AyeBIOS retrieved from github.com/ayebios/ayebios. Flatten `boot.c.uhin` through hincc (Shaili Guru). No second C frontend. 16-bit ROM binary named GAP.
+37. PANINI.V2.WORKBENCH (L15) specified; T0 not altered. AGI stack reports SHIP GREEN and STANDARD GREEN per layer from factory/agi_map.json. STANDARD GREEN is not 27/27.
+
 
 
 

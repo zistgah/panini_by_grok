@@ -14,7 +14,7 @@
     {"id": "wasm-front", "path": "runtime/wasm_front.js", "owns": "WASM CFG / Maṇḍūkapluti", "status": "optimized", "freeze": true, "hash": "32646d5f9d03cbeb", "note": "WASM emitter frozen per REQ-13"},
     {"id": "wat2wasm", "path": "runtime/wat2wasm.js", "owns": "WAT binary", "status": "optimized", "freeze": true, "hash": "9c497f7f4f91cc80"},
     {"id": "c-frontend", "path": "src/panini/frontends/c.pni", "owns": "PANINI.Frontend.C ISO/STANDARD GREEN", "status": "optimized", "freeze": true, "hash": "dca2f8cf45dc8386", "note": "C work goes in clower.js / gnuc.js, not here"},
-    {"id": "python-frontend", "path": "src/panini/frontends/python.pni", "owns": "STANDARD GREEN Python eval", "status": "optimized", "freeze": true, "hash": "acdade129adc3c71"},
+    {"id": "python-frontend", "path": "src/panini/frontends/python.pni", "owns": "Python eval (CORE GREEN smoke, not CPython Lib/test)", "status": "optimized", "freeze": true, "hash": "acdade129adc3c71"},
     {"id": "cpp-frontend", "path": "src/panini/frontends/cpp.pni", "owns": "C++ lex in PANINI", "status": "optimized", "freeze": true, "hash": "6373fafd1c9250af", "note": "lowering in cpplower.js"},
     {"id": "rust-frontend", "path": "src/panini/frontends/rust.pni", "owns": "STANDARD GREEN Rust", "status": "optimized", "freeze": true, "hash": "335711a2b0f29008"},
     {"id": "go-frontend", "path": "src/panini/frontends/go.pni", "owns": "STANDARD GREEN Go", "status": "optimized", "freeze": true, "hash": "9d7e5b18c66511e8"},
@@ -40,7 +40,9 @@
     {"id": "spine", "path": "docs/spine.json", "owns": "canonical menu", "status": "live", "freeze": false, "note": "add entries; do not flatten"},
     {"id": "factory-scan", "path": "scripts/factory_scan.mjs", "owns": "browse + freeze verify + ship-green", "status": "live", "freeze": false},
     {"id": "factory-sync", "path": "scripts/factory_sync.mjs", "owns": "canonical → adapter copy", "status": "live", "freeze": false},
-    {"id": "ayebios", "path": "retrieved/ayebios/", "owns": "AyeBIOS SeaBIOS×Guru retrieved", "status": "live", "freeze": false, "reuse": "hincc + Frontend.C, not a second C"}
+    {"id": "workbench-spec", "path": "spec/PANINI.V2.WORKBENCH.md", "owns": "L15 workbench spec; does not alter T0", "status": "live", "freeze": false},
+    {"id": "agi-map", "path": "factory/agi_map.json", "owns": "L0–L26 → registry components", "status": "live", "freeze": false},
+    {"id": "agi-green", "path": "scripts/agi_green.mjs", "owns": "derived SHIP/STANDARD per layer", "status": "live", "freeze": false}
   ],
   "adapters": [
     {"from": "runtime/vfs.js", "to": "docs/console.js", "why": "Pages UMD"},

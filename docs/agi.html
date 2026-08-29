@@ -37,8 +37,14 @@
     <thead><tr><th>Id</th><th>ok</th><th>note</th></tr></thead>
     <tbody id="lang"></tbody>
   </table>
-  <h2>L0–L26</h2>
-  <ol id="layers"></ol>
+  <h2>L0–L26 — SHIP GREEN and STANDARD GREEN</h2>
+  <p class="fine">Derived from <code>factory/agi_map.json</code> + registry. STANDARD GREEN is an issuing-body suite skip=0 — not 27/27. Named GAPs stay named.</p>
+  <p id="agikpi" class="kpis"></p>
+  <table>
+    <thead><tr><th>Layer</th><th>SHIP</th><th>STANDARD</th><th>Issuing body</th><th>Components</th><th>Gap</th></tr></thead>
+    <tbody id="agilayers"></tbody>
+  </table>
+
   <p>
     <a class="btn" href="dashboard.html">Programme dashboard</a>
     <a class="btn" href="path/research.html">Exercise layers</a>
@@ -60,8 +66,20 @@ function det(r) {
 }
 Promise.all([
   fetch("data/test-report.json").then(r => r.ok ? r.json() : null).catch(() => null),
-  fetch("layers.json").then(r => r.json()).catch(() => ({ layers: [] }))
-]).then(([T, L]) => {
+  fetch("data/agi-green.json").then(r => r.ok ? r.json() : null).catch(() => null)
+]).then(([T, G]) => {
+  if (G) {
+    document.getElementById("agikpi").innerHTML =
+      "<div class=kpi><b>" + G.ship_green + "/" + G.n + "</b>SHIP GREEN</div>" +
+      "<div class=kpi><b>" + G.standard_green + "/" + G.n + "</b>STANDARD GREEN</div>";
+    document.getElementById("agilayers").innerHTML = (G.layers || []).map(function (x) {
+      var ship = x.ship === "SHIP GREEN" ? "<span class=met>SHIP GREEN</span>" : "<span class=planned>" + x.ship + "</span>";
+      var st = x.standard === "STANDARD GREEN" ? "<span class=met>STANDARD GREEN</span>" : "<span class=planned>" + x.standard + "</span>";
+      return "<tr><td><code>" + x.id + "</code> " + x.name + "</td><td>" + ship + "</td><td>" + st + "</td><td class=fine>" +
+        (x.issuing_body || "—") + (x.suite ? " · " + x.suite : "") + "</td><td class=fine>" +
+        (x.components || []).join(", ") + "</td><td class=fine>" + (x.gap || "") + "</td></tr>";
+    }).join("");
+  }
   if (!T) {
     document.getElementById("when").textContent = "No test-report.json yet. Run node tests/test.mjs";
     return;
@@ -84,9 +102,6 @@ Promise.all([
   ).join("");
   document.getElementById("lang").innerHTML = (T.languages || []).map(r =>
     "<tr><td>" + r.name + "</td><td>" + cell(r.ok) + "</td><td class=fine>" + det(r) + "</td></tr>"
-  ).join("");
-  document.getElementById("layers").innerHTML = (L.layers || []).map(x =>
-    "<li><code>" + x.id + "</code> " + x.name + (x.mrd ? " — " + x.mrd : "") + "</li>"
   ).join("");
 });
 </script>

@@ -27,7 +27,7 @@
         { "href": "llm.html", "label": "llama.cpp" },
         { "href": "story.html", "label": "Story spinner" },
         { "href": "nb.html", "label": "Notebook" },
-        { "href": "workbench.html", "label": "Workbench" },
+        { "href": "workbench.html", "label": "Workbench L15" },
         { "href": "flow.html", "label": "C → WASM" },
         { "href": "wasm.html", "label": "WASM / Maṇḍūkapluti" },
         { "href": "pspice.html", "label": "PSpice" }

@@ -264,5 +264,17 @@ await test("fetch_specs_and_bios_rom_on_vfs", async () => {
   console.log("       assets", (got.notes || []).join("; "));
 });
 
+await test("agi_stack_ship_and_standard_green", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const r = spawnSync(process.execPath, [path.join(root, "scripts/agi_green.mjs")], { encoding: "utf8" });
+  assert.equal(r.status, 0);
+  const g = JSON.parse(fs.readFileSync(path.join(root, "docs/data/agi-green.json"), "utf8"));
+  assert.equal(g.n, 27);
+  assert.equal(g.standard_green, 1);
+  assert.ok(g.layers.find((x) => x.id === "L13" && x.standard === "STANDARD GREEN"));
+  assert.ok(g.layers.find((x) => x.id === "L15" && x.ship === "SHIP GREEN"));
+  assert.ok(g.layers.find((x) => x.id === "L18" && x.ship === "GAP"));
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

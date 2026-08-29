@@ -10,7 +10,8 @@ PANINI is the computational half of linguistic equity (ILM = representation). St
 
 **Now**
 
-- Spine: `docs/spine.json` (must parse). Pages: `docs/`. Jazz skin primary.
+- AGI stack: **SHIP GREEN 24/27**, **STANDARD GREEN 1/27** (L13 C / c-testsuite). L1, L18, L19 are named GAPs. L15 workbench spec does not alter T0.
+
 - STANDARD GREEN (issuing-body suite, skip=0): **C only** — c-testsuite 104 + WG14 N1570. N1570 is fetched in tests, not zipped.
 - CORE GREEN (factory 20-case smoke): Python, Rust, Go, Julia, TS, JS, Zig, Lua, Fortran, Pascal, BASIC. Not a standard.
 - AyeBIOS retrieved (`github.com/ayebios/ayebios`). `boot.c.uhin` flattens through hincc. ROM on VFS `/bios/bios.bin` (fetched SeaBIOS stand-in until AyeBIOS `.rom` is built). 16-bit ROM build is a named GAP.
