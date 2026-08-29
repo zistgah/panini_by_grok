@@ -59,6 +59,7 @@ Register note: later turns include **affective register escalation** (frustratio
 47. Explore Perso-Arabic work done manually in legacy (urdu_map.csv, fltr_ur_hi, tashkil, UrduC_sample.uhin).
 48. Brahmi flatten hub + notebook UI + perso-arabic lossy path; reorganize repo.
 111. Pascal, Fortran, and QB64 for BASIC next. Graphics: VT100 expanded to VGA / Super VGA on the same CRT.
+112. Complete C++ ISO GREEN, then ECMAScript, TypeScript; add Smalltalk, Java, Haskell (OOP side). All ISO / STANDARD GREEN on named official extracts.
 
 
 

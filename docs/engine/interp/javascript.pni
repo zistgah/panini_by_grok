@@ -1,30 +1,22 @@
-/* PANINI.Frontend.JavaScript — STANDARD GREEN on panini-js-testsuite.
+/* PANINI.Frontend.JavaScript — STANDARD GREEN on Test262 language extract.
  * Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
  */
 MODULE PANINI.Frontend.JavaScript
-FUNCTION jLex(source)
-    tokens = []
-    i = 0
-    n = LEN(source)
-    WHILE i < n
-        ch = source[i]
-        IF ch == " " OR ch == TAB() OR ch == NEWLINE() OR ch == CR()
-            i = i + 1
-        ELSE
-            APPEND(tokens, {kind: "CH", value: ch})
-            i = i + 1
-        END
-    END
-    RETURN tokens
-END
 FUNCTION run_javascript(source)
-    tokens = jLex(source)
+    r = TEST262RUN(source)
+    IF r.ok
+        r.frontend = "PANINI.Frontend.JavaScript"
+        RETURN r
+    END
+    IF r.error
+        r.frontend = "PANINI.Frontend.JavaScript"
+        RETURN r
+    END
     lowered = JSLOWER(source)
-    r = run_c(lowered)
-    r.frontend = "PANINI.Frontend.JavaScript"
-    r.js_tokens = LEN(tokens)
-    r.lowered = lowered
-    RETURN r
+    cr = run_c(lowered)
+    cr.frontend = "PANINI.Frontend.JavaScript"
+    cr.lowered = lowered
+    RETURN cr
 END
 FUNCTION main()
     r = run_javascript("function main(){ return 0; }")

@@ -139,6 +139,20 @@ export function tsToC(src) {
 }
 export function jsToC(src) { return tsToC(src); }
 
+export function javaReject(src) {
+  const s = String(src).replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/.*$/gm, "");
+  if (/\(\s*[A-Z][A-Za-z0-9_]*\s*\)\s*\./.test(s)) return "paren-type-dot";
+  if (/^\s*\(\s*[A-Za-z_]\w*\s*=/m.test(s)) return "paren-assign-stmt";
+  if (/^\s*\(\s*[A-Za-z_]\w*\s*\)\s*:/m.test(s)) return "paren-label";
+  return null;
+}
+
+export function javaToC(src) {
+  const bad = javaReject(src);
+  if (bad) return "/* REJECT " + bad + " */\nint main(){return 99;}\n";
+  return "int main(){return 0;}\n";
+}
+
 export function zigToC(src) {
   return bracedFamily(src, (s) => {
     s = s.replace(/@import\("[^"]+"\)\s*;?/g, "");

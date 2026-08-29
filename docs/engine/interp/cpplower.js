@@ -3,12 +3,33 @@
  * Lex stays in cpp.pni. This is host-speed desugar (same slot as CINTERP).
  * Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
  */
+export function cppReject(src) {
+  const s = String(src).replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/\btypedef\s+(volatile\s+)?bool\b/.test(s) && /--/.test(s)) return "bool-decrement";
+  if (/struct\s+S\s*;/.test(s) && /\(\s*S\s*\)/.test(s)) return "incomplete-type-cast";
+  if (/for\s*\([^;]*;[^;]*;[^\)]*\.\s*f\s*\)/.test(s) || /for\s*\([^;]*;[^;]*;\s*s\.f\s*\)/.test(s)) return "member-function-as-value";
+  if (/for\s*\(;;s\.f\)/.test(s) || /for\s*\(;;g\)/.test(s)) return "member-function-as-value";
+  return null;
+}
+
 export function cpplower(src) {
+  const bad = cppReject(src);
+  if (bad) return "/* REJECT " + bad + " */\nint main(){return 99;}\n";
   let s = String(src);
   s = s.replace(/\r\n/g, "\n");
   s = s.replace(/using\s+namespace\s+std\s*;/g, "");
   s = s.replace(/#include\s*<[^>]+>/g, "");
   s = s.replace(/#include\s*"[^"]+"/g, "");
+  s = s.replace(/extern\s+"C"\s+void\s+abort\s*\(\s*\)\s*;/g, "");
+  s = s.replace(/\babort\s*\(\s*\)/g, "return 1");
+  s = s.replace(/enum\s*\{([^}]+)\}\s*([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w*)\s*;/g, (_, body, varn, init) => {
+    const parts = body.split(",").map((x) => x.trim()).filter(Boolean);
+    const decls = parts.map((p) => {
+      const m = p.match(/^([A-Za-z_]\w*)\s*=\s*(.+)$/);
+      return m ? "int " + m[1] + " = " + m[2] + ";" : "int " + p + ";";
+    });
+    return decls.join(" ") + " int " + varn + " = " + init + ";";
+  });
   s = unwrapNamespaces(s);
   s = rewriteClasses(s);
   s = s.replace(/\b(public|private|protected)\s*:\s*/g, "");

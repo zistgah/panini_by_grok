@@ -26,6 +26,7 @@
   {"id":"fortran","family":"numeric","axes":["@exec(simd_vector)"]},
   {"id":"cobol","family":"record","axes":["@abstract(entity)"]},
   {"id":"basic","family":"beginner","axes":["@imperative"]},
+  {"id":"smalltalk","family":"oop","axes":["@abstract(object)","@eval(message)"]},
   {"id":"logo","family":"turtle","axes":["@imperative"]},
   {"id":"julia","family":"dispatch","axes":["@dispatch(dynamic_multi)"]},
   {"id":"assembly","family":"machine","axes":["@assembly","@mem(manual_raw)"]}

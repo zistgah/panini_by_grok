@@ -16,8 +16,12 @@ import { cinterp } from "./cinterp.js";
 import { cpplower } from "./cpplower.js";
 import { clower } from "./clower.js";
 import { gnuc } from "./gnuc.js";
-import { rustToC, goToC, juliaToC, tsToC, jsToC, zigToC, luaToC, fortranToC, pascalToC, pascalReject, basicToC } from "./stdlower.js";
+import { rustToC, goToC, juliaToC, tsToC, jsToC, zigToC, luaToC, fortranToC, pascalToC, pascalReject, basicToC, javaToC, javaReject } from "./stdlower.js";
 import { qb64Run } from "./qb64.js";
+import { js262Run, ts262Run } from "./js262.js";
+import { stRunFile } from "./steval.js";
+import { haskellRun } from "./hseval.js";
+import { cppReject } from "./cpplower.js";
 import { createVga, vgaPset, vgaLine, vgaScreen, vgaCls } from "./vga.js";
 import { renderTextBitmap } from "./dosfont.js";
 
@@ -65,6 +69,13 @@ export function installBuiltins(env, runtime) {
   def("PASCALREJECT", (x) => vStr(pascalReject(toStr(x)) || ""), 1);
   def("BASICLOWER", (x) => vStr(basicToC(toStr(x))), 1);
   def("QB64RUN", (x) => wrap(qb64Run(toStr(x))), 1);
+  def("TEST262RUN", (x) => wrap(js262Run(toStr(x))), 1);
+  def("TS262RUN", (x) => wrap(ts262Run(toStr(x))), 1);
+  def("JAVAREJECT", (x) => vStr(javaReject(toStr(x)) || ""), 1);
+  def("JAVALOWER", (x) => vStr(javaToC(toStr(x))), 1);
+  def("HASKELLRUN", (x) => wrap(haskellRun(toStr(x))), 1);
+  def("SMALLTALKRUN", (x) => wrap(stRunFile(toStr(x))), 1);
+  def("CPPREJECT", (x) => vStr(cppReject(toStr(x)) || ""), 1);
   {
     let _vga = createVga(13);
     def("VGA", () => wrap({ mode: _vga.mode, w: _vga.w, h: _vga.h, name: _vga.name }));

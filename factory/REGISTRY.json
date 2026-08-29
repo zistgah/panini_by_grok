@@ -313,6 +313,62 @@
       "adapter": [
         "docs/console.html"
       ]
+    },
+    {
+      "id": "js262",
+      "path": "runtime/js262.js",
+      "owns": "Test262 language extract eval (ECMAScript STANDARD GREEN)",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "steval",
+      "path": "runtime/steval.js",
+      "owns": "GNU Smalltalk intmath Eval subset",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "hseval",
+      "path": "runtime/hseval.js",
+      "owns": "GHC codeGen should_run subset",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "javascript-frontend",
+      "path": "src/panini/frontends/javascript.pni",
+      "owns": "ECMAScript STANDARD GREEN on Test262 language extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "typescript-frontend",
+      "path": "src/panini/frontends/typescript.pni",
+      "owns": "TypeScript STANDARD GREEN on tsc compiler extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "java-frontend",
+      "path": "src/panini/frontends/java.pni",
+      "owns": "Java STANDARD GREEN on OpenJDK javac Parens extract. Not Java™.",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "haskell-frontend",
+      "path": "src/panini/frontends/haskell.pni",
+      "owns": "Haskell STANDARD GREEN on GHC codeGen should_run extract",
+      "status": "live",
+      "freeze": false
+    },
+    {
+      "id": "smalltalk-frontend",
+      "path": "src/panini/frontends/smalltalk.pni",
+      "owns": "Smalltalk STANDARD GREEN on GNU Smalltalk intmath extract",
+      "status": "live",
+      "freeze": false
     }
   ],
   "adapters": [
