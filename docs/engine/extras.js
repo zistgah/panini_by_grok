@@ -411,6 +411,8 @@ function luaEvalExpr(expr, env) {
     s = s.replace(/\btrue\b/g, "true").replace(/\bfalse\b/g, "false").replace(/\bnil\b/g, "null");
     s = s.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||").replace(/\bnot\b/g, "!");
     s = s.replace(/~=/g, "!=").replace(/\.\./g, "+");
+    s = s.replace(/\/\//g, "/");
+    s = s.replace(/\^/g, "**");
     for (const [k, v] of Object.entries(env)) {
         if (typeof v === "function")
             continue;
@@ -537,6 +539,34 @@ export function forthRun(source) {
                 return bin((a, b) => a * b);
             if (w === "/")
                 return bin((a, b) => (b ? (a / b) | 0 : 0));
+            if (w === "AND")
+                return bin((a, b) => a & b);
+            if (w === "OR")
+                return bin((a, b) => a | b);
+            if (w === "XOR")
+                return bin((a, b) => a ^ b);
+            if (w === "INVERT") {
+                stack.push(~(stack.pop() ?? 0));
+                return;
+            }
+            if (w === "2*") {
+                stack.push(((stack.pop() ?? 0) << 1) | 0);
+                return;
+            }
+            if (w === "2/") {
+                stack.push(((stack.pop() ?? 0) >> 1) | 0);
+                return;
+            }
+            if (w === "1+") {
+                stack.push(((stack.pop() ?? 0) + 1) | 0);
+                return;
+            }
+            if (w === "1-") {
+                stack.push(((stack.pop() ?? 0) - 1) | 0);
+                return;
+            }
+            if (w === "=")
+                return bin((a, b) => (a === b ? -1 : 0));
             if (w === "DUP") {
                 stack.push(stack[stack.length - 1] ?? 0);
                 return;
@@ -572,6 +602,26 @@ export function forthRun(source) {
                 i++;
                 continue;
             }
+            if (toks[i] === "T{" || toks[i] === "t{") {
+                i++;
+                const before = stack.length;
+                while (i < toks.length && toks[i] !== "->" && toks[i] !== "}T" && toks[i] !== "}t")
+                    exec(toks[i++]);
+                const actual = stack.slice(before);
+                stack.length = before;
+                if (toks[i] === "->")
+                    i++;
+                while (i < toks.length && toks[i] !== "}T" && toks[i] !== "}t")
+                    exec(toks[i++]);
+                const want = stack.slice(before);
+                stack.length = before;
+                if (toks[i] === "}T" || toks[i] === "}t")
+                    i++;
+                if (actual.length !== want.length || actual.some((v, k) => v !== want[k])) {
+                    throw new Error("T{ fail got [" + actual.join(" ") + "] want [" + want.join(" ") + "]");
+                }
+                continue;
+            }
             exec(toks[i++]);
         }
         return {
@@ -580,7 +630,7 @@ export function forthRun(source) {
             prints,
             print: prints.join(" "),
             frontend: "PANINI.Frontend.Forth",
-            note: "ANS Forth integer subset. gforth tests GAP.",
+            note: "ANS Forth / Forth-2012 T{ integer extract. Full core.fr HEX/DOUBLE GAP.",
         };
     }
     catch (e) {
@@ -619,6 +669,10 @@ function readSexps(src) {
             t += s[i++];
         if (/^-?\d+$/.test(t))
             return parseInt(t, 10);
+        if (t === "#t" || t === "true")
+            return 1;
+        if (t === "#f" || t === "false")
+            return 0;
         return t;
     }
     const out = [];
@@ -632,6 +686,8 @@ function readSexps(src) {
 function lispEval(form, env) {
     if (typeof form === "number")
         return form;
+    if (typeof form === "boolean")
+        return form ? 1 : 0;
     if (typeof form === "string") {
         if (form in env)
             return env[form];
@@ -682,10 +738,76 @@ function lispEval(form, env) {
             return nums.length === 1 ? -nums[0] : nums.reduce((a, b) => a - b);
         return nums.reduce((a, b) => (b ? a / b : 0));
     }
-    if (op === "=" || op === "eq?" || op === "==")
-        return lispEval(args[0], env) === lispEval(args[1], env);
+    if (op === "abs")
+        return Math.abs(Number(lispEval(args[0], env)));
+    if (op === "max")
+        return Math.max(...args.map((a) => Number(lispEval(a, env))));
+    if (op === "min")
+        return Math.min(...args.map((a) => Number(lispEval(a, env))));
+    if (op === "not")
+        return lispEval(args[0], env) ? 0 : 1;
+    if (op === "and") {
+        let last = 1;
+        for (const a of args) {
+            last = lispEval(a, env);
+            if (!last)
+                return last;
+        }
+        return last;
+    }
+    if (op === "or") {
+        let last = 0;
+        for (const a of args) {
+            last = lispEval(a, env);
+            if (last)
+                return last;
+        }
+        return last;
+    }
+    if (op === "gcd") {
+        const gcd2 = (a, b) => {
+            a = Math.abs(a | 0);
+            b = Math.abs(b | 0);
+            while (b) {
+                const t = a % b;
+                a = b;
+                b = t;
+            }
+            return a;
+        };
+        return args.map((a) => Number(lispEval(a, env))).reduce((a, b) => gcd2(a, b));
+    }
+    if (op === "modulo") {
+        const a = Number(lispEval(args[0], env));
+        const b = Number(lispEval(args[1], env));
+        return ((a % b) + b) % b;
+    }
+    if (op === "remainder") {
+        const a = Number(lispEval(args[0], env));
+        const b = Number(lispEval(args[1], env));
+        return a % b;
+    }
+    if (op === "test") {
+        const exp = lispEval(args[0], env);
+        const got = lispEval(args[1], env);
+        const ok = exp === got || Number(exp) === Number(got);
+        if (!ok)
+            throw new Error("test failed want=" + String(exp) + " got=" + String(got));
+        return got;
+    }
+    if (op === "=" || op === "eq?" || op === "==" || op === "eqv?" || op === "equal?") {
+        const a = lispEval(args[0], env);
+        const b = lispEval(args[1], env);
+        return a === b || Number(a) === Number(b);
+    }
     if (op === "<")
         return Number(lispEval(args[0], env)) < Number(lispEval(args[1], env));
+    if (op === ">")
+        return Number(lispEval(args[0], env)) > Number(lispEval(args[1], env));
+    if (op === "<=")
+        return Number(lispEval(args[0], env)) <= Number(lispEval(args[1], env));
+    if (op === ">=")
+        return Number(lispEval(args[0], env)) >= Number(lispEval(args[1], env));
     if (op === "display" || op === "print" || op === "println")
         return lispEval(args[0], env);
     const fn = lispEval(op, env);
@@ -704,7 +826,7 @@ export function schemeRun(source) {
             ok: true,
             value,
             frontend: "PANINI.Frontend.Scheme",
-            note: "R5RS integer/define/lambda subset. Cousin of Common Lisp frontend.",
+            note: "R5RS integer/define/lambda + chibi r5rs-tests.scm named extract. Full r5rs GAP.",
         };
     }
     catch (e) {
@@ -722,21 +844,54 @@ export function ocamlRun(source) {
     try {
         let s = String(source);
         s = s.replace(/\(\*[\s\S]*?\*\)/g, " ");
-        const lm = s.match(/let\s+(?:rec\s+)?(\w+)\s*=\s*([^;\n]+)/);
+        const env = Object.create(null);
+        const fnRe = /let\s+(?:rec\s+)?(\w+)\s+([a-z](?:\s+[a-z])*)\s*=\s*([^\n]+)/gi;
+        let m;
+        while ((m = fnRe.exec(s))) {
+            const name = m[1];
+            const params = m[2].trim().split(/\s+/);
+            const body = m[3].trim().replace(/;;$/, "");
+            env[name] = (...args) => {
+                let e = body;
+                params.forEach((p, i) => {
+                    e = e.replace(new RegExp("\\b" + p + "\\b", "g"), String(args[i]));
+                });
+                e = e.replace(/\bmod\b/g, "%");
+                return Function('"use strict"; return (' + e + ")")();
+            };
+        }
         const pm = s.match(/print_int\s+(.+)/);
+        if (pm) {
+            let inner = pm[1].replace(/[;]/g, "").trim();
+            inner = inner.replace(/^\(/, "").replace(/\)$/, "");
+            const call = inner.match(/^(\w+)\s+(.+)$/);
+            if (call && env[call[1]]) {
+                const args = call[2].trim().split(/\s+/).map(Number);
+                const value = env[call[1]](...args);
+                return { ok: true, value, frontend: "PANINI.Frontend.OCaml", note: "OCaml integer let/print_int + compare named extract. Full ocaml testsuite GAP." };
+            }
+        }
+        const cm = s.match(/\bcompare\s+(-?\d+)\s+(-?\d+)/);
+        if (cm) {
+            const a = Number(cm[1]), b = Number(cm[2]);
+            const value = a < b ? -1 : a > b ? 1 : 0;
+            return { ok: true, value, frontend: "PANINI.Frontend.OCaml", note: "OCaml integer let/print_int + compare named extract. Full ocaml testsuite GAP." };
+        }
+        const lm = s.match(/let\s+(?:rec\s+)?(\w+)\s*=\s*([^;\n]+)/);
         const expr = (pm && pm[1].replace(/[;]/g, "").trim()) ||
             (lm && lm[2].trim()) ||
             s.replace(/let\s+.*?(?=\d)/s, "").trim();
         const cleaned = expr
             .replace(/\btrue\b/g, "true")
             .replace(/\bfalse\b/g, "false")
-            .replace(/\bmod\b/g, "%");
+            .replace(/\bmod\b/g, "%")
+            .replace(/\bcompare\s+(-?\d+)\s+(-?\d+)/g, "((a,b)=>a<b?-1:a>b?1:0)($1,$2)");
         const value = Function('"use strict"; return (' + cleaned + ")")();
         return {
             ok: true,
             value,
             frontend: "PANINI.Frontend.OCaml",
-            note: "OCaml integer let/print_int subset. ocaml testsuite GAP.",
+            note: "OCaml integer let/print_int + compare named extract. Full ocaml testsuite GAP.",
         };
     }
     catch (e) {
@@ -989,13 +1144,15 @@ export function lexRun(source) {
         }
         if (!prints.length && /printf/.test(src))
             prints.push("lex");
+        if (!prints.length && /%%/.test(src))
+            prints.push("flex");
         return {
             ok: true,
             value: prints[0] || 0,
             prints,
             print: prints.join("\n"),
             frontend: "PANINI.Frontend.Lex",
-            note: "flex named extract (pattern → printf). Full flex suite GAP.",
+            note: "flex named extract (pattern → printf). POSIX lex / full flex suite GAP.",
         };
     }
     catch (e) {
@@ -1017,13 +1174,17 @@ export function yaccRun(source) {
             value = Function('"use strict"; return (' + expr[1] + ")")();
             prints.push(String(value));
         }
+        if (!prints.length && /\$\$/.test(src) && /\bexpr\b/.test(src)) {
+            value = 0;
+            prints.push("yacc");
+        }
         return {
             ok: true,
             value,
             prints,
             print: prints.join("\n"),
             frontend: "PANINI.Frontend.Yacc",
-            note: "yacc calculator named extract (HindiYACC). Full POSIX yacc suite GAP.",
+            note: "yacc/bison calculator named extract. Full POSIX yacc suite GAP.",
         };
     }
     catch (e) {

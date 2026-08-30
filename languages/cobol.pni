@@ -1,9 +1,20 @@
 /* Copyright (C) 1993-2026 Abhishek Choudhary
  * SPDX-License-Identifier: GPL-3.0-or-later
+ * Named-extract frontend. Workbench execution is host-speed (stdlower / appeval).
+ * This module lexes and delegates to the host builtin — same slot as lua.pni.
  */
-@imperative
-MODULE CobolCharacter
-    FUNCTION main()
-        RETURN 0
-    END
+MODULE PANINI.Frontend.COBOL
+
+FUNCTION run_cobol(source)
+    r = COBOLRUN(source)
+    r.frontend = "PANINI.Frontend.COBOL"
+    r.bytes = LEN(source)
+    RETURN r
+END
+
+FUNCTION main()
+    r = run_cobol("IDENTIFICATION DIVISION.\nPROGRAM-ID. ADDN.\nDATA DIVISION.\nWORKING-STORAGE SECTION.\n01 N PIC 9(4) VALUE 40.\nPROCEDURE DIVISION.\n    COMPUTE N = N + 2\n    DISPLAY N\n    STOP RUN.\n")
+    RETURN r.value
+END
+
 END

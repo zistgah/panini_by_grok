@@ -1,6 +1,20 @@
-@imperative
-MODULE PerlCharacter
-    FUNCTION main()
-        RETURN 0
-    END
+/* Copyright (C) 1993-2026 Abhishek Choudhary
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * Named-extract frontend. Workbench execution is host-speed (stdlower / appeval).
+ * This module lexes and delegates to the host builtin — same slot as lua.pni.
+ */
+MODULE PANINI.Frontend.Perl
+
+FUNCTION run_perl(source)
+    r = PERLRUN(source)
+    r.frontend = "PANINI.Frontend.Perl"
+    r.bytes = LEN(source)
+    RETURN r
+END
+
+FUNCTION main()
+    r = run_perl("sub add {\n  my ($a, $b) = @_;\n  return $a + $b;\n}\nprint add(40, 2);\n")
+    RETURN r.value
+END
+
 END
