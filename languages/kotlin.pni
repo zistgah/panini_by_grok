@@ -1,23 +1,6 @@
-/* Copyright (C) 1993-2026 Abhishek Choudhary
- * SPDX-License-Identifier: GPL-3.0-or-later
- * Named-extract frontend. Workbench execution is host-speed (stdlower / appeval).
- * This module lexes and delegates to the host builtin — same slot as lua.pni.
- */
-MODULE PANINI.Frontend.Kotlin
-
-FUNCTION run_kotlin(source)
-    n = LEN(source)
-    lowered = KOTLINLOWER(source)
-    r = run_c(lowered)
-    r.frontend = "PANINI.Frontend.Kotlin"
-    r.lowered = lowered
-    r.bytes = n
-    RETURN r
-END
-
-FUNCTION main()
-    r = run_kotlin("fun add(a: Int, b: Int): Int {\n  return a + b\n}\nfun main(): Int {\n  val n = add(40, 2)\n  println(n)\n  return n\n}\n")
-    RETURN r.value
-END
-
+@imperative
+MODULE KotlinCharacter
+    FUNCTION main()
+        RETURN 0
+    END
 END

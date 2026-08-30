@@ -12,8 +12,7 @@
       "suite": "WG14 N1570 + c-testsuite single-exec 104",
       "sample": "int main(void) {\n    return 40 + 2;\n}\n",
       "blurb": "ISO C11 subset. Frozen lexer in PANINI. Lowering and heap eval are host-speed (same slot as CINTERP). This is the kernel compiler path — the host C the rest lower into.",
-      "monaco": "c",
-      "iso_green": true
+      "monaco": "c"
     },
     {
       "id": "cppp",
@@ -23,8 +22,7 @@
       "suite": "N1570 translation phases 1–4 via CPP()",
       "sample": "#define ANSWER 42\nint main(void) { return ANSWER; }\n",
       "blurb": "The preprocessor the kernel and gurucc already use. #define (object and function-like), #ifdef / #ifndef / #if / #else / #endif, #undef, stringizing, ##. Kernel .c files are cpp before cc.",
-      "monaco": "c",
-      "iso_green": false
+      "monaco": "c"
     },
     {
       "id": "cpp",
@@ -34,8 +32,7 @@
       "suite": "WG21 N4296 + g++.dg/expr named extract 5",
       "sample": "int main() {\n    bool ok = true;\n    return ok ? 0 : 1;\n}\n",
       "blurb": "cpp.pni is frozen. Work is in cpplower.js. Named extract: enum1.C run + four dg-error files. Not libstdc++.",
-      "monaco": "cpp",
-      "iso_green": true
+      "monaco": "cpp"
     },
     {
       "id": "python",
@@ -45,8 +42,7 @@
       "suite": "CPython 3.12 Lib/test language extract 68",
       "sample": "def main():\n    return 40 + 2\n",
       "blurb": "Frozen PANINI frontend. STANDARD GREEN on self-contained CPython asserts. The workbench runs a host-speed def-main subset; Node uses python.pni.",
-      "monaco": "python",
-      "iso_green": false
+      "monaco": "python"
     },
     {
       "id": "javascript",
@@ -56,8 +52,7 @@
       "suite": "ECMA-262 + Test262 language extract 13",
       "sample": "var x = 1 + 1;\nif (x !== 2) throw new Test262Error('x');\n",
       "blurb": "Test262 if/types/addition/unary/logical-not/subtraction. new Object and member assign are in the extract.",
-      "monaco": "javascript",
-      "iso_green": true
+      "monaco": "javascript"
     },
     {
       "id": "typescript",
@@ -67,8 +62,7 @@
       "suite": "tsc v5.4.5 compiler unaryPlus + 2dArrays",
       "sample": "var a = +1;\nenum E { some, thing }\nvar c = +E.some;\n",
       "blurb": "Types are stripped. unaryPlus executes; 2dArrays is compile-accept.",
-      "monaco": "typescript",
-      "iso_green": false
+      "monaco": "typescript"
     },
     {
       "id": "pascal",
@@ -78,8 +72,7 @@
       "suite": "ISO 7185 via Pascal-P5 PRT reject + hello.pas",
       "sample": "program hello;\nbegin\n  writeln('hello');\nend.\n",
       "blurb": "Reject the official iso7185prt extract; accept hello.pas. Full PAT is GAP.",
-      "monaco": "pascal",
-      "iso_green": true
+      "monaco": "pascal"
     },
     {
       "id": "basic",
@@ -89,8 +82,7 @@
       "suite": "QB64pe tests/compile_tests/const/expression.bas 38",
       "sample": "CONST a = 1 + 2 * 3\nPRINT a\n",
       "blurb": "Not ECMA-116. Not VB.NET. Named QB64 Phoenix expression extract.",
-      "monaco": "vb",
-      "iso_green": false
+      "monaco": "vb"
     },
     {
       "id": "java",
@@ -100,8 +92,7 @@
       "suite": "OpenJDK javac Parens1/2/3 fail + LambdaConv01 accept",
       "sample": "class T { void f() { int i = 1; } }\n",
       "blurb": "Not Java™ branding. Compile-fail Parens + compile-accept LambdaConv01. @run main execute is GAP.",
-      "monaco": "java",
-      "iso_green": false
+      "monaco": "java"
     },
     {
       "id": "smalltalk",
@@ -111,8 +102,7 @@
       "suite": "GNU Smalltalk tests/intmath.st Eval before LargeIntegers 31",
       "sample": "Eval [ 3 + 4 ]\nEval [ 12 // 5 ]\n",
       "blurb": "// floor-div, \\\\\\\\ remainder, 2r/8r/16r bases. LargeIntegers / factorial GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "monaco": "plaintext"
     },
     {
       "id": "haskell",
@@ -122,8 +112,7 @@
       "suite": "GHC codeGen should_run cgrun001/002/005",
       "sample": "main = print (1 + 2 + 32767 - 4)\n",
       "blurb": "where-bindings flattened. Type signatures ignored.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "monaco": "plaintext"
     },
     {
       "id": "lisp",
@@ -133,8 +122,7 @@
       "suite": "ansi-test self-contained deftest 19",
       "sample": "(+ 40 2)\n",
       "blurb": "ANSI INCITS 226 named extract. languages/lisp.pni is museum.",
-      "monaco": "plaintext",
-      "iso_green": true
+      "monaco": "plaintext"
     },
     {
       "id": "prolog",
@@ -144,74 +132,67 @@
       "suite": "Ciao iso_tests ISO 8.6/8.7 arith 23",
       "sample": "X is 1+2.\n",
       "blurb": "ISO/IEC 13211-1 arithmetic extract. bagof/setof/IO GAP.",
-      "monaco": "plaintext",
-      "iso_green": true
+      "monaco": "plaintext"
     },
     {
       "id": "fortran",
       "title": "Fortran",
-      "standard_green": true,
-      "core": false,
-      "suite": "ISO/IEC 1539 + gfortran.fortran-torture emptyif + arithmeticif (2)",
+      "standard_green": false,
+      "core": true,
+      "suite": "gfortran.dg execute (retrieved, not skip=0)",
       "sample": "PROGRAM P\n  INTEGER :: N\n  N = 0\n  STOP 0\nEND PROGRAM\n",
-      "blurb": "STANDARD GREEN / ISO GREEN on named gfortran.fortran-torture integer execute (emptyif, arithmeticif). Formatted WRITE/REAL is GAP.",
-      "monaco": "plaintext",
-      "iso_green": true
+      "blurb": "Spec N2146 retrieved. Official execute is a named GAP. Homemade 20-case is CORE GREEN only.",
+      "monaco": "plaintext"
     },
     {
       "id": "go",
       "title": "Go",
-      "standard_green": true,
-      "core": false,
-      "suite": "Go spec + gc test/helloworld.go { // run }",
+      "standard_green": false,
+      "core": true,
+      "suite": "CORE 20-case; all.bash not skip=0",
       "sample": "package main\nfunc main() { return 0 }\n",
-      "blurb": "STANDARD GREEN on official test/helloworld.go { // run }. all.bash GAP.",
-      "monaco": "go",
-      "iso_green": false
+      "blurb": "Frozen frontend. CORE GREEN only until all.bash.",
+      "monaco": "go"
     },
     {
       "id": "rust",
       "title": "Rust",
-      "standard_green": true,
-      "core": false,
-      "suite": "Rust Reference + rustc tests/ui/hello.rs run-pass",
+      "standard_green": false,
+      "core": true,
+      "suite": "CORE 20-case; rustc ui not skip=0",
       "sample": "fn main() -> i32 { 0 }\n",
-      "blurb": "STANDARD GREEN on rustc ui hello.rs run-pass. Full rustc ui GAP.",
-      "monaco": "rust",
-      "iso_green": false
+      "blurb": "Frozen frontend. CORE GREEN only.",
+      "monaco": "rust"
     },
     {
       "id": "julia",
       "title": "Julia",
-      "standard_green": true,
-      "core": false,
-      "suite": "Julia test/intfuncs.jl gcd integer extract (9)",
+      "standard_green": false,
+      "core": true,
+      "suite": "CORE 20-case",
       "sample": "function main()\n    return 0\nend\n",
-      "blurb": "STANDARD GREEN on intfuncs.jl gcd extract. Full test/ GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "blurb": "Frozen frontend. CORE GREEN only.",
+      "monaco": "plaintext"
     },
     {
       "id": "lua",
       "title": "Lua",
       "standard_green": true,
       "core": false,
-      "suite": "lua.org 5.4.7 testes/constructs.lua integer assert extract (9)",
+      "suite": "Lua 5.4 named extract (assert/print/function)",
       "sample": "function add(a, b)\n  return a + b\nend\nassert(1 + 1 == 2)\nprint(add(40, 2))\n",
-      "blurb": "STANDARD GREEN on lua.org constructs.lua integer-assert extract (9). Full testes/ GAP.",
-      "monaco": "lua",
-      "iso_green": false
+      "blurb": "Low-hanging fruit. Official lua.org 5.4.7 tests are in the tree. This alpha runs a named extract: assert, print, local, function. Full suite remains GAP.",
+      "monaco": "lua"
     },
     {
       "id": "zig",
       "title": "Zig",
-      "standard_green": true,
-      "core": false,
-      "suite": "zig test/standalone/hello_world/hello.zig run",
+      "standard_green": false,
+      "core": true,
+      "suite": "CORE 20-case",
       "sample": "pub fn main() i32 { return 0; }\n",
-      "blurb": "STANDARD GREEN on official hello.zig writeAll run. Full behavior/ GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "blurb": "CORE GREEN. zig test suite not retrieved.",
+      "monaco": "plaintext"
     },
     {
       "id": "make",
@@ -221,8 +202,7 @@
       "suite": "GNU make manual Setting Variables / echo / deps",
       "sample": "FOO = bar\nall: a\n\techo $(FOO)\na:\n\techo a\n",
       "blurb": "POSIX/GNU make tokens the kernel build uses: VAR=, ?=, +=, target: deps, tab recipes, $(VAR), $@, $<, $^, ifeq/ifdef, include, obj-y. Not GNU make itself. Not full kbuild.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "monaco": "plaintext"
     },
     {
       "id": "asm",
@@ -232,8 +212,7 @@
       "suite": "gas integer mov/add/ret + comment.s class",
       "sample": ".text\n.globl main\nmain:\n    movl $42, %eax\n    ret\n",
       "blurb": "AT&T integer subset for kernel .s files. movl/addl/xorl/cmpl/jcc/push/pop/call/ret, directives .globl .text .type .size. Tokens first. Not ld, not ELF.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "monaco": "plaintext"
     },
     {
       "id": "kconfig",
@@ -243,8 +222,7 @@
       "suite": "Linux Kconfig language named extract (config/bool/default)",
       "sample": "config PANINI\n\tbool \"Panini kernel token\"\n\tdefault y\n\tdepends on EXPERT\n",
       "blurb": "Kconfig is how the kernel is configured. Tokens: config, menuconfig, bool, tristate, string, int, hex, default, depends on, select, help, menu, source. Eval applies default y/n.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "monaco": "plaintext"
     },
     {
       "id": "ld",
@@ -254,85 +232,77 @@
       "suite": "GNU ld script tokens (ENTRY / SECTIONS)",
       "sample": "ENTRY(main)\nSECTIONS {\n  .text : { *(.text) }\n  .data : { *(.data) }\n  .bss  : { *(.bss) }\n}\n",
       "blurb": "Linker scripts the kernel uses (vmlinux.lds.S class). Tokens: ENTRY, SECTIONS, MEMORY, KEEP, ALIGN, PROVIDE, OUTPUT_FORMAT. Not a linker — tokens + structure, which is what the architect asked for.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "monaco": "plaintext"
     },
     {
       "id": "scheme",
       "title": "Scheme",
       "standard_green": true,
       "core": false,
-      "suite": "IEEE 1178 / R5RS + chibi r5rs-tests.scm integer (test) extract (26)",
+      "suite": "R5RS integer/define/lambda named extract",
       "sample": "(define (add a b) (+ a b))\n(add 40 2)\n",
-      "blurb": "STANDARD GREEN / ISO GREEN (IEEE 1178) on chibi r5rs-tests.scm integer extract. Full R5RS GAP.",
-      "monaco": "plaintext",
-      "iso_green": true
+      "blurb": "Low-hanging fruit: Lisp cousin. define, lambda, if, arithmetic. R5RS/R7RS full suite GAP.",
+      "monaco": "plaintext"
     },
     {
       "id": "forth",
       "title": "Forth",
       "standard_green": true,
       "core": false,
-      "suite": "ANSI X3.215 / Forth-2012 Johns Hopkins core.fr T{ integer (42)",
+      "suite": "ANS Forth integer named extract",
       "sample": ": ADD + ;\n40 2 ADD .\n",
-      "blurb": "STANDARD GREEN / ISO GREEN (ANSI Forth) on core.fr T{ integer extract. HEX/DOUBLE GAP.",
-      "monaco": "plaintext",
-      "iso_green": true
+      "blurb": "Low-hanging fruit. Stack machine: +, DUP, SWAP, DROP, ., colon definitions. gforth tests GAP.",
+      "monaco": "plaintext"
     },
     {
       "id": "ocaml",
       "title": "OCaml",
       "standard_green": true,
       "core": false,
-      "suite": "OCaml testsuite equality.ml integer compare extract (3)",
+      "suite": "OCaml integer let/print_int named extract",
       "sample": "let add a b = a + b\nlet () = print_int (add 40 2)\n",
-      "blurb": "STANDARD GREEN on equality.ml integer compare. Strings/floats/lists GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "blurb": "Low-hanging fruit. let-bindings and integer expressions. ocaml testsuite GAP.",
+      "monaco": "plaintext"
     },
     {
       "id": "clojure",
       "title": "Clojure",
-      "standard_green": true,
-      "core": false,
-      "suite": "Clojure numbers.clj (+ N M) extract (4)",
+      "standard_green": false,
+      "core": true,
+      "suite": "Clojure-shaped list eval (Scheme cousin)",
       "sample": "(defn add [a b] (+ a b))\n(add 40 2)\n",
-      "blurb": "STANDARD GREEN on numbers.clj integer + extract. Full test_clojure GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "blurb": "Lisp cousin. Official Clojure test suite is not skip=0; CORE on the Scheme evaluator.",
+      "monaco": "plaintext"
     },
     {
       "id": "logo",
       "title": "Logo (Robot)",
-      "standard_green": true,
-      "core": false,
-      "suite": "UCBLogo UnitTests.lg InstallSuite/RunTests compile-accept",
+      "standard_green": false,
+      "core": true,
+      "suite": "UCBLogo turtle + ROBOT.C cardinals (named extract)",
       "sample": "REPEAT 4 [ FORWARD 80 RIGHT 90 ]\n",
-      "blurb": "STANDARD GREEN on UCBLogo UnitTests.lg compile-accept + ROBOT.C cardinals. Full UCBLogo tests GAP. No ISO Logo.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "blurb": "Shaili रोबोट. Named Robot extract, not a retrieved lex file. FORWARD/RIGHT/REPEAT and उत्तर/पूर्व/दक्षिण/पश्चिम.",
+      "monaco": "plaintext"
     },
     {
       "id": "lex",
       "title": "lex",
-      "standard_green": true,
-      "core": false,
-      "suite": "POSIX lex / flex examples/fastwc/wc1.l compile-accept",
+      "standard_green": false,
+      "core": true,
+      "suite": "flex named extract (HindiLEX)",
       "sample": "%%\n\"a\"a+\"a\"\t{printf(\"O\");}\nab+a\t{printf(\"ab*a\");}\n%%\n",
-      "blurb": "STANDARD GREEN / ISO GREEN (POSIX) on flex wc1.l. Full flex tests/ GAP.",
-      "monaco": "plaintext",
-      "iso_green": true
+      "blurb": "Shaili शब्द. Pattern → printf. Full flex suite GAP.",
+      "monaco": "plaintext"
     },
     {
       "id": "yacc",
       "title": "yacc",
-      "standard_green": true,
-      "core": false,
-      "suite": "POSIX yacc / bison examples/c/calc/calc.y compile-accept",
+      "standard_green": false,
+      "core": true,
+      "suite": "yacc calculator named extract (HindiYACC)",
       "sample": "expr : expr '+' expr { $$ = $1 + $3; }\n     | 1+2*3\n     ;\n",
-      "blurb": "STANDARD GREEN / ISO GREEN (POSIX) on bison calc.y. Full bison tests/ GAP.",
-      "monaco": "plaintext",
-      "iso_green": true
+      "blurb": "Shaili व्याकरण. Calculator grammar. Full POSIX yacc suite GAP.",
+      "monaco": "plaintext"
     },
     {
       "id": "panini",
@@ -342,162 +312,7 @@
       "suite": "Stage-0 integer FUNCTION/IF/RETURN/PRINT",
       "sample": "FUNCTION main()\n    PRINT 40 + 2\n    RETURN 42\nEND\n",
       "blurb": "The language itself. Browser runs the integer core. Node self-host is a fixed point on 36 functions. Blocks close with END.",
-      "monaco": "plaintext",
-      "iso_green": false
-    },
-    {
-      "id": "csharp",
-      "title": "C#",
-      "standard_green": true,
-      "core": false,
-      "suite": "ECMA-334 / ISO/IEC 23270 + Mono mcs/tests/test-1.cs",
-      "sample": "using System;\nclass Program {\n  static int Main() {\n    int n = 40 + 2;\n    Console.WriteLine(n);\n    return n;\n  }\n}\n",
-      "blurb": "STANDARD GREEN / ISO GREEN on named Mono mcs/tests/test-1.cs. Not roslyn. Full ECMA-334 GAP.",
-      "monaco": "csharp",
-      "iso_green": true
-    },
-    {
-      "id": "kotlin",
-      "title": "Kotlin",
-      "standard_green": true,
-      "core": false,
-      "suite": "Kotlin NumbersTest.kt Int.MIN/MAX + one (4)",
-      "sample": "fun add(a: Int, b: Int): Int {\n  return a + b\n}\nfun main(): Int {\n  val n = add(40, 2)\n  println(n)\n  return n\n}\n",
-      "blurb": "STANDARD GREEN on NumbersTest.kt Int min/max extract. Long/overflow GAP. Not kotlinc.",
-      "monaco": "plaintext",
-      "iso_green": false
-    },
-    {
-      "id": "swift",
-      "title": "Swift",
-      "standard_green": true,
-      "core": false,
-      "suite": "Swift IntegerDiagnostics expected-error + simple.swift run (2)",
-      "sample": "func add(a: Int, b: Int) -> Int {\n  return a + b\n}\nfunc main() -> Int {\n  let n = add(40, 2)\n  print(n)\n  return n\n}\n",
-      "blurb": "STANDARD GREEN on IntegerDiagnostics reject + simple.swift run. Not Apple Swift™. Full stdlib GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
-    },
-    {
-      "id": "scala",
-      "title": "Scala",
-      "standard_green": true,
-      "core": false,
-      "suite": "Scala t0005.scala def main compile-accept",
-      "sample": "object P {\n  def add(a: Int, b: Int): Int = a + b\n  def main(args: Array[String]): Int = {\n    val n = add(40, 2)\n    println(n)\n    return n\n  }\n}\n",
-      "blurb": "STANDARD GREEN on t0005.scala compile-accept. unapply/match execute GAP. Full scalac GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
-    },
-    {
-      "id": "dart",
-      "title": "Dart",
-      "standard_green": true,
-      "core": false,
-      "suite": "Dart operator_test.dart i1/i2 Expect.equals integer extract",
-      "sample": "int add(int a, int b) {\n  return a + b;\n}\nint main() {\n  var n = add(40, 2);\n  print(n);\n  return n;\n}\n",
-      "blurb": "STANDARD GREEN on operator_test.dart i1/i2 integer extract. Operator-overload GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
-    },
-    {
-      "id": "ada",
-      "title": "Ada",
-      "standard_green": true,
-      "core": false,
-      "suite": "ISO/IEC 8652 ACATS C45411A unary +/− INTEGER (1)",
-      "sample": "function Main return Integer is\n  N : Integer := 40 + 2;\nbegin\n  return N;\nend Main;\n",
-      "blurb": "STANDARD GREEN / ISO GREEN on ACATS C45411A unary +/− INTEGER. Full ACATS GAP. Not GNAT.",
-      "monaco": "plaintext",
-      "iso_green": true
-    },
-    {
-      "id": "ruby",
-      "title": "Ruby",
-      "standard_green": true,
-      "core": false,
-      "suite": "ISO/IEC 30170 + MRI test_literal.rb + ruby/spec Integer#+ (3)",
-      "sample": "def add(a, b)\n  a + b\nend\nputs add(40, 2)\n",
-      "blurb": "STANDARD GREEN / ISO GREEN on MRI/RubySpec integer extract. Full bootstraptest GAP.",
-      "monaco": "ruby",
-      "iso_green": true
-    },
-    {
-      "id": "perl",
-      "title": "Perl",
-      "standard_green": true,
-      "core": false,
-      "suite": "Perl 5 t/base/if.t TAP eq/ne (2)",
-      "sample": "sub add {\n  my ($a, $b) = @_;\n  return $a + $b;\n}\nprint add(40, 2);\n",
-      "blurb": "STANDARD GREEN on official t/base/if.t. t/op GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
-    },
-    {
-      "id": "php",
-      "title": "PHP",
-      "standard_green": true,
-      "core": false,
-      "suite": "php-src tests/lang/{001,002,004,010}.phpt FILE vs EXPECT",
-      "sample": "<?php\nfunction add($a, $b) {\n  return $a + $b;\n}\necho add(40, 2);\n",
-      "blurb": "STANDARD GREEN on php-src tests/lang named extract (4). Zend arrays/objects GAP.",
-      "monaco": "php",
-      "iso_green": false
-    },
-    {
-      "id": "r",
-      "title": "R",
-      "standard_green": true,
-      "core": false,
-      "suite": "GNU R simple-true.R 1:12 cumsum + typeof integer L (5)",
-      "sample": "add <- function(a, b) { a + b }\nprint(add(40, 2))\n",
-      "blurb": "STANDARD GREEN on GNU R simple-true.R integer extract. lowess/float GAP. Not MATLAB.",
-      "monaco": "r",
-      "iso_green": false
-    },
-    {
-      "id": "cobol",
-      "title": "COBOL",
-      "standard_green": true,
-      "core": false,
-      "suite": "ISO/IEC 1989 + GnuCOBOL run_fundamental.at DISPLAY literals (1)",
-      "sample": "IDENTIFICATION DIVISION.\nPROGRAM-ID. ADDN.\nDATA DIVISION.\nWORKING-STORAGE SECTION.\n01 N PIC 9(4) VALUE 40.\nPROCEDURE DIVISION.\n    COMPUTE N = N + 2\n    DISPLAY N\n    STOP RUN.\n",
-      "blurb": "STANDARD GREEN / ISO GREEN on GnuCOBOL DISPLAY-literals extract. NIST COBOL85 full GAP.",
-      "monaco": "plaintext",
-      "iso_green": true
-    },
-    {
-      "id": "sql",
-      "title": "SQL",
-      "standard_green": true,
-      "core": false,
-      "suite": "ISO/IEC 9075 + PostgreSQL int4.sql integer SELECT AS (7)",
-      "sample": "CREATE TABLE t (n INT);\nINSERT INTO t VALUES (40);\nSELECT n + 2 FROM t;\n",
-      "blurb": "STANDARD GREEN / ISO GREEN on postgres int4.sql integer SELECT extract. Tables/overflow GAP.",
-      "monaco": "sql",
-      "iso_green": true
-    },
-    {
-      "id": "octave",
-      "title": "GNU Octave",
-      "standard_green": true,
-      "core": false,
-      "suite": "GNU Octave factorial.m %!assert (factorial (0), 1)",
-      "sample": "function r = add(a, b)\n  r = a + b;\nend\nfunction r = main()\n  n = add(40, 2);\n  disp(n);\n  r = n;\nend\n",
-      "blurb": "STANDARD GREEN on GNU Octave factorial.m integer %!assert. Not MATLAB. Full fntests GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
-    },
-    {
-      "id": "sysml",
-      "title": "SysML",
-      "standard_green": true,
-      "core": false,
-      "suite": "OMG SysML v2 CommentTest.sysml package/part compile-accept",
-      "sample": "package Demo {\n  part def Motor {\n    attribute power : Integer = 40;\n  }\n  constraint def Add { 40 + 2 }\n}\n",
-      "blurb": "STANDARD GREEN on SysML v2 CommentTest. ISO 19514 is SysML 1.x. Model checker GAP.",
-      "monaco": "plaintext",
-      "iso_green": false
+      "monaco": "plaintext"
     }
   ]
 }

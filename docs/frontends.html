@@ -13,11 +13,11 @@
 <main class="site-main">
   <p class="cite">Driven by <code>data/frontends.json</code>. The workbench chrome is frozen. Add a frontend there.</p>
   <h1>Frontends</h1>
-  <p class="lead">Every frontend on the workbench. <strong>ISO GREEN</strong> is STANDARD GREEN whose issuing body is ISO/IEC, ANSI/INCITS, IEEE, ECMA (ISO-adopted), or NIST. STANDARD GREEN is issuing-body spec ∧ that body's executable suite skip=0. Homemade suites are CORE GREEN only. Named GAPs stay named.</p>
-  <p><a class="btn" href="workbench.html">Workbench</a> <a class="btn" href="languages.html">Language notes</a> <a class="btn" href="standards/">Language stacks</a> <a class="btn" href="STANDARD_GREEN.md">STANDARD GREEN</a></p>
-
+  <p class="lead">Every frontend on the workbench. STANDARD GREEN is issuing-body spec ∧ that body's executable suite skip=0. Homemade suites are CORE GREEN only. Named GAPs stay named.</p>
+  <p><a class="btn" href="workbench.html">Workbench</a> <a class="btn" href="languages.html">Language notes</a> <a class="btn" href="standards/">Language stacks</a></p>
+  
 <section id="c">
-  <h2>C <span class='ok'>ISO GREEN</span></h2>
+  <h2>C <span class='ok'>STANDARD GREEN</span></h2>
   <p>ISO C11 subset. Frozen lexer in PANINI. Lowering and heap eval are host-speed (same slot as CINTERP). This is the kernel compiler path — the host C the rest lower into.</p>
   <p class="fine">Suite: WG14 N1570 + c-testsuite single-exec 104. Workbench highlighting: Monaco language <code>c</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=c">Open on the workbench</a></p>
@@ -38,7 +38,7 @@ int main(void) { return ANSWER; }
 </section>
 
 <section id="cpp">
-  <h2>C++ <span class='ok'>ISO GREEN</span></h2>
+  <h2>C++ <span class='ok'>STANDARD GREEN</span></h2>
   <p>cpp.pni is frozen. Work is in cpplower.js. Named extract: enum1.C run + four dg-error files. Not libstdc++.</p>
   <p class="fine">Suite: WG21 N4296 + g++.dg/expr named extract 5. Workbench highlighting: Monaco language <code>cpp</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=cpp">Open on the workbench</a></p>
@@ -60,7 +60,7 @@ int main(void) { return ANSWER; }
 </section>
 
 <section id="javascript">
-  <h2>ECMAScript <span class='ok'>ISO GREEN</span></h2>
+  <h2>ECMAScript <span class='ok'>STANDARD GREEN</span></h2>
   <p>Test262 if/types/addition/unary/logical-not/subtraction. new Object and member assign are in the extract.</p>
   <p class="fine">Suite: ECMA-262 + Test262 language extract 13. Workbench highlighting: Monaco language <code>javascript</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=javascript">Open on the workbench</a></p>
@@ -81,7 +81,7 @@ var c = +E.some;
 </section>
 
 <section id="pascal">
-  <h2>Pascal <span class='ok'>ISO GREEN</span></h2>
+  <h2>Pascal <span class='ok'>STANDARD GREEN</span></h2>
   <p>Reject the official iso7185prt extract; accept hello.pas. Full PAT is GAP.</p>
   <p class="fine">Suite: ISO 7185 via Pascal-P5 PRT reject + hello.pas. Workbench highlighting: Monaco language <code>pascal</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=pascal">Open on the workbench</a></p>
@@ -131,7 +131,7 @@ Eval [ 12 // 5 ]
 </section>
 
 <section id="lisp">
-  <h2>Common Lisp <span class='ok'>ISO GREEN</span></h2>
+  <h2>Common Lisp <span class='ok'>STANDARD GREEN</span></h2>
   <p>ANSI INCITS 226 named extract. languages/lisp.pni is museum.</p>
   <p class="fine">Suite: ansi-test self-contained deftest 19. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=lisp">Open on the workbench</a></p>
@@ -140,7 +140,7 @@ Eval [ 12 // 5 ]
 </section>
 
 <section id="prolog">
-  <h2>Prolog <span class='ok'>ISO GREEN</span></h2>
+  <h2>Prolog <span class='ok'>STANDARD GREEN</span></h2>
   <p>ISO/IEC 13211-1 arithmetic extract. bagof/setof/IO GAP.</p>
   <p class="fine">Suite: Ciao iso_tests ISO 8.6/8.7 arith 23. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=prolog">Open on the workbench</a></p>
@@ -149,9 +149,9 @@ Eval [ 12 // 5 ]
 </section>
 
 <section id="fortran">
-  <h2>Fortran <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN on named gfortran.fortran-torture integer execute (emptyif, arithmeticif). Formatted WRITE/REAL is GAP.</p>
-  <p class="fine">Suite: ISO/IEC 1539 + gfortran.fortran-torture emptyif + arithmeticif (2). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Fortran <span class='cite'>CORE GREEN</span></h2>
+  <p>Spec N2146 retrieved. Official execute is a named GAP. Homemade 20-case is CORE GREEN only.</p>
+  <p class="fine">Suite: gfortran.dg execute (retrieved, not skip=0). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=fortran">Open on the workbench</a></p>
   <pre translate="no">PROGRAM P
   INTEGER :: N
@@ -162,9 +162,9 @@ END PROGRAM
 </section>
 
 <section id="go">
-  <h2>Go <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on official test/helloworld.go { // run }. all.bash GAP.</p>
-  <p class="fine">Suite: Go spec + gc test/helloworld.go { // run }. Workbench highlighting: Monaco language <code>go</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Go <span class='cite'>CORE GREEN</span></h2>
+  <p>Frozen frontend. CORE GREEN only until all.bash.</p>
+  <p class="fine">Suite: CORE 20-case; all.bash not skip=0. Workbench highlighting: Monaco language <code>go</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=go">Open on the workbench</a></p>
   <pre translate="no">package main
 func main() { return 0 }
@@ -172,18 +172,18 @@ func main() { return 0 }
 </section>
 
 <section id="rust">
-  <h2>Rust <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on rustc ui hello.rs run-pass. Full rustc ui GAP.</p>
-  <p class="fine">Suite: Rust Reference + rustc tests/ui/hello.rs run-pass. Workbench highlighting: Monaco language <code>rust</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Rust <span class='cite'>CORE GREEN</span></h2>
+  <p>Frozen frontend. CORE GREEN only.</p>
+  <p class="fine">Suite: CORE 20-case; rustc ui not skip=0. Workbench highlighting: Monaco language <code>rust</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=rust">Open on the workbench</a></p>
   <pre translate="no">fn main() -> i32 { 0 }
 </pre>
 </section>
 
 <section id="julia">
-  <h2>Julia <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on intfuncs.jl gcd extract. Full test/ GAP.</p>
-  <p class="fine">Suite: Julia test/intfuncs.jl gcd integer extract (9). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Julia <span class='cite'>CORE GREEN</span></h2>
+  <p>Frozen frontend. CORE GREEN only.</p>
+  <p class="fine">Suite: CORE 20-case. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=julia">Open on the workbench</a></p>
   <pre translate="no">function main()
     return 0
@@ -193,8 +193,8 @@ end
 
 <section id="lua">
   <h2>Lua <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on lua.org constructs.lua integer-assert extract (9). Full testes/ GAP.</p>
-  <p class="fine">Suite: lua.org 5.4.7 testes/constructs.lua integer assert extract (9). Workbench highlighting: Monaco language <code>lua</code>. Errors surface in the diagnostics pane.</p>
+  <p>Low-hanging fruit. Official lua.org 5.4.7 tests are in the tree. This alpha runs a named extract: assert, print, local, function. Full suite remains GAP.</p>
+  <p class="fine">Suite: Lua 5.4 named extract (assert/print/function). Workbench highlighting: Monaco language <code>lua</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=lua">Open on the workbench</a></p>
   <pre translate="no">function add(a, b)
   return a + b
@@ -205,9 +205,9 @@ print(add(40, 2))
 </section>
 
 <section id="zig">
-  <h2>Zig <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on official hello.zig writeAll run. Full behavior/ GAP.</p>
-  <p class="fine">Suite: zig test/standalone/hello_world/hello.zig run. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Zig <span class='cite'>CORE GREEN</span></h2>
+  <p>CORE GREEN. zig test suite not retrieved.</p>
+  <p class="fine">Suite: CORE 20-case. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=zig">Open on the workbench</a></p>
   <pre translate="no">pub fn main() i32 { return 0; }
 </pre>
@@ -266,9 +266,9 @@ SECTIONS {
 </section>
 
 <section id="scheme">
-  <h2>Scheme <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN (IEEE 1178) on chibi r5rs-tests.scm integer extract. Full R5RS GAP.</p>
-  <p class="fine">Suite: IEEE 1178 / R5RS + chibi r5rs-tests.scm integer (test) extract (26). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Scheme <span class='ok'>STANDARD GREEN</span></h2>
+  <p>Low-hanging fruit: Lisp cousin. define, lambda, if, arithmetic. R5RS/R7RS full suite GAP.</p>
+  <p class="fine">Suite: R5RS integer/define/lambda named extract. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=scheme">Open on the workbench</a></p>
   <pre translate="no">(define (add a b) (+ a b))
 (add 40 2)
@@ -276,9 +276,9 @@ SECTIONS {
 </section>
 
 <section id="forth">
-  <h2>Forth <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN (ANSI Forth) on core.fr T{ integer extract. HEX/DOUBLE GAP.</p>
-  <p class="fine">Suite: ANSI X3.215 / Forth-2012 Johns Hopkins core.fr T{ integer (42). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Forth <span class='ok'>STANDARD GREEN</span></h2>
+  <p>Low-hanging fruit. Stack machine: +, DUP, SWAP, DROP, ., colon definitions. gforth tests GAP.</p>
+  <p class="fine">Suite: ANS Forth integer named extract. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=forth">Open on the workbench</a></p>
   <pre translate="no">: ADD + ;
 40 2 ADD .
@@ -287,8 +287,8 @@ SECTIONS {
 
 <section id="ocaml">
   <h2>OCaml <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on equality.ml integer compare. Strings/floats/lists GAP.</p>
-  <p class="fine">Suite: OCaml testsuite equality.ml integer compare extract (3). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <p>Low-hanging fruit. let-bindings and integer expressions. ocaml testsuite GAP.</p>
+  <p class="fine">Suite: OCaml integer let/print_int named extract. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=ocaml">Open on the workbench</a></p>
   <pre translate="no">let add a b = a + b
 let () = print_int (add 40 2)
@@ -296,9 +296,9 @@ let () = print_int (add 40 2)
 </section>
 
 <section id="clojure">
-  <h2>Clojure <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on numbers.clj integer + extract. Full test_clojure GAP.</p>
-  <p class="fine">Suite: Clojure numbers.clj (+ N M) extract (4). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Clojure <span class='cite'>CORE GREEN</span></h2>
+  <p>Lisp cousin. Official Clojure test suite is not skip=0; CORE on the Scheme evaluator.</p>
+  <p class="fine">Suite: Clojure-shaped list eval (Scheme cousin). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=clojure">Open on the workbench</a></p>
   <pre translate="no">(defn add [a b] (+ a b))
 (add 40 2)
@@ -306,18 +306,18 @@ let () = print_int (add 40 2)
 </section>
 
 <section id="logo">
-  <h2>Logo (Robot) <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on UCBLogo UnitTests.lg compile-accept + ROBOT.C cardinals. Full UCBLogo tests GAP. No ISO Logo.</p>
-  <p class="fine">Suite: UCBLogo UnitTests.lg InstallSuite/RunTests compile-accept. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>Logo (Robot) <span class='cite'>CORE GREEN</span></h2>
+  <p>Shaili रोबोट. Named Robot extract, not a retrieved lex file. FORWARD/RIGHT/REPEAT and उत्तर/पूर्व/दक्षिण/पश्चिम.</p>
+  <p class="fine">Suite: UCBLogo turtle + ROBOT.C cardinals (named extract). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=logo">Open on the workbench</a></p>
   <pre translate="no">REPEAT 4 [ FORWARD 80 RIGHT 90 ]
 </pre>
 </section>
 
 <section id="lex">
-  <h2>lex <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN (POSIX) on flex wc1.l. Full flex tests/ GAP.</p>
-  <p class="fine">Suite: POSIX lex / flex examples/fastwc/wc1.l compile-accept. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>lex <span class='cite'>CORE GREEN</span></h2>
+  <p>Shaili शब्द. Pattern → printf. Full flex suite GAP.</p>
+  <p class="fine">Suite: flex named extract (HindiLEX). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=lex">Open on the workbench</a></p>
   <pre translate="no">%%
 "a"a+"a"	{printf("O");}
@@ -327,9 +327,9 @@ ab+a	{printf("ab*a");}
 </section>
 
 <section id="yacc">
-  <h2>yacc <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN (POSIX) on bison calc.y. Full bison tests/ GAP.</p>
-  <p class="fine">Suite: POSIX yacc / bison examples/c/calc/calc.y compile-accept. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
+  <h2>yacc <span class='cite'>CORE GREEN</span></h2>
+  <p>Shaili व्याकरण. Calculator grammar. Full POSIX yacc suite GAP.</p>
+  <p class="fine">Suite: yacc calculator named extract (HindiYACC). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
   <p><a class="btn" href="workbench.html?lang=yacc">Open on the workbench</a></p>
   <pre translate="no">expr : expr '+' expr { $$ = $1 + $3; }
      | 1+2*3
@@ -348,206 +348,7 @@ ab+a	{printf("ab*a");}
 END
 </pre>
 </section>
-
-<section id="csharp">
-  <h2>C# <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN on named Mono mcs/tests/test-1.cs. Not roslyn. Full ECMA-334 GAP.</p>
-  <p class="fine">Suite: ECMA-334 / ISO/IEC 23270 + Mono mcs/tests/test-1.cs. Workbench highlighting: Monaco language <code>csharp</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=csharp">Open on the workbench</a></p>
-  <pre translate="no">using System;
-class Program {
-  static int Main() {
-    int n = 40 + 2;
-    Console.WriteLine(n);
-    return n;
-  }
-}
-</pre>
-</section>
-
-<section id="kotlin">
-  <h2>Kotlin <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on NumbersTest.kt Int min/max extract. Long/overflow GAP. Not kotlinc.</p>
-  <p class="fine">Suite: Kotlin NumbersTest.kt Int.MIN/MAX + one (4). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=kotlin">Open on the workbench</a></p>
-  <pre translate="no">fun add(a: Int, b: Int): Int {
-  return a + b
-}
-fun main(): Int {
-  val n = add(40, 2)
-  println(n)
-  return n
-}
-</pre>
-</section>
-
-<section id="swift">
-  <h2>Swift <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on IntegerDiagnostics reject + simple.swift run. Not Apple Swift™. Full stdlib GAP.</p>
-  <p class="fine">Suite: Swift IntegerDiagnostics expected-error + simple.swift run (2). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=swift">Open on the workbench</a></p>
-  <pre translate="no">func add(a: Int, b: Int) -> Int {
-  return a + b
-}
-func main() -> Int {
-  let n = add(40, 2)
-  print(n)
-  return n
-}
-</pre>
-</section>
-
-<section id="scala">
-  <h2>Scala <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on t0005.scala compile-accept. unapply/match execute GAP. Full scalac GAP.</p>
-  <p class="fine">Suite: Scala t0005.scala def main compile-accept. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=scala">Open on the workbench</a></p>
-  <pre translate="no">object P {
-  def add(a: Int, b: Int): Int = a + b
-  def main(args: Array[String]): Int = {
-    val n = add(40, 2)
-    println(n)
-    return n
-  }
-}
-</pre>
-</section>
-
-<section id="dart">
-  <h2>Dart <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on operator_test.dart i1/i2 integer extract. Operator-overload GAP.</p>
-  <p class="fine">Suite: Dart operator_test.dart i1/i2 Expect.equals integer extract. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=dart">Open on the workbench</a></p>
-  <pre translate="no">int add(int a, int b) {
-  return a + b;
-}
-int main() {
-  var n = add(40, 2);
-  print(n);
-  return n;
-}
-</pre>
-</section>
-
-<section id="ada">
-  <h2>Ada <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN on ACATS C45411A unary +/− INTEGER. Full ACATS GAP. Not GNAT.</p>
-  <p class="fine">Suite: ISO/IEC 8652 ACATS C45411A unary +/− INTEGER (1). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=ada">Open on the workbench</a></p>
-  <pre translate="no">function Main return Integer is
-  N : Integer := 40 + 2;
-begin
-  return N;
-end Main;
-</pre>
-</section>
-
-<section id="ruby">
-  <h2>Ruby <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN on MRI/RubySpec integer extract. Full bootstraptest GAP.</p>
-  <p class="fine">Suite: ISO/IEC 30170 + MRI test_literal.rb + ruby/spec Integer#+ (3). Workbench highlighting: Monaco language <code>ruby</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=ruby">Open on the workbench</a></p>
-  <pre translate="no">def add(a, b)
-  a + b
-end
-puts add(40, 2)
-</pre>
-</section>
-
-<section id="perl">
-  <h2>Perl <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on official t/base/if.t. t/op GAP.</p>
-  <p class="fine">Suite: Perl 5 t/base/if.t TAP eq/ne (2). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=perl">Open on the workbench</a></p>
-  <pre translate="no">sub add {
-  my ($a, $b) = @_;
-  return $a + $b;
-}
-print add(40, 2);
-</pre>
-</section>
-
-<section id="php">
-  <h2>PHP <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on php-src tests/lang named extract (4). Zend arrays/objects GAP.</p>
-  <p class="fine">Suite: php-src tests/lang/{001,002,004,010}.phpt FILE vs EXPECT. Workbench highlighting: Monaco language <code>php</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=php">Open on the workbench</a></p>
-  <pre translate="no"><?php
-function add($a, $b) {
-  return $a + $b;
-}
-echo add(40, 2);
-</pre>
-</section>
-
-<section id="r">
-  <h2>R <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on GNU R simple-true.R integer extract. lowess/float GAP. Not MATLAB.</p>
-  <p class="fine">Suite: GNU R simple-true.R 1:12 cumsum + typeof integer L (5). Workbench highlighting: Monaco language <code>r</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=r">Open on the workbench</a></p>
-  <pre translate="no">add <- function(a, b) { a + b }
-print(add(40, 2))
-</pre>
-</section>
-
-<section id="cobol">
-  <h2>COBOL <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN on GnuCOBOL DISPLAY-literals extract. NIST COBOL85 full GAP.</p>
-  <p class="fine">Suite: ISO/IEC 1989 + GnuCOBOL run_fundamental.at DISPLAY literals (1). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=cobol">Open on the workbench</a></p>
-  <pre translate="no">IDENTIFICATION DIVISION.
-PROGRAM-ID. ADDN.
-DATA DIVISION.
-WORKING-STORAGE SECTION.
-01 N PIC 9(4) VALUE 40.
-PROCEDURE DIVISION.
-    COMPUTE N = N + 2
-    DISPLAY N
-    STOP RUN.
-</pre>
-</section>
-
-<section id="sql">
-  <h2>SQL <span class='ok'>ISO GREEN</span></h2>
-  <p>STANDARD GREEN / ISO GREEN on postgres int4.sql integer SELECT extract. Tables/overflow GAP.</p>
-  <p class="fine">Suite: ISO/IEC 9075 + PostgreSQL int4.sql integer SELECT AS (7). Workbench highlighting: Monaco language <code>sql</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=sql">Open on the workbench</a></p>
-  <pre translate="no">CREATE TABLE t (n INT);
-INSERT INTO t VALUES (40);
-SELECT n + 2 FROM t;
-</pre>
-</section>
-
-<section id="octave">
-  <h2>GNU Octave <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on GNU Octave factorial.m integer %!assert. Not MATLAB. Full fntests GAP.</p>
-  <p class="fine">Suite: GNU Octave factorial.m %!assert (factorial (0), 1). Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=octave">Open on the workbench</a></p>
-  <pre translate="no">function r = add(a, b)
-  r = a + b;
-end
-function r = main()
-  n = add(40, 2);
-  disp(n);
-  r = n;
-end
-</pre>
-</section>
-
-<section id="sysml">
-  <h2>SysML <span class='ok'>STANDARD GREEN</span></h2>
-  <p>STANDARD GREEN on SysML v2 CommentTest. ISO 19514 is SysML 1.x. Model checker GAP.</p>
-  <p class="fine">Suite: OMG SysML v2 CommentTest.sysml package/part compile-accept. Workbench highlighting: Monaco language <code>plaintext</code>. Errors surface in the diagnostics pane.</p>
-  <p><a class="btn" href="workbench.html?lang=sysml">Open on the workbench</a></p>
-  <pre translate="no">package Demo {
-  part def Motor {
-    attribute power : Integer = 40;
-  }
-  constraint def Add { 40 + 2 }
-}
-</pre>
-</section>
 </main>
-<footer class="site-foot"></footer>
-</body>
-</html>
+<footer class="pfoot">Copyright (C) 1993–2026 Abhishek Choudhary · GPL-3.0-or-later</footer>
+<script src="skins/skins.js"></script>
+</body></html>

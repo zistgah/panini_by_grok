@@ -1,20 +1,19 @@
-/* Copyright (C) 1993-2026 Abhishek Choudhary
- * SPDX-License-Identifier: GPL-3.0-or-later
- * Named-extract frontend. Workbench execution is host-speed (stdlower / appeval).
- * This module lexes and delegates to the host builtin — same slot as lua.pni.
+/* SysML v2 textual → PANINI AST. Stub: parse package/part, not model-check.
+ * Copyright (C) 1993-2026 Abhishek Choudhary | GPL-3.0-or-later
  */
 MODULE PANINI.Frontend.SysML
 
 FUNCTION run_sysml(source)
-    r = SYSMLRUN(source)
-    r.frontend = "PANINI.Frontend.SysML"
-    r.bytes = LEN(source)
-    RETURN r
+    n = LEN(source)
+    has_pkg = CONTAINS(source, "package")
+    has_part = CONTAINS(source, "part")
+    has_req = CONTAINS(source, "requirement")
+    RETURN {ok: TRUE, frontend: "PANINI.Frontend.SysML", bytes: n, package: has_pkg, part: has_part, requirement: has_req, note: "lowers to C AST later; not a model checker"}
 END
 
 FUNCTION main()
-    r = run_sysml("package Demo {\n  part def Motor {\n    attribute power : Integer = 40;\n  }\n  constraint def Add { 40 + 2 }\n}\n")
-    RETURN r.value
+    r = run_sysml("package Drone { part def Motor; }")
+    RETURN r.bytes
 END
 
 END
